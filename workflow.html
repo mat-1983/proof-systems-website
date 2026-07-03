@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proof Systems | Discovery Workflow</title>
+    <meta name="description" content="An AI-assisted qualifier for Proof Systems. Tell us what you need, what result you want, and anything we should know. From there, we'll point you to paid discovery, a relevant YouTube video, or the best off-the-shelf route.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1110;
+            --surface: #171b18;
+            --surface-2: #1f2420;
+            --text: #f4f0e7;
+            --muted: #b8b2a5;
+            --line: rgba(244, 240, 231, 0.1);
+            --accent: #d89042;
+            --accent-2: #b6c6a0;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(216, 144, 66, 0.12), transparent 32%),
+                radial-gradient(circle at 80% 10%, rgba(182, 198, 160, 0.08), transparent 26%),
+                var(--bg);
+            line-height: 1.6;
+        }
+        a { color: inherit; }
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(14px);
+            background: rgba(15, 17, 16, 0.8);
+            border-bottom: 1px solid var(--line);
+        }
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 0;
+        }
+        .brand {
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.03);
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+        .hero {
+            padding: 72px 0 42px;
+        }
+        .eyebrow {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        h1, h2, h3, h4 {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.05em;
+            line-height: 1.06;
+        }
+        h1 {
+            max-width: 13ch;
+            font-size: clamp(2.6rem, 7vw, 5.2rem);
+            margin-bottom: 18px;
+        }
+        .lead {
+            max-width: 62ch;
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin: 0 0 28px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+            align-items: start;
+            padding-bottom: 72px;
+        }
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)), var(--surface);
+            box-shadow: var(--shadow);
+        }
+        .card-inner { padding: 28px; }
+        .card h2 {
+            font-size: 1.65rem;
+            margin-bottom: 10px;
+        }
+        .small {
+            color: var(--muted);
+            font-size: 0.96rem;
+        }
+        form { margin-top: 20px; }
+        .field { margin-bottom: 16px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 16px;
+            border: 1px solid rgba(244,240,231,0.12);
+            background: var(--surface-2);
+            color: var(--text);
+            font: inherit;
+            resize: vertical;
+        }
+        textarea:focus, input:focus {
+            outline: 2px solid rgba(216,144,66,0.45);
+            border-color: transparent;
+        }
+        textarea { min-height: 98px; }
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .button {
+            appearance: none;
+            border: 0;
+            border-radius: 999px;
+            padding: 13px 18px;
+            text-decoration: none;
+            font: inherit;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .button-primary {
+            background: linear-gradient(135deg, var(--accent), #f0b36d);
+            color: #1d1208;
+        }
+        .button-secondary {
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            border: 1px solid var(--line);
+        }
+        .stack { display: grid; gap: 16px; }
+        .result-box {
+            border: 1px solid rgba(182,198,160,0.25);
+            background: linear-gradient(180deg, rgba(182,198,160,0.12), rgba(255,255,255,0.03));
+        }
+        .result-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+        .score {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(216,144,66,0.16);
+            color: #ffd9b3;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        ul { margin: 14px 0 0; padding-left: 18px; }
+        li + li { margin-top: 8px; }
+        .muted-link { color: var(--accent-2); }
+        .summary {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--line);
+            margin-top: 16px;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+        .field-inline input {
+            max-width: 260px;
+        }
+        .hidden { display: none; }
+        .footer {
+            padding: 0 0 40px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        @media (max-width: 860px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { max-width: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <a class="brand" href="index.html">Proof Systems</a>
+            <span class="pill">AI-assisted qualifier · £350 paid discovery · no calendar booking</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="eyebrow">Workflow</div>
+            <h1>Tell us the problem first.</h1>
+            <p class="lead">Answer three questions and we’ll read the language you use, score the fit, and point you to paid discovery, a relevant video, or the best off-the-shelf route. If it is a fit, the discovery fee is £350 and credited against a build.</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <div class="card-inner">
+                    <h2>Qualifier</h2>
+                    <p class="small">Three questions, plus email. That is enough to decide whether this should go to a paid discovery or a lighter route.</p>
+
+                    <form id="qualifier-form">
+                        <div class="field">
+                            <label for="help">1. What would you like help with?</label>
+                            <textarea id="help" name="help" placeholder="e.g. reporting, admin, document handling, internal workflow"></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="outcome">2. What outcome do you want from the session?</label>
+                            <textarea id="outcome" name="outcome" placeholder="e.g. save time, remove manual steps, decide whether a build is worth it"></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="context">3. Anything I should know before we speak?</label>
+                            <textarea id="context" name="context" placeholder="e.g. timeline, size of team, systems you already use"></textarea>
+                        </div>
+                        <div class="field field-inline">
+                            <label for="hours">Hard signal: roughly how many hours a week does this cost?</label>
+                            <input id="hours" name="hours" type="number" min="0" step="0.5" placeholder="e.g. 6">
+                        </div>
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="actions">
+                            <button type="submit" class="button button-primary">Check fit</button>
+                            <a href="video-series.html" class="button button-secondary">Browse videos</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card result-box" id="result-card">
+                <div class="card-inner">
+                    <div class="result-head">
+                        <div>
+                            <div class="eyebrow" style="margin-bottom:10px;">AI-assisted assessment</div>
+                            <h2>We’ll steer you to the right route.</h2>
+                        </div>
+                        <span class="score">£350 credited against a build</span>
+                    </div>
+
+                    <div class="stack" id="default-state">
+                        <p class="small">Once you submit the form, we’ll score the answers and point you to paid discovery, an off-the-shelf product, or the right video route.</p>
+                        <ul>
+                            <li><strong>Paid discovery:</strong> when a custom build looks justified.</li>
+                            <li><strong>Off-the-shelf:</strong> when there is already a good product fit.</li>
+                            <li><strong>Videos:</strong> when a short explanation or example will help first.</li>
+                        </ul>
+                    </div>
+
+                    <div class="stack hidden" id="paid-state">
+                        <p><strong>Looks like a custom build candidate.</strong> Paid discovery is the best next step.</p>
+                        <p class="small" id="paid-explanation"></p>
+                        <div class="summary" id="paid-suggestions"></div>
+                        <div class="actions">
+                            <a id="paid-mail" class="button button-primary" href="#">Pay £350 with Stripe</a>
+                            <a href="video-series.html" class="button button-secondary">Browse videos</a>
+                        </div>
+                    </div>
+
+                    <div class="stack hidden" id="product-state">
+                        <p><strong>An off-the-shelf product should probably do most of this.</strong></p>
+                        <p class="small" id="product-explanation"></p>
+                        <div class="summary" id="product-suggestions"></div>
+                        <div class="actions">
+                            <a href="video-series.html" class="button button-primary">See the free route</a>
+                            <a id="product-mail" class="button button-secondary" href="#">Request paid discovery</a>
+                        </div>
+                    </div>
+
+                    <div class="stack hidden" id="video-state">
+                        <p><strong>This looks like a good fit for video first.</strong></p>
+                        <p class="small" id="video-explanation"></p>
+                        <div class="summary" id="video-suggestions"></div>
+                        <div class="actions">
+                            <a href="video-series.html" class="button button-primary">Watch the videos</a>
+                            <a id="video-mail" class="button button-secondary" href="#">Request paid discovery</a>
+                        </div>
+                    </div>
+
+                    <div class="summary hidden" id="summary"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>Back to <a class="muted-link" href="index.html">home</a> or <a class="muted-link" href="mailto:mat@proofsystems.co.uk">email Mat directly</a>.</p>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('qualifier-form');
+        const defaultState = document.getElementById('default-state');
+        const paidState = document.getElementById('paid-state');
+        const productState = document.getElementById('product-state');
+        const videoState = document.getElementById('video-state');
+        const summary = document.getElementById('summary');
+        const paidMail = document.getElementById('paid-mail');
+        const productMail = document.getElementById('product-mail');
+        const videoMail = document.getElementById('video-mail');
+        const paidExplanation = document.getElementById('paid-explanation');
+        const productExplanation = document.getElementById('product-explanation');
+        const videoExplanation = document.getElementById('video-explanation');
+        const paidSuggestions = document.getElementById('paid-suggestions');
+        const productSuggestions = document.getElementById('product-suggestions');
+        const videoSuggestions = document.getElementById('video-suggestions');
+
+        function checkoutLink(route, email, help, outcome, context, hours) {
+            const params = new URLSearchParams({
+                route,
+                email,
+                help,
+                outcome,
+                context,
+                hours,
+            });
+
+            return `checkout.html?${params.toString()}`;
+        }
+
+        function normalise(text) {
+            return text.toLowerCase().replace(/[^a-z0-9£% ]+/g, ' ');
+        }
+
+        function score(text, terms) {
+            return terms.reduce((total, term) => total + (text.includes(term) ? 1 : 0), 0);
+        }
+
+        function renderList(items) {
+            return `<ul>${items.map((item) => `<li><strong>${item.title}:</strong> ${item.reason}</li>`).join('')}</ul>`;
+        }
+
+        function buildRoute(text, hoursValue) {
+            const clean = normalise(text);
+
+            let paidScore = score(clean, ['build', 'custom', 'workflow', 'system', 'automation', 'integrat', 'report', 'dashboard', 'tool', 'assistant', 'api', 'document', 'process', 'internal', 'handoff']);
+            const productScore = score(clean, ['off the shelf', 'off-the-shelf', 'product', 'software', 'platform', 'template', 'quick', 'standard', 'crm', 'timesheet', 'invoice', 'expense', 'payroll', 'stock', 'form', 'notion', 'airtable', 'monday', 'xero', 'sage', 'dext', 'zapier', 'make']);
+            let videoScore = score(clean, ['video', 'watch', 'learn', 'understand', 'explain', 'how to', 'what is', 'example', 'compare', 'walkthrough', 'not sure']);
+
+            const hours = Number.parseFloat(hoursValue);
+            if (Number.isFinite(hours) && hours > 0 && hours < 4) {
+                if (productScore >= paidScore && productScore >= videoScore) {
+                    return 'product';
+                }
+
+                return 'video';
+            }
+
+            if (Number.isFinite(hours)) {
+                if (hours >= 12) {
+                    paidScore += 2;
+                } else if (hours >= 4) {
+                    paidScore += 1;
+                }
+            }
+
+            if (productScore >= paidScore + 2 && productScore >= videoScore) {
+                return 'product';
+            }
+
+            if (videoScore >= paidScore + 1 && videoScore >= productScore) {
+                return 'video';
+            }
+
+            return 'paid';
+        }
+
+        function productRecommendations(text) {
+            const clean = normalise(text);
+            const items = [];
+
+            if (/(account|invoice|payroll|timesheet|expense|cash flow|bookkeep|labour)/.test(clean)) {
+                items.push({
+                    title: 'Xero, Sage or Dext',
+                    reason: 'Good when the problem is mainly finance, payroll, capture or reporting rather than a new custom workflow.'
+                });
+            }
+
+            if (/(crm|project|task|workflow|approv|handoff|document|internal|form|database|ops)/.test(clean)) {
+                items.push({
+                    title: 'Airtable, Notion or Monday',
+                    reason: 'Good when you need a flexible operating system before you invest in custom code.'
+                });
+            }
+
+            if (/(integration|sync|api|notify|email|slack|send)/.test(clean)) {
+                items.push({
+                    title: 'Zapier or Make',
+                    reason: 'Good when the main issue is moving data between existing tools.'
+                });
+            }
+
+            if (!items.length) {
+                items.push({
+                    title: 'Off-the-shelf shortlist',
+                    reason: 'We would point you at the nearest existing product first, then check whether custom work is still worth it.'
+                });
+            }
+
+            return items;
+        }
+
+        function videoRecommendations(text) {
+            const clean = normalise(text);
+            const items = [];
+
+            if (/(off the shelf|off-the-shelf|product|software|tool|compare|option)/.test(clean)) {
+                items.push({
+                    title: 'When to choose off-the-shelf instead of custom',
+                    reason: 'Best first watch when the answers suggest there may already be a product fit.'
+                });
+            }
+
+            if (/(workflow|process|system|build|custom|small|proof)/.test(clean)) {
+                items.push({
+                    title: 'Why the first build should stay small',
+                    reason: 'Useful when the pain is real but the safest move is a smaller proof first.'
+                });
+            }
+
+            if (/(api|integration|automation|data|sync)/.test(clean)) {
+                items.push({
+                    title: 'How APIs and automations actually help SMEs',
+                    reason: 'Useful when the issue is moving information between tools.'
+                });
+            }
+
+            if (!items.length) {
+                items.push({
+                    title: 'Start with the basics',
+                    reason: 'A good fit when the quickest next step is understanding the problem before choosing a route.'
+                });
+            }
+
+            return items;
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const help = document.getElementById('help').value.trim();
+            const outcome = document.getElementById('outcome').value.trim();
+            const context = document.getElementById('context').value.trim();
+            const hours = document.getElementById('hours').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const combined = `${help}\n${outcome}\n${context}`;
+            const route = buildRoute(combined, hours);
+            const body = [
+                `Email: ${email}`,
+                '',
+                `What help with: ${help}`,
+                `Outcome: ${outcome}`,
+                `Anything else: ${context}`,
+                `Hours per week lost: ${hours || '(not provided)'}`
+            ].join('\n');
+
+            summary.textContent = [
+                `Route: ${route === 'paid' ? 'paid discovery' : route === 'product' ? 'off-the-shelf route' : 'video route'}`,
+                `Email: ${email || '(not provided)'}`,
+                `What help with: ${help || '(blank)'}`,
+                `Outcome: ${outcome || '(blank)'}`,
+                `Context: ${context || '(blank)'}`,
+                `Hours/week: ${hours || '(blank)'}`
+            ].join('\n');
+            summary.classList.remove('hidden');
+
+            defaultState.classList.add('hidden');
+            paidState.classList.add('hidden');
+            productState.classList.add('hidden');
+            videoState.classList.add('hidden');
+
+            const paidBody = body;
+            const productBody = body;
+            const videoBody = body;
+
+            if (route === 'paid') {
+                const items = productRecommendations(combined).concat(videoRecommendations(combined)).slice(0, 2);
+                paidExplanation.textContent = 'We can see enough custom-fit signals here to justify a paid discovery. The report should be able to translate the problem into a practical build decision.';
+                paidSuggestions.innerHTML = renderList(items);
+                paidState.classList.remove('hidden');
+                paidMail.href = checkoutLink('paid', email, help, outcome, context, hours);
+                productMail.href = checkoutLink('paid', email, help, outcome, context, hours);
+                videoMail.href = checkoutLink('paid', email, help, outcome, context, hours);
+            } else if (route === 'product') {
+                const items = productRecommendations(combined);
+                productExplanation.textContent = 'This looks like a better fit for an existing product first. If that still leaves gaps, paid discovery can map what should stay product-led and what should become custom.';
+                productSuggestions.innerHTML = renderList(items);
+                productState.classList.remove('hidden');
+                paidMail.href = checkoutLink('product', email, help, outcome, context, hours);
+                productMail.href = checkoutLink('product', email, help, outcome, context, hours);
+                videoMail.href = checkoutLink('product', email, help, outcome, context, hours);
+            } else {
+                const items = videoRecommendations(combined);
+                videoExplanation.textContent = 'A short video is probably the cleanest next step because it will show the thinking before we decide on product or build.';
+                videoSuggestions.innerHTML = renderList(items);
+                videoState.classList.remove('hidden');
+                paidMail.href = checkoutLink('video', email, help, outcome, context, hours);
+                productMail.href = checkoutLink('video', email, help, outcome, context, hours);
+                videoMail.href = checkoutLink('video', email, help, outcome, context, hours);
+            }
+        });
+    </script>
+</body>
+</html>
