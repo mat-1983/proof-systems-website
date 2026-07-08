@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proof Systems | Discovery Workflow</title>
-    <meta name="description" content="An AI-assisted qualifier for Proof Systems. Tell us what you need, what result you want, and anything we should know. From there, we'll point you to paid discovery, a relevant YouTube video, or the best off-the-shelf route.">
+    <meta name="description" content="A practical workflow qualifier for Proof Systems. Tell us what is costing time and get steered towards a paid diagnostic, a relevant video, or an off-the-shelf route.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +129,7 @@
             font-weight: 600;
             font-size: 0.95rem;
         }
-        textarea, input {
+        textarea, input, select {
             width: 100%;
             padding: 14px 15px;
             border-radius: 16px;
@@ -138,11 +139,70 @@
             font: inherit;
             resize: vertical;
         }
-        textarea:focus, input:focus {
+        textarea:focus, input:focus, select:focus {
             outline: 2px solid rgba(216,144,66,0.45);
             border-color: transparent;
         }
         textarea { min-height: 98px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .form-grid .field { margin-bottom: 0; }
+        .full-span { grid-column: 1 / -1; }
+        .helper {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+        .notice {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(216,144,66,0.08);
+            border: 1px solid rgba(216,144,66,0.22);
+            color: #f3d2ad;
+            font-size: 0.92rem;
+        }
+        .checkbox-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--line);
+        }
+        .checkbox-field input {
+            width: auto;
+            margin-top: 4px;
+        }
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .form-status {
+            margin-top: 16px;
+            padding: 13px 15px;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.04);
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+        .form-status.error {
+            border-color: rgba(216,80,66,0.35);
+            color: #ffc5bc;
+            background: rgba(216,80,66,0.08);
+        }
         .actions {
             display: flex;
             flex-wrap: wrap;
@@ -217,6 +277,7 @@
         @media (max-width: 860px) {
             .grid { grid-template-columns: 1fr; }
             h1 { max-width: none; }
+            .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -224,48 +285,99 @@
     <header class="topbar">
         <div class="container topbar-inner">
             <a class="brand" href="index.html">Proof Systems</a>
-            <span class="pill">AI-assisted qualifier · £350 paid discovery · no calendar booking</span>
+            <span class="pill">Workflow qualifier · £350 diagnostic if there is a fit</span>
         </div>
     </header>
 
     <main class="container">
         <section class="hero">
-            <div class="eyebrow">Workflow</div>
-            <h1>Tell us the problem first.</h1>
-            <p class="lead">Answer three questions and we’ll read the language you use, score the fit, and point you to paid discovery, a relevant video, or the best off-the-shelf route. If it is a fit, the discovery fee is £350 and credited against a build.</p>
+            <div class="eyebrow">Workflow fit</div>
+            <h1>Tell me what is costing time.</h1>
+            <p class="lead">Answer the workflow questions, leave contact details, and we will steer the problem towards the right route: diagnostic request, videos, a 15-minute fit call, team training, or a product/process route. The local file does not send data; the Netlify version submits only when someone confirms a route.</p>
         </section>
 
         <section class="grid">
             <div class="card">
                 <div class="card-inner">
                     <h2>Qualifier</h2>
-                    <p class="small">Three questions, plus email. That is enough to decide whether this should go to a paid discovery or a lighter route.</p>
+                    <p class="small">Start with the workflow, then add contact details so the local result can show the right follow-up path. Please keep examples anonymised.</p>
 
-                    <form id="qualifier-form">
-                        <div class="field">
-                            <label for="help">1. What would you like help with?</label>
-                            <textarea id="help" name="help" placeholder="e.g. reporting, admin, document handling, internal workflow"></textarea>
+                    <form id="qualifier-form" name="proof-systems-qualifier" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="proof-systems-qualifier">
+                        <p class="visually-hidden">
+                            <label>Do not fill this in <input name="bot-field" autocomplete="off" tabindex="-1"></label>
+                        </p>
+                        <input id="route-key" name="route_key" type="hidden">
+                        <input id="route-label" name="route_label" type="hidden">
+                        <input id="lead-state" name="lead_state" type="hidden">
+                        <input id="page-source" name="page_source" type="hidden" value="workflow.html">
+                        <input id="submitted-at" name="submitted_at" type="hidden">
+                        <div class="notice">
+                            Describe the workflow in general terms. Do not include customer names, passwords, confidential documents, detailed financial data, or sensitive personal data.
                         </div>
                         <div class="field">
-                            <label for="outcome">2. What outcome do you want from the session?</label>
-                            <textarea id="outcome" name="outcome" placeholder="e.g. save time, remove manual steps, decide whether a build is worth it"></textarea>
+                            <label for="help">1. What workflow is costing time?</label>
+                            <textarea id="help" name="workflow_help" placeholder="e.g. reporting, admin, document handling, payroll prep, internal workflow"></textarea>
                         </div>
                         <div class="field">
-                            <label for="context">3. Anything I should know before we speak?</label>
-                            <textarea id="context" name="context" placeholder="e.g. timeline, size of team, systems you already use"></textarea>
+                            <label for="outcome">2. What would a useful improvement look like?</label>
+                            <textarea id="outcome" name="desired_outcome" placeholder="e.g. save time, remove manual steps, reduce errors, decide whether a build is worth it"></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="context">3. What tools, people or constraints are involved?</label>
+                            <textarea id="context" name="workflow_context" placeholder="e.g. timeline, size of team, current spreadsheets, Sage, Xero, Notion, inboxes or approvals"></textarea>
                         </div>
                         <div class="field field-inline">
                             <label for="hours">Hard signal: roughly how many hours a week does this cost?</label>
-                            <input id="hours" name="hours" type="number" min="0" step="0.5" placeholder="e.g. 6">
+                            <input id="hours" name="hours_per_week" type="number" min="0" step="0.5" placeholder="e.g. 6">
                         </div>
                         <div class="field">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                            <label for="desired">What kind of help do you think you need?</label>
+                            <select id="desired" name="desired_help">
+                                <option value="not-sure">Not sure yet</option>
+                                <option value="diagnostic">Diagnostic request</option>
+                                <option value="videos">Videos first</option>
+                                <option value="call">15-minute fit call</option>
+                                <option value="training">Half-day team workshop</option>
+                                <option value="product">Product/process pointer</option>
+                            </select>
+                        </div>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="name">Name</label>
+                                <input id="name" name="name" type="text" placeholder="Your name" required>
+                            </div>
+                            <div class="field">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                            </div>
+                            <div class="field">
+                                <label for="phone">Phone</label>
+                                <input id="phone" name="phone" type="tel" placeholder="Required for call or training">
+                                <div class="helper">Required if the route is a fit call or training enquiry.</div>
+                            </div>
+                            <div class="field">
+                                <label for="company">Company</label>
+                                <input id="company" name="company" type="text" placeholder="Company name" required>
+                            </div>
+                            <div class="field">
+                                <label for="role">Role</label>
+                                <input id="role" name="role" type="text" placeholder="Owner, ops, finance, manager..." required>
+                            </div>
+                            <div class="field">
+                                <label for="sector">Sector</label>
+                                <input id="sector" name="sector" type="text" placeholder="Optional">
+                            </div>
+                            <label class="checkbox-field full-span" for="consent">
+                                <input id="consent" name="consent_contact" type="checkbox" value="yes" required>
+                                <span>I am happy for Proof Systems to contact me about this workflow and relevant next steps.</span>
+                            </label>
                         </div>
                         <div class="actions">
-                            <button type="submit" class="button button-primary">Check fit</button>
+                            <button type="submit" class="button button-primary">Check the route</button>
                             <a href="video-series.html" class="button button-secondary">Browse videos</a>
                         </div>
+                        <div id="form-status" class="form-status hidden" role="status" aria-live="polite"></div>
                     </form>
                 </div>
             </div>
@@ -274,38 +386,40 @@
                 <div class="card-inner">
                     <div class="result-head">
                         <div>
-                            <div class="eyebrow" style="margin-bottom:10px;">AI-assisted assessment</div>
-                            <h2>We’ll steer you to the right route.</h2>
+                            <div class="eyebrow" style="margin-bottom:10px;">Route assessment</div>
+                            <h2>We’ll steer you to the sensible next step.</h2>
                         </div>
-                        <span class="score">£350 credited against a build</span>
+                        <span class="score">Diagnostic credited against a build</span>
                     </div>
 
                     <div class="stack" id="default-state">
-                        <p class="small">Once you submit the form, we’ll score the answers and point you to paid discovery, an off-the-shelf product, or the right video route.</p>
+                        <p class="small">Once you submit the local form, we will score the answers and point you to a diagnostic request, videos, a 15-minute fit call, team training, or a product/process route.</p>
                         <ul>
-                            <li><strong>Paid discovery:</strong> when a custom build looks justified.</li>
-                            <li><strong>Off-the-shelf:</strong> when there is already a good product fit.</li>
-                            <li><strong>Videos:</strong> when a short explanation or example will help first.</li>
+                            <li><strong>Diagnostic:</strong> when the workflow looks worth mapping properly before a build decision.</li>
+                            <li><strong>Videos:</strong> when a short explanation or practical example should come first.</li>
+                            <li><strong>Fit call:</strong> when the route is uncertain but there is enough substance for a short triage call.</li>
+                            <li><strong>Training:</strong> when the issue is team capability rather than one specific workflow.</li>
+                            <li><strong>Product/process:</strong> when an existing tool or basic process fix should probably come before custom work.</li>
                         </ul>
                     </div>
 
                     <div class="stack hidden" id="paid-state">
-                        <p><strong>Looks like a custom build candidate.</strong> Paid discovery is the best next step.</p>
+                        <p><strong>This looks worth a proper diagnostic.</strong></p>
                         <p class="small" id="paid-explanation"></p>
                         <div class="summary" id="paid-suggestions"></div>
                         <div class="actions">
-                            <a id="paid-mail" class="button button-primary" href="#">Pay £350 with Stripe</a>
+                            <a id="paid-mail" class="button button-primary" href="#">Review diagnostic request</a>
                             <a href="video-series.html" class="button button-secondary">Browse videos</a>
                         </div>
                     </div>
 
                     <div class="stack hidden" id="product-state">
-                        <p><strong>An off-the-shelf product should probably do most of this.</strong></p>
+                        <p><strong>A product or process route should probably come first.</strong></p>
                         <p class="small" id="product-explanation"></p>
                         <div class="summary" id="product-suggestions"></div>
                         <div class="actions">
                             <a href="video-series.html" class="button button-primary">See the free route</a>
-                            <a id="product-mail" class="button button-secondary" href="#">Request paid discovery</a>
+                            <a id="product-mail" class="button button-secondary" href="#">Review request anyway</a>
                         </div>
                     </div>
 
@@ -315,7 +429,27 @@
                         <div class="summary" id="video-suggestions"></div>
                         <div class="actions">
                             <a href="video-series.html" class="button button-primary">Watch the videos</a>
-                            <a id="video-mail" class="button button-secondary" href="#">Request paid discovery</a>
+                            <a id="video-call" class="button button-secondary" href="#">Request 15-minute fit call</a>
+                        </div>
+                    </div>
+
+                    <div class="stack hidden" id="call-state">
+                        <p><strong>This looks like a fit-call route.</strong></p>
+                        <p class="small" id="call-explanation"></p>
+                        <div class="summary" id="call-suggestions"></div>
+                        <div class="actions">
+                            <a id="call-mail" class="button button-primary" href="#">Review 15-minute fit call</a>
+                            <a href="video-series.html" class="button button-secondary">Watch primer first</a>
+                        </div>
+                    </div>
+
+                    <div class="stack hidden" id="training-state">
+                        <p><strong>This looks like a training enquiry.</strong></p>
+                        <p class="small" id="training-explanation"></p>
+                        <div class="summary" id="training-suggestions"></div>
+                        <div class="actions">
+                            <a id="training-mail" class="button button-primary" href="#">Review training enquiry</a>
+                            <a href="video-series.html" class="button button-secondary">Browse training videos</a>
                         </div>
                     </div>
 
@@ -335,25 +469,43 @@
         const paidState = document.getElementById('paid-state');
         const productState = document.getElementById('product-state');
         const videoState = document.getElementById('video-state');
+        const callState = document.getElementById('call-state');
+        const trainingState = document.getElementById('training-state');
         const summary = document.getElementById('summary');
         const paidMail = document.getElementById('paid-mail');
         const productMail = document.getElementById('product-mail');
-        const videoMail = document.getElementById('video-mail');
+        const videoCall = document.getElementById('video-call');
+        const callMail = document.getElementById('call-mail');
+        const trainingMail = document.getElementById('training-mail');
         const paidExplanation = document.getElementById('paid-explanation');
         const productExplanation = document.getElementById('product-explanation');
         const videoExplanation = document.getElementById('video-explanation');
+        const callExplanation = document.getElementById('call-explanation');
+        const trainingExplanation = document.getElementById('training-explanation');
         const paidSuggestions = document.getElementById('paid-suggestions');
         const productSuggestions = document.getElementById('product-suggestions');
         const videoSuggestions = document.getElementById('video-suggestions');
+        const callSuggestions = document.getElementById('call-suggestions');
+        const trainingSuggestions = document.getElementById('training-suggestions');
+        const formStatus = document.getElementById('form-status');
+        let latestData = null;
+        let latestRoute = null;
+        let lastSubmittedRoute = null;
 
-        function checkoutLink(route, email, help, outcome, context, hours) {
+        function checkoutLink(route, data) {
             const params = new URLSearchParams({
                 route,
-                email,
-                help,
-                outcome,
-                context,
-                hours,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                company: data.company,
+                role: data.role,
+                sector: data.sector,
+                desired: data.desired,
+                help: data.help,
+                outcome: data.outcome,
+                context: data.context,
+                hours: data.hours,
             });
 
             return `checkout.html?${params.toString()}`;
@@ -371,12 +523,34 @@
             return `<ul>${items.map((item) => `<li><strong>${item.title}:</strong> ${item.reason}</li>`).join('')}</ul>`;
         }
 
-        function buildRoute(text, hoursValue) {
+        function buildRoute(text, hoursValue, desired) {
             const clean = normalise(text);
 
             let paidScore = score(clean, ['build', 'custom', 'workflow', 'system', 'automation', 'integrat', 'report', 'dashboard', 'tool', 'assistant', 'api', 'document', 'process', 'internal', 'handoff']);
             const productScore = score(clean, ['off the shelf', 'off-the-shelf', 'product', 'software', 'platform', 'template', 'quick', 'standard', 'crm', 'timesheet', 'invoice', 'expense', 'payroll', 'stock', 'form', 'notion', 'airtable', 'monday', 'xero', 'sage', 'dext', 'zapier', 'make']);
             let videoScore = score(clean, ['video', 'watch', 'learn', 'understand', 'explain', 'how to', 'what is', 'example', 'compare', 'walkthrough', 'not sure']);
+            const callScore = score(clean, ['call', 'speak', 'talk', 'discuss', 'conversation', 'sensitive', 'confidential', 'complex', 'unclear', 'not sure']);
+            const trainingScore = score(clean, ['train', 'training', 'workshop', 'team', 'staff', 'people', 'adoption', 'confidence', 'capability', 'skills', 'enablement', 'learn ai']);
+
+            if (desired === 'training' || trainingScore >= 2) {
+                return 'training';
+            }
+
+            if (desired === 'call') {
+                return 'call';
+            }
+
+            if (desired === 'diagnostic') {
+                return 'paid';
+            }
+
+            if (desired === 'videos') {
+                return 'video';
+            }
+
+            if (desired === 'product') {
+                return 'product';
+            }
 
             const hours = Number.parseFloat(hoursValue);
             if (Number.isFinite(hours) && hours > 0 && hours < 4) {
@@ -401,6 +575,10 @@
 
             if (videoScore >= paidScore + 1 && videoScore >= productScore) {
                 return 'video';
+            }
+
+            if (callScore >= 2 && paidScore < 4) {
+                return 'call';
             }
 
             return 'paid';
@@ -476,32 +654,179 @@
             return items;
         }
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const help = document.getElementById('help').value.trim();
-            const outcome = document.getElementById('outcome').value.trim();
-            const context = document.getElementById('context').value.trim();
-            const hours = document.getElementById('hours').value.trim();
-            const email = document.getElementById('email').value.trim();
+        function routeLabel(route) {
+            const labels = {
+                paid: 'diagnostic request',
+                product: 'product/process route',
+                video: 'video-first route',
+                call: '15-minute fit call',
+                training: 'training enquiry'
+            };
 
-            const combined = `${help}\n${outcome}\n${context}`;
-            const route = buildRoute(combined, hours);
-            const body = [
-                `Email: ${email}`,
-                '',
-                `What help with: ${help}`,
-                `Outcome: ${outcome}`,
-                `Anything else: ${context}`,
-                `Hours per week lost: ${hours || '(not provided)'}`
-            ].join('\n');
+            return labels[route] || route;
+        }
+
+        function leadState(route) {
+            const states = {
+                paid: 'diagnostic_requested',
+                product: 'product_process_route',
+                video: 'video_routed',
+                call: 'call_requested',
+                training: 'training_enquiry'
+            };
+
+            return states[route] || 'new_qualifier_lead';
+        }
+
+        function updateNetlifyFields(route) {
+            document.getElementById('route-key').value = route;
+            document.getElementById('route-label').value = routeLabel(route);
+            document.getElementById('lead-state').value = leadState(route);
+            document.getElementById('page-source').value = window.location.pathname.split('/').pop() || 'workflow.html';
+            document.getElementById('submitted-at').value = new Date().toISOString();
+        }
+
+        function encodeFormData(formElement) {
+            const formData = new FormData(formElement);
+            return new URLSearchParams(formData).toString();
+        }
+
+        function canSubmitToNetlify() {
+            return ['http:', 'https:'].includes(window.location.protocol) && !['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+        }
+
+        function setFormStatus(message, isError = false) {
+            formStatus.textContent = message;
+            formStatus.classList.toggle('error', isError);
+            formStatus.classList.remove('hidden');
+        }
+
+        function clearFormStatus() {
+            formStatus.textContent = '';
+            formStatus.classList.remove('error');
+            formStatus.classList.add('hidden');
+        }
+
+        function requirePhoneForRoute(route, event) {
+            const phone = document.getElementById('phone');
+
+            if ((route === 'call' || route === 'training') && !phone.value.trim()) {
+                if (event) {
+                    event.preventDefault();
+                }
+                phone.setCustomValidity('Phone is required for call and training routes.');
+                phone.reportValidity();
+                return false;
+            }
+
+            phone.setCustomValidity('');
+            return true;
+        }
+
+        async function postLead(route) {
+            if (!canSubmitToNetlify()) {
+                return true;
+            }
+
+            setFormStatus('Sending your route to Mat...');
+            updateNetlifyFields(route);
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: encodeFormData(form),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Netlify form submission failed.');
+                }
+
+                lastSubmittedRoute = route;
+                setFormStatus('Route saved. Mat will have the context if you continue or drop off.');
+                return true;
+            } catch (error) {
+                setFormStatus('Something went wrong sending the enquiry. Please email Mat directly or try again in a moment.', true);
+                return false;
+            }
+        }
+
+        async function submitLeadAndNavigate(event, link) {
+            const href = link.getAttribute('href');
+
+            if (!href || href === '#' || !latestData) {
+                return;
+            }
+
+            const targetUrl = new URL(href, window.location.href);
+            const targetRoute = targetUrl.searchParams.get('route') || latestRoute || 'paid';
+
+            if (!requirePhoneForRoute(targetRoute, event)) {
+                return;
+            }
+
+            if (!canSubmitToNetlify()) {
+                return;
+            }
+
+            event.preventDefault();
+
+            if (lastSubmittedRoute === targetRoute) {
+                window.location.href = targetUrl.href;
+                return;
+            }
+
+            const sent = await postLead(targetRoute);
+
+            if (sent) {
+                window.location.href = targetUrl.href;
+            }
+        }
+
+        [paidMail, productMail, videoCall, callMail, trainingMail].forEach((link) => {
+            link.addEventListener('click', (event) => submitLeadAndNavigate(event, link));
+        });
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearFormStatus();
+            const data = {
+                help: document.getElementById('help').value.trim(),
+                outcome: document.getElementById('outcome').value.trim(),
+                context: document.getElementById('context').value.trim(),
+                hours: document.getElementById('hours').value.trim(),
+                desired: document.getElementById('desired').value,
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                role: document.getElementById('role').value.trim(),
+                sector: document.getElementById('sector').value.trim(),
+            };
+
+            const combined = `${data.help}\n${data.outcome}\n${data.context}`;
+            const route = buildRoute(combined, data.hours, data.desired);
+
+            if (!requirePhoneForRoute(route, event)) {
+                return;
+            }
+
+            latestData = data;
+            latestRoute = route;
+            updateNetlifyFields(route);
 
             summary.textContent = [
-                `Route: ${route === 'paid' ? 'paid discovery' : route === 'product' ? 'off-the-shelf route' : 'video route'}`,
-                `Email: ${email || '(not provided)'}`,
-                `What help with: ${help || '(blank)'}`,
-                `Outcome: ${outcome || '(blank)'}`,
-                `Context: ${context || '(blank)'}`,
-                `Hours/week: ${hours || '(blank)'}`
+                `Route: ${routeLabel(route)}`,
+                `Name: ${data.name || '(blank)'}`,
+                `Email: ${data.email || '(blank)'}`,
+                `Phone: ${data.phone || '(blank)'}`,
+                `Company: ${data.company || '(blank)'}`,
+                `Role: ${data.role || '(blank)'}`,
+                `Workflow costing time: ${data.help || '(blank)'}`,
+                `Outcome: ${data.outcome || '(blank)'}`,
+                `Context: ${data.context || '(blank)'}`,
+                `Hours/week: ${data.hours || '(blank)'}`,
+                'Consent: yes'
             ].join('\n');
             summary.classList.remove('hidden');
 
@@ -509,36 +834,66 @@
             paidState.classList.add('hidden');
             productState.classList.add('hidden');
             videoState.classList.add('hidden');
-
-            const paidBody = body;
-            const productBody = body;
-            const videoBody = body;
+            callState.classList.add('hidden');
+            trainingState.classList.add('hidden');
 
             if (route === 'paid') {
                 const items = productRecommendations(combined).concat(videoRecommendations(combined)).slice(0, 2);
-                paidExplanation.textContent = 'We can see enough custom-fit signals here to justify a paid discovery. The report should be able to translate the problem into a practical build decision.';
+                paidExplanation.textContent = 'There are enough custom-fit signals here to justify mapping the workflow properly. The diagnostic should show what to automate, what not to automate, and what the first sensible build should be.';
                 paidSuggestions.innerHTML = renderList(items);
                 paidState.classList.remove('hidden');
-                paidMail.href = checkoutLink('paid', email, help, outcome, context, hours);
-                productMail.href = checkoutLink('paid', email, help, outcome, context, hours);
-                videoMail.href = checkoutLink('paid', email, help, outcome, context, hours);
+                paidMail.href = checkoutLink('paid', data);
+                productMail.href = checkoutLink('paid', data);
+                videoCall.href = checkoutLink('call', data);
+                callMail.href = checkoutLink('call', data);
+                trainingMail.href = checkoutLink('training', data);
             } else if (route === 'product') {
                 const items = productRecommendations(combined);
-                productExplanation.textContent = 'This looks like a better fit for an existing product first. If that still leaves gaps, paid discovery can map what should stay product-led and what should become custom.';
+                productExplanation.textContent = 'This looks like a better fit for an existing product or process change first. If that still leaves gaps, a diagnostic can map what should stay product-led and what should become custom.';
                 productSuggestions.innerHTML = renderList(items);
                 productState.classList.remove('hidden');
-                paidMail.href = checkoutLink('product', email, help, outcome, context, hours);
-                productMail.href = checkoutLink('product', email, help, outcome, context, hours);
-                videoMail.href = checkoutLink('product', email, help, outcome, context, hours);
+                paidMail.href = checkoutLink('product', data);
+                productMail.href = checkoutLink('product', data);
+                videoCall.href = checkoutLink('call', data);
+                callMail.href = checkoutLink('call', data);
+                trainingMail.href = checkoutLink('training', data);
+            } else if (route === 'call') {
+                callExplanation.textContent = 'This is not a free diagnostic. It is a 15-minute fit call to understand the shape of the problem and point you to the right next step.';
+                callSuggestions.innerHTML = renderList([
+                    { title: 'Fit call guardrail', reason: 'We will not map the full workflow or design the system on the call.' },
+                    { title: 'Useful next step', reason: 'If there is enough substance, the call can point towards diagnostic, training, videos or a product/process route.' }
+                ]);
+                callState.classList.remove('hidden');
+                paidMail.href = checkoutLink('paid', data);
+                productMail.href = checkoutLink('product', data);
+                videoCall.href = checkoutLink('call', data);
+                callMail.href = checkoutLink('call', data);
+                trainingMail.href = checkoutLink('training', data);
+            } else if (route === 'training') {
+                trainingExplanation.textContent = 'This looks more like a team capability need than one workflow diagnostic. The starting offer is a remote half-day practical AI systems workshop, followed by a fit call to confirm the right shape.';
+                trainingSuggestions.innerHTML = renderList([
+                    { title: 'Half-day workshop', reason: 'Train the team to use AI on real workflows, safely and practically.' },
+                    { title: 'Fit call included', reason: 'Every training enquiry gets a 15-minute fit call before anything is scoped.' }
+                ]);
+                trainingState.classList.remove('hidden');
+                paidMail.href = checkoutLink('paid', data);
+                productMail.href = checkoutLink('product', data);
+                videoCall.href = checkoutLink('call', data);
+                callMail.href = checkoutLink('call', data);
+                trainingMail.href = checkoutLink('training', data);
             } else {
                 const items = videoRecommendations(combined);
-                videoExplanation.textContent = 'A short video is probably the cleanest next step because it will show the thinking before we decide on product or build.';
+                videoExplanation.textContent = 'A short video is probably the cleanest next step because it will show the thinking before you decide on product, process change or build.';
                 videoSuggestions.innerHTML = renderList(items);
                 videoState.classList.remove('hidden');
-                paidMail.href = checkoutLink('video', email, help, outcome, context, hours);
-                productMail.href = checkoutLink('video', email, help, outcome, context, hours);
-                videoMail.href = checkoutLink('video', email, help, outcome, context, hours);
+                paidMail.href = checkoutLink('video', data);
+                productMail.href = checkoutLink('video', data);
+                videoCall.href = checkoutLink('call', data);
+                callMail.href = checkoutLink('call', data);
+                trainingMail.href = checkoutLink('training', data);
             }
+
+            await postLead(route);
         });
     </script>
 </body>

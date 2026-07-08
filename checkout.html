@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proof Systems | Checkout</title>
-    <meta name="description" content="Complete the £350 paid discovery checkout for Proof Systems.">
+    <title>Proof Systems | Route Review</title>
+    <meta name="description" content="Review a Proof Systems workflow route after completing the qualifier.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -206,15 +207,15 @@
     <header class="topbar">
         <div class="container topbar-inner">
             <a class="brand" href="index.html">Proof Systems</a>
-            <span class="pill">Stripe checkout · £350 paid discovery</span>
+            <span class="pill" id="route-pill">Route review · local only</span>
         </div>
     </header>
 
     <main class="container">
         <section class="hero" aria-labelledby="checkout-title">
-            <div class="eyebrow">Payment</div>
-            <h1 id="checkout-title">Pay £350 to reserve the paid discovery.</h1>
-            <p class="lead">This is the money moment. Pay in flow, keep the lead warm, and skip the booking leak. If the answers say product or video first, this page will still show the route you came from — but the payment action stays one click away.</p>
+            <div class="eyebrow">Route review</div>
+            <h1 id="checkout-title">Review the next step before anything happens.</h1>
+            <p class="lead" id="checkout-lead">The qualifier keeps the problem attached to the next step. This static page is a local handoff check only, so no payment, booking or external submission happens here.</p>
         </section>
 
         <section class="grid">
@@ -228,11 +229,35 @@
                     <div class="summary-grid">
                         <div>
                             <dt>Route</dt>
-                            <dd id="route">Paid discovery</dd>
+                            <dd id="route">Diagnostic route</dd>
+                        </div>
+                        <div>
+                            <dt>Name</dt>
+                            <dd id="name">—</dd>
                         </div>
                         <div>
                             <dt>Email</dt>
                             <dd id="email">—</dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd id="phone">—</dd>
+                        </div>
+                        <div>
+                            <dt>Company</dt>
+                            <dd id="company">—</dd>
+                        </div>
+                        <div>
+                            <dt>Role</dt>
+                            <dd id="role">—</dd>
+                        </div>
+                        <div>
+                            <dt>Sector</dt>
+                            <dd id="sector">—</dd>
+                        </div>
+                        <div>
+                            <dt>Preferred help</dt>
+                            <dd id="desired">—</dd>
                         </div>
                         <div>
                             <dt>What help with</dt>
@@ -253,37 +278,37 @@
                     </div>
 
                     <div class="actions">
-                        <a id="stripe-button" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Proceed to Stripe checkout</a>
+                        <a id="handoff-button" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">Handoff not configured</a>
                         <a class="button button-secondary" href="workflow.html">Back to qualifier</a>
                     </div>
 
-                    <div class="warning" id="config-warning">Stripe checkout is not wired yet. Add the live Stripe Payment Link or Checkout URL in this page before launch.</div>
+                    <div class="warning" id="config-warning">This route is not wired yet. Before launch, connect the approved lead capture or booking/payment step from the next implementation issue.</div>
 
-                    <p class="note">After payment, I can follow up with the tailored report and next steps. The fee is credited against a build.</p>
+                    <p class="note">For now, this page is a local handoff check. No payment, booking or external submission happens from this static version.</p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-inner checklist">
                     <div>
-                        <div class="eyebrow">Why this route</div>
-                        <h2>Why I’m choosing Stripe here</h2>
+                        <div class="eyebrow">What happens next</div>
+                        <h2 id="next-title">Clarity before a build decision.</h2>
                     </div>
                     <div class="item">
-                        <strong>Async</strong>
-                        <p>The lead does not fall out of the flow waiting for an invoice or a manual reply.</p>
+                        <strong id="step-one-title">Map</strong>
+                        <p id="step-one-body">Understand the inputs, handoffs, rules, exceptions and current tools before choosing a solution.</p>
                     </div>
                     <div class="item">
-                        <strong>Less leak</strong>
-                        <p>The paid action happens immediately, instead of asking for another step later.</p>
+                        <strong id="step-two-title">Decide</strong>
+                        <p id="step-two-body">Separate what should be handled by an existing product, a process change, a video, or a custom proof.</p>
                     </div>
                     <div class="item">
-                        <strong>Clearer filter</strong>
-                        <p>If someone is serious enough to pay now, they have already qualified themselves.</p>
+                        <strong id="step-three-title">Reduce risk</strong>
+                        <p id="step-three-body">Avoid spending money on a build before the workflow has proved it deserves custom work.</p>
                     </div>
                     <div class="item">
-                        <strong>Simple handoff</strong>
-                        <p>The checkout page can carry the answers through, so the report starts from context rather than a blank slate.</p>
+                        <strong id="step-four-title">Keep context</strong>
+                        <p id="step-four-body">The qualifier carries the answers forward, so the next step starts from the real business problem.</p>
                     </div>
                 </div>
             </div>
@@ -297,32 +322,124 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const route = params.get('route') || 'paid';
+        const name = params.get('name') || '—';
         const email = params.get('email') || '—';
+        const phone = params.get('phone') || '—';
+        const company = params.get('company') || '—';
+        const role = params.get('role') || '—';
+        const sector = params.get('sector') || '—';
+        const desired = params.get('desired') || '—';
         const help = params.get('help') || '—';
         const outcome = params.get('outcome') || '—';
         const context = params.get('context') || '—';
         const hours = params.get('hours') || '—';
 
-        document.getElementById('route').textContent = route === 'paid' ? 'Paid discovery' : route === 'product' ? 'Product-first route' : 'Video-first route';
+        const routeContent = {
+            paid: {
+                label: 'Diagnostic request',
+                pill: 'Diagnostic request · £350 if confirmed',
+                lead: 'This is a request/review step, not an instant cold purchase. If the diagnostic is the right route, the £350 fee covers workflow mapping and a written recommendation, and is credited against a build if we proceed.',
+                button: 'Diagnostic request not wired',
+                title: 'Clarity before a build decision.',
+                steps: [
+                    ['Map', 'Understand the inputs, handoffs, rules, exceptions and current tools before choosing a solution.'],
+                    ['Decide', 'Separate what should be handled by an existing product, a process change, a video, or a custom proof.'],
+                    ['Reduce risk', 'Avoid spending money on a build before the workflow has proved it deserves custom work.'],
+                    ['Keep context', 'The qualifier carries the answers forward, so the diagnostic starts from the real business problem.']
+                ]
+            },
+            product: {
+                label: 'Product/process route',
+                pill: 'Product/process route · local only',
+                lead: 'This route suggests an existing product, process change, template or short video should come before paid diagnostic work.',
+                button: 'Product/process handoff not wired',
+                title: 'Use the simplest route first.',
+                steps: [
+                    ['Shortlist', 'Look for an existing tool or process fix before assuming this needs custom work.'],
+                    ['Compare', 'Check where the current workflow breaks and whether the gap is product, process or training.'],
+                    ['Avoid overbuild', 'Do not pay for mapping or building until the cheaper route has been ruled out.'],
+                    ['Keep context', 'The qualifier keeps enough detail to revisit a diagnostic later if the product route still leaves a gap.']
+                ]
+            },
+            video: {
+                label: 'Video-first route',
+                pill: 'Video-first route · local only',
+                lead: 'This route points to free video content first, with a path back to a short fit call if the problem is stronger than it first looks.',
+                button: 'Video route handoff not wired',
+                title: 'Learn before you commit.',
+                steps: [
+                    ['Watch', 'Start with the closest video series so the core idea is clear before any sales conversation.'],
+                    ['Apply', 'Try the framing against one real workflow without sharing sensitive customer or business data.'],
+                    ['Escalate carefully', 'Request a 15-minute fit call only if there is a real recurring business workflow behind it.'],
+                    ['Keep context', 'The qualifier keeps the route attached to the original workflow if you come back later.']
+                ]
+            },
+            call: {
+                label: '15-minute fit call',
+                pill: '15-minute fit call · phone required',
+                lead: 'This is a short triage conversation, not a free diagnostic. It exists to decide whether the right next step is diagnostic, videos, training or a product/process route.',
+                button: 'Fit call handoff not wired',
+                title: 'A protected call, not free consulting.',
+                steps: [
+                    ['Confirm fit', 'Use 15 minutes to understand the shape of the problem and whether it deserves a deeper route.'],
+                    ['Stay bounded', 'Do not map the full workflow or design the system on the call.'],
+                    ['Choose route', 'Move towards diagnostic, training, videos or product/process depending on fit.'],
+                    ['Use phone', 'Phone is required so the follow-up can be practical if this route is approved later.']
+                ]
+            },
+            training: {
+                label: 'Training enquiry',
+                pill: 'Training enquiry · remote half-day workshop',
+                lead: 'This route is for SME teams that need practical AI systems training, safe habits and confidence before choosing a specific workflow to diagnose or build.',
+                button: 'Training enquiry handoff not wired',
+                title: 'Practical AI systems training.',
+                steps: [
+                    ['Fit call first', 'Every training enquiry gets a 15-minute fit call before the workshop is scoped.'],
+                    ['Remote half-day', 'The V1 offer is a remote half-day practical AI systems workshop, not in-person delivery.'],
+                    ['Build judgement', 'The workshop helps the team decide what to automate, systemise or leave alone.'],
+                    ['Keep separate', 'Training can lead to diagnostic work later, but it is not a substitute for mapping one high-value workflow.']
+                ]
+            }
+        };
+
+        const content = routeContent[route] || routeContent.paid;
+        document.getElementById('route').textContent = content.label;
+        document.getElementById('route-pill').textContent = content.pill;
+        document.getElementById('checkout-lead').textContent = content.lead;
+        document.getElementById('name').textContent = name;
         document.getElementById('email').textContent = email;
+        document.getElementById('phone').textContent = phone;
+        document.getElementById('company').textContent = company;
+        document.getElementById('role').textContent = role;
+        document.getElementById('sector').textContent = sector;
+        document.getElementById('desired').textContent = desired;
         document.getElementById('help').textContent = help;
         document.getElementById('outcome').textContent = outcome;
         document.getElementById('context').textContent = context;
         document.getElementById('hours').textContent = hours;
+        document.getElementById('next-title').textContent = content.title;
+        document.getElementById('step-one-title').textContent = content.steps[0][0];
+        document.getElementById('step-one-body').textContent = content.steps[0][1];
+        document.getElementById('step-two-title').textContent = content.steps[1][0];
+        document.getElementById('step-two-body').textContent = content.steps[1][1];
+        document.getElementById('step-three-title').textContent = content.steps[2][0];
+        document.getElementById('step-three-body').textContent = content.steps[2][1];
+        document.getElementById('step-four-title').textContent = content.steps[3][0];
+        document.getElementById('step-four-body').textContent = content.steps[3][1];
 
         const stripeUrl = window.STRIPE_CHECKOUT_URL || '';
-        const stripeButton = document.getElementById('stripe-button');
+        const handoffButton = document.getElementById('handoff-button');
         const configWarning = document.getElementById('config-warning');
 
-        if (stripeUrl) {
-            stripeButton.href = stripeUrl;
+        if (route === 'paid' && stripeUrl) {
+            handoffButton.href = stripeUrl;
             configWarning.style.display = 'none';
         } else {
-            stripeButton.removeAttribute('href');
-            stripeButton.setAttribute('aria-disabled', 'true');
-            stripeButton.classList.add('button-secondary');
-            stripeButton.classList.remove('button-primary');
-            stripeButton.textContent = 'Stripe link needs configuring';
+            handoffButton.removeAttribute('href');
+            handoffButton.setAttribute('aria-disabled', 'true');
+            handoffButton.classList.add('button-secondary');
+            handoffButton.classList.remove('button-primary');
+            handoffButton.textContent = content.button;
             configWarning.style.display = 'block';
         }
     </script>
