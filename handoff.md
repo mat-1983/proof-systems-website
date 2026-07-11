@@ -1,19 +1,20 @@
 # Proof Systems Website Handoff
 
-Updated: 2026-07-08
+Updated: 2026-07-11
 
 ## Resume Here
 
-Continue with `AGE-343`.
+Start with `CODEX-BUNDLE.md`; continue under launch acceptance issue `AGE-408`.
 
 The next agent should:
 
-1. Keep `AGE-341` and `AGE-342` in review posture unless Mat explicitly asks to move them.
+1. Independently review `AGE-341` and `AGE-342`, keeping them in review posture unless Mat's review has actually occurred.
 2. Use the local qualifier flow as the source of truth:
    [workflow.html](/Users/matglendenning/Developer/proof-systems/60_products/proofsystems-website/workflow.html)
 3. Use the backend decision note as the backend source of truth:
    [lead-capture-backend-recommendation.md](/Users/matglendenning/Developer/proof-systems/40_knowledge/proof-systems/website-funnel/lead-capture-backend-recommendation.md)
-4. When approved, test the actual Netlify path with safe dummy submissions.
+4. Resolve the identified local privacy, URL-data, proof and public-copy risks before requesting approval for the actual Netlify test.
+5. When approved, test the actual Netlify path with safe dummy submissions.
 
 ## Current Decisions
 
@@ -37,3 +38,5 @@ The next agent should:
   Build the lead response SOP and templates.
 - `AGE-17`
   Set up CRM handoff from lead to booked call.
+- `AGE-408`
+  Launch acceptance umbrella for the minimum safe lead and response path.

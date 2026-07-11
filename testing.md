@@ -1,6 +1,6 @@
 # Proof Systems Website Testing
 
-Updated: 2026-07-08
+Updated: 2026-07-11
 
 ## Checks Run
 
@@ -33,6 +33,13 @@ Updated: 2026-07-08
 - Real Gmail notification delivery from the current Netlify setup.
 - Netlify dashboard export behaviour with actual dummy submissions.
 - Whether the notification should go to one inbox or multiple recipients.
+- The privacy, URL-data, public-copy and proof-claim fixes listed in `CODEX-BUNDLE.md` have not yet been implemented or tested.
+
+## Close-Out Preparation Check
+
+- `CODEX-BUNDLE.md` exists and routes a fresh Codex chat through the correct Linear issues.
+- The prompt prohibits deploy, publish, payment, credentials, live personal data and external messages without approval.
+- Existing local website behaviour was not re-tested during this close-out because no website implementation code changed.
 
 ## Residual Risk
 

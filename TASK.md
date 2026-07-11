@@ -1,6 +1,6 @@
 # Proof Systems Website Task State
 
-Updated: 2026-07-08
+Updated: 2026-07-11
 
 ## Current State
 
@@ -8,6 +8,8 @@ Updated: 2026-07-08
 - `AGE-342` is in `Agent Review`.
 - The website qualifier and route review are implemented locally.
 - Netlify Forms wiring is now present in the local qualifier without any live deploy.
+- The Growth Engine has been cleaned up and launch acceptance is now tracked by `AGE-408`.
+- A complete safe publish-preparation starter prompt is available in `CODEX-BUNDLE.md`.
 
 ## What Changed This Session
 
@@ -20,19 +22,20 @@ Updated: 2026-07-08
 
 ## Next Steps
 
-1. Review the local website flow in browser and confirm the tone still feels proportionate.
-2. In `AGE-343`, run an approved Netlify preview/live test with safe dummy enquiries.
-3. Confirm Gmail notifications and Netlify submission storage/export on the actual Netlify site.
-4. After the backend path is proven, move into `AGE-16` lead response SOP and `AGE-17` CRM handoff.
+1. Start a fresh Codex chat in this repo using `CODEX-BUNDLE.md`.
+2. Independently review AGE-341/342 and address the privacy, URL-data, proof and public-copy gaps before any live test.
+3. Complete AGE-16 and define the minimum AGE-17 handoff without sending or automating anything.
+4. In AGE-343, prepare the approved Netlify preview/live test recipe.
+5. Stop for Mat's approval before any deploy, live dummy submission, Gmail notification test or publication.
 
 ## Queue
 
 - Immediate:
-  `AGE-343` publish-prep and real Netlify/Gmail verification.
+  `AGE-341`/`AGE-342` independent review and local safety fixes under `AGE-408` acceptance.
 - Next:
-  `AGE-16` lead response SOP.
+  `AGE-16` lead response SOP and `AGE-17` minimum CRM handoff.
 - Then:
-  `AGE-17` CRM handoff.
+  `AGE-343` approved Netlify/Gmail verification and publish decision.
 
 ## Notes
 
