@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proof Systems | Practical Systems, Discovery & Automation for SMEs</title>
-    <meta name="description" content="Proof Systems helps SMEs diagnose workflow problems, then designs the right next step — from a small proof to a larger build. Start with a paid discovery call, or use the free videos and off-the-shelf options if that is a better fit.">
+    <title>Proof Systems | Practical AI Systems for SMEs</title>
+    <meta name="description" content="Proof Systems helps SME owners turn spreadsheet-heavy, document-heavy and people-dependent workflows into practical internal systems. Start with videos, a qualifier, or a focused diagnostic.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #11100e;
-            --bg-2: #171512;
-            --surface: #1f1c18;
-            --surface-2: #28231d;
-            --line: rgba(231, 219, 202, 0.12);
-            --line-strong: rgba(231, 219, 202, 0.2);
-            --text: #f4eee5;
-            --muted: #b8ac9c;
-            --dim: #7d7264;
+            --bg: #101113;
+            --bg-2: #161719;
+            --surface: #1d1e20;
+            --surface-2: #242528;
+            --panel: #f4efe6;
+            --ink: #101113;
+            --line: rgba(244, 239, 230, 0.13);
+            --line-strong: rgba(244, 239, 230, 0.24);
+            --text: #f4efe6;
+            --muted: #bdb5aa;
+            --dim: #82796e;
             --amber: #d89042;
-            --amber-2: #b96d24;
-            --cream: #fff7ec;
-            --sage: #9ca88e;
+            --amber-2: #f0b36d;
+            --sage: #a9b79a;
+            --steel: #86a8bd;
+            --rose: #d7a094;
             --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-            --radius: 22px;
+            --radius: 18px;
         }
 
         * {
@@ -41,24 +45,14 @@
             min-height: 100vh;
             font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             background:
-                radial-gradient(circle at 15% 5%, rgba(216, 144, 66, 0.14), transparent 30rem),
-                radial-gradient(circle at 88% 12%, rgba(156, 168, 142, 0.12), transparent 28rem),
-                linear-gradient(180deg, #14120f 0%, var(--bg) 45%, #0f0e0c 100%);
+                linear-gradient(rgba(244, 239, 230, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244, 239, 230, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, #151618 0%, var(--bg) 46%, #0d0e10 100%);
+            background-size: 72px 72px, 72px 72px, auto;
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background-image: linear-gradient(rgba(231, 219, 202, 0.035) 1px, transparent 1px);
-            background-size: 100% 112px;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent 75%);
         }
 
         a {
@@ -66,8 +60,6 @@
         }
 
         .container {
-            position: relative;
-            z-index: 1;
             width: min(1160px, calc(100% - 48px));
             margin: 0 auto;
         }
@@ -77,10 +69,10 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            color: var(--amber);
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.14em;
+            color: var(--amber-2);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.13em;
             text-transform: uppercase;
         }
 
@@ -90,7 +82,7 @@
             width: 28px;
             height: 1px;
             background: currentColor;
-            opacity: 0.75;
+            opacity: 0.8;
         }
 
         h1,
@@ -98,7 +90,7 @@
         h3,
         h4 {
             font-family: 'Space Grotesk', system-ui, sans-serif;
-            line-height: 1.06;
+            line-height: 1.04;
             letter-spacing: -0.04em;
         }
 
@@ -110,63 +102,63 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             min-height: 52px;
             padding: 0 22px;
             border-radius: 999px;
-            font-weight: 700;
+            font-weight: 800;
             text-decoration: none;
             transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, color 180ms ease;
         }
 
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
         .button-primary {
-            background: var(--cream);
-            color: #17120c;
+            background: var(--panel);
+            color: var(--ink);
             box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
         }
 
         .button-primary:hover {
-            transform: translateY(-2px);
-            background: #ffffff;
+            background: #fffaf2;
         }
 
         .button-secondary {
             border: 1px solid var(--line-strong);
             color: var(--text);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.035);
         }
 
         .button-secondary:hover {
-            transform: translateY(-2px);
             border-color: rgba(216, 144, 66, 0.55);
-            color: var(--cream);
         }
 
         .section-heading {
             display: grid;
-            grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.7fr);
+            grid-template-columns: minmax(0, 0.92fr) minmax(280px, 0.72fr);
             gap: 48px;
             align-items: end;
-            margin-bottom: 44px;
+            margin-bottom: 42px;
         }
 
         .section-heading h2 {
             margin-top: 16px;
-            font-size: clamp(2.1rem, 4vw, 3.35rem);
+            font-size: clamp(2.2rem, 4.2vw, 3.5rem);
         }
 
         .section-heading p {
             font-size: 1.08rem;
         }
 
-        /* Navigation */
         nav {
             position: fixed;
             inset: 0 0 auto 0;
             z-index: 100;
             padding: 14px 0;
-            border-bottom: 1px solid rgba(231, 219, 202, 0.1);
-            background: rgba(17, 16, 14, 0.78);
+            border-bottom: 1px solid rgba(244, 239, 230, 0.1);
+            background: rgba(16, 17, 19, 0.82);
             backdrop-filter: blur(18px);
         }
 
@@ -179,8 +171,6 @@
 
         .logo {
             display: inline-flex;
-            align-items: center;
-            gap: 12px;
             min-width: 0;
             text-decoration: none;
         }
@@ -194,10 +184,10 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 22px;
             color: var(--muted);
             font-size: 0.92rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .nav-links a {
@@ -211,57 +201,39 @@
 
         .nav-cta {
             padding: 10px 16px;
-            border: 1px solid rgba(216, 144, 66, 0.45);
+            border: 1px solid rgba(216, 144, 66, 0.5);
             border-radius: 999px;
-            color: var(--cream);
-            text-decoration: none;
-            background: rgba(216, 144, 66, 0.08);
+            color: var(--text);
+            background: rgba(216, 144, 66, 0.1);
         }
 
-        /* Hero */
         .hero {
-            position: relative;
-            padding: 164px 0 86px;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            right: -12vw;
-            top: 120px;
-            width: 42vw;
-            height: 42vw;
-            max-width: 620px;
-            max-height: 620px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(216, 144, 66, 0.18), rgba(216, 144, 66, 0.03) 48%, transparent 68%);
-            filter: blur(8px);
-            pointer-events: none;
+            padding: 162px 0 96px;
         }
 
         .hero-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.74fr);
-            gap: 56px;
+            grid-template-columns: minmax(0, 1.03fr) minmax(360px, 0.82fr);
+            gap: 58px;
             align-items: center;
         }
 
         .hero h1 {
-            max-width: 800px;
+            max-width: 820px;
             margin-top: 18px;
-            font-size: clamp(3rem, 7vw, 6.45rem);
-            letter-spacing: -0.07em;
+            font-size: clamp(3rem, 7vw, 6.2rem);
+            letter-spacing: -0.065em;
         }
 
         .hero h1 span {
-            color: var(--amber);
+            color: var(--amber-2);
         }
 
         .hero-subtitle {
-            max-width: 680px;
+            max-width: 700px;
             margin-top: 26px;
-            font-size: clamp(1.08rem, 1.6vw, 1.32rem);
-            color: #d2c7b8;
+            color: #d8d0c5;
+            font-size: clamp(1.08rem, 1.6vw, 1.3rem);
         }
 
         .hero-actions {
@@ -272,254 +244,497 @@
         }
 
         .hero-note {
+            max-width: 650px;
             margin-top: 18px;
             color: var(--dim);
             font-size: 0.95rem;
         }
 
-        .hero-panel {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-radius: calc(var(--radius) + 8px);
-            background:
-                linear-gradient(145deg, rgba(255, 247, 236, 0.08), rgba(255, 247, 236, 0.02)),
-                var(--surface);
-            box-shadow: var(--shadow);
-        }
-
-        .hero-panel::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 85% 18%, rgba(216, 144, 66, 0.26), transparent 34%);
-            pointer-events: none;
-        }
-
-        .panel-inner {
-            position: relative;
-            padding: 28px;
-        }
-
-        .panel-kicker {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 28px;
-            color: var(--muted);
-            font-size: 0.86rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--sage);
-            box-shadow: 0 0 0 6px rgba(156, 168, 142, 0.12);
-        }
-
-        .metric-stack {
+        .proof-strip {
             display: grid;
-            gap: 16px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 36px;
         }
 
-        .metric-card {
-            padding: 20px;
-            border: 1px solid rgba(231, 219, 202, 0.1);
-            border-radius: 18px;
-            background: rgba(17, 16, 14, 0.44);
+        .proof-pill {
+            min-height: 96px;
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.035);
         }
 
-        .metric-card strong {
+        .proof-pill strong {
             display: block;
             color: var(--text);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.25rem;
+            font-size: 1.7rem;
             line-height: 1;
             letter-spacing: -0.05em;
         }
 
-        .metric-card span {
+        .proof-pill span {
             display: block;
             margin-top: 8px;
             color: var(--muted);
+            font-size: 0.9rem;
         }
 
-        /* Trust */
-        .trust {
-            padding: 78px 0 92px;
+        .workflow-visual {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(244, 239, 230, 0.08), rgba(244, 239, 230, 0.025)), var(--surface);
+            box-shadow: var(--shadow);
+        }
+
+        .visual-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .visual-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .visual-status::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--sage);
+            box-shadow: 0 0 0 6px rgba(169, 183, 154, 0.12);
+        }
+
+        .visual-body {
+            padding: 22px;
+        }
+
+        .pipeline {
+            display: grid;
+            gap: 12px;
+        }
+
+        .pipeline-row {
+            display: grid;
+            grid-template-columns: 34px 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid rgba(244, 239, 230, 0.1);
+            border-radius: 14px;
+            background: rgba(16, 17, 19, 0.58);
+        }
+
+        .pipeline-icon {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            color: var(--ink);
+            font-weight: 900;
+        }
+
+        .pipeline-icon.manual {
+            background: var(--rose);
+        }
+
+        .pipeline-icon.system {
+            background: var(--amber-2);
+        }
+
+        .pipeline-icon.review {
+            background: var(--sage);
+        }
+
+        .pipeline-row h3 {
+            font-size: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .pipeline-row p {
+            margin-top: 2px;
+            color: var(--dim);
+            font-size: 0.88rem;
+        }
+
+        .pipeline-tag {
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(244, 239, 230, 0.08);
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 800;
+        }
+
+        .visual-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .visual-metric {
+            padding: 14px;
+            border: 1px solid rgba(244, 239, 230, 0.1);
+            border-radius: 14px;
+            background: rgba(244, 239, 230, 0.045);
+        }
+
+        .visual-metric strong {
+            display: block;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.45rem;
+            line-height: 1;
+        }
+
+        .visual-metric span {
+            display: block;
+            margin-top: 7px;
+            color: var(--dim);
+            font-size: 0.82rem;
+        }
+
+        .pain {
+            padding: 92px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .pain-item {
+            min-height: 166px;
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface);
+        }
+
+        .pain-item strong {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .pain-item p {
+            font-size: 0.94rem;
+        }
+
+        .operator {
+            padding: 110px 0;
+        }
+
+        .operator-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.82fr) minmax(320px, 0.88fr);
+            gap: 54px;
+            align-items: center;
+        }
+
+        .operator h2 {
+            margin-top: 16px;
+            font-size: clamp(2.2rem, 4.6vw, 4.1rem);
+        }
+
+        .operator-copy {
+            display: grid;
+            gap: 18px;
+            font-size: 1.07rem;
+        }
+
+        .operator-proof {
+            display: grid;
+            gap: 14px;
+        }
+
+        .proof-row {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 18px;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface);
+        }
+
+        .proof-row strong {
+            color: var(--amber-2);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.45rem;
+            line-height: 1;
+            letter-spacing: -0.05em;
+        }
+
+        .proof-row h3 {
+            margin-bottom: 4px;
+            font-size: 1.04rem;
+            letter-spacing: -0.02em;
+        }
+
+        .proof-row p {
+            font-size: 0.94rem;
+        }
+
+        .systems {
+            padding: 110px 0;
             border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
             background: rgba(255, 255, 255, 0.018);
         }
 
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
-
-        .trust-card {
-            padding: 24px;
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            background: linear-gradient(180deg, rgba(255, 247, 236, 0.055), rgba(255, 247, 236, 0.02));
-        }
-
-        .trust-card .number {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--cream);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-        }
-
-        .trust-card p {
-            font-size: 0.95rem;
-        }
-
-        /* Showcase */
-        .showcase {
-            padding: 108px 0;
-        }
-
-        .showcase-grid {
+        .systems-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
         }
 
-        .showcase-card {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
+        .system-card {
+            display: grid;
+            grid-template-rows: auto 1fr;
             overflow: hidden;
             border: 1px solid var(--line);
             border-radius: 24px;
-            background: linear-gradient(180deg, rgba(32, 28, 23, 0.98), rgba(26, 23, 19, 0.98));
+            background: var(--surface);
             text-decoration: none;
-            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            transition: transform 180ms ease, border-color 180ms ease;
         }
 
-        .showcase-card:hover {
+        .system-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(216, 144, 66, 0.45);
-            background: linear-gradient(180deg, rgba(36, 31, 25, 0.98), rgba(26, 23, 19, 0.98));
-            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.22);
+            border-color: rgba(216, 144, 66, 0.5);
         }
 
-        .showcase-card.featured {
-            grid-column: span 2;
-        }
-
-        .showcase-media {
-            position: relative;
-            min-height: 190px;
+        .system-media {
+            padding: 18px;
             border-bottom: 1px solid var(--line);
-            background:
-                radial-gradient(circle at 20% 20%, rgba(216, 144, 66, 0.16), transparent 30%),
-                linear-gradient(135deg, rgba(216, 144, 66, 0.18), rgba(156, 168, 142, 0.08)),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 30px),
-                #161411;
+            background: #151618;
         }
 
-        .showcase-media::after {
-            content: 'Demo walkthrough';
-            position: absolute;
-            left: 18px;
-            top: 16px;
-            padding: 6px 10px;
+        .mini-app {
+            border: 1px solid rgba(244, 239, 230, 0.12);
+            border-radius: 16px;
+            background: #0f1012;
+            overflow: hidden;
+        }
+
+        .mini-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 12px;
+            border-bottom: 1px solid rgba(244, 239, 230, 0.1);
+            color: var(--dim);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .mini-lines {
+            display: grid;
+            gap: 8px;
+            padding: 13px;
+        }
+
+        .mini-line {
+            display: grid;
+            grid-template-columns: 1fr 0.55fr 0.35fr;
+            gap: 8px;
+        }
+
+        .mini-line span {
+            height: 12px;
             border-radius: 999px;
-            background: rgba(17, 16, 14, 0.76);
-            color: #f0e7da;
-            font-size: 0.76rem;
-            font-weight: 700;
+            background: rgba(244, 239, 230, 0.09);
+        }
+
+        .mini-line span:nth-child(2) {
+            background: rgba(134, 168, 189, 0.22);
+        }
+
+        .mini-line span:nth-child(3) {
+            background: rgba(216, 144, 66, 0.32);
+        }
+
+        .mini-proof {
+            display: grid;
+            gap: 10px;
+            padding: 14px;
+        }
+
+        .mini-proof-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 11px 12px;
+            border: 1px solid rgba(244, 239, 230, 0.08);
+            border-radius: 12px;
+            background: rgba(244, 239, 230, 0.035);
+        }
+
+        .mini-proof-row strong {
+            display: block;
+            color: #ede5da;
+            font-size: 0.82rem;
+            line-height: 1.1;
+        }
+
+        .mini-proof-row span {
+            display: block;
+            margin-top: 4px;
+            color: var(--dim);
+            font-size: 0.72rem;
+            line-height: 1.2;
+        }
+
+        .mini-badge {
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: rgba(169, 183, 154, 0.14);
+            color: var(--sage);
+            font-size: 0.66rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .mini-badge.warn {
+            background: rgba(216, 144, 66, 0.14);
+            color: var(--amber-2);
+        }
+
+        .mini-flow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 14px;
+        }
+
+        .mini-flow-step {
+            min-height: 82px;
+            padding: 11px;
+            border: 1px solid rgba(244, 239, 230, 0.09);
+            border-radius: 12px;
+            background: rgba(244, 239, 230, 0.035);
+        }
+
+        .mini-flow-step strong {
+            display: block;
+            color: var(--text);
+            font-size: 0.78rem;
+            line-height: 1.12;
+        }
+
+        .mini-flow-step span {
+            display: block;
+            margin-top: 7px;
+            color: var(--dim);
+            font-size: 0.7rem;
+            line-height: 1.2;
+        }
+
+        .mini-register {
+            display: grid;
+            grid-template-columns: 1fr 0.54fr 0.42fr;
+            gap: 1px;
+            padding: 14px;
+            color: var(--muted);
+            font-size: 0.74rem;
+        }
+
+        .mini-register span {
+            min-height: 34px;
+            padding: 9px;
+            background: rgba(244, 239, 230, 0.04);
+        }
+
+        .mini-register span:nth-child(3n) {
+            color: var(--sage);
+            font-weight: 800;
+        }
+
+        .mini-register span:nth-child(-n + 3) {
+            min-height: auto;
+            color: var(--dim);
+            font-size: 0.66rem;
+            font-weight: 900;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        .play-button {
-            position: absolute;
-            left: 18px;
-            bottom: 18px;
-            display: grid;
-            place-items: center;
-            width: 50px;
-            height: 50px;
-            border: 1px solid rgba(255, 247, 236, 0.3);
-            border-radius: 50%;
-            background: rgba(17, 16, 14, 0.76);
-            color: var(--cream);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
-        }
-
-        .showcase-status {
-            position: absolute;
-            right: 14px;
-            top: 17px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            background: rgba(17, 16, 14, 0.76);
-            color: #e7dbca;
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .showcase-body {
+        .system-body {
             display: flex;
-            flex: 1;
             flex-direction: column;
-            padding: 22px;
+            padding: 24px;
         }
 
-        .showcase-kicker {
+        .system-kicker {
             margin-bottom: 10px;
             color: var(--sage);
-            font-size: 0.76rem;
-            font-weight: 800;
-            letter-spacing: 0.14em;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.13em;
             text-transform: uppercase;
         }
 
-        .showcase-body h3 {
-            margin-bottom: 10px;
-            font-size: 1.16rem;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
+        .system-body h3 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
         }
 
-        .showcase-summary {
-            margin-bottom: 14px;
-            font-size: 0.96rem;
+        .system-body p {
+            font-size: 0.98rem;
         }
 
-        .showcase-points {
-            margin: 0;
-            padding: 0;
-            list-style: none;
+        .system-points {
             display: grid;
             gap: 10px;
+            margin: 18px 0 0;
+            padding: 0;
+            list-style: none;
         }
 
-        .showcase-points li {
+        .system-points li {
             padding-top: 10px;
-            border-top: 1px solid rgba(255, 247, 236, 0.08);
+            border-top: 1px solid rgba(244, 239, 230, 0.08);
             color: var(--muted);
             font-size: 0.92rem;
         }
 
-        .showcase-points strong {
-            color: var(--cream);
+        .system-points strong {
+            color: var(--text);
         }
 
-        .showcase-footer {
+        .system-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -528,233 +743,222 @@
             padding-top: 18px;
         }
 
-        .showcase-tag {
-            color: var(--amber);
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
+        .system-tag {
+            color: var(--amber-2);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
-        .showcase-link {
-            color: var(--cream);
-            font-size: 0.9rem;
-            font-weight: 600;
+        .method {
+            padding: 110px 0;
         }
 
-        /* Process */
-        .process {
-            padding: 112px 0;
-            background: linear-gradient(180deg, rgba(255, 247, 236, 0.02), rgba(255, 247, 236, 0.006));
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .process-grid {
+        .method-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 18px;
-            counter-reset: step;
+            gap: 14px;
+            counter-reset: method;
         }
 
-        .process-step {
-            position: relative;
-            padding: 28px;
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            background: var(--surface);
-            box-shadow: var(--shadow);
-        }
-
-        .process-step::before {
-            counter-increment: step;
-            content: counter(step, decimal-leading-zero);
-            display: grid;
-            place-items: center;
-            width: 42px;
-            height: 42px;
-            margin-bottom: 18px;
-            border-radius: 12px;
-            background: rgba(216, 144, 66, 0.1);
-            color: var(--cream);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        .process-step h3 {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .process-step p {
-            font-size: 0.96rem;
-        }
-
-        /* Services */
-        .services {
-            padding: 112px 0;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .service-card {
+        .method-step {
+            min-height: 240px;
             padding: 26px;
             border: 1px solid var(--line);
-            border-radius: 24px;
+            border-radius: 22px;
             background: var(--surface);
             box-shadow: var(--shadow);
         }
 
-        .service-card .service-kicker {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 14px;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: rgba(216, 144, 66, 0.12);
-            color: var(--amber);
-            font-size: 0.74rem;
+        .method-step::before {
+            counter-increment: method;
+            content: counter(method, decimal-leading-zero);
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            background: rgba(216, 144, 66, 0.14);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
         }
 
-        .service-card h3 {
+        .method-step h3 {
             margin-bottom: 10px;
-            font-size: 1.1rem;
+            font-size: 1.12rem;
         }
 
-        .service-card p {
-            color: var(--muted);
-            font-size: 0.96rem;
+        .method-step p {
+            font-size: 0.94rem;
         }
 
-        .service-card ul {
+        .content {
+            padding: 110px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.75fr) minmax(360px, 1fr);
+            gap: 34px;
+            align-items: start;
+        }
+
+        .content-copy {
+            position: sticky;
+            top: 110px;
+        }
+
+        .content-copy h2 {
             margin-top: 16px;
-            padding-left: 18px;
-            color: var(--muted);
-            font-size: 0.92rem;
+            font-size: clamp(2.1rem, 4vw, 3.45rem);
         }
 
-        .service-card li + li {
-            margin-top: 8px;
+        .content-copy p {
+            margin-top: 18px;
+            font-size: 1.05rem;
         }
 
-        /* Results */
-        .results {
-            padding: 112px 0;
+        .video-list {
+            display: grid;
+            gap: 12px;
         }
 
-        .results-panel {
+        .video-card {
+            display: grid;
+            grid-template-columns: 72px 1fr;
+            gap: 16px;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--surface);
+            text-decoration: none;
+            transition: transform 180ms ease, border-color 180ms ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(216, 144, 66, 0.44);
+        }
+
+        .play-tile {
+            display: grid;
+            place-items: center;
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(216, 144, 66, 0.28), rgba(134, 168, 189, 0.2));
+            color: var(--text);
+        }
+
+        .video-card h3 {
+            margin-bottom: 6px;
+            font-size: 1.02rem;
+            letter-spacing: -0.02em;
+        }
+
+        .video-card p {
+            font-size: 0.9rem;
+        }
+
+        .diagnostic {
+            padding: 110px 0;
+        }
+
+        .diagnostic-panel {
             display: grid;
             grid-template-columns: minmax(280px, 0.7fr) 1fr;
-            gap: 24px;
+            gap: 18px;
             align-items: stretch;
         }
 
-        .result-hero,
-        .result-breakdown {
+        .price-panel,
+        .diagnostic-details {
             border: 1px solid var(--line);
             border-radius: 26px;
             background: var(--surface);
             box-shadow: var(--shadow);
         }
 
-        .result-hero {
+        .price-panel {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 34px;
-            background:
-                radial-gradient(circle at 20% 15%, rgba(216, 144, 66, 0.18), transparent 38%),
-                var(--surface);
+            background: linear-gradient(180deg, rgba(216, 144, 66, 0.13), rgba(244, 239, 230, 0.035)), var(--surface);
         }
 
-        .result-hero .big-number {
-            color: var(--cream);
+        .price-panel .price {
+            display: block;
+            color: var(--text);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(4.2rem, 10vw, 7rem);
-            font-weight: 700;
-            line-height: 0.9;
+            font-size: clamp(4.6rem, 11vw, 7.2rem);
+            font-weight: 800;
+            line-height: 0.86;
             letter-spacing: -0.08em;
         }
 
-        .result-hero h3 {
-            margin-top: 24px;
+        .price-panel h3 {
+            margin-top: 28px;
             font-size: 1.65rem;
         }
 
-        .result-breakdown {
+        .diagnostic-details {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             overflow: hidden;
         }
 
-        .result-item {
+        .detail-item {
             padding: 30px;
             border-left: 1px solid var(--line);
         }
 
-        .result-item:first-child {
+        .detail-item:first-child {
             border-left: 0;
         }
 
-        .result-item strong {
+        .detail-item strong {
             display: block;
             margin-bottom: 12px;
-            color: var(--amber);
+            color: var(--amber-2);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.55rem;
             line-height: 1;
-            letter-spacing: -0.05em;
+            letter-spacing: -0.04em;
         }
 
-        .result-item h4 {
+        .detail-item h4 {
             margin-bottom: 10px;
             font-size: 1.05rem;
             letter-spacing: -0.02em;
         }
 
-        .result-item p {
+        .detail-item p {
             font-size: 0.94rem;
         }
 
-        /* CTA */
         .cta {
-            padding: 0 0 108px;
+            padding: 0 0 110px;
         }
 
         .cta-box {
             position: relative;
             overflow: hidden;
             padding: 58px;
-            border: 1px solid rgba(216, 144, 66, 0.28);
-            border-radius: 32px;
-            background:
-                linear-gradient(135deg, rgba(216, 144, 66, 0.18), rgba(255, 247, 236, 0.035) 42%, rgba(156, 168, 142, 0.08)),
-                var(--surface);
+            border: 1px solid rgba(216, 144, 66, 0.3);
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(216, 144, 66, 0.16), rgba(134, 168, 189, 0.08) 54%, rgba(169, 183, 154, 0.08)), var(--surface);
             box-shadow: var(--shadow);
         }
 
-        .cta-box::after {
-            content: '';
-            position: absolute;
-            inset: auto -10% -55% auto;
-            width: 460px;
-            height: 460px;
-            border-radius: 50%;
-            background: rgba(216, 144, 66, 0.16);
-            filter: blur(30px);
-        }
-
         .cta-content {
-            position: relative;
-            z-index: 1;
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto;
             gap: 36px;
@@ -762,12 +966,13 @@
         }
 
         .cta h2 {
+            margin-top: 14px;
             margin-bottom: 14px;
-            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            font-size: clamp(2.1rem, 4vw, 3.45rem);
         }
 
         .cta p {
-            max-width: 650px;
+            max-width: 680px;
             font-size: 1.08rem;
         }
 
@@ -783,7 +988,6 @@
             font-size: 0.9rem !important;
         }
 
-        /* Footer */
         footer {
             padding: 34px 0;
             border-top: 1px solid var(--line);
@@ -814,7 +1018,7 @@
         }
 
         .footer-links a:hover {
-            color: var(--cream);
+            color: var(--text);
         }
 
         .linkedin-link svg {
@@ -822,47 +1026,51 @@
             fill: currentColor;
         }
 
-        @media (max-width: 1040px) {
+        @media (max-width: 1080px) {
             .nav-links a:not(.nav-cta) {
                 display: none;
             }
 
             .hero-grid,
-            .about-grid,
+            .operator-grid,
             .section-heading,
-            .results-panel,
+            .content-grid,
+            .diagnostic-panel,
             .cta-content {
                 grid-template-columns: 1fr;
             }
 
-            .hero-panel {
-                max-width: 620px;
+            .workflow-visual {
+                max-width: 680px;
             }
 
-            .trust-grid,
-            .showcase-grid,
-            .process-grid,
-            .services-grid,
-            .result-breakdown {
-                grid-template-columns: repeat(2, 1fr);
+            .proof-strip,
+            .pain-grid,
+            .method-grid,
+            .diagnostic-details {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .showcase-card.featured {
-                grid-column: span 2;
+            .systems-grid {
+                grid-template-columns: 1fr;
             }
 
-            .result-item,
-            .result-item:first-child {
+            .content-copy {
+                position: static;
+            }
+
+            .detail-item,
+            .detail-item:first-child {
                 border-left: 0;
                 border-top: 1px solid var(--line);
             }
 
-            .result-item:first-child {
+            .detail-item:first-child {
                 border-top: 0;
             }
         }
 
-        @media (max-width: 680px) {
+        @media (max-width: 700px) {
             .container {
                 width: min(100% - 32px, 1160px);
             }
@@ -880,15 +1088,15 @@
             }
 
             .hero {
-                padding: 128px 0 70px;
+                padding: 128px 0 72px;
             }
 
             .hero h1 {
-                font-size: clamp(2.85rem, 15vw, 4.3rem);
+                font-size: clamp(2.75rem, 14vw, 4.2rem);
             }
 
-            .hero-actions {
-                flex-direction: column;
+            .hero-actions,
+            .cta-actions {
                 align-items: stretch;
             }
 
@@ -896,23 +1104,45 @@
                 width: 100%;
             }
 
-            .trust-grid,
-            .showcase-grid,
-            .process-grid,
-            .services-grid,
-            .result-breakdown {
+            .proof-strip,
+            .pain-grid,
+            .method-grid,
+            .diagnostic-details,
+            .visual-metrics {
                 grid-template-columns: 1fr;
             }
 
-            .showcase-card.featured {
-                grid-column: auto;
+            .pipeline-row {
+                grid-template-columns: 34px 1fr;
             }
 
-            .showcase,
-            .services,
-            .process,
-            .results {
+            .pipeline-tag {
+                grid-column: 2;
+                justify-self: start;
+            }
+
+            .operator,
+            .systems,
+            .method,
+            .content,
+            .diagnostic,
+            .pain {
                 padding: 78px 0;
+            }
+
+            .proof-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .video-card {
+                grid-template-columns: 56px 1fr;
+            }
+
+            .play-tile {
+                width: 56px;
+                height: 56px;
+                border-radius: 16px;
             }
 
             .cta {
@@ -921,10 +1151,6 @@
 
             .cta-box {
                 padding: 34px 24px;
-            }
-
-            .process-step {
-                padding: 22px;
             }
 
             footer .container,
@@ -951,17 +1177,17 @@
                     <circle cx="90" cy="80" r="4" fill="#d89042" opacity="0.48"/>
                     <line x1="50" y1="45" x2="60" y2="95" stroke="#d89042" stroke-width="1.5" opacity="0.32"/>
                     <line x1="90" y1="80" x2="60" y2="95" stroke="#d89042" stroke-width="1.5" opacity="0.32"/>
-                    <text x="160" y="62" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#f4eee5">PROOF</text>
+                    <text x="160" y="62" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#f4efe6">PROOF</text>
                     <text x="160" y="105" font-family="Arial, sans-serif" font-size="30" font-weight="400" fill="#d89042">SYSTEMS</text>
                 </svg>
             </a>
             <div class="nav-links" aria-label="Section links">
+                <a href="#proof">Proof</a>
                 <a href="#systems">Systems</a>
-                <a href="#process">Process</a>
-                <a href="#services">Services</a>
-                <a href="#results">Results</a>
-                <a href="video-series.html">Content</a>
-                <a href="#book" class="nav-cta">Start the workflow</a>
+                <a href="#method">Method</a>
+                <a href="video-series.html">Videos</a>
+                <a href="#diagnostic">Diagnostic</a>
+                <a href="workflow.html" class="nav-cta">Check fit</a>
             </div>
         </div>
     </nav>
@@ -970,40 +1196,84 @@
         <section class="hero" aria-labelledby="hero-title">
             <div class="container hero-grid">
                 <div>
-                    <div class="eyebrow">Discovery first, then build</div>
-                    <h1 id="hero-title">Bespoke systems that fit your business, built from a proper deep-dive.</h1>
-                    <p class="hero-subtitle">We dive into the real workflow, identify what is costing time, and follow up with a tailored report showing the best next step — from a small proof to a larger build, or anything in between.</p>
+                    <div class="eyebrow">Practical AI systems for SMEs</div>
+                    <h1 id="hero-title">Turn messy workflows into <span>systems your team can use.</span></h1>
+                    <p class="hero-subtitle">Proof Systems helps SME owners find the admin, reporting and document workflows that are costing time, test a small improvement, then build only what earns its place.</p>
                     <div class="hero-actions">
                         <a href="workflow.html" class="button button-primary">
-                            Start the workflow
+                            Check if your workflow is a fit
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        <a href="video-series.html" class="button button-secondary">See how the technology works</a>
+                        <a href="video-series.html" class="button button-secondary">Watch the videos first</a>
                     </div>
-                    <p class="hero-note">£350 discovery fee, credited against a build if we go ahead. If it is not the right fit, we will point you to the free product or the videos.</p>
+                    <p class="hero-note">Built from 15+ years inside construction operations, where messy data, documents and deadlines have to work in the real world.</p>
+                    <div class="proof-strip" aria-label="Proof Systems proof points">
+                        <div class="proof-pill">
+                            <strong>4,400+</strong>
+                            <span>hours saved annually across implemented systems</span>
+                        </div>
+                        <div class="proof-pill">
+                            <strong>15+</strong>
+                            <span>years inside construction operations</span>
+                        </div>
+                        <div class="proof-pill">
+                            <strong>Live</strong>
+                            <span>systems used in real business workflows</span>
+                        </div>
+                        <div class="proof-pill">
+                            <strong>£1.6m</strong>
+                            <span>raised for a construction technology venture</span>
+                        </div>
+                    </div>
                 </div>
 
-                <aside class="hero-panel" aria-label="Proof Systems impact summary">
-                    <div class="panel-inner">
-                        <div class="panel-kicker">
-                            <span>Implementation record</span>
-                            <span class="status-dot" aria-hidden="true"></span>
+                <aside class="workflow-visual" aria-label="Workflow system example">
+                    <div class="visual-top">
+                        <span>Workflow diagnostic</span>
+                        <span class="visual-status">Live method</span>
+                    </div>
+                    <div class="visual-body">
+                        <div class="pipeline">
+                            <div class="pipeline-row">
+                                <div class="pipeline-icon manual">1</div>
+                                <div>
+                                    <h3>Manual process</h3>
+                                    <p>Spreadsheets, inboxes, forms and one person who knows the exceptions.</p>
+                                </div>
+                                <span class="pipeline-tag">Find cost</span>
+                            </div>
+                            <div class="pipeline-row">
+                                <div class="pipeline-icon system">2</div>
+                                <div>
+                                    <h3>Small proof</h3>
+                                    <p>One narrow workflow, real data, measured against the current way.</p>
+                                </div>
+                                <span class="pipeline-tag">Test value</span>
+                            </div>
+                            <div class="pipeline-row">
+                                <div class="pipeline-icon review">3</div>
+                                <div>
+                                    <h3>Useful system</h3>
+                                    <p>Structured input, consistent output and a human review point.</p>
+                                </div>
+                                <span class="pipeline-tag">Build only if earned</span>
+                            </div>
                         </div>
-                        <div class="metric-stack">
-                            <div class="metric-card">
-                                <strong>4,400+</strong>
-                                <span>hours saved annually across just 3 of the many systems built to date</span>
+                        <div class="visual-metrics">
+                            <div class="visual-metric">
+                                <strong>Review</strong>
+                                <span>not retyping</span>
                             </div>
-                            <div class="metric-card">
-                                <strong>15+</strong>
-                                <span>years inside construction operations</span>
+                            <div class="visual-metric">
+                                <strong>Rules</strong>
+                                <span>not guesswork</span>
                             </div>
-                            <div class="metric-card">
-                                <strong>£1.6m</strong>
-                                <span>raised for a construction technology venture</span>
+                            <div class="visual-metric">
+                                <strong>Handoff</strong>
+                                <span>not dependency</span>
                             </div>
                         </div>
                     </div>
@@ -1011,135 +1281,245 @@
             </div>
         </section>
 
-        <section class="trust" id="proof" aria-labelledby="proof-title">
+        <section class="pain" aria-labelledby="pain-title">
             <div class="container">
                 <div class="section-heading">
                     <div>
-                        <div class="section-label">Proof & trust</div>
-                        <h2 id="proof-title">Built from operational reality, not AI hype.</h2>
+                        <div class="section-label">Where SMEs leak time</div>
+                        <h2 id="pain-title">The problem is rarely one big system. It is the workarounds around it.</h2>
                     </div>
-                    <p>The strongest systems start with how work is already won, delivered, documented and reported. Proof Systems combines construction leadership experience with hands-on implementation so the output is credible, usable and measurable — especially for SMEs that need practical tools, not theory.</p>
+                    <p>Most businesses do not need an AI moonshot. They need the repetitive parts of the business made visible, structured and easier to run.</p>
                 </div>
-                <div class="trust-grid">
-                    <div class="trust-card">
-                        <span class="number">MD</span>
-                        <p>Experience leading a multi-million pound carpentry and fire door division.</p>
-                    </div>
-                    <div class="trust-card">
-                        <span class="number">Live</span>
-                        <p>Systems built for real workflows: labour cost capture, QA reporting and compliance paperwork.</p>
-                    </div>
-                    <div class="trust-card">
-                        <span class="number">Measured</span>
-                        <p>Impact framed in saved hours, reduced rework and faster reporting — not vague productivity claims.</p>
-                    </div>
-                    <div class="trust-card">
-                        <span class="number">Practical</span>
-                        <p>Implementation designed around the tools, people and pressures already present in the business.</p>
-                    </div>
+                <div class="pain-grid">
+                    <article class="pain-item">
+                        <strong>Spreadsheet workarounds</strong>
+                        <p>Critical processes living in files only one or two people understand.</p>
+                    </article>
+                    <article class="pain-item">
+                        <strong>Manual reporting</strong>
+                        <p>Hours spent gathering figures before anyone can make a decision.</p>
+                    </article>
+                    <article class="pain-item">
+                        <strong>Document handling</strong>
+                        <p>Invoices, forms, tickets and PDFs being opened, copied and chased by hand.</p>
+                    </article>
+                    <article class="pain-item">
+                        <strong>Repeated admin</strong>
+                        <p>Tasks that happen every week but still depend on memory and manual effort.</p>
+                    </article>
+                    <article class="pain-item">
+                        <strong>One-person knowledge</strong>
+                        <p>Rules and exceptions sitting in someone's head instead of the workflow.</p>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <section class="showcase" id="systems" aria-labelledby="systems-title">
+        <section class="operator" id="proof" aria-labelledby="proof-title">
+            <div class="container operator-grid">
+                <div>
+                    <div class="section-label">Operator proof</div>
+                    <h2 id="proof-title">Built from operational reality, not AI hype.</h2>
+                    <div class="operator-copy">
+                        <p>My proof comes from construction, where workflows are messy, high-pressure, document-heavy and commercially unforgiving. If the method works there, it transfers to other SMEs with the same operational problems.</p>
+                        <p>The work is not to make AI sound impressive. It is to understand the workflow, clean up the handoffs, test the first useful improvement, and leave behind something your team can actually operate.</p>
+                    </div>
+                </div>
+                <div class="operator-proof">
+                    <article class="proof-row">
+                        <strong>MD</strong>
+                        <div>
+                            <h3>Construction leadership experience</h3>
+                            <p>Experience leading a multi-million pound carpentry and fire door division.</p>
+                        </div>
+                    </article>
+                    <article class="proof-row">
+                        <strong>Live</strong>
+                        <div>
+                            <h3>Real systems in active use</h3>
+                            <p>Tools built around labour cost capture, commercial reporting, compliance and document workflows.</p>
+                        </div>
+                    </article>
+                    <article class="proof-row">
+                        <strong>Measured</strong>
+                        <div>
+                            <h3>Value expressed in saved time</h3>
+                            <p>Impact framed in hours saved, cleaner handoffs and faster reporting, not vague productivity claims.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="systems" id="systems" aria-labelledby="systems-title">
             <div class="container">
                 <div class="section-heading">
                     <div>
                         <div class="section-label">Built systems</div>
-                        <h2 id="systems-title">Practical systems already saving time in live businesses.</h2>
+                        <h2 id="systems-title">Concrete examples from workflows that were already costing time.</h2>
                     </div>
-                    <p>These are anonymised versions of systems built for real SME operations. Some are available white-label now; others are ready to adapt when the right client needs them.</p>
+                    <p>These examples come from real operational problems. They are the proof base for the wider SME method: start with the workflow, prove value, then decide whether the system deserves to grow.</p>
                 </div>
 
-                <div class="showcase-grid">
-                    <a class="showcase-card featured" href="workflow.html" aria-label="Request discovery for Timesheet and Labour Cost System">
-                        <div class="showcase-media">
-                            <span class="play-button" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            </span>
-                            <span class="showcase-status">White-label ready</span>
+                <div class="systems-grid">
+                    <a class="system-card" href="workflow.html" aria-label="Request diagnostic for payroll and labour workflow">
+                        <div class="system-media">
+                            <div class="mini-app" aria-hidden="true">
+                                <div class="mini-bar"><span>Labour export</span><span>Review ready</span></div>
+                                <div class="mini-flow">
+                                    <div class="mini-flow-step">
+                                        <strong>Timesheets</strong>
+                                        <span>Captured once from site input</span>
+                                    </div>
+                                    <div class="mini-flow-step">
+                                        <strong>Rules check</strong>
+                                        <span>Rates, overtime and exceptions</span>
+                                    </div>
+                                    <div class="mini-flow-step">
+                                        <strong>Payroll file</strong>
+                                        <span>Clean output for review</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="showcase-body">
-                            <div class="showcase-kicker">Labour & payroll</div>
-                            <h3>Timesheet & labour cost system</h3>
-                            <p class="showcase-summary">Capture labour once, reduce spreadsheet handling and give managers faster visibility of cost movement — with exports that clean up payroll processing.</p>
-                            <ul class="showcase-points">
-                                <li><strong>Problem:</strong> labour information is copied between forms, spreadsheets and payroll.</li>
-                                <li><strong>System:</strong> role-based input and approval flow for managers, users and admins.</li>
-                                <li><strong>Outcome:</strong> accounts save a full day every week and data reaches payroll cleaner.</li>
+                        <div class="system-body">
+                            <div class="system-kicker">Payroll admin</div>
+                            <h3>From half a day to review-ready payroll output.</h3>
+                            <p>Labour data is captured once, cleaned through the workflow, and exported in a format accounts can review instead of rebuild.</p>
+                            <ul class="system-points">
+                                <li><strong>Problem:</strong> repeated copying between forms, spreadsheets and payroll.</li>
+                                <li><strong>System:</strong> structured inputs, rules and approval flow.</li>
+                                <li><strong>Outcome:</strong> less retyping, cleaner data and faster payroll preparation.</li>
                             </ul>
-                            <div class="showcase-footer">
-                                <span class="showcase-tag">White-label system</span>
-                                <span class="showcase-link">Request discovery</span>
+                            <div class="system-footer">
+                                <span class="system-tag">Admin automation</span>
+                                <span>Check fit</span>
                             </div>
                         </div>
                     </a>
 
-                    <a class="showcase-card" href="workflow.html" aria-label="Request discovery for Cost Control System">
-                        <div class="showcase-media">
-                            <span class="play-button" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            </span>
-                            <span class="showcase-status">Available to commission</span>
+                    <a class="system-card" href="workflow.html" aria-label="Request diagnostic for management accounts and reporting workflow">
+                        <div class="system-media">
+                            <div class="mini-app" aria-hidden="true">
+                                <div class="mini-bar"><span>Reporting pack</span><span>Validated</span></div>
+                                <div class="mini-proof">
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Data extracts loaded</strong>
+                                            <span>Ledgers, cost codes and month-end inputs</span>
+                                        </div>
+                                        <em class="mini-badge">Clear</em>
+                                    </div>
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Exceptions queue</strong>
+                                            <span>Missing values and outliers flagged</span>
+                                        </div>
+                                        <em class="mini-badge warn">Review</em>
+                                    </div>
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Pack output</strong>
+                                            <span>Prepared for management review</span>
+                                        </div>
+                                        <em class="mini-badge">Ready</em>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="showcase-body">
-                            <div class="showcase-kicker">Commercial control</div>
-                            <h3>Cost control system</h3>
-                            <p class="showcase-summary">Budget import, cost allocation, payment schedules and variation tracking in one place instead of a fragile legacy database.</p>
-                            <ul class="showcase-points">
-                                <li><strong>Problem:</strong> commercial data trapped in ageing tools and spreadsheets.</li>
-                                <li><strong>System:</strong> structured workflow for budgets, costs and payment timing.</li>
-                                <li><strong>Outcome:</strong> clearer cost control and faster monthly reporting.</li>
+                        <div class="system-body">
+                            <div class="system-kicker">Management reporting</div>
+                            <h3>From manual accounts assembly to a repeatable pipeline.</h3>
+                            <p>Extracts, checks and supporting workflows prepare the figures so the monthly pack starts from a cleaner base.</p>
+                            <ul class="system-points">
+                                <li><strong>Problem:</strong> reports built from scratch across scattered files.</li>
+                                <li><strong>System:</strong> structured data model, checks and repeatable outputs.</li>
+                                <li><strong>Outcome:</strong> less assembly time and more time understanding the numbers.</li>
                             </ul>
-                            <div class="showcase-footer">
-                                <span class="showcase-tag">Bespoke build</span>
-                                <span class="showcase-link">Request discovery</span>
+                            <div class="system-footer">
+                                <span class="system-tag">Reporting workflow</span>
+                                <span>Check fit</span>
                             </div>
                         </div>
                     </a>
 
-                    <a class="showcase-card" href="workflow.html" aria-label="Request discovery for Delivery Ticket System">
-                        <div class="showcase-media">
-                            <span class="play-button" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            </span>
-                            <span class="showcase-status">In development</span>
+                    <a class="system-card" href="workflow.html" aria-label="Request diagnostic for delivery ticket workflow">
+                        <div class="system-media">
+                            <div class="mini-app" aria-hidden="true">
+                                <div class="mini-bar"><span>Ticket intake</span><span>Matched</span></div>
+                                <div class="mini-proof">
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Inbox attachment</strong>
+                                            <span>Supplier ticket found and classified</span>
+                                        </div>
+                                        <em class="mini-badge">Read</em>
+                                    </div>
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Project match</strong>
+                                            <span>Site, date and supplier checked</span>
+                                        </div>
+                                        <em class="mini-badge">Matched</em>
+                                    </div>
+                                    <div class="mini-proof-row">
+                                        <div>
+                                            <strong>Query flag</strong>
+                                            <span>Unclear lines held for human review</span>
+                                        </div>
+                                        <em class="mini-badge warn">Check</em>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="showcase-body">
-                            <div class="showcase-kicker">Operations</div>
-                            <h3>Delivery ticket system</h3>
-                            <p class="showcase-summary">Turn emailed delivery tickets into structured, searchable records without chasing attachments or retyping details.</p>
-                            <ul class="showcase-points">
-                                <li><strong>Problem:</strong> proof of delivery gets lost in inboxes and messages.</li>
-                                <li><strong>System:</strong> email-to-record workflow with supplier matching and search.</li>
-                                <li><strong>Outcome:</strong> faster supplier queries and cleaner project records.</li>
+                        <div class="system-body">
+                            <div class="system-kicker">Document handling</div>
+                            <h3>From emailed tickets to structured records.</h3>
+                            <p>Delivery tickets arrive in messy emails and attachments. The better workflow extracts the useful data and flags what needs human review.</p>
+                            <ul class="system-points">
+                                <li><strong>Problem:</strong> attachments chased through inboxes and messages.</li>
+                                <li><strong>System:</strong> email-to-record workflow with matching and search.</li>
+                                <li><strong>Outcome:</strong> cleaner evidence and faster supplier queries.</li>
                             </ul>
-                            <div class="showcase-footer">
-                                <span class="showcase-tag">White-label web app</span>
-                                <span class="showcase-link">Request discovery</span>
+                            <div class="system-footer">
+                                <span class="system-tag">AI document flow</span>
+                                <span>Check fit</span>
                             </div>
                         </div>
                     </a>
 
-                    <a class="showcase-card" href="workflow.html" aria-label="Request discovery for Onboarding and Training Tracker">
-                        <div class="showcase-media">
-                            <span class="play-button" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            </span>
-                            <span class="showcase-status">Planned white-label</span>
+                    <a class="system-card" href="workflow.html" aria-label="Request diagnostic for compliance workflow">
+                        <div class="system-media">
+                            <div class="mini-app" aria-hidden="true">
+                                <div class="mini-bar"><span>Compliance record</span><span>Audit ready</span></div>
+                                <div class="mini-register">
+                                    <span>Evidence</span>
+                                    <span>Owner</span>
+                                    <span>Status</span>
+                                    <span>Insurance certificate</span>
+                                    <span>Ops</span>
+                                    <span>Live</span>
+                                    <span>Training record</span>
+                                    <span>Admin</span>
+                                    <span>Due</span>
+                                    <span>Supplier approval</span>
+                                    <span>Buyer</span>
+                                    <span>Live</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="showcase-body">
-                            <div class="showcase-kicker">Compliance & HR</div>
-                            <h3>Onboarding & training tracker</h3>
-                            <p class="showcase-summary">Track inductions, qualifications and expiry dates in one place so the business stays audit-ready without spreadsheet chasing.</p>
-                            <ul class="showcase-points">
-                                <li><strong>Problem:</strong> training records scatter across folders and expire unnoticed.</li>
-                                <li><strong>System:</strong> single record per person with renewal alerts.</li>
-                                <li><strong>Outcome:</strong> fewer compliance surprises and faster site readiness.</li>
+                        <div class="system-body">
+                            <div class="system-kicker">Compliance paperwork</div>
+                            <h3>From scattered certificates to consistent evidence.</h3>
+                            <p>The aim is not to skip compliance. It is to make the check easy enough that people actually do it properly.</p>
+                            <ul class="system-points">
+                                <li><strong>Problem:</strong> paperwork, expiry dates and evidence scattered across folders.</li>
+                                <li><strong>System:</strong> structured records, prompts and consistent outputs.</li>
+                                <li><strong>Outcome:</strong> fewer surprises and faster audit preparation.</li>
                             </ul>
-                            <div class="showcase-footer">
-                                <span class="showcase-tag">Future white-label</span>
-                                <span class="showcase-link">Request discovery</span>
+                            <div class="system-footer">
+                                <span class="system-tag">Compliance system</span>
+                                <span>Check fit</span>
                             </div>
                         </div>
                     </a>
@@ -1147,195 +1527,120 @@
             </div>
         </section>
 
-        <section class="process" id="process" aria-labelledby="process-title">
+        <section class="method" id="method" aria-labelledby="method-title">
             <div class="container">
                 <div class="section-heading">
                     <div>
-                        <div class="section-label">Process</div>
-                        <h2 id="process-title">Start small. Prove value. Then scale.</h2>
+                        <div class="section-label">Method</div>
+                        <h2 id="method-title">Diagnose first. Test small. Build what earns it.</h2>
                     </div>
-                    <p>The safest way to bring automation into an SME is not a big rebuild. It is one focused test that proves itself before anything else gets touched.</p>
+                    <p>The safest way to bring automation into an SME is not a big rebuild. It is one focused improvement that proves itself in the real workflow.</p>
                 </div>
-
-                <div class="process-grid">
-                    <article class="process-step">
-                        <h3>Pick one painful workflow</h3>
-                        <p>Choose the task that costs visible time every week — repetitive admin, manual reports, duplicated entry or document chasing.</p>
+                <div class="method-grid">
+                    <article class="method-step">
+                        <h3>Find the workflow</h3>
+                        <p>Pick the admin, reporting, document or handoff problem that costs visible time every week.</p>
                     </article>
-                    <article class="process-step">
-                        <h3>Build a small working version</h3>
-                        <p>Build the minimum system that handles the real data and rules, usually in days or weeks rather than months.</p>
+                    <article class="method-step">
+                        <h3>Map the rules</h3>
+                        <p>Surface the data, exceptions, approvals and human judgement points before any tool is chosen.</p>
                     </article>
-                    <article class="process-step">
-                        <h3>Run it parallel and measure</h3>
-                        <p>Test alongside current processes, compare outputs, fix the edge cases, and prove the saving before anything goes live.</p>
+                    <article class="method-step">
+                        <h3>Prove one improvement</h3>
+                        <p>Build the smallest useful version and compare it against the current process.</p>
                     </article>
-                    <article class="process-step">
-                        <h3>Expand only what earns it</h3>
-                        <p>Roll out the winning workflow, then add the next one. Systems grow as the business sees value, not before.</p>
+                    <article class="method-step">
+                        <h3>Handover what works</h3>
+                        <p>Expand only when the workflow earns it, with the business able to run the system afterwards.</p>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section class="services" id="services" aria-labelledby="services-title">
-            <div class="container">
-                <div class="section-heading">
-                    <div>
-                        <div class="section-label">Services</div>
-                        <h2 id="services-title">Where we typically help.</h2>
+        <section class="content" aria-labelledby="content-title">
+            <div class="container content-grid">
+                <div class="content-copy">
+                    <div class="section-label">Watch first</div>
+                    <h2 id="content-title">Not ready to speak yet? Start with the videos.</h2>
+                    <p>The video library is designed to help you spot a good automation candidate, avoid the wrong tool, and understand what a sensible first build looks like.</p>
+                    <div class="hero-actions">
+                        <a href="video-series.html" class="button button-secondary">Browse the video topics</a>
                     </div>
-                    <p>Most engagements start with one of these pain points. Construction is the credibility base, but the approach works across SMEs that rely on spreadsheets, documents and manual handoffs.</p>
                 </div>
-
-                <div class="services-grid">
-                    <article class="service-card">
-                        <div class="service-kicker">01 / Admin automation</div>
-                        <h3>Reduce repetitive admin.</h3>
-                        <p>Automate the small but constant tasks that drain time from operations, finance and delivery teams.</p>
-                        <ul>
-                            <li>form handling</li>
-                            <li>task routing</li>
-                            <li>follow-up reminders</li>
-                        </ul>
-                    </article>
-                    <article class="service-card">
-                        <div class="service-kicker">02 / Reporting</div>
-                        <h3>Turn messy updates into usable reporting.</h3>
-                        <p>Shape notes, spreadsheets and updates into summaries that management can actually act on.</p>
-                        <ul>
-                            <li>weekly updates</li>
-                            <li>board packs</li>
-                            <li>status summaries</li>
-                        </ul>
-                    </article>
-                    <article class="service-card">
-                        <div class="service-kicker">03 / Document handling</div>
-                        <h3>Make documents easier to process.</h3>
-                        <p>Use AI to route, extract and organise the information buried in emails, PDFs and attachments.</p>
-                        <ul>
-                            <li>invoices and forms</li>
-                            <li>compliance paperwork</li>
-                            <li>document extraction</li>
-                        </ul>
-                    </article>
-                    <article class="service-card">
-                        <div class="service-kicker">04 / Internal tools</div>
-                        <h3>Build lightweight tools your team will use.</h3>
-                        <p>Simple internal apps for the workflows that are still stuck in spreadsheets, inboxes or WhatsApp.</p>
-                        <ul>
-                            <li>approval workflows</li>
-                            <li>job tracking</li>
-                            <li>simple databases</li>
-                        </ul>
-                    </article>
-                    <article class="service-card">
-                        <div class="service-kicker">05 / AI assistants</div>
-                        <h3>Create assistants for real business tasks.</h3>
-                        <p>Build focused assistants that answer questions, draft responses and speed up common decisions.</p>
-                        <ul>
-                            <li>customer enquiry triage</li>
-                            <li>knowledge lookups</li>
-                            <li>drafting support</li>
-                        </ul>
-                    </article>
-                    <article class="service-card">
-                        <div class="service-kicker">06 / Process design</div>
-                        <h3>Design the workflow before the tool.</h3>
-                        <p>The best automation starts with cleaner process design, so the system is practical and maintainable.</p>
-                        <ul>
-                            <li>workflow mapping</li>
-                            <li>handoff design</li>
-                            <li>implementation planning</li>
-                        </ul>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="discovery" id="discovery" aria-labelledby="discovery-title">
-            <div class="container">
-                <div class="section-heading">
-                    <div>
-                        <div class="section-label">Paid discovery</div>
-                        <h2 id="discovery-title">Get a proper read on the problem before you build anything.</h2>
-                    </div>
-                    <p>This is the best place to start if you want a clear view of the workflow, a practical recommendation, and a path that can be small, medium or larger depending on what the problem needs.</p>
-                </div>
-
-                <div class="results-panel">
-                    <div class="result-hero">
+                <div class="video-list">
+                    <a class="video-card" href="video-series.html">
+                        <span class="play-tile" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
                         <div>
-                            <span class="big-number">£350</span>
-                            <h3>A deep-dive that ends with a tailored report.</h3>
+                            <h3>Start Small: How to Test Automation Without Committing to Everything</h3>
+                            <p>For owners who know something is inefficient but do not want a risky rebuild.</p>
                         </div>
-                        <p>We look at the real workflow, the friction, the tools, the handoffs and the constraints — then turn it into a practical recommendation.</p>
-                    </div>
-                    <div class="result-breakdown">
-                        <div class="result-item">
-                            <strong>What you get</strong>
-                            <h4>Discovery + report</h4>
-                            <p>A focused call, a written summary, and suggested next steps from a small proof to a larger build, or anything in between.</p>
+                    </a>
+                    <a class="video-card" href="video-series.html">
+                        <span class="play-tile" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <div>
+                            <h3>Define Your Workflows Before You Automate Them</h3>
+                            <p>The six-step framework for getting a process out of someone's head.</p>
                         </div>
-                        <div class="result-item">
-                            <strong>Fee</strong>
-                            <h4>Credited against a build</h4>
-                            <p>If we proceed to build together, the £350 discovery fee is credited against the cost of that work.</p>
+                    </a>
+                    <a class="video-card" href="video-series.html">
+                        <span class="play-tile" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <div>
+                            <h3>What I Would Build First: The Single Source of Truth</h3>
+                            <p>Why the first useful system is often a register, not a dashboard.</p>
                         </div>
-                        <div class="result-item">
-                            <strong>If it is not a fit</strong>
-                            <h4>Free route first</h4>
-                            <p>We will point you to the free product or the videos — and you can still choose the paid route if you want it.</p>
+                    </a>
+                    <a class="video-card" href="video-series.html">
+                        <span class="play-tile" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <div>
+                            <h3>How Payroll Admin Went From Half a Day to 20 Minutes</h3>
+                            <p>A practical example of rules, structure and review replacing repeated admin.</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <div class="container" style="margin-top: -8px; margin-bottom: 84px;">
-            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255, 247, 236, 0.04); box-shadow: var(--shadow);">
-                <div style="max-width: 640px;">
-                    <div class="section-label">Quick path</div>
-                    <p style="margin-top: 10px; color: var(--text); font-size: 1.02rem;">Skip the page and go straight to the qualifier if you already know what you want help with.</p>
-                    <p style="margin-top: 4px;">It’s the fastest route into the workflow.</p>
-                </div>
-                <a href="workflow.html" class="button button-primary">Open the form</a>
-            </div>
-        </div>
-
-        <section class="results" id="results" aria-labelledby="results-title">
+        <section class="diagnostic" id="diagnostic" aria-labelledby="diagnostic-title">
             <div class="container">
                 <div class="section-heading">
                     <div>
-                        <div class="section-label">Results</div>
-                        <h2 id="results-title">Measured systems, practical impact.</h2>
+                        <div class="section-label">Paid diagnostic</div>
+                        <h2 id="diagnostic-title">Get a clear view before you build anything.</h2>
                     </div>
-                    <p>Proof Systems starts where teams already lose time: duplicated entry, inconsistent reporting, repetitive documentation and manual analysis. The aim is simple: prove value with a small test project, then remove hours while improving control.</p>
+                    <p>The paid step is not buying a report. It is a focused diagnostic that shows what to automate, what not to automate, and what the first sensible build should be.</p>
                 </div>
 
-                <div class="results-panel">
-                    <div class="result-hero">
+                <div class="diagnostic-panel">
+                    <div class="price-panel">
                         <div>
-                            <span class="big-number">4,400+</span>
-                            <h3>hours saved annually across just 3 of the many systems built to date</h3>
+                            <span class="price">£350</span>
+                            <h3>Workflow diagnostic and written recommendation.</h3>
                         </div>
-                        <p>Estimated annual saving from three implemented systems across one operating business.</p>
+                        <p>Credited against a build if we work together.</p>
                     </div>
-                    <div class="result-breakdown">
-                        <div class="result-item">
-                            <strong>1,900+</strong>
-                            <h4>Timesheet & labour cost system</h4>
-                            <p>Less manual entry, cleaner payroll information and faster visibility of labour cost movement.</p>
+                    <div class="diagnostic-details">
+                        <div class="detail-item">
+                            <strong>1. Map</strong>
+                            <h4>The real workflow</h4>
+                            <p>We look at the inputs, handoffs, rules, exceptions, tools and where the time is actually going.</p>
                         </div>
-                        <div class="result-item">
-                            <strong>2,300+</strong>
-                            <h4>Cost control system</h4>
-                            <p>Structured cost allocation and reporting, replacing fragile legacy tooling.</p>
+                        <div class="detail-item">
+                            <strong>2. Decide</strong>
+                            <h4>The right route</h4>
+                            <p>The answer may be a small proof, a product, a process change, a video, or a larger build.</p>
                         </div>
-                        <div class="result-item">
-                            <strong>130+</strong>
-                            <h4>Compliance documentation</h4>
-                            <p>Reduced repetitive document preparation with a more consistent certification workflow.</p>
+                        <div class="detail-item">
+                            <strong>3. Build</strong>
+                            <h4>Only if it earns it</h4>
+                            <p>If custom work is justified, the diagnostic becomes the first step into a practical build.</p>
                         </div>
                     </div>
                 </div>
@@ -1348,19 +1653,19 @@
                     <div class="cta-content">
                         <div>
                             <div class="section-label">Next step</div>
-                            <h2 id="cta-title">Want a clear view of the problem and the right next step?</h2>
-                            <p>Use the workflow to tell us what you need. We’ll unpack the problem, map the workflow, and follow up with a report showing the right path — from a small proof to a larger build, or anywhere in between.</p>
+                            <h2 id="cta-title">Tell me the workflow that is costing time.</h2>
+                            <p>Use the qualifier to explain what is happening, what outcome you want, and roughly how much time it costs. If it is a fit, the next step is the diagnostic. If not, you still get a useful direction.</p>
                         </div>
                         <div class="cta-actions">
                             <a href="workflow.html" class="button button-primary">
-                                Start the workflow
+                                Check if your workflow is a fit
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
                                 </svg>
                             </a>
                             <a href="video-series.html" class="button button-secondary">Watch the videos first</a>
-                            <p class="cta-note">£350, credited against a build if we work together. If custom work is not the right fit, we will point you to the free product or the videos.</p>
+                            <p class="cta-note">No public launch or live publishing happens without approval.</p>
                         </div>
                     </div>
                 </div>
