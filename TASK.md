@@ -2,51 +2,34 @@
 
 Updated: 2026-07-12
 
-## Current State
+## AGE-424 implementation state
 
-- `AGE-341` is in `Agent Review`.
-- `AGE-342` is in `Agent Review`.
-- The website qualifier and route review are implemented locally and independently reviewed under `AGE-408`.
-- Netlify Forms wiring is now present in the local qualifier without any live deploy.
-- Sensitive workflow/contact answers no longer appear in route-review URLs; temporary same-session storage supplies the local review page.
-- Submission/consent copy now states that the website action sends the enquiry.
-- A proportionate privacy notice, response SOP, minimum CRM handoff and gated Netlify test recipe now exist.
-- The unsupported 4,400+ hours claim was removed; empty video routes are honestly labelled as planned guides.
-- A fully synthetic proof visual and safety register were created for `AGE-344`.
-- The Growth Engine has been cleaned up and launch acceptance is now tracked by `AGE-408`.
-- A complete safe publish-preparation starter prompt is available in `CODEX-BUNDLE.md`.
+The reduced founding-cohort website is implemented locally on `agent/mac-mini/age-424-reduced-founding-cohort-site`. It has not been pushed, merged, previewed on Netlify or deployed.
 
-## What Changed This Session
+The production version that preceded this reduction is preserved by annotated Git tag `published/full-offer-v1-2026-07-12` at `f2d2f25`.
 
-- `workflow.html`
-  Added progressive lead capture, route states, call/training guardrails, and Netlify Forms-compatible submission fields.
-- `checkout.html`
-  Converted the old payment-first handoff into a route-aware review page.
-- `40_knowledge/proof-systems/website-funnel/lead-capture-backend-recommendation.md`
-  Locked Netlify Forms as the V1 backend direction because the old site is already on Netlify and wired to Gmail.
+## Implemented
 
-## Next Steps
+- One homepage proposition: four free founding workflow diagnostics.
+- One dominant application CTA and a secondary email route.
+- Three-step diagnostic explanation, clear boundaries and selection-by-fit wording.
+- Two operational examples, explicitly labelled as Mat's own work rather than external customer case studies.
+- Concise operator credibility without the fundraising claim.
+- Eight substantive application fields, including optional hours and required contact consent.
+- Existing Netlify form identity `proof-systems-qualifier` and operational hidden fields retained.
+- Simple application acknowledgement; paid and multi-route scoring removed.
+- Privacy notice aligned with the reduced field schema.
+- `/video-series` deliberately holds briefly and returns visitors to the homepage.
+- Former `/checkout` route explains the launch change and links to the application.
 
-1. [x] Mat reviewed the commercial tone, privacy wording and synthetic proof visual.
-2. [x] Mat chose live deployment and confirmed the notification inbox.
-3. [x] Ran `netlify-test-recipe.md` with synthetic data and recorded storage/Gmail evidence for `AGE-343`.
-4. Keep `AGE-341` and `AGE-342` in Agent Review; AGE-343 live-path acceptance is complete.
+## Approval boundary
 
-## Live Result
+Production remains unchanged. Mat must approve a reviewed Netlify preview before any merge or production deployment.
 
-The reviewed website is live at `proofsystems.co.uk`. Netlify form detection is enabled, `proof-systems-qualifier` is registered, and the approved inbox receives form notifications. One synthetic diagnostic enquiry passed browser success, stored-schema and email-delivery checks; its Netlify record and email were then deleted. The accidental temporary Netlify project created during upload was permanently deleted.
+## Next steps
 
-The V1 manual lead handoff is also complete: Netlify → restricted Notion identity record → pseudonymous AGE-421 workbook row, with five exact route mappings, one owner/next action/due date, duplicate prevention and stalled-lead controls.
-
-## Queue
-
-- Immediate:
-  `AGE-341`/`AGE-342` independent review and local safety fixes under `AGE-408` acceptance.
-- Next:
-  `AGE-16` lead response SOP and `AGE-17` minimum CRM handoff.
-- Then:
-  `AGE-343` approved Netlify/Gmail verification and publish decision.
-
-## Notes
-
-- Other local changes exist in `index.html`, `video-series.html`, `favicon.svg`, and `proof-visual-assets.md`. They were not reverted here.
+1. Independently review the branch and local test evidence.
+2. With explicit approval, push the branch and create a Netlify deploy preview.
+3. Use synthetic data only to verify form detection, storage and notification delivery.
+4. Present desktop/mobile preview, copy and form evidence to Mat.
+5. Merge or deploy only after Mat explicitly approves production replacement.

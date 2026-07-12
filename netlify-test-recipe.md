@@ -1,33 +1,28 @@
-# AGE-343 Netlify Preview/Live Dummy-Submission Recipe
+# AGE-424 Netlify Preview Test Recipe
 
-## Approval gate
+Run only after explicit approval to create/use a deploy preview and send one synthetic submission. Never test first on production.
 
-Mat must choose deploy preview or live site, confirm the notification inbox, approve the commercial copy and authorise one synthetic submission. Do not proceed without that approval.
+## Synthetic values
 
-## Safe dummy record
+- Name: `Proof Systems Test Lead`
+- Business email: an approved non-personal test inbox
+- Company: `Synthetic Workflow Ltd`
+- Role: `Owner; controls this synthetic workflow`
+- Workflow: `Weekly synthetic status report compiled from three sample trackers`
+- Outcome: `One controlled view with visible exceptions`
+- Hours: `4`
+- Consent: checked
 
-- Name: `Test Lead — Delete`
-- Email: an approved Proof Systems-controlled test address
-- Phone (call/training test only): `07000 000000` if Netlify accepts it, otherwise an approved non-personal test number
-- Company: `Example Operations Ltd`
-- Role: `Operations test`
-- Sector: `Business services`
-- Workflow: `Synthetic weekly document register test; no real customer data.`
-- Outcome: `Confirm form storage and notification only.`
-- Context: `Synthetic test submission for AGE-343; delete after verification.`
-- Hours: `5`
+## Checks
 
-## Exact test
+1. Confirm the preview uses the expected branch commit and production remains unchanged.
+2. Check homepage and application at desktop and mobile widths.
+3. Confirm the page presents one free founding-cohort proposition, one dominant CTA and two operational examples.
+4. Confirm no £350 price, fundraising claim, video CTA, training route, fit-call route, product route or internal/local-planning language appears publicly.
+5. Submit the approved synthetic record once.
+6. Confirm `proof-systems-qualifier` is detected and contains: `name`, `email`, `company`, `decision_role`, `workflow_help`, `desired_outcome`, `hours_per_week`, `contact_consent`, `route_key`, `route_label`, `lead_state`, `page_source`, `submitted_at`.
+7. Confirm notification delivery to the approved inbox and that no answers appear in the browser URL.
+8. Confirm `/video-series` intentionally returns to the homepage and `/checkout` points to the founding application.
+9. Delete the synthetic Netlify record and notification email after evidence is recorded.
 
-1. Open the approved Netlify URL in a private window and record the URL, deploy identifier and time.
-2. Confirm `privacy.html` loads and the qualifier contains the submission/consent wording.
-3. Submit the synthetic record once for the diagnostic route. Confirm the browser shows a saved-success message and the route-review URL contains only `route`, never contact or workflow answers.
-4. In Netlify, confirm one `proof-systems-qualifier` submission exists and the schema contains: `workflow_help`, `desired_outcome`, `workflow_context`, `hours_per_week`, `desired_help`, `name`, `email`, `phone`, `company`, `role`, `sector`, `consent_contact`, `route_key`, `route_label`, `lead_state`, `page_source`, `submitted_at`.
-5. Confirm the approved Gmail inbox receives one notification and that its timestamp and route match the stored submission. Do not forward it.
-6. Test a call route with the phone blank and confirm the browser blocks submission. Do not create a second stored record unless Mat explicitly approves it.
-7. Delete the dummy submission and notification after recording pass/fail evidence.
-8. Record the result on AGE-343. Only then can storage and Gmail delivery be marked verified; publication remains a separate approval.
-
-## Evidence
-
-Record: tested URL, deploy/live choice, timestamp, form name, submission ID, notification inbox (redacted in public notes), delivery timestamp, schema pass/fail, URL-data pass/fail, deletion confirmation and any retry. Never paste the full dummy submission or inbox address into public material.
+Stop before merging or production deployment and ask Mat for explicit approval with screenshots, test evidence, residual risks and rollback instructions.

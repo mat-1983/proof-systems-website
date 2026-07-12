@@ -2,6 +2,36 @@
 
 Updated: 2026-07-12
 
+## AGE-424 reduced founding-cohort branch — 12 July 2026
+
+- PASS — all five public HTML files parsed without parser exceptions.
+- PASS — local internal-link scan found no missing targets.
+- PASS — application JavaScript compiled successfully.
+- PASS — homepage and application rendered in headless Chrome at desktop and narrow viewport sizes; no layout defect was found in the desktop review and defensive narrow-screen constraints are present.
+- PASS — the application has exactly eight substantive visitor fields: name, business email, company, decision role, workflow, desired outcome, optional hours and contact consent.
+- PASS — the existing Netlify form name `proof-systems-qualifier`, honeypot and hidden operational fields remain present.
+- PASS — local/localhost submission is explicitly intercepted without sending data and uses customer-safe wording.
+- PASS — public HTML contains no £350 price, £1.6m claim, 4,400+ claim, video-first route, training route, fit-call route, product/process route, `not wired` wording or `local only` wording.
+- PASS — `/video-series` is an accessible holding page with no timed redirect; the former `/checkout` route points to the founding application without reviving the old offer catalogue.
+- PASS — `git diff --check` is clean.
+- PASS — an approval-gated temporary Netlify Drop preview detected `proof-systems-qualifier`, accepted one clearly synthetic application and stored one submission against the correct form.
+- PASS — the visitor success state appeared in place, and the browser URL remained `workflow.html` with no application answers in it.
+- NOT CONFIGURED — the temporary project had no form-submission email notification, so Gmail delivery was not exercised. Production notification wiring is unchanged and was previously verified on 12 July 2026.
+- NOT RUN (approval-gated) — production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
+
+Visual receipts were generated locally under `/tmp` and are not committed. One approved synthetic submission was made to the disposable preview only; no merge or production deploy occurred. The independently reviewed feature branch was pushed at `5dfeb5a` before this acceptance note.
+
+## AGE-424 independent review
+
+- PASS — annotated rollback tag `published/full-offer-v1-2026-07-12` resolves to production baseline `f2d2f25` and is pushed.
+- PASS — independent desktop (1440px) and mobile (390px) renders showed no horizontal overflow.
+- PASS — exactly eight substantive application fields; form name, honeypot and operational hidden fields remain present.
+- PASS — privacy wording matches the reduced fields and purpose; form answers remain out of URLs.
+- PASS — exactly two internal operational examples, both labelled as non-customer case studies.
+- PASS — no £350, paid-diagnostic, fundraising, unavailable-video, training, product/process or fit-call promotion remains.
+- CORRECTED — removed user-visible “Local preview only” wording, the timed video-page redirect, inconsistent CTA labels and the stale paid-route reminder.
+- RESOLVED — a temporary Netlify Drop project was created with approval, form detection was enabled, and preview form storage passed. The temporary project and its synthetic record remain pending explicitly confirmed deletion.
+
 ## Checks Run
 
 - Independent code review of qualifier routing, Netlify submission and route-review handoff.
@@ -67,6 +97,27 @@ Updated: 2026-07-12
 
 - The commercial feel may still be slightly heavy if the contact capture feels too long in practice.
 - Live notification wiring could still expose an environment-specific quirk that local simulation cannot catch.
+
+## AGE-424 temporary Netlify acceptance — 12 July 2026
+
+- PASS — temporary preview `phenomenal-marzipan-faf430.netlify.app` served the reviewed reduced-site package without changing `proofsystems.co.uk`.
+- PASS — Netlify detected one active form named `proof-systems-qualifier` after form detection was enabled and the package was redeployed.
+- PASS — one clearly synthetic founding-cohort application produced the intended `Application received` visitor state.
+- PASS — the success state did not add name, email, company, workflow or outcome data to the URL.
+- PASS — the temporary Netlify dashboard showed one submission and the correct latest-submission time.
+- NOT CONFIGURED — the disposable preview project had no outgoing form email notification; no notification setting was copied from or added to production.
+- PENDING CLEAN-UP — delete the synthetic record and temporary project after action-time confirmation. This is irreversible and does not affect the production project.
+
+## AGE-424 credibility revision — 12 July 2026
+
+- PASS — the temporary preview now explains Mat's 16-year progression from operator and managing director to full-time systems, software and AI work during the last 18 months.
+- PASS — four public-safe capability groups cover workforce operations, commercial control, finance/reporting and business development without presenting them as separate Proof Systems offers.
+- PASS — two detailed proof examples use systems confirmed as deployed in live internal operations: workforce/labour control and document processing.
+- PASS — the copy states that the examples are anonymised internal production systems rather than external customer case studies.
+- PASS — no employer name, client/project/supplier details, operational figures, hours-saved claim, screenshots or deployment platform is published.
+- PASS — systems still under development or controlled validation are not presented as completed outcomes.
+- PASS — revised temporary preview served the new credibility section with no horizontal overflow at the available desktop viewport; responsive rules retain the established one-column mobile layout.
+- PASS — `git diff --check` and public-copy safety scans are clean.
 
 ## Live production acceptance — 12 July 2026
 
