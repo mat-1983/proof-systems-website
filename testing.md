@@ -2,6 +2,22 @@
 
 Updated: 2026-07-12
 
+## AGE-424 reduced founding-cohort branch — 12 July 2026
+
+- PASS — all five public HTML files parsed without parser exceptions.
+- PASS — local internal-link scan found no missing targets.
+- PASS — application JavaScript compiled successfully.
+- PASS — homepage and application rendered in headless Chrome at desktop and narrow viewport sizes; no layout defect was found in the desktop review and defensive narrow-screen constraints are present.
+- PASS — the application has exactly eight substantive visitor fields: name, business email, company, decision role, workflow, desired outcome, optional hours and contact consent.
+- PASS — the existing Netlify form name `proof-systems-qualifier`, honeypot and hidden operational fields remain present.
+- PASS — local/localhost submission is explicitly intercepted and reports that nothing was sent.
+- PASS — public HTML contains no £350 price, £1.6m claim, 4,400+ claim, video-first route, training route, fit-call route, product/process route, `not wired` wording or `local only` wording.
+- PASS — `/video-series` intentionally holds then returns to the homepage; the former `/checkout` route explains the change and points to the application.
+- PASS — `git diff --check` is clean.
+- NOT RUN (approval-gated) — Netlify deploy preview, form detection, synthetic storage, Gmail delivery and production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
+
+Visual receipts were generated locally under `/tmp` and are not committed. No form submission, push, merge or deploy occurred during this implementation.
+
 ## Checks Run
 
 - Independent code review of qualifier routing, Netlify submission and route-review handoff.
