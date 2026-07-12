@@ -1,8 +1,28 @@
 # Proof Systems Website Testing
 
-Updated: 2026-07-11
+Updated: 2026-07-12
 
 ## Checks Run
+
+- Independent code review of qualifier routing, Netlify submission and route-review handoff.
+- URL-data regression: route-review links contain only `route`; contact and workflow fields are absent.
+- Consent/submission copy and privacy-link review.
+- Public-copy scan for internal planning wording, empty-library claims and the unsupported 4,400+ hours claim.
+- Form-schema check against the Netlify V1 field list.
+- Synthetic proof-asset inspection and metadata/source review.
+- Local route, link, HTML, JavaScript, desktop/mobile and diff checks (see current command/test receipts below).
+
+## 12 July Results
+
+- Desktop viewport (1440×900): qualifier rendered without horizontal overflow.
+- Mobile viewport (390×844): qualifier and route review rendered without horizontal overflow.
+- Synthetic diagnostic scenario routed correctly; local mode made no submission and the handoff URL was exactly `checkout.html?route=paid`.
+- Same-session checkout recovered the synthetic handoff details without placing them in the URL.
+- Local-link scan: no broken internal targets.
+- Form schema: all required fields present, with no extras.
+- JavaScript syntax checks and `git diff --check`: passed.
+- Sensitive URL/public-copy scan: no contact/workflow query fields, 4,400+ claim or internal launch note remained in public HTML.
+- Independent close-out review corrected stale public wording on the route page: live submissions are acknowledged as sent for manual review, while local previews are explicitly described as unsent; neither path claims that payment or booking occurred.
 
 - Local route regression in Chrome for all five route types:
   diagnostic, video, product/process, call, training.
@@ -27,13 +47,15 @@ Updated: 2026-07-11
   `form-name`, honeypot, schema-aligned field names.
 - Local `file://` usage does not submit data anywhere.
 
-## Not Yet Tested
+## Not Yet Tested / Approval Gated
 
 - Real Netlify submission storage on the live or preview site.
 - Real Gmail notification delivery from the current Netlify setup.
 - Netlify dashboard export behaviour with actual dummy submissions.
 - Whether the notification should go to one inbox or multiple recipients.
-- The privacy, URL-data, public-copy and proof-claim fixes listed in `CODEX-BUNDLE.md` have not yet been implemented or tested.
+- Professional legal review of the privacy wording.
+- Mat's commercial-tone and visual approval.
+- Real Netlify preview/live storage and Gmail delivery; use `netlify-test-recipe.md` only after explicit approval.
 
 ## Close-Out Preparation Check
 

@@ -1,13 +1,18 @@
 # Proof Systems Website Task State
 
-Updated: 2026-07-11
+Updated: 2026-07-12
 
 ## Current State
 
 - `AGE-341` is in `Agent Review`.
 - `AGE-342` is in `Agent Review`.
-- The website qualifier and route review are implemented locally.
+- The website qualifier and route review are implemented locally and independently reviewed under `AGE-408`.
 - Netlify Forms wiring is now present in the local qualifier without any live deploy.
+- Sensitive workflow/contact answers no longer appear in route-review URLs; temporary same-session storage supplies the local review page.
+- Submission/consent copy now states that the website action sends the enquiry.
+- A proportionate privacy notice, response SOP, minimum CRM handoff and gated Netlify test recipe now exist.
+- The unsupported 4,400+ hours claim was removed; empty video routes are honestly labelled as planned guides.
+- A fully synthetic proof visual and safety register were created for `AGE-344`.
 - The Growth Engine has been cleaned up and launch acceptance is now tracked by `AGE-408`.
 - A complete safe publish-preparation starter prompt is available in `CODEX-BUNDLE.md`.
 
@@ -22,11 +27,10 @@ Updated: 2026-07-11
 
 ## Next Steps
 
-1. Start a fresh Codex chat in this repo using `CODEX-BUNDLE.md`.
-2. Independently review AGE-341/342 and address the privacy, URL-data, proof and public-copy gaps before any live test.
-3. Complete AGE-16 and define the minimum AGE-17 handoff without sending or automating anything.
-4. In AGE-343, prepare the approved Netlify preview/live test recipe.
-5. Stop for Mat's approval before any deploy, live dummy submission, Gmail notification test or publication.
+1. Mat reviews the commercial tone, privacy wording and synthetic proof visual.
+2. Mat chooses Netlify deploy preview or live and confirms the notification inbox.
+3. After explicit approval, run `netlify-test-recipe.md` with synthetic data and record storage/Gmail evidence on `AGE-343`.
+4. Keep `AGE-341` and `AGE-342` in Agent Review; keep `AGE-343` out of Agent Done until live-path evidence exists.
 
 ## Queue
 

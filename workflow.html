@@ -293,7 +293,7 @@
         <section class="hero">
             <div class="eyebrow">Workflow fit</div>
             <h1>Tell me what is costing time.</h1>
-            <p class="lead">Answer the workflow questions, leave contact details, and we will steer the problem towards the right route: diagnostic request, videos, a 15-minute fit call, team training, or a product/process route. The local file does not send data; the Netlify version submits only when someone confirms a route.</p>
+            <p class="lead">Answer the workflow questions, leave contact details, and we will steer the problem towards the right route: diagnostic request, practical guidance, a 15-minute fit call, team training, or a product/process route. The local file does not send data; on the website, selecting “Submit and check the route” sends the enquiry to Proof Systems.</p>
         </section>
 
         <section class="grid">
@@ -370,12 +370,12 @@
                             </div>
                             <label class="checkbox-field full-span" for="consent">
                                 <input id="consent" name="consent_contact" type="checkbox" value="yes" required>
-                                <span>I am happy for Proof Systems to contact me about this workflow and relevant next steps.</span>
+                                <span>I understand that submitting sends these answers to Proof Systems, and I agree to be contacted about this workflow and relevant next steps. See the <a href="privacy.html">privacy notice</a>.</span>
                             </label>
                         </div>
                         <div class="actions">
-                            <button type="submit" class="button button-primary">Check the route</button>
-                            <a href="video-series.html" class="button button-secondary">Browse videos</a>
+                            <button type="submit" class="button button-primary">Submit and check the route</button>
+                            <a href="video-series.html" class="button button-secondary">See planned guides</a>
                         </div>
                         <div id="form-status" class="form-status hidden" role="status" aria-live="polite"></div>
                     </form>
@@ -393,7 +393,7 @@
                     </div>
 
                     <div class="stack" id="default-state">
-                        <p class="small">Once you submit the local form, we will score the answers and point you to a diagnostic request, videos, a 15-minute fit call, team training, or a product/process route.</p>
+                        <p class="small">Once you submit the qualifier, we will score the answers and point you to a diagnostic request, videos, a 15-minute fit call, team training, or a product/process route. Local preview use does not send anything.</p>
                         <ul>
                             <li><strong>Diagnostic:</strong> when the workflow looks worth mapping properly before a build decision.</li>
                             <li><strong>Videos:</strong> when a short explanation or practical example should come first.</li>
@@ -492,23 +492,16 @@
         let latestRoute = null;
         let lastSubmittedRoute = null;
 
-        function checkoutLink(route, data) {
-            const params = new URLSearchParams({
-                route,
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-                company: data.company,
-                role: data.role,
-                sector: data.sector,
-                desired: data.desired,
-                help: data.help,
-                outcome: data.outcome,
-                context: data.context,
-                hours: data.hours,
-            });
+        function checkoutLink(route) {
+            return `checkout.html?route=${encodeURIComponent(route)}`;
+        }
 
-            return `checkout.html?${params.toString()}`;
+        function saveLocalHandoff(data) {
+            try {
+                sessionStorage.setItem('proofSystemsQualifier', JSON.stringify(data));
+            } catch (error) {
+                // The route review remains usable without browser storage.
+            }
         }
 
         function normalise(text) {
@@ -813,6 +806,7 @@
 
             latestData = data;
             latestRoute = route;
+            saveLocalHandoff(data);
             updateNetlifyFields(route);
 
             summary.textContent = [
@@ -842,21 +836,21 @@
                 paidExplanation.textContent = 'There are enough custom-fit signals here to justify mapping the workflow properly. The diagnostic should show what to automate, what not to automate, and what the first sensible build should be.';
                 paidSuggestions.innerHTML = renderList(items);
                 paidState.classList.remove('hidden');
-                paidMail.href = checkoutLink('paid', data);
-                productMail.href = checkoutLink('paid', data);
-                videoCall.href = checkoutLink('call', data);
-                callMail.href = checkoutLink('call', data);
-                trainingMail.href = checkoutLink('training', data);
+                paidMail.href = checkoutLink('paid');
+                productMail.href = checkoutLink('paid');
+                videoCall.href = checkoutLink('call');
+                callMail.href = checkoutLink('call');
+                trainingMail.href = checkoutLink('training');
             } else if (route === 'product') {
                 const items = productRecommendations(combined);
                 productExplanation.textContent = 'This looks like a better fit for an existing product or process change first. If that still leaves gaps, a diagnostic can map what should stay product-led and what should become custom.';
                 productSuggestions.innerHTML = renderList(items);
                 productState.classList.remove('hidden');
-                paidMail.href = checkoutLink('product', data);
-                productMail.href = checkoutLink('product', data);
-                videoCall.href = checkoutLink('call', data);
-                callMail.href = checkoutLink('call', data);
-                trainingMail.href = checkoutLink('training', data);
+                paidMail.href = checkoutLink('product');
+                productMail.href = checkoutLink('product');
+                videoCall.href = checkoutLink('call');
+                callMail.href = checkoutLink('call');
+                trainingMail.href = checkoutLink('training');
             } else if (route === 'call') {
                 callExplanation.textContent = 'This is not a free diagnostic. It is a 15-minute fit call to understand the shape of the problem and point you to the right next step.';
                 callSuggestions.innerHTML = renderList([
@@ -864,11 +858,11 @@
                     { title: 'Useful next step', reason: 'If there is enough substance, the call can point towards diagnostic, training, videos or a product/process route.' }
                 ]);
                 callState.classList.remove('hidden');
-                paidMail.href = checkoutLink('paid', data);
-                productMail.href = checkoutLink('product', data);
-                videoCall.href = checkoutLink('call', data);
-                callMail.href = checkoutLink('call', data);
-                trainingMail.href = checkoutLink('training', data);
+                paidMail.href = checkoutLink('paid');
+                productMail.href = checkoutLink('product');
+                videoCall.href = checkoutLink('call');
+                callMail.href = checkoutLink('call');
+                trainingMail.href = checkoutLink('training');
             } else if (route === 'training') {
                 trainingExplanation.textContent = 'This looks more like a team capability need than one workflow diagnostic. The starting offer is a remote half-day practical AI systems workshop, followed by a fit call to confirm the right shape.';
                 trainingSuggestions.innerHTML = renderList([
@@ -876,21 +870,21 @@
                     { title: 'Fit call included', reason: 'Every training enquiry gets a 15-minute fit call before anything is scoped.' }
                 ]);
                 trainingState.classList.remove('hidden');
-                paidMail.href = checkoutLink('paid', data);
-                productMail.href = checkoutLink('product', data);
-                videoCall.href = checkoutLink('call', data);
-                callMail.href = checkoutLink('call', data);
-                trainingMail.href = checkoutLink('training', data);
+                paidMail.href = checkoutLink('paid');
+                productMail.href = checkoutLink('product');
+                videoCall.href = checkoutLink('call');
+                callMail.href = checkoutLink('call');
+                trainingMail.href = checkoutLink('training');
             } else {
                 const items = videoRecommendations(combined);
                 videoExplanation.textContent = 'A short video is probably the cleanest next step because it will show the thinking before you decide on product, process change or build.';
                 videoSuggestions.innerHTML = renderList(items);
                 videoState.classList.remove('hidden');
-                paidMail.href = checkoutLink('video', data);
-                productMail.href = checkoutLink('video', data);
-                videoCall.href = checkoutLink('call', data);
-                callMail.href = checkoutLink('call', data);
-                trainingMail.href = checkoutLink('training', data);
+                paidMail.href = checkoutLink('video');
+                productMail.href = checkoutLink('video');
+                videoCall.href = checkoutLink('call');
+                callMail.href = checkoutLink('call');
+                trainingMail.href = checkoutLink('training');
             }
 
             await postLead(route);
