@@ -282,9 +282,9 @@
                         <a class="button button-secondary" href="workflow.html">Back to qualifier</a>
                     </div>
 
-                    <div class="warning" id="config-warning">This route is not wired yet. Before launch, connect the approved lead capture or booking/payment step from the next implementation issue.</div>
+                    <div class="warning" id="config-warning">This route does not book or take payment automatically. Proof Systems will review a live enquiry and respond manually.</div>
 
-                    <p class="note">For now, this page is a local handoff check. No payment, booking or external submission happens from this static version.</p>
+                    <p class="note" id="handoff-note">No payment or booking happens on this page.</p>
                 </div>
             </div>
 
@@ -322,17 +322,23 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const route = params.get('route') || 'paid';
-        const name = params.get('name') || '—';
-        const email = params.get('email') || '—';
-        const phone = params.get('phone') || '—';
-        const company = params.get('company') || '—';
-        const role = params.get('role') || '—';
-        const sector = params.get('sector') || '—';
-        const desired = params.get('desired') || '—';
-        const help = params.get('help') || '—';
-        const outcome = params.get('outcome') || '—';
-        const context = params.get('context') || '—';
-        const hours = params.get('hours') || '—';
+        let handoff = {};
+        try {
+            handoff = JSON.parse(sessionStorage.getItem('proofSystemsQualifier') || '{}');
+        } catch (error) {
+            handoff = {};
+        }
+        const name = handoff.name || '—';
+        const email = handoff.email || '—';
+        const phone = handoff.phone || '—';
+        const company = handoff.company || '—';
+        const role = handoff.role || '—';
+        const sector = handoff.sector || '—';
+        const desired = handoff.desired || '—';
+        const help = handoff.help || '—';
+        const outcome = handoff.outcome || '—';
+        const context = handoff.context || '—';
+        const hours = handoff.hours || '—';
 
         const routeContent = {
             paid: {
@@ -430,6 +436,12 @@
         const stripeUrl = window.STRIPE_CHECKOUT_URL || '';
         const handoffButton = document.getElementById('handoff-button');
         const configWarning = document.getElementById('config-warning');
+        const handoffNote = document.getElementById('handoff-note');
+        const isLocalPreview = window.location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+        handoffNote.textContent = isLocalPreview
+            ? 'This is a local preview. No enquiry, payment or booking has been sent.'
+            : 'If you arrived here after submitting the live qualifier, your enquiry has been sent for manual review. No payment or booking has been taken.';
 
         if (route === 'paid' && stripeUrl) {
             handoffButton.href = stripeUrl;
