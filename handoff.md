@@ -6,9 +6,9 @@ Updated: 2026-07-12
 
 Continue under `AGE-424` from branch `agent/mac-mini/age-424-reduced-founding-cohort-site`.
 
-The branch reduces the broad live consultancy site to the bounded founding-cohort proposition. It is pushed at `542a145`, but no Netlify preview, form submission, merge or production change has occurred.
+The branch reduces the broad live consultancy site to the bounded founding-cohort proposition. It is pushed at `5dfeb5a`; a disposable Netlify preview and one synthetic submission have now passed, but no merge or production change has occurred.
 
-The implementation and independent review are complete. The only merge gate is the approved Netlify preview: confirm form detection, submit one safe synthetic application, verify Netlify storage and Gmail notification, then delete the test record and email. No connected Netlify preview mechanism was available from the current runtime, and the branch push did not expose an automatic preview URL.
+The implementation, independent review and temporary Netlify form-storage test are complete. The temporary project `phenomenal-marzipan-faf430` detected the correct form, displayed the intended success state and stored one safe synthetic application without putting answers in the URL. The disposable project had no email notification configured, so that part was not repeated; the production notification flow was previously verified on 12 July 2026. Delete the temporary record and project only after action-time confirmation, then obtain explicit production approval before merge/deploy.
 
 ## Source of truth
 
@@ -25,7 +25,7 @@ Proof Systems is recruiting four SMEs for a free, bounded workflow diagnostic. E
 
 ## Safety and approval
 
-Do not deploy, merge an auto-deploying branch, submit even synthetic information externally, contact prospects or change Netlify settings without the applicable explicit approval. A Netlify preview should be the next external gate.
+Do not deploy, merge an auto-deploying branch, contact prospects or change production Netlify settings without the applicable explicit approval. The next external gates are irreversible temporary-preview clean-up and, separately, Mat's production approval.
 
 ## Rollback
 

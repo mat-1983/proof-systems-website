@@ -14,9 +14,12 @@ Updated: 2026-07-12
 - PASS — public HTML contains no £350 price, £1.6m claim, 4,400+ claim, video-first route, training route, fit-call route, product/process route, `not wired` wording or `local only` wording.
 - PASS — `/video-series` is an accessible holding page with no timed redirect; the former `/checkout` route points to the founding application without reviving the old offer catalogue.
 - PASS — `git diff --check` is clean.
-- NOT RUN (approval-gated) — Netlify deploy preview, form detection, synthetic storage, Gmail delivery and production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
+- PASS — an approval-gated temporary Netlify Drop preview detected `proof-systems-qualifier`, accepted one clearly synthetic application and stored one submission against the correct form.
+- PASS — the visitor success state appeared in place, and the browser URL remained `workflow.html` with no application answers in it.
+- NOT CONFIGURED — the temporary project had no form-submission email notification, so Gmail delivery was not exercised. Production notification wiring is unchanged and was previously verified on 12 July 2026.
+- NOT RUN (approval-gated) — production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
 
-Visual receipts were generated locally under `/tmp` and are not committed. No form submission, merge or deploy occurred during this implementation. The reviewed feature branch was pushed at `542a145`.
+Visual receipts were generated locally under `/tmp` and are not committed. One approved synthetic submission was made to the disposable preview only; no merge or production deploy occurred. The independently reviewed feature branch was pushed at `5dfeb5a` before this acceptance note.
 
 ## AGE-424 independent review
 
@@ -27,7 +30,7 @@ Visual receipts were generated locally under `/tmp` and are not committed. No fo
 - PASS — exactly two internal operational examples, both labelled as non-customer case studies.
 - PASS — no £350, paid-diagnostic, fundraising, unavailable-video, training, product/process or fit-call promotion remains.
 - CORRECTED — removed user-visible “Local preview only” wording, the timed video-page redirect, inconsistent CTA labels and the stale paid-route reminder.
-- BLOCKED — no connected Netlify preview tool or automatic branch deployment was available after the feature-branch push. Preview form detection, synthetic storage and Gmail delivery remain required before merge.
+- RESOLVED — a temporary Netlify Drop project was created with approval, form detection was enabled, and preview form storage passed. The temporary project and its synthetic record remain pending explicitly confirmed deletion.
 
 ## Checks Run
 
@@ -94,6 +97,16 @@ Visual receipts were generated locally under `/tmp` and are not committed. No fo
 
 - The commercial feel may still be slightly heavy if the contact capture feels too long in practice.
 - Live notification wiring could still expose an environment-specific quirk that local simulation cannot catch.
+
+## AGE-424 temporary Netlify acceptance — 12 July 2026
+
+- PASS — temporary preview `phenomenal-marzipan-faf430.netlify.app` served the reviewed reduced-site package without changing `proofsystems.co.uk`.
+- PASS — Netlify detected one active form named `proof-systems-qualifier` after form detection was enabled and the package was redeployed.
+- PASS — one clearly synthetic founding-cohort application produced the intended `Application received` visitor state.
+- PASS — the success state did not add name, email, company, workflow or outcome data to the URL.
+- PASS — the temporary Netlify dashboard showed one submission and the correct latest-submission time.
+- NOT CONFIGURED — the disposable preview project had no outgoing form email notification; no notification setting was copied from or added to production.
+- PENDING CLEAN-UP — delete the synthetic record and temporary project after action-time confirmation. This is irreversible and does not affect the production project.
 
 ## Live production acceptance — 12 July 2026
 
