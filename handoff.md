@@ -28,9 +28,13 @@ The next approved step is human-gated:
 
 ## Open Decisions
 
-- Which notification email address should receive Netlify form alerts.
-- Whether the first live test should happen on a Netlify deploy preview or the existing live site.
 - Whether any copy should be softened if Mat feels the qualifier is still too heavy.
+
+## Live deployment completed — 12 July 2026
+
+The reviewed website is live at `proofsystems.co.uk`. Netlify form detection is enabled, `proof-systems-qualifier` is registered, and notifications are configured for the approved Proof Systems inbox. One synthetic diagnostic submission passed browser success, storage-schema and email-delivery checks; the synthetic Netlify record and email were then deleted. The accidental temporary Netlify project created during manual upload was also deleted. No real customer information was used.
+
+The manual lead handoff is now fully specified in `crm-handoff.md` and `lead-response-sop.md`: Netlify holds the short-lived source submission, restricted Notion holds identity/contact and owner, and the AGE-421 workbook holds pseudonymous commercial stage and evidence. All five live routes, response deadlines and stalled-lead controls are covered. No live automation or external response was created.
 
 ## Follow-On Issues
 

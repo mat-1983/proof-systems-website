@@ -27,10 +27,16 @@ Updated: 2026-07-12
 
 ## Next Steps
 
-1. Mat reviews the commercial tone, privacy wording and synthetic proof visual.
-2. Mat chooses Netlify deploy preview or live and confirms the notification inbox.
-3. After explicit approval, run `netlify-test-recipe.md` with synthetic data and record storage/Gmail evidence on `AGE-343`.
-4. Keep `AGE-341` and `AGE-342` in Agent Review; keep `AGE-343` out of Agent Done until live-path evidence exists.
+1. [x] Mat reviewed the commercial tone, privacy wording and synthetic proof visual.
+2. [x] Mat chose live deployment and confirmed the notification inbox.
+3. [x] Ran `netlify-test-recipe.md` with synthetic data and recorded storage/Gmail evidence for `AGE-343`.
+4. Keep `AGE-341` and `AGE-342` in Agent Review; AGE-343 live-path acceptance is complete.
+
+## Live Result
+
+The reviewed website is live at `proofsystems.co.uk`. Netlify form detection is enabled, `proof-systems-qualifier` is registered, and the approved inbox receives form notifications. One synthetic diagnostic enquiry passed browser success, stored-schema and email-delivery checks; its Netlify record and email were then deleted. The accidental temporary Netlify project created during upload was permanently deleted.
+
+The V1 manual lead handoff is also complete: Netlify → restricted Notion identity record → pseudonymous AGE-421 workbook row, with five exact route mappings, one owner/next action/due date, duplicate prevention and stalled-lead controls.
 
 ## Queue
 

@@ -67,3 +67,24 @@ Updated: 2026-07-12
 
 - The commercial feel may still be slightly heavy if the contact capture feels too long in practice.
 - Live notification wiring could still expose an environment-specific quirk that local simulation cannot catch.
+
+## Live production acceptance — 12 July 2026
+
+- PASS — the reviewed seven-file site package was deployed to the existing `proofsystems.co.uk` Netlify project.
+- PASS — public home, workflow and privacy routes serve the reviewed content; Netlify's extensionless-link normalisation is the only observed source transformation.
+- PASS — form detection was enabled and a subsequent production deploy registered `proof-systems-qualifier` as one active form.
+- PASS — the approved form-submission email notification was configured for the privately confirmed Proof Systems inbox.
+- PASS — one synthetic diagnostic-route submission displayed `Route saved` and kept workflow/contact answers out of the browser URL.
+- PASS — Netlify stored route key/label, lead state, page source, timestamp, workflow/outcome/context, hours, desired help, contact/company/role/sector and consent as expected.
+- PASS — the matching email notification arrived at 18:08 with the correct route and submission timestamp.
+- PASS — the synthetic Netlify submission and notification email were deleted after verification; Netlify reported no remaining verified submissions.
+- CLEAN-UP — the accidental temporary Netlify project `shimmering-mandazi-0fbee6` was permanently deleted; only `proofsystems.co.uk` remains.
+
+## Lead handoff documentation verification — 12 July 2026
+
+- PASS — `crm-handoff.md` maps Netlify submissions into the restricted Notion identity register and the pseudonymous AGE-421 commercial register without duplicating Linear.
+- PASS — all five live route/state pairs match `workflow.html` exactly.
+- PASS — duplicate prevention, one-owner/one-next-action rules, next-working-day review, 3/7-working-day follow-ups and overdue/deferred controls are explicit.
+- PASS — `lead-response-sop.md` separates website contact permission from recording and AI-processing consent.
+- PASS — synthetic test instructions require removal of test records and prohibit live submission without separate approval.
+- PASS — `git diff --check` is clean.
