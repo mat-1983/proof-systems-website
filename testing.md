@@ -108,6 +108,17 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 - NOT CONFIGURED — the disposable preview project had no outgoing form email notification; no notification setting was copied from or added to production.
 - PENDING CLEAN-UP — delete the synthetic record and temporary project after action-time confirmation. This is irreversible and does not affect the production project.
 
+## AGE-424 credibility revision — 12 July 2026
+
+- PASS — the temporary preview now explains Mat's 16-year progression from operator and managing director to full-time systems, software and AI work during the last 18 months.
+- PASS — four public-safe capability groups cover workforce operations, commercial control, finance/reporting and business development without presenting them as separate Proof Systems offers.
+- PASS — two detailed proof examples use systems confirmed as deployed in live internal operations: workforce/labour control and document processing.
+- PASS — the copy states that the examples are anonymised internal production systems rather than external customer case studies.
+- PASS — no employer name, client/project/supplier details, operational figures, hours-saved claim, screenshots or deployment platform is published.
+- PASS — systems still under development or controlled validation are not presented as completed outcomes.
+- PASS — revised temporary preview served the new credibility section with no horizontal overflow at the available desktop viewport; responsive rules retain the established one-column mobile layout.
+- PASS — `git diff --check` and public-copy safety scans are clean.
+
 ## Live production acceptance — 12 July 2026
 
 - PASS — the reviewed seven-file site package was deployed to the existing `proofsystems.co.uk` Netlify project.
