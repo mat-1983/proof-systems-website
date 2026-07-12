@@ -2,13 +2,13 @@
 
 Updated: 2026-07-12
 
-## Resume here
+## Current state
 
-Continue under `AGE-424` from branch `agent/mac-mini/age-424-reduced-founding-cohort-site`.
+`AGE-424` is complete and shipped.  The reviewed founding-cohort site was merged to `main` at `e1b697b`, pushed and deployed to `proofsystems.co.uk` on 12 July 2026.
 
-The branch reduces the broad live consultancy site to the bounded founding-cohort proposition. It is pushed at `5dfeb5a`; a disposable Netlify preview and one synthetic submission have now passed, but no merge or production change has occurred.
+The live credibility story covers 16 years of operator-led systems work, full-time software and AI focus since February 2025, four anonymised capability groups and two confirmed production examples.  It does not name Pantera or publish figures, savings claims or sensitive evidence pending permission.
 
-The implementation, independent review and temporary Netlify form-storage test are complete. After Mat's preview review, the homepage credibility story was strengthened without widening the founding-cohort offer: it now covers 16 years of operator-led systems work, the last 18 months of full-time software/AI focus, four anonymised capability groups and two confirmed production examples. It does not name the operating business or publish figures, savings claims or sensitive evidence pending permission. The temporary project `phenomenal-marzipan-faf430` contains the revised site, detected the correct form, displayed the intended success state and stored one safe synthetic application without putting answers in the URL. The disposable project had no email notification configured, so that part was not repeated; the production notification flow was previously verified on 12 July 2026. Delete the temporary record and project only after action-time confirmation, then obtain explicit production approval before merge/deploy.
+The temporary project `phenomenal-marzipan-faf430` still contains one safe synthetic application.  Delete the record and disposable project only after action-time confirmation.  The production form-notification flow remains configured and was verified earlier on 12 July 2026; no additional live synthetic submission was sent during this release.
 
 ## Source of truth
 
@@ -25,7 +25,7 @@ Proof Systems is recruiting four SMEs for a free, bounded workflow diagnostic. E
 
 ## Safety and approval
 
-Do not deploy, merge an auto-deploying branch, contact prospects or change production Netlify settings without the applicable explicit approval. The next external gates are irreversible temporary-preview clean-up and, separately, Mat's production approval.
+Do not contact prospects, publish named or quantified Pantera evidence, change production Netlify settings or send a live synthetic submission without the applicable explicit approval.  The only AGE-424 clean-up gate is irreversible deletion of the temporary preview project and its synthetic record.
 
 ## Rollback
 

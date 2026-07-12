@@ -4,9 +4,9 @@ Updated: 2026-07-12
 
 ## AGE-424 implementation state
 
-The reduced founding-cohort website is implemented locally on `agent/mac-mini/age-424-reduced-founding-cohort-site`. It has not been pushed, merged, previewed on Netlify or deployed.
+Complete and live.  The reviewed founding-cohort website was merged to `main` at `e1b697b`, pushed to GitHub and deployed to `proofsystems.co.uk` on 12 July 2026.
 
-The production version that preceded this reduction is preserved by annotated Git tag `published/full-offer-v1-2026-07-12` at `f2d2f25`.
+The broader production version that preceded this reduction remains preserved by annotated Git tag `published/full-offer-v1-2026-07-12` at `f2d2f25`.
 
 ## Implemented
 
@@ -22,14 +22,17 @@ The production version that preceded this reduction is preserved by annotated Gi
 - `/video-series` deliberately holds briefly and returns visitors to the homepage.
 - Former `/checkout` route explains the launch change and links to the application.
 
-## Approval boundary
+## Release evidence
 
-Production remains unchanged. Mat must approve a reviewed Netlify preview before any merge or production deployment.
+- Mat approved the revised temporary preview and production promotion.
+- The live homepage contains the four-place founding proposition, the 16-year operator credibility story and the February 2025 full-time systems/AI date.
+- Live public copy contains no £350 offer, paid-diagnostic language, em dash or old “last 18 months” wording.
+- The live application retains eight substantive visitor fields and the `proof-systems-qualifier` Netlify form identity.
+- The existing production form-notification configuration is unchanged and was already verified end to end earlier on 12 July 2026.
+- No additional live synthetic submission was sent during this release.
 
-## Next steps
+## Follow-on actions
 
-1. Independently review the branch and local test evidence.
-2. With explicit approval, push the branch and create a Netlify deploy preview.
-3. Use synthetic data only to verify form detection, storage and notification delivery.
-4. Present desktop/mobile preview, copy and form evidence to Mat.
-5. Merge or deploy only after Mat explicitly approves production replacement.
+- Obtain separate permission before naming Pantera or publishing quantified operational evidence.
+- Delete the disposable Netlify project `phenomenal-marzipan-faf430` and its one synthetic submission only after action-time confirmation.
+- Use the immutable tag above if the broader predecessor site is needed for reference or restoration.

@@ -17,7 +17,7 @@ Updated: 2026-07-12
 - PASS — an approval-gated temporary Netlify Drop preview detected `proof-systems-qualifier`, accepted one clearly synthetic application and stored one submission against the correct form.
 - PASS — the visitor success state appeared in place, and the browser URL remained `workflow.html` with no application answers in it.
 - NOT CONFIGURED — the temporary project had no form-submission email notification, so Gmail delivery was not exercised. Production notification wiring is unchanged and was previously verified on 12 July 2026.
-- NOT RUN (approval-gated) — production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
+- RESOLVED — Mat approved the production replacement; the reviewed site was merged and deployed on 12 July 2026.
 
 Visual receipts were generated locally under `/tmp` and are not committed. One approved synthetic submission was made to the disposable preview only; no merge or production deploy occurred. The independently reviewed feature branch was pushed at `5dfeb5a` before this acceptance note.
 
@@ -110,7 +110,7 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 
 ## AGE-424 credibility revision — 12 July 2026
 
-- PASS — the temporary preview now explains Mat's 16-year progression from operator and managing director to full-time systems, software and AI work during the last 18 months.
+- PASS — the temporary preview now explains Mat's 16-year progression from operator and managing director to full-time systems, software and AI work since February 2025.
 - PASS — four public-safe capability groups cover workforce operations, commercial control, finance/reporting and business development without presenting them as separate Proof Systems offers.
 - PASS — two detailed proof examples use systems confirmed as deployed in live internal operations: workforce/labour control and document processing.
 - PASS — the copy states that the examples are anonymised internal production systems rather than external customer case studies.
@@ -120,6 +120,21 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 - PASS — `git diff --check` and public-copy safety scans are clean.
 
 ## Live production acceptance — 12 July 2026
+
+### AGE-424 founding-cohort release
+
+- PASS — Mat approved the final temporary preview and production promotion.
+- PASS — feature branch head `8666119` was merged to `main` at `e1b697b` and pushed to GitHub.
+- PASS — the reviewed package was deployed to the existing production Netlify project `bespoke-snickerdoodle-6e4f15`.
+- PASS — the live homepage contains the founding proposition and “Since February 2025” credibility wording.
+- PASS — live public copy contains no £350, paid-diagnostic or credit-against-build language, no em dash and no old “last 18 months” wording.
+- PASS — exactly two detailed operational proof examples remain.
+- PASS — rendered sentence boundaries use a non-breaking space followed by a normal space; the checked live boundary resolves to character codes `160, 32`.
+- PASS — the live application has eight substantive visitor fields, method POST, form identity `proof-systems-qualifier`, no answers in the URL and no horizontal overflow.
+- PASS — the existing production form-notification configuration was left unchanged; its storage and Gmail path was verified earlier on 12 July 2026.
+- NOT REPEATED — no additional synthetic application was submitted to production during this release.
+
+### Earlier production acceptance
 
 - PASS — the reviewed seven-file site package was deployed to the existing `proofsystems.co.uk` Netlify project.
 - PASS — public home, workflow and privacy routes serve the reviewed content; Netlify's extensionless-link normalisation is the only observed source transformation.
