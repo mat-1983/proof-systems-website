@@ -10,13 +10,24 @@ Updated: 2026-07-12
 - PASS — homepage and application rendered in headless Chrome at desktop and narrow viewport sizes; no layout defect was found in the desktop review and defensive narrow-screen constraints are present.
 - PASS — the application has exactly eight substantive visitor fields: name, business email, company, decision role, workflow, desired outcome, optional hours and contact consent.
 - PASS — the existing Netlify form name `proof-systems-qualifier`, honeypot and hidden operational fields remain present.
-- PASS — local/localhost submission is explicitly intercepted and reports that nothing was sent.
+- PASS — local/localhost submission is explicitly intercepted without sending data and uses customer-safe wording.
 - PASS — public HTML contains no £350 price, £1.6m claim, 4,400+ claim, video-first route, training route, fit-call route, product/process route, `not wired` wording or `local only` wording.
-- PASS — `/video-series` intentionally holds then returns to the homepage; the former `/checkout` route explains the change and points to the application.
+- PASS — `/video-series` is an accessible holding page with no timed redirect; the former `/checkout` route points to the founding application without reviving the old offer catalogue.
 - PASS — `git diff --check` is clean.
 - NOT RUN (approval-gated) — Netlify deploy preview, form detection, synthetic storage, Gmail delivery and production replacement. Follow `netlify-test-recipe.md` only after explicit approval.
 
-Visual receipts were generated locally under `/tmp` and are not committed. No form submission, push, merge or deploy occurred during this implementation.
+Visual receipts were generated locally under `/tmp` and are not committed. No form submission, merge or deploy occurred during this implementation. The reviewed feature branch was pushed at `542a145`.
+
+## AGE-424 independent review
+
+- PASS — annotated rollback tag `published/full-offer-v1-2026-07-12` resolves to production baseline `f2d2f25` and is pushed.
+- PASS — independent desktop (1440px) and mobile (390px) renders showed no horizontal overflow.
+- PASS — exactly eight substantive application fields; form name, honeypot and operational hidden fields remain present.
+- PASS — privacy wording matches the reduced fields and purpose; form answers remain out of URLs.
+- PASS — exactly two internal operational examples, both labelled as non-customer case studies.
+- PASS — no £350, paid-diagnostic, fundraising, unavailable-video, training, product/process or fit-call promotion remains.
+- CORRECTED — removed user-visible “Local preview only” wording, the timed video-page redirect, inconsistent CTA labels and the stale paid-route reminder.
+- BLOCKED — no connected Netlify preview tool or automatic branch deployment was available after the feature-branch push. Preview form detection, synthetic storage and Gmail delivery remain required before merge.
 
 ## Checks Run
 

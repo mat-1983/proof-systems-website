@@ -6,7 +6,9 @@ Updated: 2026-07-12
 
 Continue under `AGE-424` from branch `agent/mac-mini/age-424-reduced-founding-cohort-site`.
 
-The branch reduces the broad live consultancy site to the bounded founding-cohort proposition. It is local only: no branch push, Netlify preview, form submission, merge or production change has occurred.
+The branch reduces the broad live consultancy site to the bounded founding-cohort proposition. It is pushed at `542a145`, but no Netlify preview, form submission, merge or production change has occurred.
+
+The implementation and independent review are complete. The only merge gate is the approved Netlify preview: confirm form detection, submit one safe synthetic application, verify Netlify storage and Gmail notification, then delete the test record and email. No connected Netlify preview mechanism was available from the current runtime, and the branch push did not expose an automatic preview URL.
 
 ## Source of truth
 
