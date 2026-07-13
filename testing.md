@@ -1,6 +1,6 @@
 # Proof Systems Website Testing
 
-Updated: 2026-07-12
+Updated: 2026-07-13
 
 ## AGE-424 reduced founding-cohort branch — 12 July 2026
 
@@ -30,7 +30,7 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 - PASS — exactly two internal operational examples, both labelled as non-customer case studies.
 - PASS — no £350, paid-diagnostic, fundraising, unavailable-video, training, product/process or fit-call promotion remains.
 - CORRECTED — removed user-visible “Local preview only” wording, the timed video-page redirect, inconsistent CTA labels and the stale paid-route reminder.
-- RESOLVED — a temporary Netlify Drop project was created with approval, form detection was enabled, and preview form storage passed. The temporary project and its synthetic record remain pending explicitly confirmed deletion.
+- RESOLVED — a temporary Netlify Drop project was created with approval, form detection was enabled, and preview form storage passed. The temporary project and its synthetic record were permanently deleted after explicit confirmation.
 
 ## Checks Run
 
@@ -106,7 +106,7 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 - PASS — the success state did not add name, email, company, workflow or outcome data to the URL.
 - PASS — the temporary Netlify dashboard showed one submission and the correct latest-submission time.
 - NOT CONFIGURED — the disposable preview project had no outgoing form email notification; no notification setting was copied from or added to production.
-- PENDING CLEAN-UP — delete the synthetic record and temporary project after action-time confirmation. This is irreversible and does not affect the production project.
+- PASS — the synthetic record and temporary project were permanently deleted after action-time confirmation. The production project was unaffected.
 
 ## AGE-424 credibility revision — 12 July 2026
 
@@ -145,6 +145,15 @@ Visual receipts were generated locally under `/tmp` and are not committed. One a
 - PASS — the matching email notification arrived at 18:08 with the correct route and submission timestamp.
 - PASS — the synthetic Netlify submission and notification email were deleted after verification; Netlify reported no remaining verified submissions.
 - CLEAN-UP — the accidental temporary Netlify project `shimmering-mandazi-0fbee6` was permanently deleted; only `proofsystems.co.uk` remains.
+
+## Final homepage refinement — 13 July 2026
+
+- PASS — removed only the note stating that newer finance and commercial systems remained under development and validation.
+- PASS — `git diff --check` is clean and the removed wording is absent from the deployment package.
+- PASS — Mat deployed the updated seven-file package to the existing production Netlify project.
+- PASS — the live homepage still contains the two approved operational proof cards and no longer contains the removed note.
+- PASS — the live homepage, application, privacy, checkout and video holding routes respond successfully.
+- NOT REPEATED — no form submission or notification test was needed because the form and application code did not change.
 
 ## Lead handoff documentation verification — 12 July 2026
 

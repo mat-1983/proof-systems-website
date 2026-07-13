@@ -1,6 +1,6 @@
 # Proof Systems Website Task State
 
-Updated: 2026-07-12
+Updated: 2026-07-13
 
 ## AGE-424 implementation state
 
@@ -30,9 +30,11 @@ The broader production version that preceded this reduction remains preserved by
 - The live application retains eight substantive visitor fields and the `proof-systems-qualifier` Netlify form identity.
 - The existing production form-notification configuration is unchanged and was already verified end to end earlier on 12 July 2026.
 - No additional live synthetic submission was sent during this release.
+- Mat deployed the final homepage refinement on 13 July 2026, removing the note about newer finance and commercial systems from the operational proof section.
+- The live homepage was checked after deployment: both approved proof cards remain and the removed note is absent.
+- The disposable Netlify preview project and its synthetic submission have been permanently deleted; only the production project remains.
 
 ## Follow-on actions
 
 - Obtain separate permission before naming Pantera or publishing quantified operational evidence.
-- Delete the disposable Netlify project `phenomenal-marzipan-faf430` and its one synthetic submission only after action-time confirmation.
 - Use the immutable tag above if the broader predecessor site is needed for reference or restoration.
