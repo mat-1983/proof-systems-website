@@ -1,6 +1,19 @@
 # Proof Systems Website Testing
 
-Updated: 2026-07-13
+Updated: 2026-07-20
+
+## AGE-505 wide-screen responsive layout — 20 July 2026
+
+- PASS — the homepage headline uses three lines at 760, 1,024, 1,366 and 1,440 px rather than retaining the former four-line narrow composition.
+- PASS — the homepage expands to a 1,320 px composition from 1,500 px and a 1,480 px composition from 2,400 px.
+- PASS — the headline uses two lines at 1,500, 1,920, 2,560 and 3,440 px; paragraph widths remain capped at 840–900 px.
+- PASS — no horizontal overflow at 390, 760, 1,024, 1,366, 1,440, 1,499, 1,500, 1,920, 2,560 or 3,440 px.
+- CORRECTED — the legacy checkout notice previously measured 424 px at a 390 px viewport because padding sat outside its declared width; border-box sizing now produces a 350 px card with 20 px side margins.
+- PASS — homepage, application, privacy, checkout and video holding routes have no horizontal overflow at 390 or 1,920 px.
+- PASS — all five HTML files parse, all local links resolve and every public route returns HTTP 200 from the local server.
+- PASS — application JavaScript passes `node --check`; the `proof-systems-qualifier` form identity and Netlify marker are unchanged.
+- PASS — `git diff --check` is clean.
+- NOT RUN — no Netlify preview, form submission, notification test, deployment or production change was made; Mat will add the reviewed local folder to Netlify.
 
 ## AGE-424 reduced founding-cohort branch — 12 July 2026
 
