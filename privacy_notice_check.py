@@ -44,8 +44,12 @@ REQUIRED_PHRASES = [
     "provide support",
     "handle a complaint",
     "business, legal and tax records",
-    "taking steps at your request before a contract",
-    "performing a contract",
+    "Where you yourself are the contracting party, such as a sole trader",
+    "taking steps you have asked for before a contract, and performing that contract",
+    "limited company or another separate business entity",
+    "legitimate interests in responding to the enquiry",
+    "administering, delivering and supporting the B2B work",
+    "where that use is necessary and those interests are balanced against your rights",
     "legitimate interests",
     "do not rely on consent as a blanket permission",
     "legal obligation",
@@ -55,6 +59,13 @@ REQUIRED_PHRASES = [
     "standing access",
     "named people, time-bounded and reauthorised",
     "Client material is not put into an AI service unless the engagement and applicable safeguards permit it",
+    "Google Workspace",
+    "may process information outside the United Kingdom",
+    "UK Extension to the EU-US Data Privacy Framework",
+    "contractual clauses as applicable transfer mechanisms",
+    "Cloud Data Processing Addendum",
+    "UK contractual safeguards for restricted transfers",
+    "current provider and transfer details",
     "reviewed and deleted after 90 days unless a hold or continuing purpose applies",
     "deleted within 14 days after checked notes exist",
     "deleted within 90 days after a checked summary or handover exists",
@@ -67,6 +78,14 @@ REQUIRED_PHRASES = [
     "There is not an absolute right to deletion",
     "Last updated 25 August 2026",
     "https://ico.org.uk/make-a-complaint/",
+]
+
+REJECTED_PHRASES = [
+    "will not invent",
+    "complete, current public account",
+    "performing a contract with your business",
+    "taking steps at your request before a contract, and performing a contract with your business",
+    "I have not listed specific countries or transfer mechanisms",
 ]
 
 PROHIBITED_PATTERNS = [
@@ -246,6 +265,17 @@ def check() -> int:
     for phrase in FOUNDING_PHRASES + REQUIRED_PHRASES:
         if phrase not in visible_compact and phrase not in raw:
             fail(f"missing required phrase: {phrase}", failures)
+
+    for phrase in REJECTED_PHRASES:
+        if phrase in visible_compact or phrase in raw:
+            fail(f"rejected wording still present: {phrase}", failures)
+
+    if "performing a contract with your business" in visible_compact:
+        fail("contract basis must not be applied to a separate business entity", failures)
+    if "Where you yourself are the contracting party" not in visible_compact:
+        fail("must distinguish contract basis for the individual contracting party", failures)
+    if "limited company" not in visible_compact:
+        fail("must state legitimate interests for company/entity contacts", failures)
 
     if visible_compact.count(EMAIL) < 4:
         fail(f"expected mat@proofsystems.co.uk at least 4 times in visible text, got {visible_compact.count(EMAIL)}", failures)
