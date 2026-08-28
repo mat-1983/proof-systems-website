@@ -1,6 +1,17 @@
 # Proof Systems Website Testing
 
-Updated: 2026-07-20
+Updated: 2026-08-28
+
+## AGE-590 SiteLog and BudgetFlow proof videos — 28 August 2026
+
+- PASS — `index.html` operational-proof section contains exactly two cards titled SiteLog and BudgetFlow.
+- PASS — both cards show visible `Synthetic demonstration` labelling before the native video player.
+- PASS — each video uses `controls`, `playsinline`, `preload="metadata"`, the committed poster, a local MP4 source and an English `kind="captions"` track. Autoplay and loop are absent. No homepage JavaScript was added.
+- PASS — `python3 proof_media_check.py` confirms exact-case local media paths, caption tracks, committed MP4/poster SHA-256 hashes, the two-system relationship sentence, founding CTAs to `workflow.html`, and unchanged `proof-systems-qualifier` form identity.
+- PASS — `python3 privacy_notice_check.py` and `git diff --check` are clean. `workflow.html`, `privacy.html` and `assets/demo-media/` are unchanged.
+- PASS — a local loopback server returned HTTP 200 for homepage, application, privacy and all six committed SiteLog/BudgetFlow media files; response bodies matched the worktree files.
+- NOT RUN HERE — Chromium, Brave and Playwright headless browsers aborted in this sandbox (SIGSEGV / crashpad permission). Desktop 1440 and mobile 390 visual UAT, native control interaction and caption overlay rendering remain for the reviewer.
+- NOT RUN — no Netlify preview, form submission, upload, deployment or production change was made.
 
 ## AGE-505 wide-screen responsive layout — 20 July 2026
 
