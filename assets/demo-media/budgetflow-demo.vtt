@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00.000 --> 00:02.200
+BudgetFlow — synthetic demonstration.
+
+00:02.200 --> 00:03.900
+Site manager view.
+
+00:03.900 --> 00:11.600
+The manager sees the weekly allocation window, project value and remaining budget.
+
+00:11.600 --> 00:25.200
+Unallocated labour costs are reviewed and assigned to the correct plot and work element.
+
+00:25.200 --> 00:38.500
+The full budget table remains available while the allocation is made.
+
+00:38.500 --> 00:46.100
+The updated allocation and remaining budget can be checked in the detailed views.
+
+00:46.100 --> 00:47.800
+Quantity surveyor view.
+
+00:47.800 --> 01:04.000
+A new variation records £500 client value, £400 budget and £100 margin.
+
+01:04.000 --> 01:18.000
+Controlled cost lines are added to build the client quote.
+
+01:18.000 --> 01:24.500
+The completed £500 quote is ready for export.
+
+01:24.500 --> 01:34.400
+An overspend request is reviewed against the appropriate project budget location.
+
+01:34.400 --> 01:36.100
+Accounts view.
+
+01:36.100 --> 01:50.300
+The accounts team selects the payment week, supplier routes and projects to include.
+
+01:50.300 --> 02:02.500
+The generated workbook provides payment schedules, detailed records and accounting tabs.
+
+02:02.500 --> 02:06.900
+The Sage-compatible export includes nominal and cost-code alignment.
