@@ -2,6 +2,18 @@
 
 Updated: 2026-08-29
 
+## AGE-600 Gap wrap-width correction — 29 August 2026
+
+Independent measurement at 1488px found `#gap .approved-visual` at about 623px because the later base two-column `.gap-scene` beat the earlier 900px one-column rule. A later, more specific desktop block now forces `#gap .gap-scene` to one column and `#gap .approved-visual` to `grid-column: 1 / -1; width: 100%`. The under-900 SVG fallback is unchanged.
+
+- PASS — `python3 site_check.py` including the cascade-order assertion that the desktop Gap span follows the base two-column rule.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+
 ## AGE-600 round 3 approved-derivative presentation — 29 August 2026
 
 Desktop and laptop (900px and above) present optimised WebP derivatives of the six attended references from `assets/img/age-600/`. Master PNGs stay in `docs/design/` and are not linked. Native SVG/HTML is the narrower-viewport fallback. Gap/Fit/Approach headings remain in the DOM with a visually-hidden clip.

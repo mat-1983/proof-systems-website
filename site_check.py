@@ -728,6 +728,23 @@ def check_round3(failures: list[str]) -> None:
         fail("Gap, Fit and Approach copy must remain in the DOM for assistive technology", failures)
     if "@media (min-width: 900px)" not in css:
         fail("approved visuals must switch at a 900px desktop breakpoint", failures)
+    two_col = css.find("grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr)")
+    gap_visual = css.rfind("#gap .approved-visual")
+    if two_col == -1 or gap_visual == -1 or gap_visual < two_col:
+        fail(
+            "desktop Gap visual rule must follow the base two-column .gap-scene declaration "
+            "so the approved image spans the wrap"
+        )
+    gap_visual_rule = css[gap_visual:gap_visual + 220]
+    if "grid-column: 1 / -1" not in gap_visual_rule:
+        fail("desktop Gap approved visual must span the full grid")
+    if "width: 100%" not in gap_visual_rule:
+        fail("desktop Gap approved visual must use the full wrap width")
+    gap_scene_desktop = css.rfind("#gap .gap-scene")
+    if gap_scene_desktop == -1 or gap_scene_desktop < two_col:
+        fail("desktop #gap .gap-scene one-column rule must follow the base two-column declaration")
+    if "minmax(0, 1fr)" not in css[gap_scene_desktop:gap_scene_desktop + 160]:
+        fail("desktop #gap .gap-scene must be a single full-width column")
     if "clip: rect(0, 0, 0, 0)" not in css.split(".desktop-hide-copy {", 1)[-1][:280]:
         fail("desktop-hidden copy must use a visually-hidden clip, not display:none", failures)
     hide_rule = css.split(".desktop-hide-copy {", 1)[-1].split("}", 1)[0]
