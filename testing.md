@@ -2,6 +2,18 @@
 
 Updated: 2026-08-29
 
+## AGE-600 hidden-copy overflow correction — 29 August 2026
+
+Independent measurement at 1488px found `documentElement.scrollWidth` 1642 because `p.approach-banner.desktop-hide-copy` kept `width: 100%` from `.approach-banner`. A later 900px utility now forces width/height/overflow/clip/whitespace with `!important` and `.approach-banner.desktop-hide-copy` specificity.
+
+- PASS — `python3 site_check.py` including the cascade-order assertion that `.approach-banner.desktop-hide-copy` follows `.approach-banner` and uses `width: 1px !important`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+
 ## AGE-600 Gap wrap-width correction — 29 August 2026
 
 Independent measurement at 1488px found `#gap .approved-visual` at about 623px because the later base two-column `.gap-scene` beat the earlier 900px one-column rule. A later, more specific desktop block now forces `#gap .gap-scene` to one column and `#gap .approved-visual` to `grid-column: 1 / -1; width: 100%`. The under-900 SVG fallback is unchanged.

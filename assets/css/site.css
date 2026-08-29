@@ -1578,4 +1578,24 @@ textarea { min-height: 8.5rem; resize: vertical; }
     min-width: 0;
     max-width: 100%;
   }
+  .desktop-hide-copy,
+  p.desktop-hide-copy,
+  .approach-banner.desktop-hide-copy,
+  .fit-close.desktop-hide-copy,
+  .approach-key.desktop-hide-copy,
+  .start-routes.desktop-hide-copy,
+  .gap-copy.desktop-hide-copy {
+    position: absolute !important;
+    width: 1px !important;
+    min-width: 0 !important;
+    max-width: 1px !important;
+    height: 1px !important;
+    max-height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    border: 0 !important;
+  }
 }

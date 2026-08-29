@@ -750,6 +750,26 @@ def check_round3(failures: list[str]) -> None:
     hide_rule = css.split(".desktop-hide-copy {", 1)[-1].split("}", 1)[0]
     if "display: none" in hide_rule or "display:none" in hide_rule:
         fail("desktop-hidden copy must not use display:none", failures)
+    banner = css.find(".approach-banner {")
+    hide_tail = css.rfind(".approach-banner.desktop-hide-copy")
+    if banner == -1 or hide_tail == -1 or hide_tail < banner:
+        fail(
+            "desktop-hide-copy must follow .approach-banner and include an "
+            ".approach-banner.desktop-hide-copy override"
+        )
+    hide_contract = css[hide_tail:hide_tail + 700]
+    for token in (
+        "width: 1px !important",
+        "height: 1px !important",
+        "overflow: hidden !important",
+        "clip: rect(0, 0, 0, 0) !important",
+        "white-space: nowrap !important",
+        "max-width: 1px !important",
+    ):
+        if token not in hide_contract:
+            fail(f"desktop-hide-copy utility missing cascade-safe {token}", failures)
+    if "display: none" in hide_contract or "overflow-x: hidden" in hide_contract:
+        fail("desktop-hide-copy must clip in place, not use display:none or overflow-x hiding", failures)
     for rel, meta in PUBLIC_WEBPS.items():
         path = ROOT / rel
         if not path.is_file():
