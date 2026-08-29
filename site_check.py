@@ -924,6 +924,72 @@ def check_round4(failures: list[str]) -> None:
                 fail(f"{rel}: general {label!r} must not open the connected view", failures)
 
 
+def check_fit_cue_bounds(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    svg_match = re.search(
+        r'<svg[^>]*class="[^"]*fit-visual[^"]*"[^>]*viewBox="([^"]+)"[\s\S]*?</svg>',
+        raw,
+    )
+    if not svg_match:
+        svg_match = re.search(
+            r'<svg[^>]*viewBox="([^"]+)"[^>]*class="[^"]*fit-visual[^"]*"[\s\S]*?</svg>',
+            raw,
+        )
+    if not svg_match:
+        fail("Fit scene missing viewBox for the right-hand cue regression", failures)
+        return
+    try:
+        min_x, min_y, width, height = (float(part) for part in svg_match.group(1).split())
+    except ValueError:
+        fail(f"Fit viewBox is not four numbers: {svg_match.group(1)!r}", failures)
+        return
+    max_x = min_x + width
+    max_y = min_y + height
+    cue = re.search(
+        r'<text\b([^>]*)>ONLY THE MISSING LAYER</text>',
+        svg_match.group(0),
+    )
+    if not cue:
+        fail("Fit SVG must keep the ONLY THE MISSING LAYER cue", failures)
+        return
+    attrs = cue.group(1)
+    x_match = re.search(r'\bx="([^"]+)"', attrs)
+    y_match = re.search(r'\by="([^"]+)"', attrs)
+    anchor_match = re.search(r'\btext-anchor="([^"]+)"', attrs)
+    if not x_match or not y_match:
+        fail("Fit right-hand cue must declare x and y inside the viewBox", failures)
+        return
+    x = float(x_match.group(1))
+    y = float(y_match.group(1))
+    anchor = anchor_match.group(1) if anchor_match else "start"
+    if anchor != "end":
+        fail(
+            "Fit right-hand cue must be text-anchor=end so the label cannot "
+            "extend past the SVG viewBox (start-anchored x=860 overflowed)",
+            failures,
+        )
+        return
+    if x > max_x or x < min_x or y > max_y or y < min_y:
+        fail(
+            f"Fit right-hand cue anchor ({x}, {y}) is outside viewBox "
+            f"[{min_x}, {min_y}, {max_x}, {max_y}]",
+            failures,
+        )
+    # End-anchored glyphs occupy space to the left of x. Keep a right inset so
+    # the constructed right edge is not flush with the viewBox, which overflow-x
+    # hiding previously masked.
+    if x > max_x - 8:
+        fail(
+            f"Fit right-hand cue x={x} is too close to viewBox right {max_x}; "
+            "the label would extend outward by construction",
+            failures,
+        )
+    if 'class="fit-note">Only the missing layer</p>' not in raw:
+        fail("Fit must keep the live HTML duplicate cue below the illustration", failures)
+    if 'data-stage="3"' not in attrs:
+        fail("Fit right-hand cue must remain in the third reveal stage", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -938,6 +1004,7 @@ def check() -> int:
     check_round2(failures)
     check_round3(failures)
     check_round4(failures)
+    check_fit_cue_bounds(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:

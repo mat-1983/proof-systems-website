@@ -2,6 +2,21 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round-four review correction 1 — 29 August 2026
+
+Independent browser evidence at 1280 CSS pixels found the Fit cue `ONLY THE MISSING LAYER` start-anchored at x=860 in viewBox `-26 92 914 459`, measuring about `left=1193.84` / `right=1450.02` and overflowing the 1280 viewport. The same label was clipped at tablet and mobile. The cue is now `text-anchor="end"` at x=868 so it stays inside the viewBox. The live HTML duplicate below the illustration is unchanged. Page `overflow-x: hidden` is not the fix.
+
+- PASS — `python3 site_check.py` including `check_fit_cue_bounds`, which fails a start-anchored or right-escaping Fit cue by construction.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live browser overflow at 1280/1024/768/500/390/360/320. Chrome headless previously SIGSEGV in this environment.
+
+Independent review should confirm the Fit right-hand cue is fully visible at those widths and that Capability remains unchanged except its already-approved destination.
+
 ## AGE-600 website refinement round 4 — 29 August 2026
 
 Homepage presentation now uses the existing semantic SVG/HTML as the native visual for With ERP / Without ERP, 01 / The Gap, 01B / Fit and 04 / Approach. Live headings and copy remain in the page. Desktop/laptop widths stage those scenes in reading order. Selected Systems general actions use `work/index.html#individual-systems`. Capability layout and copy are unchanged except the existing card link destination.
