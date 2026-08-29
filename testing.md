@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 independent review corrections 2 — 29 August 2026
+
+Restyled architecture captions and the tall identity bus so labels do not collide with nodes. Relationships are unchanged. Label colour is `--amber` at 12px.
+
 ## AGE-600 independent review corrections 1 — 29 August 2026
 
 Corrected the architecture diagrams, mobile Menu `:focus-visible` treatment, and homepage chapter numbering after `04 / APPROACH`.

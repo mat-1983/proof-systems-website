@@ -490,6 +490,16 @@ def check_architecture(failures: list[str]) -> None:
             fail(f"{rel} must keep wide and tall architecture diagrams", failures)
         if "Project identity" not in raw or "Finance" not in raw:
             fail(f"{rel} must distinguish identity from finance grouping", failures)
+        if 'class="map-identity-bus"' not in raw:
+            fail(f"{rel} tall map must use a non-crossing identity bus", failures)
+        if 'data-route="gutter"' not in raw:
+            fail(f"{rel} must route lower identity links in the side gutter", failures)
+        css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+        label_rule = css.split(".map-label {", 1)[-1].split("}", 1)[0]
+        if "var(--amber)" not in label_rule or "var(--amber-deep)" in label_rule:
+            fail("map labels must use --amber at 4.5:1 rather than --amber-deep", failures)
+        if "font-size: 12px" not in label_rule:
+            fail("map labels must be 12px so they remain readable when scaled", failures)
 
 
 def check_homepage_structure(failures: list[str]) -> None:

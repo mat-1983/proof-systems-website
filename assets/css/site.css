@@ -515,7 +515,8 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .map-sub { fill: var(--stone); font-size: 11px; font-family: Inter, sans-serif; }
 .map-arrow { fill: none; stroke: var(--amber); stroke-width: 1.6; }
 .map-identity { fill: none; stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 4 3; }
-.map-label { fill: var(--amber-deep); font-size: 10px; font-family: Inter, sans-serif; }
+.map-label { fill: var(--amber); font-size: 12px; font-weight: 600; font-family: Inter, sans-serif; }
+.map-identity-bus { fill: none; stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 4 3; }
 .map-group { fill: rgba(216, 144, 66, 0.06); stroke: var(--hairline); }
 .map-group-label { fill: var(--amber); font-size: 11px; font-weight: 600; font-family: Inter, sans-serif; letter-spacing: 0.08em; }
 .map-status { fill: var(--blue); }
