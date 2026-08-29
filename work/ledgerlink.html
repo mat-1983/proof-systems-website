@@ -23,11 +23,11 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="../index.html">Proof Systems</a>
+    <a class="brand" href="../index.html"><img src="../assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="../work/" aria-current="page">Work</a>
-      <a href="../index.html#approach">Approach</a>
+      <a href="../work/" aria-current="page">Selected Systems</a>
+      <a href="../training.html">AI Team Training</a>
       <a href="../index.html#about">About</a>
     </nav>
     <a class="nav-cta" href="../workflow.html">Discuss a workflow</a>
@@ -41,10 +41,9 @@
     <p class="lede">Extract controlled accounting data into reusable workbook outputs.</p>
     <p class="proof-label">Synthetic demonstration</p>
     <p class="meta-audience">Finance teams · 1 minute 49.3 seconds</p>
-
     <section>
       <h2>The problem</h2>
-      <p>Period-end reporting often starts by exporting several files by hand and rebuilding them in a new workbook.&nbsp; Checks then sit outside the extract, so it is hard to see what was kept, dropped or transformed.</p>
+      <p>Period-end reporting often starts by exporting several files by hand and rebuilding them in a new workbook.&nbsp; Checks then sit outside the extract.</p>
     </section>
     <section>
       <h2>Who uses it</h2>
@@ -76,19 +75,28 @@
     </section>
     <section>
       <h2>Design choices</h2>
-      <p>The interface shows the connection, the run and the evidence before anyone opens a spreadsheet.&nbsp; Workbook outputs are a result of the extract, not the connection itself.</p>
+      <p>Workbook outputs are a result of the extract, not the connection itself.&nbsp; AI does not process the company accounting data.&nbsp; Accuracy comes from deterministic calculations, controlled cut-offs, repeatable checks and visible evidence.</p>
     </section>
     <section>
       <h2>Related systems</h2>
-      <p>LedgerLink supplies controlled accounts data.&nbsp; <a href="cashflow.html">Cashflow</a> and <a href="management-accounts.html">Management Accounts</a> use those outputs instead of rebuilding the source story by hand.</p>
+      <p>LedgerLink supplies controlled accounts data.&nbsp; Deterministic local processing then produces Cashflow and Management Accounts from that extract plus verified live-system inputs.</p>
     </section>
-    <p><a class="button" href="../workflow.html">Discuss a workflow</a></p>
+    <nav class="story-nav" aria-label="Story navigation">
+      <a class="card-link" href="index.html">Back to Selected Systems</a>
+      <a class="card-link" href="cashflow.html">Suggested next: Cashflow</a>
+      <a class="button" href="../workflow.html">Discuss a workflow</a>
+    </nav>
   </div>
 </main>
 <footer>
   <div class="footer-inner">
-    <span>© 2026 Proof Systems</span>
-    <span><a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a> · <a href="../privacy.html">Privacy</a></span>
+    <a class="footer-brand" href="../index.html"><img src="../assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/mat-glendenning" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
+      <a href="../privacy.html">Privacy</a>
+      <span>© 2026 Proof Systems</span>
+    </div>
   </div>
 </footer>
 <script src="../assets/js/site.js" defer></script>

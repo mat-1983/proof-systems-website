@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Proof Systems | Operational systems for owner-led SMEs</title>
-  <meta name="description" content="Practical software, controlled AI automation and useful team training built around how an owner-led SME really works.">
+  <meta name="description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
   <link rel="canonical" href="https://proofsystems.co.uk/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Proof Systems">
   <meta property="og:title" content="Proof Systems | Operational systems for owner-led SMEs">
-  <meta property="og:description" content="Practical software, controlled AI automation and useful team training built around how an owner-led SME really works.">
+  <meta property="og:description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
   <meta property="og:url" content="https://proofsystems.co.uk/">
   <meta property="og:image" content="https://proofsystems.co.uk/assets/img/social.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Proof Systems | Operational systems for owner-led SMEs">
-  <meta name="twitter:description" content="Practical software, controlled AI automation and useful team training built around how an owner-led SME really works.">
+  <meta name="twitter:description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/site.css">
 
@@ -23,11 +23,11 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html">Proof Systems</a>
+    <a class="brand" href="index.html"><img src="assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="work/">Work</a>
-      <a href="index.html#approach">Approach</a>
+      <a href="work/">Selected Systems</a>
+      <a href="training.html">AI Team Training</a>
       <a href="index.html#about">About</a>
     </nav>
     <a class="nav-cta" href="workflow.html">Discuss a workflow</a>
@@ -35,7 +35,14 @@
   </div>
 </header>
 <main id="main">
-  <section class="chapter-hero" data-hero>
+  <section class="brand-reveal" data-hero>
+    <div class="wrap reveal-inner">
+      <img class="reveal-mark" src="assets/brand/logo-light.svg" alt="Proof Systems" width="1200" height="340">
+      <p class="positioning">Operational systems built around how a business really works.</p>
+    </div>
+  </section>
+
+  <section class="chapter-hero" id="proposition">
     <div class="wrap split">
       <div>
         <p class="marker">Operational systems for owner-led SMEs</p>
@@ -47,80 +54,136 @@
         </div>
         <p class="quiet">Operator-led.&nbsp; Built around the real workflow.&nbsp; Technology used where it earns its place.</p>
       </div>
-      <div class="hero-visual workflow-scene" data-workflow>
-        <svg viewBox="0 0 640 420" role="img" aria-labelledby="hero-workflow-title hero-workflow-desc">
-  <title id="hero-workflow-title">From fragmented work to one controlled flow</title>
-  <desc id="hero-workflow-desc">Isolated spreadsheet cells and status labels connect into one controlled workflow.</desc>
-  <rect class="cell cell-people" x="28" y="36" width="150" height="52" rx="8"/>
-  <text class="cell-label" x="42" y="67">Re-entered information</text>
-  <rect class="cell cell-people" x="230" y="18" width="168" height="52" rx="8"/>
-  <text class="cell-label" x="244" y="49">One-person dependencies</text>
-  <rect class="cell" x="460" y="48" width="140" height="52" rx="8"/>
-  <text class="cell-label" x="478" y="79">Hidden exceptions</text>
-  <rect class="cell cell-people" x="64" y="160" width="136" height="52" rx="8"/>
-  <text class="cell-label" x="86" y="191">Manual checking</text>
-  <rect class="cell" x="390" y="148" width="186" height="52" rx="8"/>
-  <text class="cell-label" x="404" y="179">Reporting after the decision</text>
-  <path class="flow-line" pathLength="420" d="M103 88 C103 120 103 140 132 186"/>
-  <path class="flow-line" pathLength="420" d="M314 70 C314 110 250 140 200 186"/>
-  <path class="flow-line" pathLength="420" d="M530 100 C530 140 500 170 476 174"/>
-  <path class="flow-line" pathLength="420" d="M132 212 C200 250 300 250 390 200"/>
-  <g class="node-final">
-    <rect class="cell cell-data" x="120" y="280" width="400" height="88" rx="12"/>
-    <text class="cell-label" x="148" y="318" style="fill:#F3EEE4;font-size:15px">One clear flow. Visible ownership. Useful evidence.</text>
-    <text class="cell-label" x="148" y="342" style="fill:#43A7FF">Capture, check, decide, record</text>
-  </g>
+      <figure class="system-map" data-reveal>
+  <svg class="map-wide" viewBox="0 0 920 420" role="img" aria-labelledby="hero-map-title hero-map-desc">
+  <title id="hero-map-title">How the selected systems connect</title>
+  <desc id="hero-map-desc">Central Project Register holds shared project identity. SiteLog passes weekly labour cost to BudgetFlow. BudgetFlow creates a payment export. Accounts software connects through LedgerLink. Checked local processing produces Cashflow and Management Accounts.</desc>
+  <defs>
+  <marker id="hero-wide-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path>
+  </marker>
+</defs>
+  <rect class="map-node" x="300" y="16" width="320" height="56" rx="10"/>
+  <text class="map-title" x="318" y="40">Central Project Register</text>
+  <text class="map-sub" x="318" y="58">Project identity and status</text>
+  <text class="map-label" x="390" y="88">project identity</text>
+  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" d="M460 72 L460 108"/>
+  <rect class="map-node" x="24" y="116" width="200" height="52" rx="10"/>
+  <text class="map-title" x="40" y="138">SiteLog</text>
+  <text class="map-sub" x="40" y="156">Mobile weekly capture</text>
+  <text class="map-label" x="232" y="146">weekly labour cost</text>
+  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" d="M224 142 L300 142"/>
+  <rect class="map-node" x="308" y="116" width="220" height="52" rx="10"/>
+  <text class="map-title" x="324" y="138">BudgetFlow</text>
+  <text class="map-sub" x="324" y="156">Allocation and control</text>
+  <rect class="map-node" x="560" y="116" width="160" height="52" rx="10"/>
+  <text class="map-title" x="572" y="138">Applications Ledger</text>
+  <text class="map-sub" x="572" y="156">Applications and retention</text>
+  <rect class="map-node" x="740" y="116" width="156" height="52" rx="10"/>
+  <text class="map-title" x="756" y="138">Probables</text>
+  <text class="map-sub" x="756" y="156">Likely future work</text>
+  <text class="map-label" x="360" y="188">payment export</text>
+  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" d="M418 168 L418 214"/>
+  <rect class="map-node" x="24" y="220" width="200" height="52" rx="10"/>
+  <text class="map-title" x="40" y="242">Accounts software</text>
+  <text class="map-sub" x="40" y="260">Commodity foundation</text>
+  <text class="map-label" x="232" y="250">accounts extraction</text>
+  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" d="M224 246 L308 246"/>
+  <rect class="map-node" x="308" y="220" width="220" height="52" rx="10"/>
+  <text class="map-title" x="324" y="242">LedgerLink</text>
+  <text class="map-sub" x="324" y="260">Controlled workbooks</text>
+  <text class="map-label" x="540" y="250">checked local processing</text>
+  <circle class="map-status" cx="528" cy="246" r="4"/>
+  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" d="M528 246 L620 246"/>
+  <rect class="map-node" x="628" y="208" width="130" height="44" rx="10"/>
+  <text class="map-title" x="640" y="236">Cashflow</text>
+  <rect class="map-node" x="772" y="208" width="124" height="44" rx="10"/>
+  <text class="map-title" x="784" y="236">Mgmt Accounts</text>
+  <text class="map-sub" x="24" y="310">AI does not process company accounting data in this workflow.</text>
+  <text class="map-sub" x="24" y="328">Accuracy comes from deterministic calculations, cut-offs, checks and evidence.</text>
 </svg>
-      </div>
+  <svg class="map-tall" viewBox="0 0 360 760" role="img" aria-labelledby="hero-tall-title hero-tall-desc">
+  <title id="hero-tall-title">How the selected systems connect</title>
+  <desc id="hero-tall-desc">A vertical reading of the same relationships: project identity from Central Project Register, weekly labour cost from SiteLog to BudgetFlow, payment export, accounts extraction through LedgerLink, then checked local processing into Cashflow and Management Accounts.</desc>
+  <defs>
+  <marker id="hero-tall-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path>
+  </marker>
+</defs>
+  <rect class="map-node" x="24" y="12" width="312" height="54" rx="10"/>
+  <text class="map-title" x="40" y="36">Central Project Register</text>
+  <text class="map-sub" x="40" y="54">Project identity and status</text>
+  <text class="map-label" x="40" y="84">project identity</text>
+  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" d="M180 66 L180 98"/>
+  <rect class="map-node" x="24" y="102" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="124">SiteLog</text>
+  <text class="map-sub" x="40" y="142">Mobile weekly capture</text>
+  <text class="map-label" x="40" y="172">weekly labour cost</text>
+  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" d="M180 152 L180 184"/>
+  <rect class="map-node" x="24" y="188" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="210">BudgetFlow</text>
+  <text class="map-sub" x="40" y="228">Allocation, then payment export</text>
+  <rect class="map-node" x="24" y="258" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="280">Applications Ledger</text>
+  <text class="map-sub" x="40" y="298">Applications, payment and retention</text>
+  <rect class="map-node" x="24" y="328" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="350">Probables</text>
+  <text class="map-sub" x="40" y="368">Likely future work</text>
+  <rect class="map-node" x="24" y="398" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="420">Accounts software</text>
+  <text class="map-sub" x="40" y="438">Commodity foundation</text>
+  <text class="map-label" x="40" y="468">accounts extraction</text>
+  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" d="M180 448 L180 480"/>
+  <rect class="map-node" x="24" y="484" width="312" height="50" rx="10"/>
+  <text class="map-title" x="40" y="506">LedgerLink</text>
+  <text class="map-sub" x="40" y="524">Controlled workbook outputs</text>
+  <text class="map-label" x="40" y="554">checked local processing</text>
+  <circle class="map-status" cx="28" cy="548" r="4"/>
+  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" d="M180 534 L180 566"/>
+  <rect class="map-node" x="24" y="570" width="150" height="46" rx="10"/>
+  <text class="map-title" x="40" y="598">Cashflow</text>
+  <rect class="map-node" x="186" y="570" width="150" height="46" rx="10"/>
+  <text class="map-title" x="198" y="598">Mgmt Accounts</text>
+  <text class="map-sub" x="24" y="644">No AI on company accounting data.</text>
+  <text class="map-sub" x="24" y="662">Deterministic, repeatable and checkable.</text>
+</svg>
+  <p class="map-text">Project identity is held once.&nbsp; Weekly capture, allocation, accounts extraction and checked local processing then produce the finance views.&nbsp; AI does not process the company accounting data.</p>
+</figure>
     </div>
   </section>
 
   <section class="chapter" id="gap">
-    <div class="wrap gap-layout">
-      <div class="sticky-visual">
-        <p class="marker">01 / THE GAP</p>
-        <div class="workflow-scene" data-workflow>
-          <svg viewBox="0 0 640 420" role="img" aria-labelledby="gap-workflow-title gap-workflow-desc">
-  <title id="gap-workflow-title">From fragmented work to one controlled flow</title>
-  <desc id="gap-workflow-desc">Isolated spreadsheet cells and status labels connect into one controlled workflow.</desc>
-  <rect class="cell cell-people" x="28" y="36" width="150" height="52" rx="8"/>
-  <text class="cell-label" x="42" y="67">Re-entered information</text>
-  <rect class="cell cell-people" x="230" y="18" width="168" height="52" rx="8"/>
-  <text class="cell-label" x="244" y="49">One-person dependencies</text>
-  <rect class="cell" x="460" y="48" width="140" height="52" rx="8"/>
-  <text class="cell-label" x="478" y="79">Hidden exceptions</text>
-  <rect class="cell cell-people" x="64" y="160" width="136" height="52" rx="8"/>
-  <text class="cell-label" x="86" y="191">Manual checking</text>
-  <rect class="cell" x="390" y="148" width="186" height="52" rx="8"/>
-  <text class="cell-label" x="404" y="179">Reporting after the decision</text>
-  <path class="flow-line" pathLength="420" d="M103 88 C103 120 103 140 132 186"/>
-  <path class="flow-line" pathLength="420" d="M314 70 C314 110 250 140 200 186"/>
-  <path class="flow-line" pathLength="420" d="M530 100 C530 140 500 170 476 174"/>
-  <path class="flow-line" pathLength="420" d="M132 212 C200 250 300 250 390 200"/>
-  <g class="node-final">
-    <rect class="cell cell-data" x="120" y="280" width="400" height="88" rx="12"/>
-    <text class="cell-label" x="148" y="318" style="fill:#F3EEE4;font-size:15px">One clear flow. Visible ownership. Useful evidence.</text>
-    <text class="cell-label" x="148" y="342" style="fill:#43A7FF">Capture, check, decide, record</text>
-  </g>
-</svg>
-        </div>
-      </div>
-      <div>
-        <h2>Important work often sits between people, spreadsheets and software.</h2>
-        <p>The problem is rarely one missing app.&nbsp; It is the hand-offs, repeated entry, uncertain ownership and evidence that arrives too late.&nbsp; I start with how the work actually happens, then make the smallest useful improvement visible.</p>
-        <div class="gap-points">
-          <h3>Re-entered information</h3>
-          <h3>One-person dependencies</h3>
-          <h3>Hidden exceptions</h3>
-          <h3>Manual checking</h3>
-          <h3>Reporting after the decision</h3>
-          <p class="resolved">One clear flow.&nbsp; Visible ownership.&nbsp; Useful evidence.</p>
-        </div>
+    <div class="wrap">
+      <p class="marker">01 / THE GAP</p>
+      <h2>Important work often sits between people, spreadsheets and software.</h2>
+      <p>The problem is rarely one missing app.&nbsp; It is the hand-offs, repeated entry, uncertain ownership and evidence that arrives too late.&nbsp; I start with how the work actually happens, then make the smallest useful improvement visible.</p>
+      <div class="gap-points">
+        <h3>Re-entered information</h3>
+        <h3>One-person dependencies</h3>
+        <h3>Hidden exceptions</h3>
+        <h3>Manual checking</h3>
+        <h3>Reporting after the decision</h3>
+        <p class="resolved">One clear flow.&nbsp; Visible ownership.&nbsp; Useful evidence.</p>
       </div>
     </div>
   </section>
 
-  <section class="chapter panel-cream" id="capability">
+  <section class="chapter" id="economics">
+    <div class="wrap">
+      <p class="marker">01B / FIT</p>
+      <h2>You no longer have to choose between a spreadsheet and software built for somebody else's business.</h2>
+      <p>Off-the-shelf products are designed for a broad market.&nbsp; Smaller firms often pay recurring per-user, module or bolt-on costs, live with features they do not need, still miss the few functions that matter, and end up reshaping useful working practices around the software.</p>
+      <p>AI-assisted development has materially reduced the cost and time of a small, well-bounded bespoke operational system.&nbsp; Architecture, testing, security, judgement and ownership remain essential.&nbsp; AI helps the build; it does not replace them, and it does not process company accounting data in the finance workflow shown here.</p>
+      <div class="compare-grid">
+        <article class="card"><h3>Broad software</h3><p>A larger product, recurring add-ons and a process shaped around the vendor.</p></article>
+        <article class="card"><h3>The missing operational layer</h3><p>The few controls, hand-offs and evidence the business actually depends on.</p></article>
+        <article class="card primary"><h3>A focused bespoke system</h3><p>Buy the commodity foundation.&nbsp; Build only the operational layer that is specific to the business.</p></article>
+      </div>
+      <p>I would advise against a build where a commodity platform already fits, the problem is not yet understood, or the cost of change would outweigh the operational gain.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="capability">
     <div class="wrap">
       <p class="marker">02 / CAPABILITY</p>
       <h2>Improve the operation, not just the interface.</h2>
@@ -130,16 +193,19 @@
           <h3>Operational systems</h3>
           <p>Bespoke applications and connected workflows shaped around the people, controls and evidence the business already depends on.</p>
           <p class="muted">Examples: operational capture, project and commercial controls, finance and reporting, structured research and administrative workflows.</p>
+          <a class="card-link" href="work/">See selected systems</a>
         </article>
         <article class="card">
           <p class="kicker">Supporting</p>
           <h3>Controlled AI automation</h3>
-          <p>Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.</p>
+          <p>Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.&nbsp; That can include controlled document-processing and review harnesses invoked through an auditable workflow.</p>
+          <a class="card-link" href="workflow.html">Discuss a workflow</a>
         </article>
         <article class="card">
           <p class="kicker">Supporting</p>
-          <h3>Practical AI training</h3>
+          <h3>AI Team Training</h3>
           <p>Role-specific training that helps a team apply AI safely and usefully to the work they already do.</p>
+          <a class="card-link" href="training.html">Ask about team training</a>
         </article>
       </div>
     </div>
@@ -150,39 +216,46 @@
       <p class="marker">03 / PROOF</p>
       <h2>Working systems make the difference visible.</h2>
       <p class="disclosure">These films use synthetic Northstar data to demonstrate systems and workflows I have designed.&nbsp; They contain no client records or production credentials and are not presented as external client case studies.</p>
-      <div class="proof-grid">
-        <article class="card">
+
+      <article class="feature-band">
+        <div>
           <p class="kicker">Frontline capture</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Make the correct weekly record the easiest one to create.</h3>
-          <p>A deliberately simple tradesperson experience captures current-week work, creates the supporting invoice and gives administrators a controlled export and straightforward user and project management.</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg">
-            <img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog weekly records on a phone-sized screen, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
+          <p>SiteLog is a deliberately simple mobile-first web application for tradespeople.&nbsp; It captures current-week work, creates the supporting invoice and leaves administrators a controlled export and straightforward user and project management.</p>
           <a class="card-link" href="work/sitelog.html">Explore SiteLog</a>
-        </article>
-        <article class="card">
+        </div>
+        <div class="media-teaser mobile-frame" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg">
+          <img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog weekly records on a phone-sized screen, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+        </div>
+      </article>
+
+      <article class="feature-band reverse">
+        <div>
           <p class="kicker">Project control</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Turn weekly labour costs into visible budget decisions.</h3>
           <p>Site managers allocate real activity, quantity surveyors control budgets, variations and overspends, and accounts receives a coded payment export.</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg">
-            <img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow allocation table for weekly labour costs, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
           <a class="card-link" href="work/budgetflow.html">Explore BudgetFlow</a>
-        </article>
-        <article class="card">
+        </div>
+        <div class="media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg">
+          <img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow allocation table for weekly labour costs, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+        </div>
+      </article>
+
+      <article class="feature-band">
+        <div>
           <p class="kicker">Finance and reporting</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Move from accounts data to decisions without rebuilding the story by hand.</h3>
-          <p>LedgerLink extracts controlled accounts data.&nbsp; Cashflow turns it into short- and long-term views.&nbsp; Management Accounts produces a structured reporting workbook with the evidence and checks needed to use it.</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg">
-            <img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink connection to accounts software, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
+          <p>LedgerLink connects to accounts software and writes controlled extraction workbooks.&nbsp; Deterministic local processing combines that extract with verified inputs from selected live systems.&nbsp; Cashflow and Management Accounts are the checked outputs.&nbsp; AI does not process the company accounting data in this workflow.</p>
           <a class="card-link" href="work/index.html#finance">See the finance workflow</a>
           <a class="card-link" href="work/">View all systems</a>
-        </article>
-      </div>
+        </div>
+        <div class="media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg">
+          <img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink connection to accounts software, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+        </div>
+      </article>
     </div>
   </section>
 
@@ -190,33 +263,27 @@
     <div class="wrap">
       <p class="marker">04 / APPROACH</p>
       <h2>Start with one useful outcome.&nbsp; Prove it in the real workflow.&nbsp; Extend where the evidence supports it.</h2>
-      <div class="approach-grid">
-        <article class="card">
-          <h3>When the problem is clear</h3>
-          <p>Begin with a focused build or automation around one bounded outcome.</p>
-        </article>
-        <article class="card">
-          <h3>When the problem needs clarity</h3>
-          <p>Begin with a paid workflow diagnostic: understand the present process, identify the most useful change and leave with a practical recommendation.</p>
-        </article>
-        <article class="card">
-          <h3>When the team needs capability</h3>
-          <p>Begin with practical training around the roles, tools and safeguards that matter to their work.</p>
-        </article>
-        <article class="card">
-          <h3>When the first step works</h3>
-          <p>Improve the next connected part, or continue with ongoing systems and automation support.&nbsp; Growth is earned by the result, not assumed at the start.</p>
-        </article>
+      <div class="process-flow">
+        <div class="process-step"><strong>01</strong>Understand the real workflow</div>
+        <div class="process-step"><strong>02</strong>Choose one useful outcome</div>
+        <div class="process-step"><strong>03</strong>Prove it in live work</div>
+        <div class="process-step"><strong>04</strong>Extend where the evidence supports it</div>
+      </div>
+      <div class="start-routes">
+        <article class="card"><h3>When the problem is clear</h3><p>Begin with a focused build or automation around one bounded outcome.</p></article>
+        <article class="card"><h3>When the problem needs clarity</h3><p>Begin with a paid workflow diagnostic: understand the present process, identify the most useful change and leave with a practical recommendation.</p></article>
+        <article class="card"><h3>When the team needs capability</h3><p>Begin with AI Team Training around the roles, tools and safeguards that matter to their work.</p><a class="card-link" href="training.html">Ask about team training</a></article>
       </div>
     </div>
   </section>
 
-  <section class="chapter panel-cream" id="about">
+  <section class="chapter" id="about">
     <div class="wrap">
       <p class="marker">06 / OPERATOR FIRST</p>
       <h2>I started with the operation, not the technology.</h2>
       <p>I’m Mat Glendenning.&nbsp; My experience combines operational leadership, systems design and hands-on delivery.&nbsp; Across sixteen years inside an operating construction business, including time as its managing director, I built and improved the systems used by finance, commercial and operational teams.</p>
       <p>Proof Systems applies that operator’s view to owner-led SMEs.&nbsp; I begin with the work, the people responsible for it and the evidence they need.&nbsp; Software and AI are useful when they make that operation more reliable, visible or easier to run.</p>
+      <p><a href="https://www.linkedin.com/in/mat-glendenning" rel="noopener noreferrer" target="_blank">LinkedIn</a></p>
     </div>
   </section>
 
@@ -234,8 +301,13 @@
 </main>
 <footer>
   <div class="footer-inner">
-    <span>© 2026 Proof Systems</span>
-    <span><a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a> · <a href="privacy.html">Privacy</a></span>
+    <a class="footer-brand" href="index.html"><img src="assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/mat-glendenning" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
+      <a href="privacy.html">Privacy</a>
+      <span>© 2026 Proof Systems</span>
+    </div>
   </div>
 </footer>
 <script src="assets/js/site.js" defer></script>

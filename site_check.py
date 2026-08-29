@@ -50,6 +50,13 @@ HOMEPAGE_REQUIRED = [
     "View all systems",
     "I started with the operation, not the technology.",
     "What important work should be easier to run?",
+    "You no longer have to choose between a spreadsheet and software built for somebody else's business.",
+    "Buy the commodity foundation",
+    "AI does not process the company accounting data",
+    "mobile-first web application",
+    "Selected Systems",
+    "Ask about team training",
+    "https://www.linkedin.com/in/mat-glendenning",
 ]
 
 PUBLIC_REJECTED = [
@@ -73,6 +80,10 @@ PUBLIC_REJECTED = [
     "application-received",
     "CLIENT PERSPECTIVE",
     "05 / CLIENT",
+    "Contract Performance Reporting",
+    "Avenir Next",
+    "fonts.googleapis",
+    "fonts.gstatic",
 ]
 
 FORM_REQUIRED = [
@@ -209,6 +220,12 @@ def check_routes(failures: list[str]) -> None:
         "assets/img/social.jpg",
         "favicon.svg",
         "_redirects",
+        "training.html",
+        "assets/fonts/InterVariable.woff2",
+        "assets/fonts/LICENSE.txt",
+        "assets/brand/logo-light.svg",
+        "assets/brand/icon-light.svg",
+        "assets/brand/favicon.svg",
     ]
     for rel in required:
         if not exact_case_file(ROOT, rel):
@@ -266,20 +283,22 @@ def check_form(failures: list[str]) -> None:
     visible = set()
     for a, b in names:
         name = a or b
-        if name in {"form-name", "bot-field", "route_key", "route_label", "lead_state", "page_source", "submitted_at"}:
+        if name in {"form-name", "bot-field", "route_key", "route_label", "lead_state", "page_source", "submitted_at", "interest_source"}:
             continue
         visible.add(name)
     if visible != VISIBLE_FIELDS:
         fail(f"visible fields {sorted(visible)} != {sorted(VISIBLE_FIELDS)}", failures)
     if "method=\"POST\"" not in raw and "method='POST'" not in raw:
         fail("enquiry form must POST", failures)
-    if "location.search" in raw or "URLSearchParams(location.search)" in raw:
-        fail("enquiry must not read visitor answers from the URL", failures)
+    if 'name="interest_source"' not in raw:
+        fail("enquiry form missing hidden interest_source", failures)
     js = (ROOT / "assets/js/form.js").read_text(encoding="utf-8")
     if "preventDefault" not in js:
         fail("form.js must keep the success state on the enquiry page", failures)
     if "file:" not in js:
         fail("form.js must intercept local submissions", failures)
+    if "ai-team-training" not in js or "replaceState" not in js:
+        fail("form.js must capture ai-team-training interest and strip it from the URL", failures)
 
 
 def check_stories(failures: list[str]) -> None:
@@ -320,11 +339,22 @@ def check_stories(failures: list[str]) -> None:
             fail(f"{path.name}: missing poster", failures)
         if "What this film shows" not in raw:
             fail(f"{path.name}: missing accessible summary", failures)
+        if "Back to Selected Systems" not in raw:
+            fail(f"{path.name} missing Back to Selected Systems", failures)
+        if "Suggested next:" not in raw:
+            fail(f"{path.name} missing suggested next route", failures)
         if slug == "ledgerlink":
             if "connection to accounts software" not in raw:
                 fail("LedgerLink story missing 'connection to accounts software'", failures)
             if "connection to a workbook" in raw.lower():
                 fail("LedgerLink story must not say connection to a workbook", failures)
+            if "AI does not process the company accounting data" not in raw:
+                fail("LedgerLink story missing no-AI accounting statement", failures)
+        if slug == "cpr":
+            if "Central Project Register" not in raw:
+                fail("CPR story must use Central Project Register", failures)
+            if "database and API" not in raw:
+                fail("CPR story must explain the database/API service", failures)
 
 
 def check_redirects(failures: list[str]) -> None:
@@ -408,6 +438,42 @@ def check_mobile_header(failures: list[str]) -> None:
         fail("320px header must fit without using overflow-x as the fix", failures)
 
 
+def check_round2(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if "Avenir Next" in css or "font-weight: 650" in css or "font-weight: 750" in css:
+        fail("CSS still uses Avenir Next or faux 650/750 weights", failures)
+    if '@font-face' not in css or "InterVariable.woff2" not in css or "font-display: swap" not in css:
+        fail("Inter Variable must be self-hosted with font-display swap", failures)
+    font = ROOT / "assets/fonts/InterVariable.woff2"
+    import hashlib
+    digest = hashlib.sha256(font.read_bytes()).hexdigest()
+    if digest != "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3":
+        fail(f"InterVariable.woff2 hash mismatch: {digest}", failures)
+    licence = hashlib.sha256((ROOT / "assets/fonts/LICENSE.txt").read_bytes()).hexdigest()
+    if licence != "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a":
+        fail(f"Inter licence hash mismatch: {licence}", failures)
+    training = (ROOT / "training.html").read_text(encoding="utf-8")
+    if "Train your team to use AI on real workflows, not toy examples." not in training:
+        fail("training page missing primary line", failures)
+    if "Ask about team training" not in training:
+        fail("training page missing training CTA", failures)
+    if "workflow.html?interest=ai-team-training" not in training:
+        fail("training CTA must reuse the general enquiry form with interest=ai-team-training", failures)
+    if "half-day" not in training:
+        fail("training page must describe the half-day workshop", failures)
+    work_index = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    if "<title>Selected Systems | Proof Systems</title>" not in work_index:
+        fail("Selected Systems public title is missing", failures)
+    if ">Work<" in work_index:
+        fail("Selected Systems index still uses Work as the public name", failures)
+    for path in PUBLIC_HTML:
+        raw = path.read_text(encoding="utf-8")
+        if "fonts.googleapis" in raw or "fonts.gstatic" in raw:
+            fail(f"{path.name} loads a remote font", failures)
+        if "Contract Performance Reporting" in raw:
+            fail(f"{path.name} still expands CPR incorrectly", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -417,6 +483,7 @@ def check() -> int:
     check_redirects(failures)
     check_public_copy(failures)
     check_mobile_header(failures)
+    check_round2(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:

@@ -2,6 +2,19 @@
 
 Updated: 2026-08-29
 
+## AGE-600 design round 2 — 29 August 2026
+
+Local refinement of the cumulative branch. Canonical brand assets, self-hosted Inter Variable, Selected Systems language, system architecture, economics chapter, larger Proof bands, AI Team Training page, CPR correction and LinkedIn were added. Enquiry identity is unchanged.
+
+- PASS — `python3 site_check.py` including round-2 brand, font hash, training route, CPR name, story navigation and no remote fonts.
+- PASS — `python3 proof_media_check.py` (eight master hashes unchanged).
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py` including `/training.html` and local font/brand assets.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory Python compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT RUN — browser visual UAT of the redesigned header, logo, Proof bands and 320–1440 viewports. Leave that for independent Codex review.
+
 ## AGE-600 independent review correction 2 — 29 August 2026
 
 Independent re-review found `scrollWidth` 350px at 320×568 because brand, Discuss a workflow and Menu still shared one nowrap row. Below 360px the header now wraps: Menu stays on the first row with the brand; the enquiry CTA takes a second full-width row. 360px, 390px, tablet and desktop headers are unchanged. Overflow hiding is not the fix. `site_check.py` asserts the 359px wrap strategy.

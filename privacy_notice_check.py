@@ -303,7 +303,10 @@ def check() -> int:
                 fail(f"broken fragment: {href}", failures)
             continue
         if parsed.scheme in {"mailto", "https"}:
-            if parsed.scheme == "https" and not href.startswith("https://ico.org.uk/"):
+            if parsed.scheme == "https" and not (
+                href.startswith("https://ico.org.uk/")
+                or href.startswith("https://www.linkedin.com/in/mat-glendenning")
+            ):
                 fail(f"unexpected external URL: {href}", failures)
             continue
         if parsed.scheme and parsed.scheme not in {"http", "https", "mailto"}:

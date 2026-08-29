@@ -33,9 +33,9 @@ Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with 
 - Timed description: `ledgerlink-demo.vtt`
 - Accessible summary: The operator tests a connection to accounts software, queues the period datasets, runs the extraction and reviews evidence counts before opening the resulting workbooks.
 
-## Contract Performance Reporting
+## Central Project Register
 
-`cpr-demo.mp4` shows a portfolio of live, completed and pipeline projects with identity and contract value, then a project-level drill-down. The film title card uses Central Project Register; the approved public name is Contract Performance Reporting.
+`cpr-demo.mp4` shows a portfolio of live, completed and pipeline projects with identity and contract value, then a project-level drill-down. The public name is Central Project Register. The real service is a database and API; the filmed interface visualises synthetic demonstration data. The master film file is unchanged.
 
 - Runtime: 18.6 seconds
 - Poster: `cpr-poster.jpg`
@@ -84,7 +84,7 @@ Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with 
 
 ## Relationship
 
-SiteLog captures weekly site records. BudgetFlow uses those cost records for allocation and payment export. Contract Performance Reporting holds project identity and terms. Applications Ledger records applications, certificates, payments and retention. LedgerLink extracts controlled accounts data through a connection to accounts software. Cashflow and Management Accounts consume connected source data rather than rebuilding the story by hand. Probables keeps likely future work in one consistent list.
+SiteLog captures weekly site records. BudgetFlow uses those cost records for allocation and payment export. Central Project Register holds project identity and status. Applications Ledger records applications, certificates, payments and retention. LedgerLink extracts controlled accounts data through a connection to accounts software. Deterministic local processing produces Cashflow and Management Accounts. Probables keeps likely future work in one consistent list.
 
 ## Public-safety status
 

@@ -12,27 +12,16 @@
     nav.classList.add("is-compact");
   }
 
-  var scenes = document.querySelectorAll("[data-workflow]");
-  if (scenes.length) {
-    if (reduced) {
-      scenes.forEach(function (scene) { scene.style.setProperty("--progress", "1"); });
-    } else {
-      scenes.forEach(function (scene) { scene.style.setProperty("--progress", "0"); });
-      var updateProgress = function () {
-        var vh = window.innerHeight || 1;
-        scenes.forEach(function (scene) {
-          var rect = scene.getBoundingClientRect();
-          var start = vh * 0.75;
-          var end = vh * 0.2 - rect.height * 0.35;
-          var raw = (start - rect.top) / (start - end || 1);
-          var value = raw < 0 ? 0 : raw > 1 ? 1 : raw;
-          scene.style.setProperty("--progress", String(value));
-        });
-      };
-      updateProgress();
-      window.addEventListener("scroll", updateProgress, { passive: true });
-      window.addEventListener("resize", updateProgress, { passive: true });
-    }
+  var scenes = document.querySelectorAll("[data-reveal]");
+  if (scenes.length && !reduced && "IntersectionObserver" in window) {
+    var reveal = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.2 });
+    scenes.forEach(function (scene) { reveal.observe(scene); });
+  } else {
+    scenes.forEach(function (scene) { scene.classList.add("is-visible"); });
   }
 
   function loadTeaser(el) {

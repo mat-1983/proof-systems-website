@@ -23,11 +23,11 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="../index.html">Proof Systems</a>
+    <a class="brand" href="../index.html"><img src="../assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="../work/" aria-current="page">Work</a>
-      <a href="../index.html#approach">Approach</a>
+      <a href="../work/" aria-current="page">Selected Systems</a>
+      <a href="../training.html">AI Team Training</a>
       <a href="../index.html#about">About</a>
     </nav>
     <a class="nav-cta" href="../workflow.html">Discuss a workflow</a>
@@ -41,7 +41,6 @@
     <p class="lede">Produce a structured monthly reporting workbook with comparative views and controlled supporting schedules.</p>
     <p class="proof-label">Synthetic demonstration</p>
     <p class="meta-audience">Finance and leadership teams · 53.9 seconds</p>
-
     <section>
       <h2>The problem</h2>
       <p>A monthly pack is often assembled by copying figures between tabs.&nbsp; Comparative views then drift, and the supporting schedules cannot be checked against the same period.</p>
@@ -53,10 +52,10 @@
     <section>
       <h2>The flow</h2>
       <ol class="flow-list">
+          <li>LedgerLink extracts controlled accounts data.</li>
+          <li>Deterministic local processing combines that extract with verified live-system inputs.</li>
           <li>The profit and loss schedule compares current year, budget and forecast.</li>
-          <li>Live project turnover and gross margin are reviewed by region and client.</li>
-          <li>Supporting overhead schedules keep monthly expenditure in the same workbook.</li>
-          <li>Checks remain available as part of the pack rather than a side file.</li>
+          <li>Supporting overhead schedules and checks stay in the same workbook.</li>
       </ol>
     </section>
     <section>
@@ -75,19 +74,28 @@
     </section>
     <section>
       <h2>Design choices</h2>
-      <p>The pack is a structured workbook, not a slide rebuild.&nbsp; Comparative views and supporting schedules stay together so a figure can be followed to its source.</p>
+      <p>The pack is a structured workbook, not a slide rebuild.&nbsp; AI does not process the company accounting data.&nbsp; Figures are accurate, repeatable and checkable against visible evidence.</p>
     </section>
     <section>
       <h2>Related systems</h2>
-      <p>Accounts extracts come from <a href="ledgerlink.html">LedgerLink</a>.&nbsp; Pipeline figures can be informed by <a href="probables.html">Probables</a>.</p>
+      <p>Accounts extracts come from LedgerLink.&nbsp; Pipeline figures can be informed by Probables.</p>
     </section>
-    <p><a class="button" href="../workflow.html">Discuss a workflow</a></p>
+    <nav class="story-nav" aria-label="Story navigation">
+      <a class="card-link" href="index.html">Back to Selected Systems</a>
+      <a class="card-link" href="index.html#connect">Suggested next: the complete connected-systems view</a>
+      <a class="button" href="../workflow.html">Discuss a workflow</a>
+    </nav>
   </div>
 </main>
 <footer>
   <div class="footer-inner">
-    <span>© 2026 Proof Systems</span>
-    <span><a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a> · <a href="../privacy.html">Privacy</a></span>
+    <a class="footer-brand" href="../index.html"><img src="../assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/mat-glendenning" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
+      <a href="../privacy.html">Privacy</a>
+      <span>© 2026 Proof Systems</span>
+    </div>
   </div>
 </footer>
 <script src="../assets/js/site.js" defer></script>

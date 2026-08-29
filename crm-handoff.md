@@ -17,6 +17,7 @@ Updated: 2026-08-29
 | `route_label: Discuss a workflow` | Public enquiry action | Respond by next working day |
 | `lead_state: enquiry-received` | Submitted and awaiting review | Respond by next working day |
 | `page_source: workflow.html` | Short enquiry form | Keep visitor answers out of URLs |
+| `interest_source: ai-team-training` | Reached from Ask about team training | Discuss the workshop; same general-enquiry route |
 
 ## Manual handoff
 

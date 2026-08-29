@@ -26,6 +26,30 @@ The design review supplies audience, outcome and film identity, not word-for-wor
 
 CSS and JavaScript live in `assets/css/site.css`, `assets/js/site.js` and `assets/js/form.js`. The site has no framework, WebGL, scroll hijacking, cursor replacement or intro loader. The default CSS `--progress: 1` keeps the workflow diagram readable without JavaScript.
 
+## 2026-08-29 — Round 2 brand reveal fallback
+
+The header always shows the compact canonical icon so navigation is never a barrier. The first viewport shows the full logo and one positioning line. JavaScript only compactifies the header after the opening leaves view. Reduced motion and no-JavaScript keep both the opening and the proposition visible, with no scale, timer or scroll hijack.
+
+## 2026-08-29 — Inter Variable provenance
+
+Self-hosted `assets/fonts/InterVariable.woff2` is official Inter v4.1, SIL OFL 1.1, SHA-256 `693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3`. Licence file SHA-256 `262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a`. Weights used are 400, 600 and 700. No remote font is loaded.
+
+## 2026-08-29 — System-map relationship evidence
+
+The architecture diagram only shows relationships visible in the approved films and design review: CPR as project-identity master; SiteLog weekly labour cost into BudgetFlow; BudgetFlow payment export; accounts software to LedgerLink; LedgerLink plus verified live inputs into deterministic local processing for Cashflow and Management Accounts. Suggested story-to-story links are labelled Suggested next and are not described as direct data dependencies unless that evidence exists.
+
+## 2026-08-29 — CPR public name correction
+
+The earlier decision to publish Contract Performance Reporting is superseded. Public wording is Central Project Register. The master film is unchanged.
+
+## 2026-08-29 — Narrow-mobile navigation with compact mark
+
+The 320px wrap (brand and Menu on row one, enquiry CTA on row two) is retained. The persistent header now uses the compact canonical icon rather than the wordmark, which keeps that wrap valid.
+
+## 2026-08-29 — Training interest source
+
+Ask about team training reuses `workflow.html` with `?interest=ai-team-training`. `form.js` copies that exact value into hidden `interest_source` and strips the query so visitor answers are not kept in the URL. `route_key` remains `general-enquiry`.
+
 ## 2026-08-29 — 320px header wraps onto two rows
 
 Independent review found 350px overflow at 320px while 360px still fitted. Below 360px the header wraps: brand and Menu stay on the first row, and Discuss a workflow moves to a full-width second row. 360px and wider keep the single-row mobile bar.

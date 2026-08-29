@@ -1,6 +1,16 @@
 (function () {
   var form = document.getElementById("enquiry");
   var statusBox = document.getElementById("status");
+  var interestField = document.getElementById("interest-source");
+  if (interestField && typeof URLSearchParams === "function") {
+    var params = new URLSearchParams(location.search);
+    if (params.get("interest") === "ai-team-training") {
+      interestField.value = "ai-team-training";
+      if (history.replaceState) {
+        history.replaceState({}, "", location.pathname + location.hash);
+      }
+    }
+  }
   if (!form || !statusBox) return;
 
   form.addEventListener("submit", function (event) {
@@ -31,6 +41,7 @@
     }).then(function (response) {
       if (!response.ok) throw new Error("Submission failed");
       form.reset();
+      if (interestField) interestField.value = "";
       statusBox.className = "status success";
       statusBox.innerHTML = "Enquiry received.&nbsp; I will review what you have shared and respond personally.&nbsp; Please do not send confidential material unless we agree a safe method.";
     }).catch(function () {

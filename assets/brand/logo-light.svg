@@ -1,0 +1,17 @@
+<svg width="1200" height="340" viewBox="0 0 1200 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Proof Systems</title>
+  <g transform="translate(60, 30)">
+    <polygon points="140,20 250,80 250,200 140,260 30,200 30,80" fill="none" stroke="#d89042" stroke-width="10"/>
+    <line x1="70" y1="140" x2="120" y2="190" stroke="#d89042" stroke-width="10" stroke-linecap="round"/>
+    <line x1="120" y1="190" x2="220" y2="90" stroke="#d89042" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="70" cy="140" r="14" fill="#d89042"/>
+    <circle cx="120" cy="190" r="18" fill="#d89042"/>
+    <circle cx="220" cy="90" r="14" fill="#d89042"/>
+    <circle cx="100" cy="90" r="8" fill="#d89042" opacity="0.5"/>
+    <circle cx="180" cy="160" r="8" fill="#d89042" opacity="0.5"/>
+    <line x1="100" y1="90" x2="120" y2="190" stroke="#d89042" stroke-width="3" opacity="0.3"/>
+    <line x1="180" y1="160" x2="120" y2="190" stroke="#d89042" stroke-width="3" opacity="0.3"/>
+  </g>
+  <text x="370" y="165" font-family="Arial, Helvetica, sans-serif" font-size="120" font-weight="700" fill="#d89042">PROOF</text>
+  <text x="370" y="260" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="400" fill="#b96d24">SYSTEMS</text>
+</svg>
