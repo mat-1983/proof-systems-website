@@ -42,6 +42,12 @@ ROUTES = [
     "/assets/js/site.js",
     "/assets/js/form.js",
     "/assets/img/social.jpg",
+    "/assets/img/age-600/homepage-stack-erp.webp",
+    "/assets/img/age-600/homepage-stack-no-erp.webp",
+    "/assets/img/age-600/01-the-gap.webp",
+    "/assets/img/age-600/01b-fit.webp",
+    "/assets/img/age-600/04-approach.webp",
+    "/assets/img/age-600/selected-systems-connected-demo.webp",
 ]
 
 FULL_FILMS = {

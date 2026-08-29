@@ -64,6 +64,42 @@ summary:focus-visible,
   top: 12px;
 }
 
+.approved-visual {
+  display: none;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+#gap,
+#economics,
+#approach { position: relative; }
+
+@media (min-width: 900px) {
+  .approved-visual { display: block; }
+  .scene-fallback,
+  svg.scene-fallback,
+  figure.scene-fallback,
+  div.scene-fallback { display: none; }
+  .gap-scene { grid-template-columns: 1fr; }
+  .iso-frame {
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+  .desktop-hide-copy {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
 .skip:focus {
   left: 16px;
   z-index: 8;

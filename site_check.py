@@ -257,6 +257,12 @@ def check_routes(failures: list[str]) -> None:
         "assets/brand/logo-light.svg",
         "assets/brand/icon-light.svg",
         "assets/brand/favicon.svg",
+        "assets/img/age-600/homepage-stack-erp.webp",
+        "assets/img/age-600/homepage-stack-no-erp.webp",
+        "assets/img/age-600/01-the-gap.webp",
+        "assets/img/age-600/01b-fit.webp",
+        "assets/img/age-600/04-approach.webp",
+        "assets/img/age-600/selected-systems-connected-demo.webp",
     ]
     for rel in required:
         if not exact_case_file(ROOT, rel):
@@ -642,6 +648,33 @@ DESIGN_REFS = {
     "04-approach.png": "141b64df1fe5b1bbca304ac54e7359d027aea533e031550a99cea9e9d6631b40",
 }
 
+PUBLIC_WEBPS = {
+    "assets/img/age-600/homepage-stack-erp.webp": {
+        "sha256": "78b1d07a363b49c994e33cc1763f42a9e6e4d3f04722ec2cb1e67841373be230",
+        "max_bytes": 500000,
+    },
+    "assets/img/age-600/homepage-stack-no-erp.webp": {
+        "sha256": "c4e45e6f5e0d2812a70b1ff7d10aef9d1f711eb1bd6bea7bab3c93c74d8beedd",
+        "max_bytes": 500000,
+    },
+    "assets/img/age-600/01-the-gap.webp": {
+        "sha256": "091990e87569fc38d4eaf26b18034dee5cb89035c4a5e1924313f2d8fb4096e0",
+        "max_bytes": 500000,
+    },
+    "assets/img/age-600/01b-fit.webp": {
+        "sha256": "77ece0c13101ed9fbfd95c424701fcd7061dae25fb1e1614f836d841a7ec2e6b",
+        "max_bytes": 500000,
+    },
+    "assets/img/age-600/04-approach.webp": {
+        "sha256": "4374c811d7dd31d9138f56efdc4a91d5483b75e117600357800fd1fe2ea5d686",
+        "max_bytes": 500000,
+    },
+    "assets/img/age-600/selected-systems-connected-demo.webp": {
+        "sha256": "0147e15be2fb8a040bdf18d040bf8f4904fc92039292c6d6f879744c2459c71b",
+        "max_bytes": 500000,
+    },
+}
+
 
 def check_round3(failures: list[str]) -> None:
     import hashlib
@@ -689,6 +722,40 @@ def check_round3(failures: list[str]) -> None:
         fail("dimensional scenes must not hide overflow with overflow-x", failures)
     if re.search(r"(?<!backdrop-)filter:\s*blur\(", css):
         fail("CSS must not use blur filters on type or copy", failures)
+    if 'class="approved-visual"' not in raw or "scene-fallback" not in raw:
+        fail("homepage must pair approved desktop visuals with native fallbacks", failures)
+    if "desktop-hide-copy" not in raw:
+        fail("Gap, Fit and Approach copy must remain in the DOM for assistive technology", failures)
+    if "@media (min-width: 900px)" not in css:
+        fail("approved visuals must switch at a 900px desktop breakpoint", failures)
+    if "clip: rect(0, 0, 0, 0)" not in css.split(".desktop-hide-copy {", 1)[-1][:280]:
+        fail("desktop-hidden copy must use a visually-hidden clip, not display:none", failures)
+    hide_rule = css.split(".desktop-hide-copy {", 1)[-1].split("}", 1)[0]
+    if "display: none" in hide_rule or "display:none" in hide_rule:
+        fail("desktop-hidden copy must not use display:none", failures)
+    for rel, meta in PUBLIC_WEBPS.items():
+        path = ROOT / rel
+        if not path.is_file():
+            fail(f"missing public derivative {rel}", failures)
+            continue
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != meta["sha256"]:
+            fail(f"{rel} hash mismatch: {actual}", failures)
+        if path.stat().st_size > meta["max_bytes"]:
+            fail(f"{rel} exceeds {meta['max_bytes']} bytes", failures)
+        if f'src="{rel}"' not in raw and f'src="../{rel}"' not in work:
+            if rel.endswith("selected-systems-connected-demo.webp"):
+                if f'src="../{rel}"' not in work:
+                    fail("Selected Systems missing connected approved visual", failures)
+            elif f'src="{rel}"' not in raw:
+                fail(f"homepage missing approved visual {rel}", failures)
+        snippet = raw if "selected-systems" not in rel else work
+        if rel.split("/")[-1] not in snippet:
+            fail(f"public page missing {rel}", failures)
+        if 'width="1672"' not in snippet or 'height="941"' not in snippet:
+            fail(f"{rel} must declare source pixel dimensions", failures)
+        if 'loading="lazy"' not in snippet or 'decoding="async"' not in snippet:
+            fail("approved visuals must use lazy loading and async decoding", failures)
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
     if "updateOpening" not in js:
         fail("site.js must drive the opening sequence from natural scroll", failures)

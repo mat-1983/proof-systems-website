@@ -2,6 +2,19 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 3 approved-derivative presentation — 29 August 2026
+
+Desktop and laptop (900px and above) present optimised WebP derivatives of the six attended references from `assets/img/age-600/`. Master PNGs stay in `docs/design/` and are not linked. Native SVG/HTML is the narrower-viewport fallback. Gap/Fit/Approach headings remain in the DOM with a visually-hidden clip.
+
+- PASS — `python3 site_check.py` including WebP hashes, sub-500KB budget, 1672×941 dimensions in markup, lazy/async, 900px switch, visually-hidden clip, and retained semantic copy.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py` including the six public WebP routes.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live browser overflow at named viewports; Chromium headless previously SIGSEGV in this environment.
+
 ## AGE-600 round 3 independent review corrections — 29 August 2026
 
 Rebuilt the six approved scenes as inline isometric/2.5D SVG, removed the About/Start heading caps, and kept films, form, privacy and public-safety copy unchanged. Generator scratch files were discarded and not committed.

@@ -1,9 +1,12 @@
 # AGE-600 round 3 visual references
 
-Non-public design-review files. Do not serve these rasters on the website.
-Recreate the approved designs with HTML, CSS, JavaScript and SVG.
+Internal design-review masters live here. Do not link these PNG files from public HTML.
 
-Copied 2026-08-29 from Codex generated images. Bytes preserved; durable names used.
+Public desktop presentation uses optimised WebP derivatives in `assets/img/age-600/`. Native HTML/CSS/SVG scenes remain the mobile, no-JavaScript and accessibility fallback.
+
+Copied 2026-08-29 from Codex generated images. Master bytes preserved; durable names used. Derivatives encoded 2026-08-29 with `cwebp -q 90 -m 6 -sharp_yuv` at the source 1672×941 aspect ratio.
+
+## Master files (not served)
 
 | Durable name | Source path | Bytes | SHA-256 |
 | --- | --- | --- | --- |
@@ -13,3 +16,16 @@ Copied 2026-08-29 from Codex generated images. Bytes preserved; durable names us
 | `01-the-gap.png` | `/Users/matglendenning/.codex/generated_images/01a03931-7274-7180-938b-7468b9e1d427/exec-5592d90f-7ced-40d6-a75b-827888e14888.png` | 1795426 | `9444732dcae5ca88912395e6256addb4b49e05490fb85ff8d56c0e1eb3365900` |
 | `01b-fit.png` | `/Users/matglendenning/.codex/generated_images/01a03931-7274-7180-938b-7468b9e1d427/exec-febd208a-cf2e-454d-a7c5-de9b751946a1.png` | 1735829 | `a78c4e805f3d5ed49ebe3b217174ba93e6f419cdcec591c6ec2f8ad9f4c47a9a` |
 | `04-approach.png` | `/Users/matglendenning/.codex/generated_images/01a03931-7274-7180-938b-7468b9e1d427/exec-e2beb881-3d48-4e63-840b-54867962f4d4.png` | 2376169 | `141b64df1fe5b1bbca304ac54e7359d027aea533e031550a99cea9e9d6631b40` |
+
+## Public derivatives (`assets/img/age-600/`)
+
+All files are 1672×941. Quality 90 was chosen so embedded type and small labels stay sharp at 1180–1320px render widths; each file is under 500KB.
+
+| Public file | Bytes | SHA-256 |
+| --- | --- | --- |
+| `homepage-stack-erp.webp` | 152190 | `78b1d07a363b49c994e33cc1763f42a9e6e4d3f04722ec2cb1e67841373be230` |
+| `homepage-stack-no-erp.webp` | 124514 | `c4e45e6f5e0d2812a70b1ff7d10aef9d1f711eb1bd6bea7bab3c93c74d8beedd` |
+| `01-the-gap.webp` | 118296 | `091990e87569fc38d4eaf26b18034dee5cb89035c4a5e1924313f2d8fb4096e0` |
+| `01b-fit.webp` | 131662 | `77ece0c13101ed9fbfd95c424701fcd7061dae25fb1e1614f836d841a7ec2e6b` |
+| `04-approach.webp` | 270062 | `4374c811d7dd31d9138f56efdc4a91d5483b75e117600357800fd1fe2ea5d686` |
+| `selected-systems-connected-demo.webp` | 140150 | `0147e15be2fb8a040bdf18d040bf8f4904fc92039292c6d6f879744c2459c71b` |
