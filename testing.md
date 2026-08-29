@@ -1,6 +1,73 @@
 # Proof Systems Website Testing
 
-Updated: 2026-08-28
+Updated: 2026-08-29
+
+## AGE-600 website repositioning — 29 August 2026
+
+Local static implementation only. No preview host, production deploy, production form submission or external contact was made.
+
+### Automated checks run in this worktree
+
+- PASS — `python3 site_check.py`: eight story routes, five-field `proof-systems-qualifier` enquiry, omitted client-perspective chapter, poster-first homepage teasers, no full films on the homepage, and public-copy rejection of founding-cohort, Pantera, Pete Mills, Xonetic and YouTube wording.
+- PASS — `python3 proof_media_check.py`: eight H.264 1280×720 masters with exact required SHA-256 hashes, posters, English WebVTT files, and 5-second homepage teasers under 400KB. Existing SiteLog and BudgetFlow master/poster hashes were unchanged.
+- PASS — `python3 privacy_notice_check.py`: general-enquiry field list, B2B lawful-basis wording, transfer mechanisms, retention and ICO link. Founding-diagnostic application copy is absent.
+- PASS — `python3 crawl_check.py`: HTTP 200 for homepage, Work, eight stories, enquiry, privacy, legacy checkout/video-series pages and shared assets. Homepage HTML declared three teasers and did not reference the eight full films.
+- PASS — `node --check assets/js/site.js` and `node --check assets/js/form.js`.
+- PASS — in-memory Python compile of `site_check.py`, `proof_media_check.py`, `privacy_notice_check.py` and `crawl_check.py`. `python3 -m py_compile` could not write a cache directory in this environment (`PermissionError` under `~/Library/Caches/com.apple.python`).
+- PASS — `git diff --check`.
+
+### Media probes
+
+ffprobe on each master: H.264, 1280×720, no audio stream. Durations matched the design review within 0.2s. Sampled frames showed synthetic Northstar labels and local demonstration chrome only.
+
+### Performance / lazy media
+
+- Homepage markup contains posters and `data-teaser-src` attributes only. Full `*-demo.mp4` files are not present in `index.html`.
+- `assets/js/site.js` injects a muted looping teaser only when the card is intersecting, JavaScript runs, and `prefers-reduced-motion: reduce` is false.
+- Story films use `preload="none"`, native `controls`, and no `autoplay` or `loop`.
+- This is a static/HTML/JS proof, not a browser network-panel measurement.
+
+### Browser visual UAT
+
+NOT RUN HERE. Google Chrome headless (`--headless=new`) aborted with SIGSEGV (exit 139) after `--user-data-dir` was supplied. No screenshots or interactive keyboard pass were captured. Independent Codex review should run the viewport, keyboard, reduced-motion and no-JavaScript checks locally.
+
+### Responsive UAT instructions for independent review
+
+Start a local server from the worktree:
+
+```
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:8000/` and check these viewports:
+
+| Viewport | What to confirm |
+| --- | --- |
+| 1440×900 | Large editorial headline, two-column hero, sticky gap visual, three proof cards, compact nav after the first viewport |
+| 1280×720 | Same structure without horizontal overflow; body copy remains readable |
+| 768×1024 | Single-column chapters; SVG remains in its connected/readable state; enquiry CTA stays visible |
+| 390×844 | Native menu button plus visible Discuss a workflow; one-column cards; no horizontal overflow |
+
+Repeat Work (`/work/`), one capture story (`/work/sitelog.html`), LedgerLink (`/work/ledgerlink.html`), enquiry (`/workflow.html`) and privacy (`/privacy.html`) at 1440×900 and 390×844.
+
+### Keyboard, reduced-motion and no-JavaScript checks
+
+- Tab from the skip link through nav, CTAs, form fields and film controls. Focus rings are `outline: 2px solid #F2A65A`.
+- Enable `prefers-reduced-motion: reduce`. The workflow SVG must already show the connected state; teasers must not load or play.
+- Disable JavaScript. Homepage posters, copy, story films (native controls), enquiry fields and privacy copy must remain readable. The checkbox menu still opens. Local form POST is not intercepted; published JS keeps answers out of the URL.
+
+### Not run / not authorised
+
+- No Netlify preview, production deploy, DNS, credential or billing change.
+- No production or preview form submission.
+- No contact with Pete Mills, Pantera or any prospect.
+- No publication of the pending testimonial.
+
+---
+
+## Earlier records
+
+The sections below are historical evidence from AGE-590, AGE-505 and AGE-424. They describe the previous founding-cohort site and are not the current public contract.
 
 ## AGE-590 SiteLog and BudgetFlow proof videos — 28 August 2026
 

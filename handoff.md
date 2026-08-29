@@ -1,32 +1,33 @@
 # Proof Systems Website Handoff
 
-Updated: 2026-07-13
+Updated: 2026-08-29
 
 ## Current state
 
-`AGE-424` is complete and shipped.  The reviewed founding-cohort site was merged to `main` at `e1b697b`, pushed and deployed to `proofsystems.co.uk` on 12 July 2026.  Mat deployed the final homepage refinement on 13 July 2026, removing the note beneath the two operational proof cards.
+`AGE-600` is implemented locally in this worktree and is not live. The reviewed founding-cohort site remains on production until Mat separately approves merge, preview and deployment.
 
-The live credibility story covers 16 years of operator-led systems work, full-time software and AI focus since February 2025, four anonymised capability groups and two confirmed production examples.  It does not name Pantera or publish figures, savings claims or sensitive evidence pending permission.
-
-The temporary project `phenomenal-marzipan-faf430` and its safe synthetic application were permanently deleted after explicit confirmation.  The production form-notification flow remains configured and was verified earlier on 12 July 2026; no additional live synthetic submission was sent during this release or the final copy refinement.
+The local site is a credibility-led operational-systems journey: homepage chapters 00-04 and 06-07, Work index, eight synthetic story films, a five-field enquiry form, and updated privacy and operating guidance. Chapter 05 and the pending Pantera quotation are omitted.
 
 ## Source of truth
 
-- Full published baseline: annotated tag `published/full-offer-v1-2026-07-12` at `f2d2f25`.
-- Reduced homepage: `index.html`.
-- Reduced application and Netlify schema: `workflow.html`.
+- Design contract: `docs/age-600-attended-design-review.md`.
+- Build decisions: `docs/age-600-build-decisions.md`.
+- Homepage: `index.html`.
+- Work and stories: `work/`.
+- Enquiry and Netlify schema: `workflow.html`.
 - Privacy wording: `privacy.html`.
 - Manual response and handoff: `lead-response-sop.md` and `crm-handoff.md`.
 - Preview acceptance: `netlify-test-recipe.md`.
+- Media register: `assets/demo-media/README.md`.
 
 ## Current proposition
 
-Proof Systems is recruiting four SMEs for a free, bounded workflow diagnostic. Each engagement covers one recurring workflow, a diagnostic conversation, written findings and a recommended next step. It does not promise implementation, software, a cohort place or paid work.
+Proof Systems designs and builds practical software, controlled AI automation and useful team training around real operational work. The primary action is Discuss a workflow.
 
 ## Safety and approval
 
-Do not contact prospects, publish named or quantified Pantera evidence, change production Netlify settings or send a live synthetic submission without the applicable explicit approval.  AGE-424 has no remaining implementation, deployment or clean-up gate.
+Do not contact prospects, publish named Pantera evidence, change production Netlify settings, send a live synthetic submission, push, merge or deploy without the applicable explicit approval.
 
 ## Rollback
 
-The old site can be reconstructed exactly from `published/full-offer-v1-2026-07-12`. Prefer reverting the reduced merge or deploying a checkout of the tag; do not move the tag.
+The live founding-cohort site can be reconstructed from production `main`. Prefer reverting this isolated branch; do not move historic tags.

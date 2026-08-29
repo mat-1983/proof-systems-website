@@ -15,7 +15,7 @@ HTML_FILES = {path.name: path for path in ROOT.glob("*.html")}
 
 REQUIRED_HEADINGS = [
     "Who is responsible",
-    "Founding diagnostic applications",
+    "General workflow enquiries",
     "Paid B2B enquiries and client work",
     "Why the information is used",
     "What is not collected by default",
@@ -25,12 +25,10 @@ REQUIRED_HEADINGS = [
     "Complaints",
 ]
 
-FOUNDING_PHRASES = [
-    "name, business email, company, role or decision-making authority",
-    "general description of the workflow and desired outcome",
-    "optional approximate hours lost",
+ENQUIRY_PHRASES = [
+    "name, business email, company, a general description of the work or workflow you would like to improve",
     "consent to contact",
-    "used only to assess the application and respond about the founding diagnostic",
+    "used only to review the enquiry and respond about it",
     "Please do not submit customer names, passwords, confidential documents, detailed financial data, special-category information or other sensitive personal data",
     "processed through Netlify Forms and may be delivered to Proof Systems by email",
 ]
@@ -76,7 +74,7 @@ REQUIRED_PHRASES = [
     "I do not promise automatic deletion",
     "These rights can depend on the circumstances and on the lawful basis",
     "There is not an absolute right to deletion",
-    "Last updated 25 August 2026",
+    "Last updated 29 August 2026",
     "https://ico.org.uk/make-a-complaint/",
 ]
 
@@ -241,13 +239,13 @@ def check() -> int:
         fail(f"unexpected h1: {parser.h1!r}", failures)
     if not parser.has_header or not parser.has_main or not parser.has_nav or not parser.has_footer:
         fail("missing header, main, nav or footer", failures)
-    style = raw.split("<style>", 1)[-1].split("</style>", 1)[0]
-    if "overflow-x:hidden" not in style:
+    css = (ROOT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+    if "overflow-x: hidden" not in css and "overflow-x:hidden" not in css:
         fail("missing overflow-x:hidden", failures)
-    if "@media(max-width:650px)" not in style:
-        fail("missing mobile width rule", failures)
-    if "min(780px,calc(100% - 40px))" not in style:
-        fail("missing existing readable column width", failures)
+    if ".doc-main" not in css:
+        fail("missing privacy readable column class", failures)
+    if 'href="assets/css/site.css"' not in raw:
+        fail("privacy.html must use shared CSS", failures)
     if 'href="favicon.svg"' not in raw:
         fail("missing favicon link", failures)
     if parser.section_count < 9:
@@ -262,7 +260,10 @@ def check() -> int:
     visible = html_unescape(visible)
     visible_compact = re.sub(r"\s+", " ", visible)
 
-    for phrase in FOUNDING_PHRASES + REQUIRED_PHRASES:
+    if "founding diagnostic" in visible_compact.lower() or "founding cohort" in visible_compact.lower():
+        fail("privacy notice still describes founding diagnostic applications", failures)
+
+    for phrase in ENQUIRY_PHRASES + REQUIRED_PHRASES:
         if phrase not in visible_compact and phrase not in raw:
             fail(f"missing required phrase: {phrase}", failures)
 

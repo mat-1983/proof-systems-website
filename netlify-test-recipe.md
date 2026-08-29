@@ -1,28 +1,27 @@
-# AGE-424 Netlify Preview Test Recipe
+# AGE-600 Netlify Preview Test Recipe
 
-Run only after explicit approval to create/use a deploy preview and send one synthetic submission. Never test first on production.
+Run only after explicit approval to create/use a deploy preview and send one synthetic submission. Never test first on production. This local AGE-600 build does not authorise a preview host, production submission or notification change.
 
 ## Synthetic values
 
 - Name: `Proof Systems Test Lead`
 - Business email: an approved non-personal test inbox
 - Company: `Synthetic Workflow Ltd`
-- Role: `Owner; controls this synthetic workflow`
 - Workflow: `Weekly synthetic status report compiled from three sample trackers`
-- Outcome: `One controlled view with visible exceptions`
-- Hours: `4`
 - Consent: checked
+
+Do not send decision role, desired outcome or hours. Those fields were removed.
 
 ## Checks
 
 1. Confirm the preview uses the expected branch commit and production remains unchanged.
-2. Check homepage and application at desktop and mobile widths.
-3. Confirm the page presents one free founding-cohort proposition, one dominant CTA and two operational examples.
-4. Confirm no £350 price, fundraising claim, video CTA, training route, fit-call route, product route or internal/local-planning language appears publicly.
-5. Submit the approved synthetic record once.
-6. Confirm `proof-systems-qualifier` is detected and contains: `name`, `email`, `company`, `decision_role`, `workflow_help`, `desired_outcome`, `hours_per_week`, `contact_consent`, `route_key`, `route_label`, `lead_state`, `page_source`, `submitted_at`.
+2. Check homepage, Work, one story, enquiry and privacy at 1440×900, 1280×720, 768×1024 and 390×844.
+3. Confirm the page presents the operational-systems proposition, Discuss a workflow, eight story routes and synthetic-demonstration labelling.
+4. Confirm no founding-cohort dates, place counts, free-diagnostic claims, £350 price, Pantera quotation, Xonetic, YouTube, public prices or unverified performance claims appear publicly.
+5. Submit the approved synthetic record once, only on an approved preview.
+6. Confirm `proof-systems-qualifier` is detected and contains: `name`, `email`, `company`, `workflow_help`, `contact_consent`, `route_key=general-enquiry`, `route_label=Discuss a workflow`, `lead_state=enquiry-received`, `page_source=workflow.html`, `submitted_at`.
 7. Confirm notification delivery to the approved inbox and that no answers appear in the browser URL.
-8. Confirm `/video-series` intentionally returns to the homepage and `/checkout` points to the founding application.
+8. Confirm `/video-series` noindexes and returns to the homepage, and `/checkout` noindexes and points to the enquiry form.
 9. Delete the synthetic Netlify record and notification email after evidence is recorded.
 
 Stop before merging or production deployment and ask Mat for explicit approval with screenshots, test evidence, residual risks and rollback instructions.

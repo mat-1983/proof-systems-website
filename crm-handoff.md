@@ -1,11 +1,11 @@
-# Founding Diagnostic Application Handoff
+# General enquiry handoff
 
-Updated: 2026-07-12
+Updated: 2026-08-29
 
 ## System boundary
 
-- Netlify Forms receives the source application under form name `proof-systems-qualifier`.
-- The restricted Notion identity register holds name, business email, company, role, consent, owner and response history.
+- Netlify Forms receives the source enquiry under form name `proof-systems-qualifier`.
+- The restricted Notion identity register holds name, business email, company, consent, owner and response history.
 - The AGE-421 workbook holds the pseudonymous commercial record only. It must not contain names, emails or detailed workflow descriptions.
 - Linear tracks delivery work, not individual prospects.
 
@@ -13,8 +13,10 @@ Updated: 2026-07-12
 
 | Website value | Meaning | Initial action |
 |---|---|---|
-| `route_key: founding-diagnostic` | Founding diagnostic application | Review cohort fit |
-| `lead_state: application-received` | Submitted and awaiting review | Respond by next working day |
+| `route_key: general-enquiry` | Discuss a workflow | Review the enquiry |
+| `route_label: Discuss a workflow` | Public enquiry action | Respond by next working day |
+| `lead_state: enquiry-received` | Submitted and awaiting review | Respond by next working day |
+| `page_source: workflow.html` | Short enquiry form | Keep visitor answers out of URLs |
 
 ## Manual handoff
 
@@ -22,13 +24,14 @@ Updated: 2026-07-12
 2. Search the restricted identity register by business email and company; update an existing relationship rather than creating a duplicate.
 3. Assign or retain the pseudonymous `PS-L###` identifier.
 4. Record the minimum identity/contact details, consent evidence, owner, next action and due date in the restricted register.
-5. Create or update one AGE-421 row with the pseudonymous ID, source `Website founding cohort`, current stage and no identifying or sensitive narrative.
+5. Create or update one AGE-421 row with the pseudonymous ID, source `Website enquiry`, current stage and no identifying or sensitive narrative.
 6. Apply the response recipe in `lead-response-sop.md`.
-7. Delete unprogressed Netlify source applications within 90 days.
+7. Delete unprogressed Netlify source enquiries within 90 days.
 
 ## Controls
 
-- One owner, one next action and one due date per application.
+- One owner, one next action and one due date per enquiry.
 - Never copy confidential workflow evidence into the workbook or Linear.
 - Website contact consent is not recording, transcription or AI-processing consent.
 - Use synthetic data only in an explicitly approved preview test and delete it after verification.
+- Do not submit the form to production from this local build.
