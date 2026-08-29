@@ -76,28 +76,8 @@ summary:focus-visible,
 #approach { position: relative; }
 
 @media (min-width: 900px) {
-  .approved-visual { display: block; }
-  .scene-fallback,
-  svg.scene-fallback,
-  figure.scene-fallback,
-  div.scene-fallback { display: none; }
-  .gap-scene { grid-template-columns: 1fr; }
-  .iso-frame {
-    background: transparent;
-    border: 0;
-    padding: 0;
-  }
-  .desktop-hide-copy {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+  .system-map > .approved-visual { display: block; }
+  .system-map > .scene-fallback { display: none; }
 }
 
 .skip:focus {
@@ -324,9 +304,14 @@ h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); max-width: 18ch; }
 h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); max-width: 22ch; margin-bottom: 1.2rem; }
 h3 { font-size: 1.2rem; letter-spacing: -0.02em; }
 #about h2,
-#start h2 {
+#start h2,
+#gap h2,
+#economics h2,
+#approach h2,
+#proof h2 {
   max-width: none;
 }
+#capability h2 { max-width: 22ch; }
 
 .lede, .intro {
   font-size: clamp(1.05rem, 2vw, 1.28rem);
@@ -715,10 +700,55 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .scene-erp,
 .scene-no-erp {
-  background: var(--raised);
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  padding: 1.4rem 1.2rem 1.6rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.stack-explain {
+  margin: 0 0 1.2rem;
+  max-width: 40rem;
+}
+
+.stack-erp-copy,
+.stack-noerp-copy {
+  display: none;
+  margin: 0 0 0.65rem;
+  color: #ddd6cb;
+}
+
+.stack-shared {
+  margin: 0;
+  color: var(--stone);
+}
+
+.stack-figure:has(#stack-erp:checked) .stack-erp-copy { display: block; }
+.stack-figure:has(#stack-no-erp:checked) .stack-noerp-copy { display: block; }
+
+.proposition-lead {
+  font-size: clamp(2.15rem, 6.4vw, 3.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  max-width: none;
+  margin: 0 0 1rem;
+  color: var(--cream);
+  overflow-wrap: break-word;
+}
+
+.proposition-support {
+  font-size: clamp(1.18rem, 2.6vw, 1.72rem);
+  line-height: 1.35;
+  max-width: min(38em, 100%);
+  color: #ddd6cb;
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+#gap .gap-copy p,
+#economics .fit-copy p {
+  max-width: 40rem;
 }
 
 .scene-no-erp { display: none; }
@@ -998,10 +1028,10 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .fit-compare {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(1.4rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.8rem;
   margin-top: 2rem;
-  align-items: end;
+  align-items: start;
 }
 
 .fit-side { margin: 0; }
@@ -1235,12 +1265,54 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .proof-grid .media-teaser { margin-top: 1rem; }
 .proof-grid .card-link { margin-right: 0.9rem; }
 
+.proof-all {
+  display: flex;
+  justify-content: center;
+  margin: 2.2rem 0 0;
+}
+
+.button-systems {
+  background: var(--amber);
+  color: var(--ink);
+  font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+  padding: 1rem 1.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.panel-cream .button-systems {
+  background: var(--amber);
+  color: var(--ink);
+}
+
 .work-connected { display: none; }
 .work-connected h2 { max-width: none; }
 .wrap:has(#view-individual:checked) .work-individual { display: grid; }
 .wrap:has(#view-individual:checked) .work-connected { display: none; }
 .wrap:has(#view-connected:checked) .work-individual { display: none; }
 .wrap:has(#view-connected:checked) .work-connected { display: block; }
+
+#individual-systems:target,
+.wrap:has(#individual-systems:target) .work-individual,
+.wrap:has(#finance:target) .work-individual {
+  display: grid !important;
+}
+.wrap:has(#individual-systems:target) .work-connected,
+.wrap:has(#finance:target) .work-connected {
+  display: none !important;
+}
+.wrap:has(#individual-systems:target) label[for="view-individual"],
+.wrap:has(#finance:target) label[for="view-individual"] {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+}
+.wrap:has(#individual-systems:target) label[for="view-connected"],
+.wrap:has(#finance:target) label[for="view-connected"] {
+  background: transparent;
+  color: var(--cream);
+  border-color: var(--hairline);
+}
 
 .conn-svg { width: 100%; height: auto; }
 .conn-node { stroke-width: 1.6; }
@@ -1271,13 +1343,10 @@ textarea { min-height: 8.5rem; resize: vertical; }
 }
 
 .iso-frame {
-  background:
-    radial-gradient(ellipse at 50% 24%, rgba(67, 167, 255, 0.1), transparent 46%),
-    radial-gradient(ellipse at 48% 78%, rgba(216, 144, 66, 0.07), transparent 52%),
-    #101318;
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  padding: 0.55rem 0.35rem 0.7rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .panel-cream .iso-frame,
@@ -1566,36 +1635,26 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .opening-connect,
   .opening-connect-soft { stroke-dashoffset: 0; }
   .stack-world { transform: none; }
+  html.js [data-chapter-reveal] .reveal-stage {
+    opacity: 1 !important;
+    transition: none !important;
+  }
 }
 
 @media (min-width: 900px) {
-  #gap .gap-scene {
-    grid-template-columns: minmax(0, 1fr);
+  html.js [data-chapter-reveal] .reveal-stage {
+    opacity: 0;
   }
-  #gap .approved-visual {
-    grid-column: 1 / -1;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
+  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="1"] {
+    opacity: 1;
+    transition: opacity 0.55s ease;
   }
-  .desktop-hide-copy,
-  p.desktop-hide-copy,
-  .approach-banner.desktop-hide-copy,
-  .fit-close.desktop-hide-copy,
-  .approach-key.desktop-hide-copy,
-  .start-routes.desktop-hide-copy,
-  .gap-copy.desktop-hide-copy {
-    position: absolute !important;
-    width: 1px !important;
-    min-width: 0 !important;
-    max-width: 1px !important;
-    height: 1px !important;
-    max-height: 1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    border: 0 !important;
+  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="2"] {
+    opacity: 1;
+    transition: opacity 0.55s ease 0.38s;
+  }
+  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="3"] {
+    opacity: 1;
+    transition: opacity 0.55s ease 0.76s;
   }
 }

@@ -1,4 +1,5 @@
 (function () {
+  document.documentElement.classList.add("js");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var nav = document.querySelector(".site-nav");
   var hero = document.querySelector("[data-hero]");
@@ -47,7 +48,10 @@
   if (scenes.length && !reduced && "IntersectionObserver" in window) {
     var reveal = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          reveal.unobserve(entry.target);
+        }
       });
     }, { threshold: 0.2 });
     scenes.forEach(function (scene) { reveal.observe(scene); });
@@ -119,6 +123,7 @@
 
   syncWorkView();
   window.addEventListener("hashchange", syncWorkView);
+  window.addEventListener("pageshow", syncWorkView);
 
   var connectedInput = document.getElementById("view-connected");
   var individualInput = document.getElementById("view-individual");
@@ -127,7 +132,9 @@
       if (connectedInput.checked) history.replaceState({}, "", "#connected-workflow");
     });
     individualInput.addEventListener("change", function () {
-      if (individualInput.checked) history.replaceState({}, "", location.pathname);
+      if (individualInput.checked && location.hash !== "#finance") {
+        history.replaceState({}, "", "#individual-systems");
+      }
     });
   }
 })();

@@ -47,7 +47,7 @@ HOMEPAGE_REQUIRED = [
     "Explore SiteLog",
     "Explore BudgetFlow",
     "See the finance workflow",
-    "View all systems",
+    "View all selected systems",
     "I started with the operation, not the technology.",
     "What important work should be easier to run?",
     "The software is there. The flow between it is not.",
@@ -71,8 +71,14 @@ HOMEPAGE_REQUIRED = [
     "Workflow diagnostic",
     "Team capability",
     "AI training",
-    "AI does not process the company accounting data",
-    "mobile-first web application",
+    "Mobile-first weekly site records, invoices and admin-ready exports.",
+    "Weekly labour allocation, budget control and coded payment exports.",
+    "Checked accounts extraction into cashflow and management accounts. Deterministic local processing; no AI touches company accounting data.",
+    "Keep the ERP or accounts foundation. Add a focused bespoke layer that connects and extends it.",
+    "Keep the useful tools. Add a bespoke layer connecting accounts software, spreadsheets and operational workflows.",
+    "Proof Systems builds the fitted operational layer. It does not replace every commodity platform.",
+    "Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software, controlled AI automation and training their teams can use.",
+    "Operational systems for owner-led SMEs.",
     "Selected Systems",
     "Ask about team training",
     "https://www.linkedin.com/in/mat-glendenning",
@@ -88,6 +94,10 @@ HOMEPAGE_STALE = [
     "When the first step works",
     "How the selected systems connect",
     "Re-entered information",
+    "I help owner-led businesses replace fragile spreadsheets",
+    "View all systems",
+    "mobile-first web application",
+    "With an ERP or accounts foundation, operational software sits above it",
 ]
 
 PUBLIC_REJECTED = [
@@ -582,7 +592,6 @@ def check_homepage_structure(failures: list[str]) -> None:
         fail(f"index.html section tags unbalanced: {opens} open, {closes} close", failures)
     markers = re.findall(r'class="marker">([^<]+)', raw)
     expected = [
-        "Operational systems for owner-led SMEs",
         "01 / THE GAP",
         "01B / FIT",
         "02 / CAPABILITY",
@@ -722,54 +731,6 @@ def check_round3(failures: list[str]) -> None:
         fail("dimensional scenes must not hide overflow with overflow-x", failures)
     if re.search(r"(?<!backdrop-)filter:\s*blur\(", css):
         fail("CSS must not use blur filters on type or copy", failures)
-    if 'class="approved-visual"' not in raw or "scene-fallback" not in raw:
-        fail("homepage must pair approved desktop visuals with native fallbacks", failures)
-    if "desktop-hide-copy" not in raw:
-        fail("Gap, Fit and Approach copy must remain in the DOM for assistive technology", failures)
-    if "@media (min-width: 900px)" not in css:
-        fail("approved visuals must switch at a 900px desktop breakpoint", failures)
-    two_col = css.find("grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr)")
-    gap_visual = css.rfind("#gap .approved-visual")
-    if two_col == -1 or gap_visual == -1 or gap_visual < two_col:
-        fail(
-            "desktop Gap visual rule must follow the base two-column .gap-scene declaration "
-            "so the approved image spans the wrap"
-        )
-    gap_visual_rule = css[gap_visual:gap_visual + 220]
-    if "grid-column: 1 / -1" not in gap_visual_rule:
-        fail("desktop Gap approved visual must span the full grid")
-    if "width: 100%" not in gap_visual_rule:
-        fail("desktop Gap approved visual must use the full wrap width")
-    gap_scene_desktop = css.rfind("#gap .gap-scene")
-    if gap_scene_desktop == -1 or gap_scene_desktop < two_col:
-        fail("desktop #gap .gap-scene one-column rule must follow the base two-column declaration")
-    if "minmax(0, 1fr)" not in css[gap_scene_desktop:gap_scene_desktop + 160]:
-        fail("desktop #gap .gap-scene must be a single full-width column")
-    if "clip: rect(0, 0, 0, 0)" not in css.split(".desktop-hide-copy {", 1)[-1][:280]:
-        fail("desktop-hidden copy must use a visually-hidden clip, not display:none", failures)
-    hide_rule = css.split(".desktop-hide-copy {", 1)[-1].split("}", 1)[0]
-    if "display: none" in hide_rule or "display:none" in hide_rule:
-        fail("desktop-hidden copy must not use display:none", failures)
-    banner = css.find(".approach-banner {")
-    hide_tail = css.rfind(".approach-banner.desktop-hide-copy")
-    if banner == -1 or hide_tail == -1 or hide_tail < banner:
-        fail(
-            "desktop-hide-copy must follow .approach-banner and include an "
-            ".approach-banner.desktop-hide-copy override"
-        )
-    hide_contract = css[hide_tail:hide_tail + 700]
-    for token in (
-        "width: 1px !important",
-        "height: 1px !important",
-        "overflow: hidden !important",
-        "clip: rect(0, 0, 0, 0) !important",
-        "white-space: nowrap !important",
-        "max-width: 1px !important",
-    ):
-        if token not in hide_contract:
-            fail(f"desktop-hide-copy utility missing cascade-safe {token}", failures)
-    if "display: none" in hide_contract or "overflow-x: hidden" in hide_contract:
-        fail("desktop-hide-copy must clip in place, not use display:none or overflow-x hiding", failures)
     for rel, meta in PUBLIC_WEBPS.items():
         path = ROOT / rel
         if not path.is_file():
@@ -780,19 +741,10 @@ def check_round3(failures: list[str]) -> None:
             fail(f"{rel} hash mismatch: {actual}", failures)
         if path.stat().st_size > meta["max_bytes"]:
             fail(f"{rel} exceeds {meta['max_bytes']} bytes", failures)
-        if f'src="{rel}"' not in raw and f'src="../{rel}"' not in work:
-            if rel.endswith("selected-systems-connected-demo.webp"):
-                if f'src="../{rel}"' not in work:
-                    fail("Selected Systems missing connected approved visual", failures)
-            elif f'src="{rel}"' not in raw:
-                fail(f"homepage missing approved visual {rel}", failures)
-        snippet = raw if "selected-systems" not in rel else work
-        if rel.split("/")[-1] not in snippet:
-            fail(f"public page missing {rel}", failures)
-        if 'width="1672"' not in snippet or 'height="941"' not in snippet:
-            fail(f"{rel} must declare source pixel dimensions", failures)
-        if 'loading="lazy"' not in snippet or 'decoding="async"' not in snippet:
-            fail("approved visuals must use lazy loading and async decoding", failures)
+    if 'src="../assets/img/age-600/selected-systems-connected-demo.webp"' not in work:
+        fail("Selected Systems missing connected approved visual", failures)
+    if 'loading="lazy"' not in work or 'decoding="async"' not in work:
+        fail("connected approved visual must use lazy loading and async decoding", failures)
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
     if "updateOpening" not in js:
         fail("site.js must drive the opening sequence from natural scroll", failures)
@@ -813,6 +765,165 @@ def check_round3(failures: list[str]) -> None:
             fail(f"{name} hash mismatch: {actual}", failures)
 
 
+CAPABILITY_COPY = [
+    "02 / CAPABILITY",
+    "Improve the operation, not just the interface.",
+    "Primary",
+    "Operational systems",
+    "Bespoke applications and connected workflows shaped around the people, controls and evidence the business already depends on.",
+    "See selected systems",
+    "Supporting",
+    "Controlled AI automation",
+    "Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.",
+    "Discuss a workflow",
+    "AI Team Training",
+    "Role-specific training that helps a team apply AI safely and usefully to the work they already do.",
+    "Ask about team training",
+    "Ownership",
+    "Exceptions",
+    "Review",
+    "Roles",
+    "Tools",
+    "Practice",
+]
+
+GENERAL_SYSTEMS_LABELS = {
+    "Selected Systems",
+    "See selected systems",
+    "View all selected systems",
+    "Back to Selected Systems",
+}
+
+HOMEPAGE_RASTERS = (
+    "homepage-stack-erp.webp",
+    "homepage-stack-no-erp.webp",
+    "01-the-gap.webp",
+    "01b-fit.webp",
+    "04-approach.webp",
+)
+
+
+def check_round4(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+
+    if 'class="proposition-lead"' not in raw or 'class="proposition-support"' not in raw:
+        fail("homepage missing proposition lead/support hierarchy", failures)
+    if "Operational systems for owner-led SMEs." not in raw:
+        fail("proposition lead copy is not the approved sentence", failures)
+    lead_rule = css.split(".proposition-lead {", 1)[-1].split("}", 1)[0] if ".proposition-lead {" in css else ""
+    support_rule = css.split(".proposition-support {", 1)[-1].split("}", 1)[0] if ".proposition-support {" in css else ""
+    if "clamp(2.15rem" not in lead_rule:
+        fail("proposition lead must be materially larger than the previous marker treatment", failures)
+    if "clamp(1.18rem" not in support_rule:
+        fail("proposition support must be larger than the previous lede treatment", failures)
+    if "max-width: none" not in lead_rule:
+        fail("proposition lead must use the available composition width", failures)
+
+    if "h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); max-width: 22ch;" not in css:
+        fail("global h2 measure must stay 22ch so Capability is unchanged", failures)
+    cap_h2 = css.split("#capability h2", 1)[-1].split("}", 1)[0] if "#capability h2" in css else ""
+    if "max-width: 22ch" not in cap_h2:
+        fail("Capability heading must keep the 22ch measure", failures)
+    for selector in ("#gap h2", "#economics h2", "#approach h2", "#proof h2"):
+        if selector not in css:
+            fail(f"{selector} must use a scoped width override", failures)
+
+    cap = re.search(r'<section class="chapter" id="capability">([\s\S]*?)</section>', raw)
+    if not cap:
+        fail("homepage missing Capability section", failures)
+    else:
+        body = cap.group(1)
+        for phrase in CAPABILITY_COPY:
+            if phrase not in body:
+                fail(f"Capability copy missing {phrase!r}", failures)
+        if 'class="capability-grid"' not in body or 'class="cap-visual"' not in body or 'class="cap-flow"' not in body:
+            fail("Capability three-card layout, icons or hierarchy changed", failures)
+        if body.count("<article") != 3:
+            fail("Capability must keep exactly three cards", failures)
+        if 'href="work/index.html#individual-systems">See selected systems</a>' not in body:
+            fail("Capability See selected systems destination must be the individual-systems index", failures)
+        if 'class="card-link"' not in body:
+            fail("Capability card links must keep their existing design class", failures)
+    if "capability-grid { grid-template-columns: 1.2fr 0.9fr 0.9fr; }" not in css:
+        fail("Capability grid columns must remain 1.2fr 0.9fr 0.9fr", failures)
+
+    for name in HOMEPAGE_RASTERS:
+        if name in raw:
+            fail(f"homepage must not present {name} as a rectangular chapter visual", failures)
+    if "desktop-hide-copy" in raw:
+        fail("Gap, Fit and Approach copy must stay live HTML, not visually clipped", failures)
+    if raw.count('data-chapter-reveal') < 4:
+        fail("homepage must mark the four visual chapters for progressive reveal", failures)
+    if 'data-stage="1"' not in raw or 'data-stage="2"' not in raw or 'data-stage="3"' not in raw:
+        fail("visual chapters must expose a three-stage native reveal sequence", failures)
+    if ".scene-erp" in css:
+        erp_rule = css.split(".scene-erp,", 1)[-1].split("}", 1)[0]
+        if "var(--raised)" in erp_rule or "border-radius: 22px" in erp_rule:
+            fail("ERP/no-ERP scenes must not sit in a raised rectangular frame", failures)
+    if "html.js [data-chapter-reveal] .reveal-stage" not in css:
+        fail("desktop progressive reveal must be scoped to JS-enabled chapter visuals", failures)
+    if "@media (min-width: 900px)" not in css:
+        fail("progressive staging must be limited to desktop/laptop widths", failures)
+    reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]
+    if "html.js [data-chapter-reveal] .reveal-stage" not in reduced or "opacity: 1 !important" not in reduced:
+        fail("reduced-motion must show the complete final scene", failures)
+    if "IntersectionObserver" not in js or "data-reveal" not in js:
+        fail("chapter reveal must use IntersectionObserver or equivalent on normal scroll", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("progressive reveal must not hijack scroll", failures)
+    if "WebGL" in raw or "webgl" in js:
+        fail("homepage must not add WebGL", failures)
+
+    if 'class="stack-explain"' not in raw or "aria-live" not in raw:
+        fail("ERP/no-ERP explanations must sit outside the scene with a live region", failures)
+    if "stack-figure:has(#stack-erp:checked) .stack-erp-copy" not in css:
+        fail("selected With ERP state must expose its explanation without JavaScript", failures)
+    if "stack-figure:has(#stack-no-erp:checked) .stack-noerp-copy" not in css:
+        fail("selected Without ERP state must expose its explanation without JavaScript", failures)
+
+    proof = raw[raw.find('id="proof"'):raw.find('id="approach"')]
+    if "Explore SiteLog" not in proof or "Explore BudgetFlow" not in proof:
+        fail("Proof must keep the SiteLog and BudgetFlow Explore links", failures)
+    if proof.find("View all selected systems") < proof.find('class="proof-grid"'):
+        fail("View all selected systems must sit beneath the three-card grid", failures)
+    if 'class="button button-systems"' not in proof:
+        fail("all-systems action must be a prominent button, not a card-link", failures)
+    if 'href="work/index.html#individual-systems">View all selected systems</a>' not in proof:
+        fail("Proof all-systems button must target the individual-systems index", failures)
+    if "View all systems" in proof:
+        fail("finance card must not keep a general View all systems link", failures)
+    if 'href="work/index.html#finance">See the finance workflow</a>' not in proof:
+        fail("finance-specific Proof link must remain finance-specific", failures)
+
+    if 'id="individual-systems"' not in work:
+        fail("Selected Systems must expose id=individual-systems for hash selection", failures)
+    if 'hash === "#finance" || hash === "#individual-systems"' not in js and 'hash === "#individual-systems"' not in js:
+        fail("site.js must select the individual view for #individual-systems", failures)
+    if "pageshow" not in js:
+        fail("individual-systems hash must be re-applied after the connected view was previously selected", failures)
+    if "#individual-systems:target" not in css:
+        fail("no-JavaScript arrival at #individual-systems must still reveal the individual index", failures)
+    if 'href="work/index.html#connected-workflow">Selected Systems' in raw:
+        fail("general Selected Systems actions must not default to the connected view", failures)
+
+    for path in PUBLIC_HTML:
+        html = path.read_text(encoding="utf-8")
+        rel = path.relative_to(ROOT).as_posix()
+        for match in re.finditer(r'<a\b[^>]*href="([^"]+)"[^>]*>([^<]+)</a>', html):
+            href, label = match.group(1), match.group(2).strip()
+            if label not in GENERAL_SYSTEMS_LABELS:
+                continue
+            if "#individual-systems" not in href:
+                fail(f"{rel}: {label!r} must use explicit #individual-systems, got {href}", failures)
+            if href.endswith("work/") or href.endswith("../work/"):
+                fail(f"{rel}: {label!r} still uses a directory URL without the individual hash", failures)
+            if "#connected-workflow" in href:
+                fail(f"{rel}: general {label!r} must not open the connected view", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -826,15 +937,16 @@ def check() -> int:
     check_homepage_structure(failures)
     check_round2(failures)
     check_round3(failures)
+    check_round4(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-3 homepage chapters, proof-grid, "
-        "connected workflow view, enquiry form, omitted client chapter, "
-        "poster-first teasers and public-copy safety"
+        "PASS routes, eight stories, round-4 native chapters, proposition copy, "
+        "ERP explanations, proof button, individual-systems destinations, "
+        "enquiry form, omitted client chapter, poster-first teasers and public-copy safety"
     )
     return 0
 

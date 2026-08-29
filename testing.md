@@ -2,6 +2,42 @@
 
 Updated: 2026-08-29
 
+## AGE-600 website refinement round 4 — 29 August 2026
+
+Homepage presentation now uses the existing semantic SVG/HTML as the native visual for With ERP / Without ERP, 01 / The Gap, 01B / Fit and 04 / Approach. Live headings and copy remain in the page. Desktop/laptop widths stage those scenes in reading order. Selected Systems general actions use `work/index.html#individual-systems`. Capability layout and copy are unchanged except the existing card link destination.
+
+### Automated checks run in this worktree
+
+- PASS — `python3 site_check.py` including native chapter markup, three-stage reveal attributes, exact proposition and ERP/no-ERP copy, shortened Proof narratives, the prominent all-systems button, Capability non-regression except the destination href, and explicit `#individual-systems` destinations.
+- PASS — `python3 proof_media_check.py` (eight master hashes unchanged).
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+
+### Browser visual UAT
+
+NOT COMPLETE IN THIS ENVIRONMENT. Google Chrome for Testing / Chrome headless aborted with SIGSEGV (exit 139) and Crashpad permission errors (`settings.dat: Operation not permitted`). Named viewport overflow, keyboard-focus, reduced-motion and no-JavaScript behaviour were inspected from built HTML/CSS/JS and a local HTTP 200 of homepage, Selected Systems, SiteLog, enquiry and training, not from a live layout engine.
+
+Independent review should start `python3 -m http.server 8000 --bind 127.0.0.1` and confirm:
+
+| Viewport | What to confirm |
+| --- | --- |
+| 1280 | Four scoped chapters blend into section backgrounds; staged reveal; no rectangular WebP frame; proposition lead larger than support |
+| 1024 | Same structure; ERP radios switch explanations; Proof button below the grid |
+| 768 | Stacked/final-state treatment is acceptable; no horizontal overflow |
+| 500, 390, 360, 320 | No overflow; no clipped headline, visual label, control or button; 320px header still wraps |
+
+Also open `/work/index.html#individual-systems` after first selecting Connected workflow and confirm the individual index is selected. Tab from the skip link. Enable `prefers-reduced-motion: reduce` and disable JavaScript: complete scenes, both ERP explanations via the radios, posters and enquiry fields must remain readable. Do not submit the form.
+
+### Not run / not authorised
+
+- No Netlify preview, production deploy, DNS, credential or billing change.
+- No production or preview form submission.
+- No contact with Pete Mills, Pantera or any prospect.
+- No publication of the pending testimonial.
+
 ## AGE-600 hidden-copy overflow correction — 29 August 2026
 
 Independent measurement at 1488px found `documentElement.scrollWidth` 1642 because `p.approach-banner.desktop-hide-copy` kept `width: 100%` from `.approach-banner`. A later 900px utility now forces width/height/overflow/clip/whitespace with `!important` and `.approach-banner.desktop-hide-copy` specificity.
