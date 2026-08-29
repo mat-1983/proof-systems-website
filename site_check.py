@@ -513,6 +513,22 @@ def check_architecture(failures: list[str]) -> None:
             fail(f"{rel} tall map must split Applications Ledger to fit the node", failures)
         if ">Applications<" not in tall or ">Ledger<" not in tall:
             fail(f"{rel} tall map must keep Applications and Ledger as split node text", failures)
+        wide = raw.split('<svg class="map-wide"', 1)[-1].split("</svg>", 1)[0]
+        for caption in ("accounts extraction", "checked local processing"):
+            match = re.search(
+                rf'<text class="map-label" x="([\d.]+)" y="([\d.]+)">{re.escape(caption)}</text>',
+                wide,
+            )
+            if not match:
+                fail(f"{rel} wide map missing caption {caption!r}", failures)
+                continue
+            y = float(match.group(2))
+            if not (248 < y < 286):
+                fail(
+                    f"{rel} wide caption {caption!r} y={y} must sit in the lane above the finance nodes "
+                    "(below the group heading, above y=286, not on the Cashflow diagonal)",
+                    failures,
+                )
 
 
 def check_homepage_structure(failures: list[str]) -> None:
