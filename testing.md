@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 independent review correction 2 — 29 August 2026
+
+Independent re-review found `scrollWidth` 350px at 320×568 because brand, Discuss a workflow and Menu still shared one nowrap row. Below 360px the header now wraps: Menu stays on the first row with the brand; the enquiry CTA takes a second full-width row. 360px, 390px, tablet and desktop headers are unchanged. Overflow hiding is not the fix. `site_check.py` asserts the 359px wrap strategy.
+
 ## AGE-600 independent review correction 1 — 29 August 2026
 
 Independent Codex review found a 415px document width at 390×844 because the mobile header's Menu control overflowed. The 760px header now uses a 100% `.nav-inner` with 16px inset padding, 0.4rem gap, and reduced CTA/Menu padding and type. Menu and Discuss a workflow remain visible. `body { overflow-x: hidden; }` was not used as the fix. `site_check.py` now asserts those mobile header rules.

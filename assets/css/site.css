@@ -501,6 +501,23 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .node-final { opacity: 1; }
 }
 
+@media (max-width: 359px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    row-gap: 0.45rem;
+  }
+  .nav-toggle {
+    order: 1;
+    margin-left: auto;
+  }
+  .nav-cta {
+    order: 2;
+    flex: 1 0 100%;
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

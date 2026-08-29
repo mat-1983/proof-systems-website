@@ -393,6 +393,19 @@ def check_mobile_header(failures: list[str]) -> None:
         fail("mobile header must keep the enquiry CTA and Menu control", failures)
     if "overflow-x" in block:
         fail("mobile header must fit without using overflow-x as the fix", failures)
+    narrow = css.split("@media (max-width: 359px)", 1)
+    if len(narrow) != 2:
+        fail("missing 359px header reflow breakpoint for 320px viewports", failures)
+        return
+    narrow_block = narrow[1].split("@media", 1)[0]
+    if "flex-wrap: wrap" not in narrow_block:
+        fail("320px header must wrap rather than overflow", failures)
+    if "flex: 1 0 100%" not in narrow_block or ".nav-cta" not in narrow_block:
+        fail("320px header must keep Discuss a workflow on its own reachable row", failures)
+    if ".nav-toggle" not in narrow_block or "order: 1" not in narrow_block:
+        fail("320px header must keep Menu visible on the first row", failures)
+    if "overflow-x" in narrow_block:
+        fail("320px header must fit without using overflow-x as the fix", failures)
 
 
 def check() -> int:

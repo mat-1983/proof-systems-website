@@ -26,6 +26,10 @@ The design review supplies audience, outcome and film identity, not word-for-wor
 
 CSS and JavaScript live in `assets/css/site.css`, `assets/js/site.js` and `assets/js/form.js`. The site has no framework, WebGL, scroll hijacking, cursor replacement or intro loader. The default CSS `--progress: 1` keeps the workflow diagram readable without JavaScript.
 
+## 2026-08-29 — 320px header wraps onto two rows
+
+Independent review found 350px overflow at 320px while 360px still fitted. Below 360px the header wraps: brand and Menu stay on the first row, and Discuss a workflow moves to a full-width second row. 360px and wider keep the single-row mobile bar.
+
 ## 2026-08-29 — Mobile header fits 390px without overflow hiding
 
 The 390px overflow came from nowrap brand, enquiry CTA and Menu items plus a 1.25rem flex gap exceeding the wrapped nav width. Below 760px the bar is `width: 100%` with 16px padding and a 0.4rem gap, and the CTA/Menu type is reduced. Desktop and tablet headers are unchanged. Overflow hiding is not the fix.
