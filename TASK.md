@@ -4,7 +4,7 @@ Updated: 2026-08-29
 
 ## AGE-600 round 4
 
-Local refinement of the approved round-three homepage: native blended chapter visuals with progressive desktop reveals, stronger proposition typography, separate ERP/no-ERP explanations, shortened Proof copy with one all-systems button, and general Selected Systems destinations to `work/index.html#individual-systems`. Capability layout is unchanged except that destination. Not approved for push, merge or publication.
+Local refinement of the approved round-three homepage. Correction 2 restores the five exact approved WebP graphics as the primary homepage visuals, with clip-path presentation movement. Proposition copy, ERP explanations, Proof button and `#individual-systems` routing from round four remain. Capability layout is unchanged except that destination. Not approved for push, merge or publication.
 
 ## AGE-600 round 3
 

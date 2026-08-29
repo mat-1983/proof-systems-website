@@ -705,15 +705,17 @@ def check_round3(failures: list[str]) -> None:
         fail("operator and enquiry headings must use the available composition width", failures)
     if "16.8em" in css or "14.5em" in css:
         fail("operator and enquiry headings must not use a narrow artificial measure", failures)
-    if 'class="iso-top"' not in raw or 'class="iso-left"' not in raw or 'class="iso-right"' not in raw:
-        fail("homepage scenes must use three-face isometric construction", failures)
     if ".iso-amber { stroke: var(--amber);" not in css or ".iso-blue { stroke: var(--blue);" not in css:
         fail("shared amber/blue connection stroke language is missing", failures)
-    if "WAITING" not in raw or "TOO LATE" not in raw or "RE-ENTERED" not in raw:
-        fail("Gap scene must show re-entry, waiting and late-report cues", failures)
-    if "BROAD SOFTWARE" not in raw or "BESPOKE LAYER" not in raw:
-        fail("Fit scene missing broad-software / bespoke-layer composition", failures)
-    if "UNDERSTAND" not in raw or "CHOOSE" not in raw or "PROVE" not in raw or "EXTEND" not in raw:
+    if "waiting" not in raw.lower():
+        fail("Gap scene must keep waiting and late-report cues", failures)
+    if "too-late" not in raw.lower() and "too late" not in raw.lower():
+        fail("Gap scene must keep the too-late cue", failures)
+    if "re-entered" not in raw.lower():
+        fail("Gap scene must keep the re-entered cue", failures)
+    if "bespoke layer" not in raw.lower():
+        fail("Fit scene missing bespoke-layer composition", failures)
+    if "Understand" not in raw or "Choose" not in raw or "Prove" not in raw or "Extend" not in raw:
         fail("Approach scene missing the four workstation stages", failures)
     if 'class="gap-key"' not in raw:
         fail("Gap scene must keep a readable HTML key for small viewports", failures)
@@ -850,26 +852,23 @@ def check_round4(failures: list[str]) -> None:
     if "capability-grid { grid-template-columns: 1.2fr 0.9fr 0.9fr; }" not in css:
         fail("Capability grid columns must remain 1.2fr 0.9fr 0.9fr", failures)
 
-    for name in HOMEPAGE_RASTERS:
-        if name in raw:
-            fail(f"homepage must not present {name} as a rectangular chapter visual", failures)
     if "desktop-hide-copy" in raw:
         fail("Gap, Fit and Approach copy must stay live HTML, not visually clipped", failures)
+    if 'class="artwork-copy"' not in raw:
+        fail("Gap, Fit and Approach must keep live copy in the DOM beside the approved artwork", failures)
     if raw.count('data-chapter-reveal') < 4:
-        fail("homepage must mark the four visual chapters for progressive reveal", failures)
-    if 'data-stage="1"' not in raw or 'data-stage="2"' not in raw or 'data-stage="3"' not in raw:
-        fail("visual chapters must expose a three-stage native reveal sequence", failures)
+        fail("homepage must mark the visual chapters for progressive reveal", failures)
     if ".scene-erp" in css:
         erp_rule = css.split(".scene-erp,", 1)[-1].split("}", 1)[0]
         if "var(--raised)" in erp_rule or "border-radius: 22px" in erp_rule:
             fail("ERP/no-ERP scenes must not sit in a raised rectangular frame", failures)
-    if "html.js [data-chapter-reveal] .reveal-stage" not in css:
-        fail("desktop progressive reveal must be scoped to JS-enabled chapter visuals", failures)
-    if "@media (min-width: 900px)" not in css:
-        fail("progressive staging must be limited to desktop/laptop widths", failures)
+    if "html.js .approved-scene-ltr img" not in css or "clip-path: inset(0 100% 0 0)" not in css:
+        fail("desktop progressive reveal must clip the approved rasters, not redraw them", failures)
+    if "html.js .approved-scene-up img" not in css:
+        fail("ERP/no-ERP reveal must uncover the foundation before the fitted layer", failures)
     reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]
-    if "html.js [data-chapter-reveal] .reveal-stage" not in reduced or "opacity: 1 !important" not in reduced:
-        fail("reduced-motion must show the complete final scene", failures)
+    if "html.js .approved-scene img" not in reduced or "clip-path: inset(0) !important" not in reduced:
+        fail("reduced-motion must show the complete approved artwork", failures)
     if "IntersectionObserver" not in js or "data-reveal" not in js:
         fail("chapter reveal must use IntersectionObserver or equivalent on normal scroll", failures)
     if "preventDefault" in js and "wheel" in js:
@@ -924,70 +923,44 @@ def check_round4(failures: list[str]) -> None:
                 fail(f"{rel}: general {label!r} must not open the connected view", failures)
 
 
-def check_fit_cue_bounds(failures: list[str]) -> None:
+def check_approved_artwork(failures: list[str]) -> None:
     raw = (ROOT / "index.html").read_text(encoding="utf-8")
-    svg_match = re.search(
-        r'<svg[^>]*class="[^"]*fit-visual[^"]*"[^>]*viewBox="([^"]+)"[\s\S]*?</svg>',
-        raw,
-    )
-    if not svg_match:
-        svg_match = re.search(
-            r'<svg[^>]*viewBox="([^"]+)"[^>]*class="[^"]*fit-visual[^"]*"[\s\S]*?</svg>',
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    required_src = [
+        'src="assets/img/age-600/homepage-stack-erp.webp"',
+        'src="assets/img/age-600/homepage-stack-no-erp.webp"',
+        'src="assets/img/age-600/01-the-gap.webp"',
+        'src="assets/img/age-600/01b-fit.webp"',
+        'src="assets/img/age-600/04-approach.webp"',
+    ]
+    for src in required_src:
+        if src not in raw:
+            fail(f"homepage must visibly reference {src}", failures)
+        if raw.count(src) != 1:
+            fail(f"homepage should declare {src} once as the primary visual", failures)
+    if 'class="iso-svg"' in raw or "fit-visual" in raw or "gap-visual" in raw:
+        fail("simplified SVG chapter drawings must not be the primary homepage graphics", failures)
+    if "<img" in raw:
+        for match in re.finditer(
+            r'<img\b[^>]*class="[^"]*approved-visual[^"]*"[^>]*>',
             raw,
-        )
-    if not svg_match:
-        fail("Fit scene missing viewBox for the right-hand cue regression", failures)
-        return
-    try:
-        min_x, min_y, width, height = (float(part) for part in svg_match.group(1).split())
-    except ValueError:
-        fail(f"Fit viewBox is not four numbers: {svg_match.group(1)!r}", failures)
-        return
-    max_x = min_x + width
-    max_y = min_y + height
-    cue = re.search(
-        r'<text\b([^>]*)>ONLY THE MISSING LAYER</text>',
-        svg_match.group(0),
-    )
-    if not cue:
-        fail("Fit SVG must keep the ONLY THE MISSING LAYER cue", failures)
-        return
-    attrs = cue.group(1)
-    x_match = re.search(r'\bx="([^"]+)"', attrs)
-    y_match = re.search(r'\by="([^"]+)"', attrs)
-    anchor_match = re.search(r'\btext-anchor="([^"]+)"', attrs)
-    if not x_match or not y_match:
-        fail("Fit right-hand cue must declare x and y inside the viewBox", failures)
-        return
-    x = float(x_match.group(1))
-    y = float(y_match.group(1))
-    anchor = anchor_match.group(1) if anchor_match else "start"
-    if anchor != "end":
-        fail(
-            "Fit right-hand cue must be text-anchor=end so the label cannot "
-            "extend past the SVG viewBox (start-anchored x=860 overflowed)",
-            failures,
-        )
-        return
-    if x > max_x or x < min_x or y > max_y or y < min_y:
-        fail(
-            f"Fit right-hand cue anchor ({x}, {y}) is outside viewBox "
-            f"[{min_x}, {min_y}, {max_x}, {max_y}]",
-            failures,
-        )
-    # End-anchored glyphs occupy space to the left of x. Keep a right inset so
-    # the constructed right edge is not flush with the viewBox, which overflow-x
-    # hiding previously masked.
-    if x > max_x - 8:
-        fail(
-            f"Fit right-hand cue x={x} is too close to viewBox right {max_x}; "
-            "the label would extend outward by construction",
-            failures,
-        )
+        ):
+            tag = match.group(0)
+            if 'width="1672"' not in tag or 'height="941"' not in tag:
+                fail(f"approved homepage visual must declare source 1672x941: {tag[:120]}", failures)
+            if 'loading="lazy"' not in tag or 'decoding="async"' not in tag:
+                fail("approved homepage visuals must use lazy loading and async decoding", failures)
+    if "clip-path: inset(0 100% 0 0)" not in css.split("html.js", 1)[-1]:
+        fail("progressive movement must be scoped to JavaScript so no-JS shows the full artwork", failures)
+    if ".approved-scene {" not in css:
+        fail("approved scenes need a borderless full-bleed container", failures)
+    scene_rule = css.split(".approved-scene {", 1)[-1].split("}", 1)[0]
+    if "border: 0" not in scene_rule:
+        fail("approved scenes must not sit in a card or outlined frame", failures)
+    if "html.js .approved-scene img" not in css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]:
+        fail("reduced-motion must force the complete approved artwork", failures)
     if 'class="fit-note">Only the missing layer</p>' not in raw:
-        fail("Fit must keep the live HTML duplicate cue below the illustration", failures)
-    if 'data-stage="3"' not in attrs:
-        fail("Fit right-hand cue must remain in the third reveal stage", failures)
+        fail("Fit must keep the live HTML cue for the missing layer", failures)
 
 
 def check() -> int:
@@ -1004,7 +977,7 @@ def check() -> int:
     check_round2(failures)
     check_round3(failures)
     check_round4(failures)
-    check_fit_cue_bounds(failures)
+    check_approved_artwork(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:

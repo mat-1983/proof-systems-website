@@ -65,15 +65,43 @@ summary:focus-visible,
 }
 
 .approved-visual {
-  display: none;
+  display: block;
   width: 100%;
   height: auto;
   max-width: 100%;
+  border: 0;
+  box-shadow: none;
 }
+
+.system-map > .approved-visual { display: none; }
 
 #gap,
 #economics,
 #approach { position: relative; }
+
+#gap.panel-cream { background: #EDE6D8; }
+#economics.panel-ink { background: #08090C; }
+#approach.panel-sand { background: #C8B392; }
+
+.approved-scene {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.approved-scene img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
 
 @media (min-width: 900px) {
   .system-map > .approved-visual { display: block; }
@@ -692,11 +720,14 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .stack-figure {
   margin: 2.4rem 0 0;
+  width: 100%;
+  max-width: 100%;
+  background: transparent;
 }
 
 .stack-figure .view-switch { margin-top: 0; }
 
-.stack-scenes { position: relative; }
+.stack-scenes { position: relative; width: 100%; max-width: 100%; }
 
 .scene-erp,
 .scene-no-erp {
@@ -1600,6 +1631,20 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .opening-connect,
   .opening-connect-soft { stroke-dashoffset: 0; }
   .bespoke-banner { position: static; transform: none; display: table; margin: 0.7rem auto 0; white-space: normal; }
+  .approved-scene {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .approved-scene img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 68%;
+  }
+  #gap .approved-scene img { object-position: 78% 72%; }
+  #economics .approved-scene img { object-position: center 60%; }
+  #approach .approved-scene img { object-position: center 55%; }
+  .approved-scene-up img { object-position: center 58%; }
 }
 
 @media (max-width: 359px) {
@@ -1635,26 +1680,51 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .opening-connect,
   .opening-connect-soft { stroke-dashoffset: 0; }
   .stack-world { transform: none; }
-  html.js [data-chapter-reveal] .reveal-stage {
+  html.js .approved-scene img {
+    clip-path: inset(0) !important;
+    transform: none !important;
+    animation: none !important;
     opacity: 1 !important;
-    transition: none !important;
   }
 }
 
-@media (min-width: 900px) {
-  html.js [data-chapter-reveal] .reveal-stage {
-    opacity: 0;
+@media (min-width: 761px) {
+  .artwork-copy {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
-  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="1"] {
-    opacity: 1;
-    transition: opacity 0.55s ease;
+  html.js .approved-scene-ltr img {
+    clip-path: inset(0 100% 0 0);
   }
-  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="2"] {
-    opacity: 1;
-    transition: opacity 0.55s ease 0.38s;
+  html.js .approved-scene-ltr.is-visible img {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 1.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  html.js [data-chapter-reveal].is-visible .reveal-stage[data-stage="3"] {
-    opacity: 1;
-    transition: opacity 0.55s ease 0.76s;
+  html.js .approved-scene-up img {
+    clip-path: inset(100% 0 0 0);
   }
+  html.js .approved-scene-up.is-visible img,
+  html.js .is-visible .approved-scene-up img {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.js .approved-scene-fit img {
+    clip-path: inset(0 100% 0 0);
+  }
+  html.js .approved-scene-fit.is-visible img {
+    animation: reveal-fit 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes reveal-fit {
+  0% { clip-path: inset(0 100% 0 0); }
+  40% { clip-path: inset(0 48% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
 }

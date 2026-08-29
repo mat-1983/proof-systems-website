@@ -2,6 +2,21 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round-four correction 2 — restore approved graphics — 29 August 2026
+
+The five approved homepage WebP assets are again the primary rendered visuals. Progressive movement uses CSS clip-path on those rasters (foundation-up for ERP/no-ERP, left-to-right for Gap and Approach, broad-software then bespoke for Fit). Simplified inline SVG chapter drawings are not rendered. Live copy remains in the DOM; on desktop it is clipped because the artwork already contains those headings; on mobile it is readable beside a crop/pan of the same source. Capability is unchanged except its already-approved destination.
+
+- PASS — `python3 site_check.py` including `check_approved_artwork` (five exact `src` paths, 1672×941, no `iso-svg` chapter drawings, JS-scoped clip-path, reduced-motion complete artwork).
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live browser comparison of the settled frames with the five source assets. Chrome headless previously SIGSEGV in this environment.
+
+Independent review should compare desktop/laptop/tablet/mobile against `assets/img/age-600/homepage-stack-erp.webp`, `homepage-stack-no-erp.webp`, `01-the-gap.webp`, `01b-fit.webp` and `04-approach.webp`, and confirm the final settled state preserves the approved artwork.
+
 ## AGE-600 round-four review correction 1 — 29 August 2026
 
 Independent browser evidence at 1280 CSS pixels found the Fit cue `ONLY THE MISSING LAYER` start-anchored at x=860 in viewBox `-26 92 914 459`, measuring about `left=1193.84` / `right=1450.02` and overflowing the 1280 viewport. The same label was clipped at tablet and mobile. The cue is now `text-anchor="end"` at x=868 so it stays inside the viewBox. The live HTML duplicate below the illustration is unchanged. Page `overflow-x: hidden` is not the fix.
