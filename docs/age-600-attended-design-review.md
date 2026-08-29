@@ -276,6 +276,22 @@ Required approval record:
 - confirmation that the wording fairly describes completed work;
 - approval to publish on the Proof Systems website.
 
+Proposed draft for Mat's review — **not approved for Pantera contact or
+publication**:
+
+> Mat has a rare ability to understand how a business really operates and turn
+> complex, manual processes into practical systems people can actually use. The
+> systems he designed for Pantera connected operational, commercial and
+> financial work and gave our teams clearer, more consistent ways to manage it.
+> He combines hands-on operational experience with the technical ability to
+> build the solution, while keeping the business outcome at the centre.
+
+Proposed attribution: **[Name and title to be confirmed], Pantera**
+
+The draft deliberately avoids quantified performance claims. Mat must approve
+the wording before it is sent, and Pantera must approve the exact final wording
+and attribution before it can be added to the website.
+
 If approval is not available at implementation review, omit this chapter
 cleanly and keep publication blocked under the agreed launch gate.
 
