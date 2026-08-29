@@ -26,6 +26,14 @@ The design review supplies audience, outcome and film identity, not word-for-wor
 
 CSS and JavaScript live in `assets/css/site.css`, `assets/js/site.js` and `assets/js/form.js`. The site has no framework, WebGL, scroll hijacking, cursor replacement or intro loader. The default CSS `--progress: 1` keeps the workflow diagram readable without JavaScript.
 
+## 2026-08-29 — Architecture diagram uses identity grouping
+
+The connected-system visual now groups Central Project Register as a shared identity bus into SiteLog, BudgetFlow, Applications Ledger and Probables, distinct from transactional arrows: weekly labour cost, payment export to accounts software, accounts extraction into LedgerLink, and checked local processing into both Cashflow and Management Accounts. The homepage map is full-width for 1280px legibility. Mobile uses a grouped tall layout rather than a single sequence.
+
+## 2026-08-29 — Unpublished chapters numbered consecutively
+
+With the testimonial unpublished, Operator First is `05` and Start is `06`, immediately after `04 / APPROACH`. No Pantera copy was added.
+
 ## 2026-08-29 — Round 2 brand reveal fallback
 
 The header always shows the compact canonical icon so navigation is never a barrier. The first viewport shows the full logo and one positioning line. JavaScript only compactifies the header after the opening leaves view. Reduced motion and no-JavaScript keep both the opening and the proposition visible, with no scale, timer or scroll hijack.

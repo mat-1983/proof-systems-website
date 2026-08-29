@@ -40,8 +40,8 @@ HOMEPAGE_REQUIRED = [
     "02 / CAPABILITY",
     "03 / PROOF",
     "04 / APPROACH",
-    "06 / OPERATOR FIRST",
-    "07 / START",
+    "05 / OPERATOR FIRST",
+    "06 / START",
     "Synthetic demonstration",
     "These films use synthetic Northstar data to demonstrate systems and workflows I have designed",
     "Explore SiteLog",
@@ -247,7 +247,7 @@ def check_homepage(failures: list[str]) -> None:
     for phrase in HOMEPAGE_REQUIRED:
         if phrase not in compact and phrase not in raw:
             fail(f"homepage missing required phrase: {phrase}", failures)
-    if "05 /" in raw or "CLIENT PERSPECTIVE" in raw:
+    if "CLIENT PERSPECTIVE" in raw or "05 / CLIENT" in raw:
         fail("homepage must omit the unapproved client-perspective chapter", failures)
     if re.search(r"<img[^>]+(portrait|headshot)", raw, re.I):
         fail("homepage must not include a portrait", failures)
@@ -436,6 +436,89 @@ def check_mobile_header(failures: list[str]) -> None:
         fail("320px header must keep Menu visible on the first row", failures)
     if "overflow-x" in narrow_block:
         fail("320px header must fit without using overflow-x as the fix", failures)
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if ".nav-open:focus-visible ~ .nav-toggle" not in css:
+        fail("mobile Menu must show a visible focus ring when the checkbox is :focus-visible", failures)
+    if "outline: 2px solid var(--focus)" not in css.split(".nav-open:focus-visible ~ .nav-toggle", 1)[-1][:280]:
+        fail("mobile Menu focus ring must use the visible focus outline", failures)
+
+
+REQUIRED_MAP_RELS = [
+    ("cpr", "sitelog", "project-identity"),
+    ("cpr", "budgetflow", "project-identity"),
+    ("cpr", "applications-ledger", "project-identity"),
+    ("cpr", "probables", "project-identity"),
+    ("sitelog", "budgetflow", "weekly-labour-cost"),
+    ("budgetflow", "accounts-software", "payment-export"),
+    ("accounts-software", "ledgerlink", "accounts-extraction"),
+    ("ledgerlink", "local-processing", "checked-local-processing"),
+    ("local-processing", "cashflow", "checked-local-processing"),
+    ("local-processing", "management-accounts", "checked-local-processing"),
+]
+
+
+def diagram_rels(raw: str) -> set[tuple[str, str, str]]:
+    found: set[tuple[str, str, str]] = set()
+    for match in re.finditer(
+        r'data-from="([^"]+)"[^>]*data-to="([^"]+)"[^>]*data-rel="([^"]+)"|'
+        r'data-from="([^"]+)"[^>]*data-rel="([^"]+)"[^>]*data-to="([^"]+)"|'
+        r'data-to="([^"]+)"[^>]*data-from="([^"]+)"[^>]*data-rel="([^"]+)"',
+        raw,
+    ):
+        groups = [g for g in match.groups() if g]
+        if len(groups) == 3:
+            if match.group(1):
+                found.add((match.group(1), match.group(2), match.group(3)))
+            elif match.group(4):
+                found.add((match.group(4), match.group(6), match.group(5)))
+            else:
+                found.add((match.group(8), match.group(7), match.group(9)))
+    return found
+
+
+def check_architecture(failures: list[str]) -> None:
+    expected = set(REQUIRED_MAP_RELS)
+    for rel in ("index.html", "work/index.html"):
+        raw = (ROOT / rel).read_text(encoding="utf-8")
+        found = diagram_rels(raw)
+        missing = expected - found
+        if missing:
+            fail(f"{rel} missing diagram relationships: {sorted(missing)}", failures)
+        if ("budgetflow", "ledgerlink", "payment-export") in found:
+            fail(f"{rel} still sends BudgetFlow payment export to LedgerLink", failures)
+        if 'class="map-wide"' not in raw or 'class="map-tall"' not in raw:
+            fail(f"{rel} must keep wide and tall architecture diagrams", failures)
+        if "Project identity" not in raw or "Finance" not in raw:
+            fail(f"{rel} must distinguish identity from finance grouping", failures)
+
+
+def check_homepage_structure(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    opens = len(re.findall(r"<section\b", raw, flags=re.I))
+    closes = len(re.findall(r"</section>", raw, flags=re.I))
+    if opens != closes:
+        fail(f"index.html section tags unbalanced: {opens} open, {closes} close", failures)
+    markers = re.findall(r'class="marker">([^<]+)', raw)
+    expected = [
+        "Operational systems for owner-led SMEs",
+        "01 / THE GAP",
+        "01B / FIT",
+        "02 / CAPABILITY",
+        "03 / PROOF",
+        "04 / APPROACH",
+        "05 / OPERATOR FIRST",
+        "06 / START",
+    ]
+    if markers != expected:
+        fail(f"homepage marker sequence {markers} != {expected}", failures)
+    if "06 / OPERATOR FIRST" in raw or "07 / START" in raw:
+        fail("unpublished testimonial numbering remains on the homepage", failures)
+    proof_end = raw.find('id="proof"')
+    approach = raw.find('id="approach"')
+    if proof_end != -1 and approach != -1:
+        between = raw[proof_end:approach]
+        if between.count("</section>") != 1:
+            fail("Proof chapter must close with exactly one </section> before Approach", failures)
 
 
 def check_round2(failures: list[str]) -> None:
@@ -483,6 +566,8 @@ def check() -> int:
     check_redirects(failures)
     check_public_copy(failures)
     check_mobile_header(failures)
+    check_architecture(failures)
+    check_homepage_structure(failures)
     check_round2(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")

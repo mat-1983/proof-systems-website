@@ -112,7 +112,18 @@ summary:focus-visible,
   height: 36px;
 }
 
-.nav-open { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+.nav-open {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.nav-open:focus-visible ~ .nav-toggle {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
 
 .nav-toggle {
   display: none;
@@ -503,8 +514,17 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .map-title { fill: var(--cream); font-size: 13px; font-weight: 600; font-family: Inter, sans-serif; }
 .map-sub { fill: var(--stone); font-size: 11px; font-family: Inter, sans-serif; }
 .map-arrow { fill: none; stroke: var(--amber); stroke-width: 1.6; }
+.map-identity { fill: none; stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 4 3; }
 .map-label { fill: var(--amber-deep); font-size: 10px; font-family: Inter, sans-serif; }
+.map-group { fill: rgba(216, 144, 66, 0.06); stroke: var(--hairline); }
+.map-group-label { fill: var(--amber); font-size: 11px; font-weight: 600; font-family: Inter, sans-serif; letter-spacing: 0.08em; }
 .map-status { fill: var(--blue); }
+.map-note { fill: var(--stone); font-size: 11px; font-family: Inter, sans-serif; }
+.chapter-hero .system-map { margin-top: 2rem; }
+
+@media (min-width: 761px) {
+  .nav-open { display: none; }
+}
 
 @media (min-width: 1500px) {
   :root { --wrap: min(1320px, calc(100% - 96px)); }

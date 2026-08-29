@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 independent review corrections 1 — 29 August 2026
+
+Corrected the architecture diagrams, mobile Menu `:focus-visible` treatment, and homepage chapter numbering after `04 / APPROACH`.
+
 ## AGE-600 design round 2 — 29 August 2026
 
 Local refinement of the cumulative branch. Canonical brand assets, self-hosted Inter Variable, Selected Systems language, system architecture, economics chapter, larger Proof bands, AI Team Training page, CPR correction and LinkedIn were added. Enquiry identity is unchanged.
