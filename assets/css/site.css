@@ -374,6 +374,7 @@ summary { cursor: pointer; font-weight: 600; color: var(--cream); }
   border: 1px solid var(--hairline);
   border-radius: 22px;
   padding: 1rem;
+  margin-inline: 0;
 }
 
 .system-map svg { width: 100%; height: auto; }
@@ -521,7 +522,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .map-group-label { fill: var(--amber); font-size: 11px; font-weight: 600; font-family: Inter, sans-serif; letter-spacing: 0.08em; }
 .map-status { fill: var(--blue); }
 .map-note { fill: var(--stone); font-size: 11px; font-family: Inter, sans-serif; }
-.chapter-hero .system-map { margin-top: 2rem; }
+.chapter-hero .system-map { margin-top: 2rem; margin-inline: 0; }
 
 @media (min-width: 761px) {
   .nav-open { display: none; }
@@ -544,6 +545,11 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .sticky-visual { position: static; }
   .map-wide { display: none; }
   .map-tall { display: block; }
+  .map-tall .map-title { font-size: 15px; }
+  .map-tall .map-sub { font-size: 13px; }
+  .map-tall .map-group-label { font-size: 13px; }
+  .map-tall .map-label { font-size: 13px; }
+  .map-tall .map-note { font-size: 13px; }
 }
 
 @media (max-width: 760px) {
@@ -575,6 +581,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .fields { grid-template-columns: 1fr; }
   .full { grid-column: auto; }
   .media-teaser.mobile-frame { max-width: 16rem; }
+  .system-map { padding: 0.5rem; }
 }
 
 @media (max-width: 359px) {

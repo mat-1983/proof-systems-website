@@ -26,6 +26,10 @@ The design review supplies audience, outcome and film identity, not word-for-wor
 
 CSS and JavaScript live in `assets/css/site.css`, `assets/js/site.js` and `assets/js/form.js`. The site has no framework, WebGL, scroll hijacking, cursor replacement or intro loader. The default CSS `--progress: 1` keeps the workflow diagram readable without JavaScript.
 
+## 2026-08-29 — Tall map uses full wrap width on phones
+
+`.system-map` now sets `margin-inline: 0` so user-agent figure margins cannot shrink the SVG. Below 760px padding is 0.5rem; below 980px tall-map type is 15/13px. The tall Applications Ledger node title is split across two lines; accessible descriptions and prose still use the full name.
+
 ## 2026-08-29 — Map captions and tall identity bus
 
 Wide-map captions sit in dedicated lanes below their connectors so they do not cross node borders. The tall map uses a dashed identity bus with side-gutter branches to Applications Ledger and Probables, and a legend instead of on-path captions. Connector labels use `--amber` at 12px.

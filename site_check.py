@@ -500,6 +500,19 @@ def check_architecture(failures: list[str]) -> None:
             fail("map labels must use --amber at 4.5:1 rather than --amber-deep", failures)
         if "font-size: 12px" not in label_rule:
             fail("map labels must be 12px so they remain readable when scaled", failures)
+        map_rule = css.split(".system-map {", 1)[-1].split("}", 1)[0]
+        if "margin-inline: 0" not in map_rule:
+            fail("system-map must reset user-agent figure horizontal margins", failures)
+        if ".map-tall .map-title { font-size: 15px; }" not in css:
+            fail("tall map titles must enlarge at the mobile breakpoint", failures)
+        mobile_css = css.split("@media (max-width: 760px)", 1)[-1].split("@media", 1)[0]
+        if ".system-map { padding: 0.5rem; }" not in mobile_css:
+            fail("narrow maps must reduce figure padding so the SVG uses wrap width", failures)
+        tall = raw.split('<svg class="map-tall"', 1)[-1].split("</svg>", 1)[0]
+        if ">Applications Ledger<" in tall:
+            fail(f"{rel} tall map must split Applications Ledger to fit the node", failures)
+        if ">Applications<" not in tall or ">Ledger<" not in tall:
+            fail(f"{rel} tall map must keep Applications and Ledger as split node text", failures)
 
 
 def check_homepage_structure(failures: list[str]) -> None:

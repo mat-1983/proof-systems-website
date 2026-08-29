@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 independent review corrections 3 — 29 August 2026
+
+Reset `.system-map` horizontal figure margins and enlarged tall-map type at the mobile breakpoint so the 360-unit SVG uses wrap width at 320–390px.
+
 ## AGE-600 independent review corrections 2 — 29 August 2026
 
 Restyled architecture captions and the tall identity bus so labels do not collide with nodes. Relationships are unchanged. Label colour is `--amber` at 12px.
