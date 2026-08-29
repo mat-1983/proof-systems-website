@@ -286,7 +286,10 @@ publication**:
 > He combines hands-on operational experience with the technical ability to
 > build the solution, while keeping the business outcome at the centre.
 
-Proposed attribution: **[Name and title to be confirmed], Pantera**
+Proposed attribution: **Pete Mills, Pantera**
+
+Pete's exact title may be added only after it is confirmed. A title is not
+required for the initial attribution.
 
 The draft deliberately avoids quantified performance claims. Mat must approve
 the wording before it is sent, and Pantera must approve the exact final wording
