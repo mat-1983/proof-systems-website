@@ -122,105 +122,131 @@
       <h2>Connected workflow</h2>
       <p class="disclosure">This connected workflow is a synthetic Northstar business story.&nbsp; It is not the general Proof Systems offer.&nbsp; The eight individual systems remain the primary Selected Systems index.</p>
       <figure class="system-map" data-reveal>
-        <svg class="map-wide conn-svg" viewBox="0 0 1100 600" role="img" aria-labelledby="work-map-title work-map-desc">
-          <title id="work-map-title">Synthetic Northstar connected workflow</title>
-          <desc id="work-map-desc">Top row: SiteLog, BudgetFlow, Applications Ledger and Probables. SiteLog sends weekly labour costs to BudgetFlow. Central Project Register sits at the left with amber connections to SiteLog, LedgerLink and Accounts Software. LedgerLink is the long central connection layer and links upward to the four top-row systems. Accounts Software sits below LedgerLink with a two-way connection. Accounts Software feeds checked local processing. Verified inputs feed checked local processing. Checked local processing produces Cashflow and Management Accounts. Finance extraction and reporting use deterministic local processing. AI does not process company accounting data.</desc>
-          <defs>
-            <marker id="work-amber-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
-            <marker id="work-blue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43A7FF"></path></marker>
-            <marker id="work-blue-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#43A7FF"></path></marker>
-          </defs>
-          <path class="conn-amber" marker-end="url(#work-amber-arrow)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M400 76 H430"/>
-          <text class="conn-label" x="365" y="28">WEEKLY LABOUR COSTS</text>
-          <path class="conn-amber" data-from="ledgerlink" data-to="sitelog" data-rel="ledger-connection" d="M315 220 V116"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="budgetflow" data-rel="ledger-connection" d="M525 220 V116"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="applications-ledger" data-rel="ledger-connection" d="M740 220 V116"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="probables" data-rel="ledger-connection" d="M955 220 V116"/>
-          <path class="conn-amber" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M102 210 C102 160 180 120 230 76"/>
-          <path class="conn-amber" data-from="cpr" data-to="ledgerlink" data-rel="project-identity" d="M180 256 H210"/>
-          <path class="conn-amber" data-from="cpr" data-to="accounts-software" data-rel="project-identity" d="M102 298 C102 340 160 390 220 406"/>
-          <path class="conn-blue" marker-start="url(#work-blue-start)" marker-end="url(#work-blue-arrow)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-two-way" d="M330 370 V292"/>
-          <path class="conn-blue" marker-end="url(#work-blue-arrow)" data-from="accounts-software" data-to="local-processing" data-rel="checked-local-processing" d="M440 406 H500"/>
-          <path class="conn-blue" marker-end="url(#work-blue-arrow)" data-from="verified-inputs" data-to="local-processing" data-rel="verified-inputs" d="M620 500 V442"/>
-          <path class="conn-blue" marker-end="url(#work-blue-arrow)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M740 390 H800"/>
-          <path class="conn-blue" marker-end="url(#work-blue-arrow)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M740 422 H800"/>
-          <rect class="conn-node ops" x="230" y="36" width="170" height="80" rx="14"/>
-          <text class="conn-title on-cream" x="315" y="82" text-anchor="middle">SITELOG</text>
-          <rect class="conn-node ops" x="430" y="36" width="190" height="80" rx="14"/>
-          <text class="conn-title on-cream" x="525" y="82" text-anchor="middle">BUDGETFLOW</text>
-          <rect class="conn-node ops" x="640" y="36" width="200" height="80" rx="14"/>
-          <text class="conn-title on-cream" x="740" y="82" text-anchor="middle">APPLICATIONS LEDGER</text>
-          <rect class="conn-node ops" x="860" y="36" width="190" height="80" rx="14"/>
-          <text class="conn-title on-cream" x="955" y="82" text-anchor="middle">PROBABLES</text>
-          <rect class="conn-node gold" x="24" y="210" width="156" height="88" rx="14"/>
-          <text class="conn-title on-gold" x="102" y="248" text-anchor="middle">CENTRAL</text>
-          <text class="conn-title on-gold" x="102" y="268" text-anchor="middle">PROJECT REGISTER</text>
-          <rect class="conn-node dark" x="210" y="220" width="850" height="72" rx="14"/>
-          <text class="conn-title on-dark" x="635" y="262" text-anchor="middle">LEDGERLINK</text>
-          <rect class="conn-node finance" x="220" y="370" width="220" height="72" rx="14"/>
-          <text class="conn-title on-dark" x="330" y="412" text-anchor="middle">ACCOUNTS SOFTWARE</text>
-          <rect class="conn-node finance" x="500" y="370" width="240" height="72" rx="14"/>
-          <text class="conn-title on-dark" x="620" y="402" text-anchor="middle">CHECKED LOCAL</text>
-          <text class="conn-title on-dark" x="620" y="422" text-anchor="middle">PROCESSING</text>
-          <rect class="conn-node finance" x="515" y="500" width="210" height="64" rx="14"/>
-          <text class="conn-title on-dark" x="620" y="538" text-anchor="middle">VERIFIED INPUTS</text>
-          <rect class="conn-node finance" x="800" y="348" width="230" height="116" rx="16"/>
-          <rect class="conn-node finance" x="814" y="360" width="202" height="44" rx="10"/>
-          <text class="conn-title on-dark" x="915" y="388" text-anchor="middle">CASHFLOW</text>
-          <rect class="conn-node finance" x="814" y="408" width="202" height="44" rx="10"/>
-          <text class="conn-title on-dark" x="915" y="436" text-anchor="middle">MANAGEMENT ACCOUNTS</text>
-        </svg>
-        <svg class="map-tall conn-svg" viewBox="0 0 360 980" role="img" aria-labelledby="work-tall-title work-tall-desc">
-          <title id="work-tall-title">Synthetic Northstar connected workflow</title>
-          <desc id="work-tall-desc">Grouped tall view of the same Northstar connected workflow. SiteLog sends weekly labour costs to BudgetFlow. Central Project Register connects to SiteLog, LedgerLink and Accounts Software. LedgerLink links upward to the four operational systems. Accounts Software has a two-way link with LedgerLink and feeds checked local processing. Verified inputs feed checked local processing, which produces Cashflow and Management Accounts. AI does not process company accounting data.</desc>
-          <defs>
-            <marker id="work-tall-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
-            <marker id="work-tall-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43A7FF"></path></marker>
-            <marker id="work-tall-blue-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#43A7FF"></path></marker>
-          </defs>
-          <rect class="conn-node ops" x="16" y="16" width="152" height="70" rx="12"/>
-          <text class="conn-title on-cream" x="92" y="56" text-anchor="middle">SITELOG</text>
-          <rect class="conn-node ops" x="192" y="16" width="152" height="70" rx="12"/>
-          <text class="conn-title on-cream" x="268" y="56" text-anchor="middle">BUDGETFLOW</text>
-          <path class="conn-amber" marker-end="url(#work-tall-amber)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M168 51 H192"/>
-          <text class="conn-label" x="180" y="108" text-anchor="middle">weekly labour costs</text>
-          <rect class="conn-node ops" x="16" y="120" width="152" height="70" rx="12"/>
-          <text class="conn-title on-cream" x="92" y="148" text-anchor="middle">APPLICATIONS</text>
-          <text class="conn-title on-cream" x="92" y="168" text-anchor="middle">LEDGER</text>
-          <rect class="conn-node ops" x="192" y="120" width="152" height="70" rx="12"/>
-          <text class="conn-title on-cream" x="268" y="160" text-anchor="middle">PROBABLES</text>
-          <path class="conn-amber" data-from="ledgerlink" data-to="sitelog" data-rel="ledger-connection" d="M92 270 V86"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="budgetflow" data-rel="ledger-connection" d="M268 270 V86"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="applications-ledger" data-rel="ledger-connection" d="M92 270 V190"/>
-          <path class="conn-amber" data-from="ledgerlink" data-to="probables" data-rel="ledger-connection" d="M268 270 V190"/>
-          <rect class="conn-node dark" x="16" y="270" width="328" height="64" rx="12"/>
-          <text class="conn-title on-dark" x="180" y="308" text-anchor="middle">LEDGERLINK</text>
-          <rect class="conn-node gold" x="16" y="360" width="328" height="64" rx="12"/>
-          <text class="conn-title on-gold" x="180" y="398" text-anchor="middle">CENTRAL PROJECT REGISTER</text>
-          <path class="conn-amber" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M40 360 V51 H16"/>
-          <path class="conn-amber" data-from="cpr" data-to="ledgerlink" data-rel="project-identity" d="M180 360 V334"/>
-          <path class="conn-amber" data-from="cpr" data-to="accounts-software" data-rel="project-identity" d="M180 424 V454"/>
-          <rect class="conn-node finance" x="16" y="454" width="328" height="58" rx="12"/>
-          <text class="conn-title on-dark" x="180" y="488" text-anchor="middle">ACCOUNTS SOFTWARE</text>
-          <path class="conn-blue" marker-start="url(#work-tall-blue-start)" marker-end="url(#work-tall-blue)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-two-way" d="M300 454 V334"/>
-          <path class="conn-blue" marker-end="url(#work-tall-blue)" data-from="accounts-software" data-to="local-processing" data-rel="checked-local-processing" d="M180 512 V546"/>
-          <rect class="conn-node finance" x="16" y="546" width="328" height="58" rx="12"/>
-          <text class="conn-title on-dark" x="180" y="580" text-anchor="middle">CHECKED LOCAL PROCESSING</text>
-          <rect class="conn-node finance" x="16" y="640" width="328" height="54" rx="12"/>
-          <text class="conn-title on-dark" x="180" y="672" text-anchor="middle">VERIFIED INPUTS</text>
-          <path class="conn-blue" marker-end="url(#work-tall-blue)" data-from="verified-inputs" data-to="local-processing" data-rel="verified-inputs" d="M180 640 V604"/>
-          <path class="conn-blue" marker-end="url(#work-tall-blue)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M100 604 V720"/>
-          <path class="conn-blue" marker-end="url(#work-tall-blue)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M260 604 V720"/>
-          <rect class="conn-node finance" x="16" y="720" width="152" height="58" rx="12"/>
-          <text class="conn-title on-dark" x="92" y="754" text-anchor="middle">CASHFLOW</text>
-          <rect class="conn-node finance" x="192" y="720" width="152" height="58" rx="12"/>
-          <text class="conn-title on-dark" x="268" y="746" text-anchor="middle">MANAGEMENT</text>
-          <text class="conn-title on-dark" x="268" y="764" text-anchor="middle">ACCOUNTS</text>
-          <text class="map-note" x="16" y="820">Amber = shared identity and operational links.</text>
-          <text class="map-note" x="16" y="840">Blue = finance and data paths.</text>
-          <text class="map-note" x="16" y="868">AI does not process company accounting data.</text>
-          <text class="map-note" x="16" y="888">Accuracy comes from deterministic local processing.</text>
-        </svg>
+        <svg class="map-wide conn-svg iso-svg" viewBox="-4 0 1101 606" role="img" aria-labelledby="work-map-title work-map-desc">
+<title id="work-map-title">Synthetic Northstar connected workflow</title>
+<desc id="work-map-desc">Top row: SiteLog, BudgetFlow, Applications Ledger and Probables. SiteLog sends weekly labour costs to BudgetFlow. Central Project Register sits at the left with amber connections to SiteLog, LedgerLink and Accounts Software. LedgerLink is the long central connection layer and links upward to the four top-row systems. Accounts Software sits below LedgerLink with a two-way connection. Accounts Software feeds checked local processing. Verified inputs feed checked local processing. Checked local processing produces Cashflow and Management Accounts. Finance extraction and reporting use deterministic local processing. AI does not process company accounting data.</desc>
+
+<defs>
+  <filter id="cw-glow-amber" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="1.6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="cw-glow-blue" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="1.6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <linearGradient id="cw-gold" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#d89042"/><stop offset="1" stop-color="#f2c98a"/>
+  </linearGradient>
+</defs>
+
+<marker id="work-amber-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
+<marker id="work-blue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43A7FF"></path></marker>
+<marker id="work-blue-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#43A7FF"></path></marker>
+<path class="iso-amber" marker-end="url(#work-amber-arrow)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M400 78 H430" filter="url(#cw-glow-amber)"/>
+<text class="conn-label" x="365" y="28">WEEKLY LABOUR COSTS</text>
+<path class="iso-amber" data-from="ledgerlink" data-to="sitelog" data-rel="ledger-connection" d="M315 222 V118" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="budgetflow" data-rel="ledger-connection" d="M525 222 V118" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="applications-ledger" data-rel="ledger-connection" d="M740 222 V118" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="probables" data-rel="ledger-connection" d="M955 222 V118" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M102 210 C102 160 180 120 230 76" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="cpr" data-to="ledgerlink" data-rel="project-identity" d="M180 258 H210" filter="url(#cw-glow-amber)"/>
+<path class="iso-amber" data-from="cpr" data-to="accounts-software" data-rel="project-identity" d="M102 300 C102 342 160 392 220 408" filter="url(#cw-glow-amber)"/>
+<path class="iso-blue" marker-start="url(#work-blue-start)" marker-end="url(#work-blue-arrow)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-two-way" d="M330 372 V294" filter="url(#cw-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-blue-arrow)" data-from="accounts-software" data-to="local-processing" data-rel="checked-local-processing" d="M440 408 H500" filter="url(#cw-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-blue-arrow)" data-from="verified-inputs" data-to="local-processing" data-rel="verified-inputs" d="M620 502 V444" filter="url(#cw-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-blue-arrow)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M740 392 H800" filter="url(#cw-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-blue-arrow)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M740 424 H800" filter="url(#cw-glow-blue)"/>
+<g class="slab"><path d="M244.0,116.0 L386.0,116.0 Q400.0,116.0 400.0,128.0 L407.7,130.0 L237.7,130.0 L230.0,116.0 Z" fill="#C48A3A"/><rect x="230" y="36" width="170" height="80" rx="14" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="315" y="84" text-anchor="middle">SITELOG</text>
+<g class="slab"><path d="M444.0,116.0 L606.0,116.0 Q620.0,116.0 620.0,128.0 L627.7,130.0 L437.7,130.0 L430.0,116.0 Z" fill="#C48A3A"/><rect x="430" y="36" width="190" height="80" rx="14" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="525" y="84" text-anchor="middle">BUDGETFLOW</text>
+<g class="slab"><path d="M654.0,116.0 L826.0,116.0 Q840.0,116.0 840.0,128.0 L847.7,130.0 L647.7,130.0 L640.0,116.0 Z" fill="#C48A3A"/><rect x="640" y="36" width="200" height="80" rx="14" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="740" y="84" text-anchor="middle">APPLICATIONS LEDGER</text>
+<g class="slab"><path d="M874.0,116.0 L1036.0,116.0 Q1050.0,116.0 1050.0,128.0 L1057.7,130.0 L867.7,130.0 L860.0,116.0 Z" fill="#C48A3A"/><rect x="860" y="36" width="190" height="80" rx="14" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="955" y="84" text-anchor="middle">PROBABLES</text>
+<g class="slab"><path d="M38.0,298.0 L166.0,298.0 Q180.0,298.0 180.0,312.0 L188.8,314.0 L32.8,314.0 L24.0,298.0 Z" fill="#8F601F"/><rect x="24" y="210" width="156" height="88" rx="14" fill="#C48A3A" stroke="#E4B66C" stroke-width="1.8"/></g>
+<text class="conn-title on-gold" x="102" y="250" text-anchor="middle">CENTRAL</text>
+<text class="conn-title on-gold" x="102" y="270" text-anchor="middle">PROJECT REGISTER</text>
+<g class="slab"><path d="M224.0,292.0 L1046.0,292.0 Q1060.0,292.0 1060.0,306.0 L1068.8,308.0 L218.8,308.0 L210.0,292.0 Z" fill="#2A3038"/><rect x="210" y="220" width="850" height="72" rx="14" fill="#1C2026" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="635" y="264" text-anchor="middle">LEDGERLINK</text>
+<g class="slab"><path d="M234.0,442.0 L426.0,442.0 Q440.0,442.0 440.0,454.0 L447.7,456.0 L227.7,456.0 L220.0,442.0 Z" fill="#1C354C"/><rect x="220" y="370" width="220" height="72" rx="14" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="330" y="414" text-anchor="middle">ACCOUNTS SOFTWARE</text>
+<g class="slab"><path d="M514.0,442.0 L726.0,442.0 Q740.0,442.0 740.0,454.0 L747.7,456.0 L507.7,456.0 L500.0,442.0 Z" fill="#1C354C"/><rect x="500" y="370" width="240" height="72" rx="14" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="620" y="404" text-anchor="middle">CHECKED LOCAL</text>
+<text class="conn-title on-dark" x="620" y="424" text-anchor="middle">PROCESSING</text>
+<g class="slab"><path d="M529.0,564.0 L711.0,564.0 Q725.0,564.0 725.0,576.0 L732.7,578.0 L522.7,578.0 L515.0,564.0 Z" fill="#1C354C"/><rect x="515" y="500" width="210" height="64" rx="14" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="620" y="540" text-anchor="middle">VERIFIED INPUTS</text>
+<g class="slab"><path d="M816.0,464.0 L1014.0,464.0 Q1030.0,464.0 1030.0,478.0 L1038.8,480.0 L808.8,480.0 L800.0,464.0 Z" fill="#1C354C"/><rect x="800" y="348" width="230" height="116" rx="16" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<g class="slab"><path d="M824.0,404.0 L1006.0,404.0 Q1016.0,404.0 1016.0,410.0 L1020.4,412.0 L818.4,412.0 L814.0,404.0 Z" fill="#1C354C"/><rect x="814" y="360" width="202" height="44" rx="10" fill="#1A2430" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="915" y="388" text-anchor="middle">CASHFLOW</text>
+<g class="slab"><path d="M824.0,452.0 L1006.0,452.0 Q1016.0,452.0 1016.0,458.0 L1020.4,460.0 L818.4,460.0 L814.0,452.0 Z" fill="#1C354C"/><rect x="814" y="408" width="202" height="44" rx="10" fill="#1A2430" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="915" y="436" text-anchor="middle">MANAGEMENT ACCOUNTS</text>
+</svg>
+        <svg class="map-tall conn-svg iso-svg" viewBox="-12 -12 392 954" role="img" aria-labelledby="work-tall-title work-tall-desc">
+<title id="work-tall-title">Synthetic Northstar connected workflow</title>
+<desc id="work-tall-desc">Grouped tall view of the same Northstar connected workflow. SiteLog sends weekly labour costs to BudgetFlow. Central Project Register connects to SiteLog, LedgerLink and Accounts Software. LedgerLink links upward to the four operational systems. Accounts Software has a two-way link with LedgerLink and feeds checked local processing. Verified inputs feed checked local processing, which produces Cashflow and Management Accounts. AI does not process company accounting data.</desc>
+
+<defs>
+  <filter id="ct-glow-amber" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="1.6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="ct-glow-blue" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="1.6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <linearGradient id="ct-gold" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#d89042"/><stop offset="1" stop-color="#f2c98a"/>
+  </linearGradient>
+</defs>
+
+<marker id="work-tall-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
+<marker id="work-tall-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#43A7FF"></path></marker>
+<marker id="work-tall-blue-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#43A7FF"></path></marker>
+<g class="slab"><path d="M28.0,86.0 L156.0,86.0 Q168.0,86.0 168.0,96.0 L174.6,98.0 L22.6,98.0 L16.0,86.0 Z" fill="#C48A3A"/><rect x="16" y="16" width="152" height="70" rx="12" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="92" y="58" text-anchor="middle">SITELOG</text>
+<g class="slab"><path d="M204.0,86.0 L332.0,86.0 Q344.0,86.0 344.0,96.0 L350.6,98.0 L198.6,98.0 L192.0,86.0 Z" fill="#C48A3A"/><rect x="192" y="16" width="152" height="70" rx="12" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="268" y="58" text-anchor="middle">BUDGETFLOW</text>
+<path class="iso-amber" marker-end="url(#work-tall-amber)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M168 51 H192" filter="url(#ct-glow-amber)"/>
+<text class="conn-label" x="180" y="112" text-anchor="middle">weekly labour costs</text>
+<g class="slab"><path d="M28.0,198.0 L156.0,198.0 Q168.0,198.0 168.0,208.0 L174.6,210.0 L22.6,210.0 L16.0,198.0 Z" fill="#C48A3A"/><rect x="16" y="128" width="152" height="70" rx="12" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="92" y="156" text-anchor="middle">APPLICATIONS</text>
+<text class="conn-title on-cream" x="92" y="176" text-anchor="middle">LEDGER</text>
+<g class="slab"><path d="M204.0,198.0 L332.0,198.0 Q344.0,198.0 344.0,208.0 L350.6,210.0 L198.6,210.0 L192.0,198.0 Z" fill="#C48A3A"/><rect x="192" y="128" width="152" height="70" rx="12" fill="#E8DFD0" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-cream" x="268" y="170" text-anchor="middle">PROBABLES</text>
+<path class="iso-amber" data-from="ledgerlink" data-to="sitelog" data-rel="ledger-connection" d="M92 286 V86" filter="url(#ct-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="budgetflow" data-rel="ledger-connection" d="M268 286 V86" filter="url(#ct-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="applications-ledger" data-rel="ledger-connection" d="M92 286 V198" filter="url(#ct-glow-amber)"/>
+<path class="iso-amber" data-from="ledgerlink" data-to="probables" data-rel="ledger-connection" d="M268 286 V198" filter="url(#ct-glow-amber)"/>
+<g class="slab"><path d="M28.0,350.0 L332.0,350.0 Q344.0,350.0 344.0,362.0 L351.7,364.0 L23.7,364.0 L16.0,350.0 Z" fill="#2A3038"/><rect x="16" y="286" width="328" height="64" rx="12" fill="#1C2026" stroke="#C48A3A" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="180" y="326" text-anchor="middle">LEDGERLINK</text>
+<g class="slab"><path d="M28.0,440.0 L332.0,440.0 Q344.0,440.0 344.0,452.0 L351.7,454.0 L23.7,454.0 L16.0,440.0 Z" fill="#8F601F"/><rect x="16" y="376" width="328" height="64" rx="12" fill="#C48A3A" stroke="#E4B66C" stroke-width="1.8"/></g>
+<text class="conn-title on-gold" x="180" y="416" text-anchor="middle">CENTRAL PROJECT REGISTER</text>
+<path class="iso-amber" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M40 376 V51 H16" filter="url(#ct-glow-amber)"/>
+<path class="iso-amber" data-from="cpr" data-to="ledgerlink" data-rel="project-identity" d="M180 376 V350" filter="url(#ct-glow-amber)"/>
+<path class="iso-amber" data-from="cpr" data-to="accounts-software" data-rel="project-identity" d="M180 440 V470" filter="url(#ct-glow-amber)"/>
+<g class="slab"><path d="M28.0,528.0 L332.0,528.0 Q344.0,528.0 344.0,538.0 L350.6,540.0 L22.6,540.0 L16.0,528.0 Z" fill="#1C354C"/><rect x="16" y="470" width="328" height="58" rx="12" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="180" y="506" text-anchor="middle">ACCOUNTS SOFTWARE</text>
+<path class="iso-blue" marker-start="url(#work-tall-blue-start)" marker-end="url(#work-tall-blue)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-two-way" d="M300 470 V350" filter="url(#ct-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-tall-blue)" data-from="accounts-software" data-to="local-processing" data-rel="checked-local-processing" d="M180 528 V562" filter="url(#ct-glow-blue)"/>
+<g class="slab"><path d="M28.0,620.0 L332.0,620.0 Q344.0,620.0 344.0,630.0 L350.6,632.0 L22.6,632.0 L16.0,620.0 Z" fill="#1C354C"/><rect x="16" y="562" width="328" height="58" rx="12" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="180" y="598" text-anchor="middle">CHECKED LOCAL PROCESSING</text>
+<g class="slab"><path d="M28.0,710.0 L332.0,710.0 Q344.0,710.0 344.0,720.0 L350.6,722.0 L22.6,722.0 L16.0,710.0 Z" fill="#1C354C"/><rect x="16" y="656" width="328" height="54" rx="12" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="180" y="690" text-anchor="middle">VERIFIED INPUTS</text>
+<path class="iso-blue" marker-end="url(#work-tall-blue)" data-from="verified-inputs" data-to="local-processing" data-rel="verified-inputs" d="M180 656 V620" filter="url(#ct-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-tall-blue)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M100 620 V736" filter="url(#ct-glow-blue)"/>
+<path class="iso-blue" marker-end="url(#work-tall-blue)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M260 620 V736" filter="url(#ct-glow-blue)"/>
+<g class="slab"><path d="M28.0,794.0 L156.0,794.0 Q168.0,794.0 168.0,804.0 L174.6,806.0 L22.6,806.0 L16.0,794.0 Z" fill="#1C354C"/><rect x="16" y="736" width="152" height="58" rx="12" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="92" y="772" text-anchor="middle">CASHFLOW</text>
+<g class="slab"><path d="M204.0,794.0 L332.0,794.0 Q344.0,794.0 344.0,804.0 L350.6,806.0 L198.6,806.0 L192.0,794.0 Z" fill="#1C354C"/><rect x="192" y="736" width="152" height="58" rx="12" fill="#161C24" stroke="#43A7FF" stroke-width="1.8"/></g>
+<text class="conn-title on-dark" x="268" y="762" text-anchor="middle">MANAGEMENT</text>
+<text class="conn-title on-dark" x="268" y="780" text-anchor="middle">ACCOUNTS</text>
+<text class="map-note" x="16" y="840">Amber = shared identity and operational links.</text>
+<text class="map-note" x="16" y="862">Blue = finance and data paths.</text>
+<text class="map-note" x="16" y="892">AI does not process company accounting data.</text>
+<text class="map-note" x="16" y="914">Accuracy comes from deterministic local processing.</text>
+</svg>
         <p class="map-text">This diagram is the synthetic Northstar connected workflow, not the general offer.&nbsp; SiteLog sends weekly labour costs to BudgetFlow.&nbsp; Central Project Register holds shared project identity and connects to SiteLog, LedgerLink and Accounts Software.&nbsp; LedgerLink is the central connection layer into the four operational systems above it.&nbsp; Accounts Software has a two-way link with LedgerLink and feeds checked local processing.&nbsp; Verified inputs also feed that processing, which produces Cashflow and Management Accounts.&nbsp; Finance extraction and reporting use deterministic local processing.&nbsp; AI does not process the company accounting data.</p>
       </figure>
     </section>

@@ -656,10 +656,37 @@ def check_round3(failures: list[str]) -> None:
     if "Inbox" not in raw or "Spreadsheet" not in raw or "Approval" not in raw or "Report" not in raw:
         fail("Gap chapter missing the Inbox to Report workflow chain", failures)
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    about_rule = css.split("#about h2", 1)[-1].split("}", 1)[0]
     if "#about h2" not in css or "#start h2" not in css:
         fail("operator and enquiry headings must override the global h2 measure", failures)
-    if "max-width: min(16.8em, 100%)" not in css:
-        fail("operator and enquiry headings must use a wider intentional measure", failures)
+    if "max-width: none" not in about_rule:
+        fail("operator and enquiry headings must use the available composition width", failures)
+    if "16.8em" in css or "14.5em" in css:
+        fail("operator and enquiry headings must not use a narrow artificial measure", failures)
+    if 'class="iso-top"' not in raw or 'class="iso-left"' not in raw or 'class="iso-right"' not in raw:
+        fail("homepage scenes must use three-face isometric construction", failures)
+    if ".iso-amber { stroke: var(--amber);" not in css or ".iso-blue { stroke: var(--blue);" not in css:
+        fail("shared amber/blue connection stroke language is missing", failures)
+    if "WAITING" not in raw or "TOO LATE" not in raw or "RE-ENTERED" not in raw:
+        fail("Gap scene must show re-entry, waiting and late-report cues", failures)
+    if "BROAD SOFTWARE" not in raw or "BESPOKE LAYER" not in raw:
+        fail("Fit scene missing broad-software / bespoke-layer composition", failures)
+    if "UNDERSTAND" not in raw or "CHOOSE" not in raw or "PROVE" not in raw or "EXTEND" not in raw:
+        fail("Approach scene missing the four workstation stages", failures)
+    if 'class="gap-key"' not in raw:
+        fail("Gap scene must keep a readable HTML key for small viewports", failures)
+    if "route-pad" not in raw:
+        fail("Approach entry routes must remain dimensional pads, not empty text cards", failures)
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    if 'class="slab"' not in work:
+        fail("connected workflow must use dimensional slabs, not flat rectangles only", failures)
+    if ".iso-svg" not in css or "max-width: 100%" not in css.split(".iso-svg {", 1)[-1].split("}", 1)[0]:
+        fail("iso scenes must cap at the composition width", failures)
+    if ".map-tall .conn-title { font-size: 15px; }" not in css:
+        fail("tall connected labels must enlarge at the mobile breakpoint", failures)
+    iso_block = css.split(".iso-frame,", 1)[-1].split(".iso-amber,", 1)[0] if ".iso-frame," in css else ""
+    if "overflow-x" in iso_block:
+        fail("dimensional scenes must not hide overflow with overflow-x", failures)
     if re.search(r"(?<!backdrop-)filter:\s*blur\(", css):
         fail("CSS must not use blur filters on type or copy", failures)
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")

@@ -4,7 +4,7 @@ Updated: 2026-08-29
 
 ## AGE-600 round 3
 
-Local implementation of the attended round-three redesign from approved commit `50cd562`. Homepage opening sequence, general ERP/no-ERP stack, Gap, Fit, Capability, restored proof-grid, Approach, and the Selected Systems Individual/Connected workflow view are in this worktree. Not approved for push, merge or publication.
+Local implementation of the attended round-three redesign from approved commit `50cd562`, plus independent-review visual corrections: isometric/2.5D SVG scenes, removed About/Start heading caps, and preserved stories/form/media. Not approved for push, merge or publication.
 
 ## AGE-600 round 2
 

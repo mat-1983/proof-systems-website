@@ -2,6 +2,25 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 3 independent review corrections — 29 August 2026
+
+Rebuilt the six approved scenes as inline isometric/2.5D SVG, removed the About/Start heading caps, and kept films, form, privacy and public-safety copy unchanged. Generator scratch files were discarded and not committed.
+
+### Automated checks
+
+- PASS — `python3 site_check.py` including three-face isometric construction, amber/blue connection strokes, Gap cues, Fit composition, Approach stages, dimensional route pads, connected slabs, heading `max-width: none`, and no 16.8em/14.5em caps.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- PASS — local HTTP 200 for homepage, Selected Systems, SiteLog, LedgerLink, enquiry, privacy and training, with isometric scene markup and connected slabs present.
+
+### Browser visual UAT
+
+NOT COMPLETE IN THIS ENVIRONMENT. Google Chrome for Testing headless aborted with SIGSEGV (exit 139). Independent review should compare each scene with the six files in `docs/design/age-600-round-3/` at 1440×900 and 390×844, and confirm no horizontal overflow at 320–360px without relying on `overflow-x` as the layout fix.
+
 ## AGE-600 design round 3 — 29 August 2026
 
 Local static implementation of the attended round-three redesign. No preview host, production deploy, form submission or external contact was made.

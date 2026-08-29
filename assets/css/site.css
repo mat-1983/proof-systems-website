@@ -289,7 +289,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); max-width: 22ch; margin-bottom: 1.2r
 h3 { font-size: 1.2rem; letter-spacing: -0.02em; }
 #about h2,
 #start h2 {
-  max-width: min(16.8em, 100%);
+  max-width: none;
 }
 
 .lede, .intro {
@@ -1223,6 +1223,187 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .work-page .view-switch { margin-top: 1.6rem; }
 
+.iso-frame,
+.gap-chain,
+.fit-compare,
+.approach-scene,
+.system-map,
+.stack-figure,
+.stack-scenes {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.iso-frame {
+  background:
+    radial-gradient(ellipse at 50% 24%, rgba(67, 167, 255, 0.1), transparent 46%),
+    radial-gradient(ellipse at 48% 78%, rgba(216, 144, 66, 0.07), transparent 52%),
+    #101318;
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  padding: 0.55rem 0.35rem 0.7rem;
+}
+
+.panel-cream .iso-frame,
+.panel-ink .iso-frame,
+.panel-sand .iso-frame {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.iso-svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.iso-amber,
+.iso-blue,
+.iso-amber-dash,
+.iso-cue-line,
+.iso-crack {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iso-amber { stroke: var(--amber); stroke-width: 2.1; }
+.iso-blue { stroke: var(--blue); stroke-width: 2.1; }
+.iso-amber-dash {
+  stroke: var(--amber);
+  stroke-width: 2.3;
+  stroke-dasharray: 5 7;
+}
+.iso-cue-line {
+  stroke: #6b4a1e;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+.iso-crack {
+  stroke: #8a7a62;
+  stroke-width: 1.6;
+}
+
+.iso-caption,
+.iso-side-label,
+.iso-banner,
+.iso-face,
+.iso-num,
+.iso-stage-name,
+.iso-cue {
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+}
+
+.iso-caption {
+  fill: #17120d;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.panel-ink .iso-caption { fill: var(--cream); }
+.iso-caption.gold,
+.iso-banner.gold { fill: var(--amber); }
+.iso-side-label {
+  fill: var(--amber);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+}
+.iso-banner {
+  fill: #17120d;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.iso-face {
+  fill: var(--amber);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+.iso-num {
+  fill: #17120d;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+.iso-stage-name {
+  fill: #17120d;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+.iso-cue {
+  fill: #6b4a1e;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.gap-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.8rem;
+  list-style: none;
+  padding: 0.8rem 0 0;
+  margin: 0;
+  color: #6b4a1e;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.gap-key li { margin: 0; }
+
+.fit-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  margin-top: 0.8rem;
+}
+
+.approach-banner {
+  box-shadow:
+    inset 0 1px 0 rgba(242, 201, 138, 0.35),
+    0 0.18rem 0 rgba(216, 144, 66, 0.4),
+    0 0.7rem 0 #111318,
+    0 1rem 1.4rem rgba(23, 18, 13, 0.18);
+}
+
+.approach-key {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0.9rem 0 0.2rem;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.86rem;
+}
+
+.approach-key strong {
+  display: block;
+  color: var(--amber);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  margin-bottom: 0.2rem;
+}
+
+.start-routes .card {
+  position: relative;
+  overflow: visible;
+  box-shadow:
+    inset 0 1px 0 rgba(242, 201, 138, 0.28),
+    0 0.65rem 0 #0b0d10,
+    0 0.95rem 1.3rem rgba(0, 0, 0, 0.28);
+}
+
+.route-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0 auto 0.65rem;
+  color: var(--amber);
+  display: block;
+}
+
 @media (min-width: 761px) {
   .nav-open { display: none; }
 }
@@ -1244,6 +1425,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .start-routes,
   .fit-compare,
   .approach-stages,
+  .approach-key,
   .stack-layout,
   .no-erp-foundations { grid-template-columns: 1fr; }
   .feature-band.reverse { direction: ltr; }
@@ -1256,6 +1438,12 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .map-tall .map-group-label { font-size: 13px; }
   .map-tall .map-label { font-size: 13px; }
   .map-tall .map-note { font-size: 13px; }
+  .map-tall .conn-title { font-size: 15px; }
+  .map-tall .conn-label { font-size: 12px; }
+  .iso-caption { font-size: 12px; }
+  .iso-side-label,
+  .iso-banner,
+  .iso-face { font-size: 13px; }
   .stack-world { transform: none; }
   .stack-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .stack-tiles.ops { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -1307,8 +1495,6 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .opening-connect,
   .opening-connect-soft { stroke-dashoffset: 0; }
   .bespoke-banner { position: static; transform: none; display: table; margin: 0.7rem auto 0; white-space: normal; }
-  #about h2,
-  #start h2 { max-width: min(14.5em, 100%); }
 }
 
 @media (max-width: 359px) {
