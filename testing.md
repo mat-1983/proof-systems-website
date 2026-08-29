@@ -2,6 +2,47 @@
 
 Updated: 2026-08-29
 
+## AGE-600 design round 3 — 29 August 2026
+
+Local static implementation of the attended round-three redesign. No preview host, production deploy, form submission or external contact was made.
+
+### Automated checks run in this worktree
+
+- PASS — `python3 site_check.py` including round-3 headings, proof-grid restoration, ERP/no-ERP stack control, connected-workflow relationships, stale-copy absence, design-reference hashes and no raster mock-ups on public pages.
+- PASS — `python3 proof_media_check.py` (eight master hashes unchanged).
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py` including homepage, Selected Systems, eight stories, enquiry, privacy, training and local assets.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory Python compile of the four checkers. `python3 -m py_compile` still cannot write `~/Library/Caches/com.apple.python` in this environment.
+- PASS — `git diff --check`.
+- PASS — local `http.server` on `127.0.0.1:8770` returned HTTP 200 for homepage, Selected Systems, eight stories, enquiry, privacy and training. Response bodies included the round-3 headings, proof-grid, stack control, connected-workflow disclosure and story return links.
+
+### Browser visual UAT
+
+NOT COMPLETE IN THIS ENVIRONMENT. Google Chrome, Brave and Playwright Chromium headless all aborted with SIGSEGV (exit 139) and Crashpad permission errors (`settings.dat: Operation not permitted`). `safaridriver` is installed but not configured (`--enable` would require interactive authentication). Named viewport, keyboard-focus, reduced-motion and no-JavaScript behaviour were therefore inspected from built HTML/CSS/JS and the local HTTP bodies, not from a live layout engine.
+
+Independent review should start `python3 -m http.server 8000 --bind 127.0.0.1` and check:
+
+| Viewport | What to confirm |
+| --- | --- |
+| 1440×900 | Large opening mark, name then tagline on scroll, ERP/no-ERP stack, cream Gap, ink Fit, proof-grid, sandstone Approach, wider About/Start headings |
+| 1280×800 | Same structure without horizontal overflow |
+| 1024×768 | Chapters stack cleanly; stack control remains usable |
+| 768×1024 | Single-column chapters; Menu not used yet; enquiry CTA visible |
+| 500px | Mobile header; no horizontal overflow |
+| 390×844 | Native Menu plus Discuss a workflow; radios tappable |
+| 360×800 | Same as 390 with the 359px header wrap still unused |
+| 320×568 | Header wraps to two rows; no clipped Menu |
+
+Also open `/work/` Individual systems and Connected workflow, `/work/sitelog.html`, `/work/ledgerlink.html`, `/workflow.html` and `/privacy.html`. Tab from the skip link. Enable `prefers-reduced-motion: reduce` and disable JavaScript: opening name/tagline, both stack states, Gap/Fit/Approach stories, posters and the enquiry fields must remain readable. Do not submit the form.
+
+### Not run / not authorised
+
+- No Netlify preview, production deploy, DNS, credential or billing change.
+- No production or preview form submission.
+- No contact with Pete Mills, Pantera or any prospect.
+- No publication of the pending testimonial.
+
 ## AGE-600 independent review corrections 3 — 29 August 2026
 
 Reset `.system-map` horizontal figure margins and enlarged tall-map type at the mobile breakpoint so the 360-unit SVG uses wrap width at 320–390px.

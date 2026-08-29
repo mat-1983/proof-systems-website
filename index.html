@@ -17,7 +17,6 @@
   <meta name="twitter:description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/site.css">
-
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -35,177 +34,232 @@
   </div>
 </header>
 <main id="main">
-  <section class="brand-reveal" data-hero>
-    <div class="wrap reveal-inner">
-      <img class="reveal-mark" src="assets/brand/logo-light.svg" alt="Proof Systems" width="1200" height="340">
-      <p class="positioning">Operational systems built around how a business really works.</p>
+  <section class="brand-reveal" data-hero data-opening data-phase="tagline">
+    <div class="opening-sticky">
+      <div class="opening-scene wrap">
+        <div class="opening-mark-wrap">
+          <svg class="opening-mark" viewBox="0 0 400 400" role="img" aria-labelledby="opening-mark-title">
+            <title id="opening-mark-title">Proof Systems node mark</title>
+            <polygon class="opening-hex" points="200,28 352,114 352,286 200,372 48,286 48,114"/>
+            <path class="opening-connect" d="M108 200 L168 268 L304 132"/>
+            <path class="opening-connect opening-connect-soft" d="M148 132 L168 268 M252 228 L168 268"/>
+            <circle class="opening-node" cx="108" cy="200" r="16"/>
+            <circle class="opening-node" cx="168" cy="268" r="20"/>
+            <circle class="opening-node" cx="304" cy="132" r="16"/>
+            <circle class="opening-node-soft" cx="148" cy="132" r="9"/>
+            <circle class="opening-node-soft" cx="252" cy="228" r="9"/>
+          </svg>
+        </div>
+        <p class="opening-name">Proof Systems</p>
+        <h1 class="opening-tagline">Systems built around how your business really works.</h1>
+      </div>
     </div>
   </section>
 
   <section class="chapter-hero" id="proposition">
     <div class="wrap">
-      <div>
-        <p class="marker">Operational systems for owner-led SMEs</p>
-        <h1>Systems built around how your business really works.</h1>
-        <p class="lede">I help owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software, controlled AI automation and training their teams can use.</p>
-        <div class="actions">
-          <a class="button" href="workflow.html">Discuss a workflow</a>
-          <a class="button button-ghost" href="work/">See selected systems</a>
+      <p class="marker">Operational systems for owner-led SMEs</p>
+      <p class="lede">I help owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software, controlled AI automation and training their teams can use.</p>
+      <div class="actions">
+        <a class="button" href="workflow.html">Discuss a workflow</a>
+        <a class="button button-ghost" href="work/">See selected systems</a>
+      </div>
+      <p class="quiet">Operator-led.&nbsp; Built around the real workflow.&nbsp; Technology used where it earns its place.</p>
+
+      <figure class="stack-figure">
+        <div class="view-switch" role="radiogroup" aria-label="Technology stack foundation">
+          <input class="view-input" type="radio" name="stack-foundation" id="stack-erp" checked>
+          <label for="stack-erp">With ERP</label>
+          <input class="view-input" type="radio" name="stack-foundation" id="stack-no-erp">
+          <label for="stack-no-erp">Without ERP</label>
         </div>
-        <p class="quiet">Operator-led.&nbsp; Built around the real workflow.&nbsp; Technology used where it earns its place.</p>
-      </div>
-    </div>
-    <div class="wrap">
-      <figure class="system-map" data-reveal>
-  <svg class="map-wide" viewBox="0 0 1000 510" role="img" aria-labelledby="hero-map-title hero-map-desc">
-  <title id="hero-map-title">How the selected systems connect</title>
-  <desc id="hero-map-desc">Central Project Register is the database and API source of truth for shared project identity and status used by SiteLog, BudgetFlow, Applications Ledger and Probables. SiteLog sends weekly labour cost to BudgetFlow. BudgetFlow produces a coded payment export for accounts software. LedgerLink extracts approved accounting data from accounts software. LedgerLink outputs plus verified live-system inputs feed deterministic local processing, which produces Cashflow and Management Accounts. AI does not process company accounting data.</desc>
-  <defs>
-    <marker id="hero-wide-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
-  </defs>
-  <rect class="map-group" x="16" y="10" width="968" height="208" rx="16"/>
-  <text class="map-group-label" x="36" y="30">Project identity</text>
-  <rect class="map-node" x="36" y="40" width="928" height="50" rx="10"/>
-  <text class="map-title" x="52" y="62">Central Project Register</text>
-  <text class="map-sub" x="52" y="78">Shared project identity and status</text>
-  <path class="map-identity" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M131 90 L131 128"/>
-  <path class="map-identity" data-from="cpr" data-to="budgetflow" data-rel="project-identity" d="M366 90 L366 128"/>
-  <path class="map-identity" data-from="cpr" data-to="applications-ledger" data-rel="project-identity" d="M621 90 L621 128"/>
-  <path class="map-identity" data-from="cpr" data-to="probables" data-rel="project-identity" d="M865 90 L865 128"/>
-  <text class="map-label" x="430" y="114">project identity</text>
-  <rect class="map-node" x="36" y="128" width="190" height="54" rx="10"/>
-  <text class="map-title" x="52" y="152">SiteLog</text>
-  <text class="map-sub" x="52" y="168">Mobile weekly capture</text>
-  <rect class="map-node" x="266" y="128" width="200" height="54" rx="10"/>
-  <text class="map-title" x="282" y="152">BudgetFlow</text>
-  <text class="map-sub" x="282" y="168">Allocation and control</text>
-  <rect class="map-node" x="516" y="128" width="210" height="54" rx="10"/>
-  <text class="map-title" x="532" y="152">Applications Ledger</text>
-  <text class="map-sub" x="532" y="168">Applications and retention</text>
-  <rect class="map-node" x="766" y="128" width="198" height="54" rx="10"/>
-  <text class="map-title" x="782" y="152">Probables</text>
-  <text class="map-sub" x="782" y="168">Likely future work</text>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M226 155 L266 155"/>
-  <text class="map-label" x="198" y="200">weekly labour cost</text>
-  <rect class="map-group" x="16" y="228" width="968" height="248" rx="16"/>
-  <text class="map-group-label" x="36" y="248">Operations and finance</text>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="budgetflow" data-to="accounts-software" data-rel="payment-export" d="M366 182 L366 286"/>
-  <text class="map-label" x="382" y="268">payment export</text>
-  <rect class="map-node" x="266" y="286" width="200" height="52" rx="10"/>
-  <text class="map-title" x="282" y="310">Accounts software</text>
-  <text class="map-sub" x="282" y="326">Commodity foundation</text>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-extraction" d="M466 312 L520 312"/>
-  <rect class="map-node" x="520" y="286" width="190" height="52" rx="10"/>
-  <text class="map-title" x="536" y="310">LedgerLink</text>
-  <text class="map-sub" x="536" y="326">Controlled workbooks</text>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="ledgerlink" data-to="local-processing" data-rel="checked-local-processing" d="M710 312 L760 312"/>
-  <circle class="map-status" cx="736" cy="312" r="4"/>
-  <rect class="map-node" x="760" y="286" width="204" height="52" rx="10"/>
-  <text class="map-title" x="776" y="310">Checked local processing</text>
-  <text class="map-sub" x="776" y="326">Deterministic, no AI</text>
-  <text class="map-label" x="508" y="272">accounts extraction</text>
-  <text class="map-label" x="718" y="272">checked local processing</text>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M820 338 L670 376"/>
-  <path class="map-arrow" marker-end="url(#hero-wide-arrow)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M862 338 L872 376"/>
-  <rect class="map-node" x="560" y="376" width="180" height="48" rx="10"/>
-  <text class="map-title" x="608" y="406">Cashflow</text>
-  <rect class="map-node" x="760" y="376" width="204" height="48" rx="10"/>
-  <text class="map-title" x="776" y="406">Management Accounts</text>
-  <text class="map-note" x="36" y="448">AI does not process company accounting data in this workflow.</text>
-  <text class="map-note" x="36" y="466">Accuracy comes from deterministic calculations, cut-offs, checks and evidence.</text>
-</svg>
-  <svg class="map-tall" viewBox="0 0 360 900" role="img" aria-labelledby="hero-tall-title hero-tall-desc">
-  <title id="hero-tall-title">How the selected systems connect</title>
-  <desc id="hero-tall-desc">Grouped view: Central Project Register supplies project identity to SiteLog, BudgetFlow, Applications Ledger and Probables. SiteLog sends weekly labour cost to BudgetFlow. BudgetFlow sends a payment export to accounts software. LedgerLink extracts accounting data. Checked local processing produces Cashflow and Management Accounts. AI does not process company accounting data.</desc>
-  <defs>
-    <marker id="hero-tall-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d89042"></path></marker>
-  </defs>
-  <rect class="map-group" x="12" y="8" width="336" height="268" rx="14"/>
-  <text class="map-group-label" x="24" y="28">Project identity</text>
-  <rect class="map-node" x="24" y="40" width="312" height="54" rx="10"/>
-  <text class="map-title" x="40" y="62" font-size="14">Central Project Register</text>
-  <text class="map-sub" x="40" y="80">Database/API master</text>
-  <path class="map-identity-bus" d="M32 108 H328"/>
-  <path class="map-identity" data-from="cpr" data-to="sitelog" data-rel="project-identity" d="M114 94 L114 108 L114 128"/>
-  <path class="map-identity" data-from="cpr" data-to="budgetflow" data-rel="project-identity" d="M246 94 L246 108 L246 128"/>
-  <path class="map-identity" data-from="cpr" data-to="applications-ledger" data-rel="project-identity" data-route="gutter" d="M32 94 L32 108 L32 220 L48 220"/>
-  <path class="map-identity" data-from="cpr" data-to="probables" data-rel="project-identity" data-route="gutter" d="M328 94 L328 108 L328 220 L324 220"/>
-  <rect class="map-node" x="48" y="128" width="132" height="50" rx="10"/>
-  <text class="map-title" x="60" y="150" font-size="14">SiteLog</text>
-  <text class="map-sub" x="60" y="166">Weekly capture</text>
-  <rect class="map-node" x="192" y="128" width="132" height="50" rx="10"/>
-  <text class="map-title" x="204" y="150" font-size="14">BudgetFlow</text>
-  <text class="map-sub" x="204" y="166">Allocation</text>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="sitelog" data-to="budgetflow" data-rel="weekly-labour-cost" d="M180 153 L192 153"/>
-  <rect class="map-node" x="48" y="196" width="132" height="50" rx="10"/>
-  <text class="map-title" x="56" y="214">Applications</text>
-  <text class="map-title" x="56" y="230">Ledger</text>
-  <rect class="map-node" x="192" y="196" width="132" height="50" rx="10"/>
-  <text class="map-title" x="204" y="218" font-size="14">Probables</text>
-  <text class="map-sub" x="204" y="234">Future work</text>
-  <rect class="map-group" x="12" y="288" width="336" height="128" rx="14"/>
-  <text class="map-group-label" x="24" y="310">Operations</text>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="budgetflow" data-to="accounts-software" data-rel="payment-export" d="M258 178 L258 186 L332 186 L332 336 L180 336"/>
-  <rect class="map-node" x="24" y="336" width="312" height="52" rx="10"/>
-  <text class="map-title" x="40" y="358" font-size="14">Accounts software</text>
-  <text class="map-sub" x="40" y="376">Commodity foundation</text>
-  <rect class="map-group" x="12" y="428" width="336" height="452" rx="14"/>
-  <text class="map-group-label" x="24" y="450">Finance</text>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="accounts-software" data-to="ledgerlink" data-rel="accounts-extraction" d="M180 388 L180 472"/>
-  <rect class="map-node" x="24" y="472" width="312" height="52" rx="10"/>
-  <text class="map-title" x="40" y="494" font-size="14">LedgerLink</text>
-  <text class="map-sub" x="40" y="512">Controlled workbooks</text>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="ledgerlink" data-to="local-processing" data-rel="checked-local-processing" d="M180 524 L180 556"/>
-  <circle class="map-status" cx="28" cy="548" r="4"/>
-  <rect class="map-node" x="24" y="556" width="312" height="48" rx="10"/>
-  <text class="map-title" x="40" y="586" font-size="14">Checked local processing</text>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="local-processing" data-to="cashflow" data-rel="checked-local-processing" d="M99 604 L99 628"/>
-  <path class="map-arrow" marker-end="url(#hero-tall-arrow)" data-from="local-processing" data-to="management-accounts" data-rel="checked-local-processing" d="M261 604 L261 628"/>
-  <rect class="map-node" x="24" y="628" width="150" height="56" rx="10"/>
-  <text class="map-title" x="48" y="662" font-size="14">Cashflow</text>
-  <rect class="map-node" x="186" y="628" width="150" height="56" rx="10"/>
-  <text class="map-title" x="198" y="652" font-size="13">Management</text>
-  <text class="map-title" x="198" y="670" font-size="13">Accounts</text>
-  <text class="map-label" x="24" y="768">Key</text>
-  <text class="map-note" x="24" y="788">Dashed = project identity from CPR</text>
-  <text class="map-note" x="24" y="806">Solid arrows = weekly labour cost,</text>
-  <text class="map-note" x="24" y="822">payment export, accounts extraction,</text>
-  <text class="map-note" x="24" y="838">and checked local processing.</text>
-  <text class="map-note" x="24" y="860">AI does not process company accounting data.</text>
-</svg>
-  <p class="map-text">Project identity is held once in Central Project Register and used by SiteLog, BudgetFlow, Applications Ledger and Probables.&nbsp; Weekly labour cost, payment export, accounts extraction and checked local processing are separate operational and finance flows.&nbsp; AI does not process the company accounting data.</p>
-</figure>
+        <div class="stack-scenes">
+          <div class="scene-erp">
+            <div class="stack-layout">
+              <div class="stack-callouts">
+                <p>Bespoke systems</p>
+                <p>Operational software</p>
+                <p>ERP / Accounts</p>
+              </div>
+              <div class="stack-stage">
+                <div class="stack-world">
+                  <div class="stack-layer">
+                    <div class="stack-platform cream">
+                      <div class="stack-tiles" aria-hidden="true">
+                        <span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span>
+                        <span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stack-links" aria-hidden="true"></div>
+                  <div class="stack-layer">
+                    <div class="stack-platform dark">
+                      <div class="stack-tiles ops" aria-hidden="true">
+                        <span class="stack-tile dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/><path d="M4 4h2l2.2 9h9.3l1.8-6H7"/></svg></span>
+                        <span class="stack-tile dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 7h10v10H7z"/><path d="M7 11h10M11 7v10"/></svg></span>
+                        <span class="stack-tile dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="2"/><circle cx="16" cy="9" r="1.6"/><path d="M5 18c.4-2.4 2.2-3.6 4-3.6s3.6 1.2 4 3.6M14 18c.2-1.4 1.2-2.2 2.2-2.2 1.2 0 2 .8 2.2 2.2"/></svg></span>
+                        <span class="stack-tile dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 19V9l5-4 5 4v10"/><path d="M9 19v-5h6v5"/></svg></span>
+                        <span class="stack-tile dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.2 6.2l1.4 1.4M16.4 16.4l1.4 1.4M17.8 6.2l-1.4 1.4M7.6 16.4l-1.4 1.4"/></svg></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stack-links" aria-hidden="true"></div>
+                  <div class="stack-layer">
+                    <div class="stack-platform erp-slab">ERP / Accounts</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-no-erp">
+            <div class="stack-layout">
+              <div class="stack-callouts">
+                <p>Bespoke systems</p>
+                <p>Accounts software</p>
+                <p>Spreadsheets</p>
+                <p>Operational tools</p>
+              </div>
+              <div class="stack-stage">
+                <div class="stack-world">
+                  <div class="stack-layer">
+                    <div class="stack-platform cream">
+                      <div class="stack-tiles" aria-hidden="true">
+                        <span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span>
+                        <span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span>
+                      </div>
+                      <span class="bespoke-banner">Bespoke systems</span>
+                    </div>
+                  </div>
+                  <div class="stack-links amber" aria-hidden="true"></div>
+                  <div class="no-erp-foundations">
+                    <div class="foundation-pad">
+                      <div class="stack-tiles" aria-hidden="true">
+                        <span class="stack-tile dark"></span><span class="stack-tile dark"></span><span class="stack-tile dark"></span>
+                      </div>
+                      <span class="foundation-name">Accounts software</span>
+                    </div>
+                    <div class="foundation-pad">
+                      <div class="stack-tiles" aria-hidden="true">
+                        <span class="stack-tile"></span><span class="stack-tile"></span><span class="stack-tile"></span>
+                      </div>
+                      <span class="foundation-name">Spreadsheets</span>
+                    </div>
+                    <div class="foundation-pad">
+                      <div class="stack-tiles" aria-hidden="true">
+                        <span class="stack-tile dark"></span><span class="stack-tile dark"></span><span class="stack-tile dark"></span>
+                      </div>
+                      <span class="foundation-name">Operational tools</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="map-text">With an ERP or accounts foundation, operational software sits above it and a focused bespoke layer connects and extends the existing stack.&nbsp; Without an ERP, accounts software, spreadsheets and operational tools remain separate; the bespoke layer connects the fragmented workflow.&nbsp; Proof Systems builds that fitted operational layer.&nbsp; It does not replace every commodity platform.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="chapter" id="gap">
-    <div class="wrap">
-      <p class="marker">01 / THE GAP</p>
-      <h2>Important work often sits between people, spreadsheets and software.</h2>
-      <p>The problem is rarely one missing app.&nbsp; It is the hand-offs, repeated entry, uncertain ownership and evidence that arrives too late.&nbsp; I start with how the work actually happens, then make the smallest useful improvement visible.</p>
-      <div class="gap-points">
-        <h3>Re-entered information</h3>
-        <h3>One-person dependencies</h3>
-        <h3>Hidden exceptions</h3>
-        <h3>Manual checking</h3>
-        <h3>Reporting after the decision</h3>
-        <p class="resolved">One clear flow.&nbsp; Visible ownership.&nbsp; Useful evidence.</p>
+  <section class="chapter panel-cream" id="gap">
+    <div class="wrap gap-scene">
+      <div class="gap-copy">
+        <p class="marker">01 / THE GAP</p>
+        <h2>Important work often sits between people, spreadsheets and software.</h2>
+        <p>The software is there.&nbsp; The flow between it is not.</p>
       </div>
+      <figure class="gap-chain" data-reveal>
+        <ol class="gap-steps">
+          <li class="gap-step">
+            <div class="raised-tile cream" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#17120d" stroke-width="1.6"><path d="M4 8h16v10H4z"/><path d="M4 8l8 5 8-5"/><path d="M8 4h8"/></svg>
+            </div>
+            <span class="arch-caption">Inbox</span>
+          </li>
+          <li class="gap-step">
+            <div class="raised-tile cream" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#17120d" stroke-width="1.6"><path d="M5 5h14v14H5z"/><path d="M5 10h14M5 15h14M10 5v14M15 5v14"/></svg>
+            </div>
+            <span class="arch-caption">Spreadsheet</span>
+          </li>
+          <li class="gap-step gap-break">
+            <div class="raised-tile dark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#efe8da" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.2 6.2l1.4 1.4M16.4 16.4l1.4 1.4M17.8 6.2l-1.4 1.4M7.6 16.4l-1.4 1.4"/></svg>
+            </div>
+            <span class="arch-caption">Software</span>
+          </li>
+          <li class="gap-step">
+            <div class="raised-tile dark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#efe8da" stroke-width="1.6"><rect x="8" y="4" width="8" height="12" rx="1"/><path d="M10 16v4h4v-4"/><path d="M9 8h6M9 11h6"/></svg>
+            </div>
+            <span class="arch-caption">Approval</span>
+          </li>
+          <li class="gap-step">
+            <div class="raised-tile dark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#efe8da" stroke-width="1.6"><path d="M7 4h8l4 4v12H7z"/><path d="M15 4v4h4"/><path d="M9 13h6M9 16h4"/></svg>
+            </div>
+            <span class="arch-caption">Report</span>
+          </li>
+        </ol>
+        <div class="gap-cues">
+          <p class="gap-cue"></p>
+          <p class="gap-cue">Re-entered</p>
+          <p class="gap-cue">Hidden</p>
+          <p class="gap-cue">Dependent</p>
+          <p class="gap-cue">Late</p>
+        </div>
+        <ul class="gap-legend">
+          <li>Re-entered</li>
+          <li>Dependent</li>
+          <li>Hidden</li>
+          <li>Late</li>
+        </ul>
+      </figure>
     </div>
   </section>
 
-  <section class="chapter" id="economics">
+  <section class="chapter panel-ink" id="economics">
     <div class="wrap">
       <p class="marker">01B / FIT</p>
-      <h2>You no longer have to choose between a spreadsheet and software built for somebody else's business.</h2>
-      <p>Off-the-shelf products are designed for a broad market.&nbsp; Smaller firms often pay recurring per-user, module or bolt-on costs, live with features they do not need, still miss the few functions that matter, and end up reshaping useful working practices around the software.</p>
-      <p>AI-assisted development has materially reduced the cost and time of a small, well-bounded bespoke operational system.&nbsp; Architecture, testing, security, judgement and ownership remain essential.&nbsp; AI helps the build; it does not replace them, and it does not process company accounting data in the finance workflow shown here.</p>
-      <div class="compare-grid">
-        <article class="card"><h3>Broad software</h3><p>A larger product, recurring add-ons and a process shaped around the vendor.</p></article>
-        <article class="card"><h3>The missing operational layer</h3><p>The few controls, hand-offs and evidence the business actually depends on.</p></article>
-        <article class="card primary"><h3>A focused bespoke system</h3><p>Buy the commodity foundation.&nbsp; Build only the operational layer that is specific to the business.</p></article>
+      <h2>Buy the foundation.&nbsp; Build only what makes <span class="accent">the business yours.</span></h2>
+      <p>Use established software where it fits.&nbsp; Add a focused bespoke layer where it does not.</p>
+      <div class="fit-compare" data-reveal>
+        <figure class="fit-side">
+          <div class="monolith">
+            <span class="monolith-title">Broad software</span>
+            <div class="module-grid" aria-hidden="true">
+              <span></span><span></span><span class="used"></span><span></span>
+              <span class="used"></span><span></span><span></span><span class="used"></span>
+              <span></span><span></span><span class="used"></span><span></span>
+              <span></span><span class="used"></span><span></span><span></span>
+            </div>
+            <div class="fit-path bent" aria-hidden="true"></div>
+          </div>
+          <p class="fit-note">Unused features</p>
+          <p class="fit-note">Process bends</p>
+        </figure>
+        <figure class="fit-side">
+          <div class="precise-stack">
+            <span class="fit-banner">Bespoke layer</span>
+            <div class="precise-row">
+              <div class="raised-tile dark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#d89042" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="8" r="2"/><circle cx="16" cy="9" r="1.6"/><path d="M5 18c.4-2.4 2.2-3.6 4-3.6s3.6 1.2 4 3.6"/></svg>
+                <span class="arch-caption">Accounts</span>
+              </div>
+              <div class="raised-tile dark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#d89042" stroke-width="1.6" aria-hidden="true"><path d="M7 7h10v10H7z"/></svg>
+                <span class="arch-caption">Software</span>
+              </div>
+              <div class="raised-tile dark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#d89042" stroke-width="1.6" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M5 10h14M10 5v14"/></svg>
+                <span class="arch-caption">Spreadsheets</span>
+              </div>
+            </div>
+          </div>
+          <p class="fit-note">Only the missing layer</p>
+        </figure>
       </div>
-      <p>I would advise against a build where a commodity platform already fits, the problem is not yet understood, or the cost of change would outweigh the operational gain.</p>
+      <p class="fit-close">Not every gap needs a build.&nbsp; The right fit comes first.</p>
     </div>
   </section>
 
@@ -215,19 +269,33 @@
       <h2>Improve the operation, not just the interface.</h2>
       <div class="capability-grid">
         <article class="card primary">
+          <div class="cap-visual" aria-hidden="true">
+            <span class="stack-tile"></span>
+            <span class="stack-tile"></span>
+            <span class="stack-tile"></span>
+          </div>
           <p class="kicker">Primary</p>
           <h3>Operational systems</h3>
           <p>Bespoke applications and connected workflows shaped around the people, controls and evidence the business already depends on.</p>
-          <p class="muted">Examples: operational capture, project and commercial controls, finance and reporting, structured research and administrative workflows.</p>
           <a class="card-link" href="work/">See selected systems</a>
         </article>
         <article class="card">
+          <div class="cap-flow" aria-hidden="true">
+            <span>Ownership</span>
+            <span>Exceptions</span>
+            <span>Review</span>
+          </div>
           <p class="kicker">Supporting</p>
           <h3>Controlled AI automation</h3>
-          <p>Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.&nbsp; That can include controlled document-processing and review harnesses invoked through an auditable workflow.</p>
+          <p>Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.</p>
           <a class="card-link" href="workflow.html">Discuss a workflow</a>
         </article>
         <article class="card">
+          <div class="cap-flow" aria-hidden="true">
+            <span>Roles</span>
+            <span>Tools</span>
+            <span>Practice</span>
+          </div>
           <p class="kicker">Supporting</p>
           <h3>AI Team Training</h3>
           <p>Role-specific training that helps a team apply AI safely and usefully to the work they already do.</p>
@@ -237,68 +305,88 @@
     </div>
   </section>
 
-  <section class="chapter" id="proof">
+  <section class="chapter panel-cream" id="proof">
     <div class="wrap">
       <p class="marker">03 / PROOF</p>
       <h2>Working systems make the difference visible.</h2>
       <p class="disclosure">These films use synthetic Northstar data to demonstrate systems and workflows I have designed.&nbsp; They contain no client records or production credentials and are not presented as external client case studies.</p>
-
-      <article class="feature-band">
-        <div>
+      <div class="proof-grid">
+        <article class="card">
           <p class="kicker">Frontline capture</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Make the correct weekly record the easiest one to create.</h3>
           <p>SiteLog is a deliberately simple mobile-first web application for tradespeople.&nbsp; It captures current-week work, creates the supporting invoice and leaves administrators a controlled export and straightforward user and project management.</p>
+          <div class="media-teaser" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg">
+            <img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog weekly records on a phone-sized screen, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+          </div>
           <a class="card-link" href="work/sitelog.html">Explore SiteLog</a>
-        </div>
-        <div class="media-teaser mobile-frame" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg">
-          <img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog weekly records on a phone-sized screen, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-        </div>
-      </article>
-
-      <article class="feature-band reverse">
-        <div>
+        </article>
+        <article class="card">
           <p class="kicker">Project control</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Turn weekly labour costs into visible budget decisions.</h3>
           <p>Site managers allocate real activity, quantity surveyors control budgets, variations and overspends, and accounts receives a coded payment export.</p>
+          <div class="media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg">
+            <img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow allocation table for weekly labour costs, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+          </div>
           <a class="card-link" href="work/budgetflow.html">Explore BudgetFlow</a>
-        </div>
-        <div class="media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg">
-          <img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow allocation table for weekly labour costs, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-        </div>
-      </article>
-
-      <article class="feature-band">
-        <div>
+        </article>
+        <article class="card">
           <p class="kicker">Finance and reporting</p>
           <p class="proof-label">Synthetic demonstration</p>
           <h3>Move from accounts data to decisions without rebuilding the story by hand.</h3>
           <p>LedgerLink connects to accounts software and writes controlled extraction workbooks.&nbsp; Deterministic local processing combines that extract with verified inputs from selected live systems.&nbsp; Cashflow and Management Accounts are the checked outputs.&nbsp; AI does not process the company accounting data in this workflow.</p>
+          <div class="media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg">
+            <img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink connection to accounts software, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
+          </div>
           <a class="card-link" href="work/index.html#finance">See the finance workflow</a>
           <a class="card-link" href="work/">View all systems</a>
-        </div>
-        <div class="media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg">
-          <img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink connection to accounts software, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-        </div>
-      </article>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section class="chapter" id="approach">
+  <section class="chapter panel-sand" id="approach">
     <div class="wrap">
       <p class="marker">04 / APPROACH</p>
-      <h2>Start with one useful outcome.&nbsp; Prove it in the real workflow.&nbsp; Extend where the evidence supports it.</h2>
-      <div class="process-flow">
-        <div class="process-step"><strong>01</strong>Understand the real workflow</div>
-        <div class="process-step"><strong>02</strong>Choose one useful outcome</div>
-        <div class="process-step"><strong>03</strong>Prove it in live work</div>
-        <div class="process-step"><strong>04</strong>Extend where the evidence supports it</div>
+      <h2>Start with one useful outcome.&nbsp; Prove it.&nbsp; Extend only when it earns the next step.</h2>
+      <div class="approach-stages" data-reveal>
+        <div class="approach-stage">
+          <strong>01</strong>
+          <span>Understand</span>
+          <em>Observe real workflow</em>
+        </div>
+        <div class="approach-stage">
+          <strong>02</strong>
+          <span>Choose</span>
+          <em>One useful outcome</em>
+        </div>
+        <div class="approach-stage">
+          <strong>03</strong>
+          <span>Prove</span>
+          <em>Initial build</em>
+        </div>
+        <div class="approach-stage">
+          <strong>04</strong>
+          <span>Extend</span>
+          <em>Future development</em>
+        </div>
       </div>
+      <p class="approach-banner">Start where the need is clearest</p>
       <div class="start-routes">
-        <article class="card"><h3>When the problem is clear</h3><p>Begin with a focused build or automation around one bounded outcome.</p></article>
-        <article class="card"><h3>When the problem needs clarity</h3><p>Begin with a paid workflow diagnostic: understand the present process, identify the most useful change and leave with a practical recommendation.</p></article>
-        <article class="card"><h3>When the team needs capability</h3><p>Begin with AI Team Training around the roles, tools and safeguards that matter to their work.</p><a class="card-link" href="training.html">Ask about team training</a></article>
+        <article class="card">
+          <h3>Clear workflow</h3>
+          <p>Focused build</p>
+        </article>
+        <article class="card">
+          <h3>Needs clarity</h3>
+          <p>Workflow diagnostic</p>
+        </article>
+        <article class="card">
+          <h3>Team capability</h3>
+          <p>AI training</p>
+          <a class="card-link" href="training.html">Ask about team training</a>
+        </article>
       </div>
     </div>
   </section>

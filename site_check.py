@@ -50,13 +50,44 @@ HOMEPAGE_REQUIRED = [
     "View all systems",
     "I started with the operation, not the technology.",
     "What important work should be easier to run?",
-    "You no longer have to choose between a spreadsheet and software built for somebody else's business.",
-    "Buy the commodity foundation",
+    "The software is there. The flow between it is not.",
+    "With ERP",
+    "Without ERP",
+    "Buy the foundation. Build only what makes the business yours.",
+    "Use established software where it fits. Add a focused bespoke layer where it does not.",
+    "Not every gap needs a build. The right fit comes first.",
+    "Start with one useful outcome. Prove it. Extend only when it earns the next step.",
+    "Start where the need is clearest",
+    "Unused features",
+    "Process bends",
+    "Only the missing layer",
+    "Observe real workflow",
+    "One useful outcome",
+    "Initial build",
+    "Future development",
+    "Clear workflow",
+    "Focused build",
+    "Needs clarity",
+    "Workflow diagnostic",
+    "Team capability",
+    "AI training",
     "AI does not process the company accounting data",
     "mobile-first web application",
     "Selected Systems",
     "Ask about team training",
     "https://www.linkedin.com/in/mat-glendenning",
+]
+
+HOMEPAGE_STALE = [
+    "You no longer have to choose between a spreadsheet and software built for somebody else's business.",
+    "Buy the commodity foundation",
+    "One-person dependencies",
+    "Hidden exceptions",
+    "Reporting after the decision",
+    "When the problem is clear",
+    "When the first step works",
+    "How the selected systems connect",
+    "Re-entered information",
 ]
 
 PUBLIC_REJECTED = [
@@ -247,6 +278,11 @@ def check_homepage(failures: list[str]) -> None:
     for phrase in HOMEPAGE_REQUIRED:
         if phrase not in compact and phrase not in raw:
             fail(f"homepage missing required phrase: {phrase}", failures)
+    for phrase in HOMEPAGE_STALE:
+        if phrase in compact or phrase in raw:
+            fail(f"homepage still contains stale copy: {phrase}", failures)
+    if 'class="proof-grid"' not in raw:
+        fail("homepage must restore the compact proof-grid", failures)
     if "CLIENT PERSPECTIVE" in raw or "05 / CLIENT" in raw:
         fail("homepage must omit the unapproved client-perspective chapter", failures)
     if re.search(r"<img[^>]+(portrait|headshot)", raw, re.I):
@@ -444,14 +480,17 @@ def check_mobile_header(failures: list[str]) -> None:
 
 
 REQUIRED_MAP_RELS = [
-    ("cpr", "sitelog", "project-identity"),
-    ("cpr", "budgetflow", "project-identity"),
-    ("cpr", "applications-ledger", "project-identity"),
-    ("cpr", "probables", "project-identity"),
     ("sitelog", "budgetflow", "weekly-labour-cost"),
-    ("budgetflow", "accounts-software", "payment-export"),
-    ("accounts-software", "ledgerlink", "accounts-extraction"),
-    ("ledgerlink", "local-processing", "checked-local-processing"),
+    ("cpr", "sitelog", "project-identity"),
+    ("cpr", "ledgerlink", "project-identity"),
+    ("cpr", "accounts-software", "project-identity"),
+    ("ledgerlink", "sitelog", "ledger-connection"),
+    ("ledgerlink", "budgetflow", "ledger-connection"),
+    ("ledgerlink", "applications-ledger", "ledger-connection"),
+    ("ledgerlink", "probables", "ledger-connection"),
+    ("accounts-software", "ledgerlink", "accounts-two-way"),
+    ("accounts-software", "local-processing", "checked-local-processing"),
+    ("verified-inputs", "local-processing", "verified-inputs"),
     ("local-processing", "cashflow", "checked-local-processing"),
     ("local-processing", "management-accounts", "checked-local-processing"),
 ]
@@ -478,57 +517,55 @@ def diagram_rels(raw: str) -> set[tuple[str, str, str]]:
 
 def check_architecture(failures: list[str]) -> None:
     expected = set(REQUIRED_MAP_RELS)
-    for rel in ("index.html", "work/index.html"):
-        raw = (ROOT / rel).read_text(encoding="utf-8")
-        found = diagram_rels(raw)
-        missing = expected - found
-        if missing:
-            fail(f"{rel} missing diagram relationships: {sorted(missing)}", failures)
-        if ("budgetflow", "ledgerlink", "payment-export") in found:
-            fail(f"{rel} still sends BudgetFlow payment export to LedgerLink", failures)
-        if 'class="map-wide"' not in raw or 'class="map-tall"' not in raw:
-            fail(f"{rel} must keep wide and tall architecture diagrams", failures)
-        if "Project identity" not in raw or "Finance" not in raw:
-            fail(f"{rel} must distinguish identity from finance grouping", failures)
-        if 'class="map-identity-bus"' not in raw:
-            fail(f"{rel} tall map must use a non-crossing identity bus", failures)
-        if 'data-route="gutter"' not in raw:
-            fail(f"{rel} must route lower identity links in the side gutter", failures)
-        css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
-        label_rule = css.split(".map-label {", 1)[-1].split("}", 1)[0]
-        if "var(--amber)" not in label_rule or "var(--amber-deep)" in label_rule:
-            fail("map labels must use --amber at 4.5:1 rather than --amber-deep", failures)
-        if "font-size: 12px" not in label_rule:
-            fail("map labels must be 12px so they remain readable when scaled", failures)
-        map_rule = css.split(".system-map {", 1)[-1].split("}", 1)[0]
-        if "margin-inline: 0" not in map_rule:
-            fail("system-map must reset user-agent figure horizontal margins", failures)
-        if ".map-tall .map-title { font-size: 15px; }" not in css:
-            fail("tall map titles must enlarge at the mobile breakpoint", failures)
-        mobile_css = css.split("@media (max-width: 760px)", 1)[-1].split("@media", 1)[0]
-        if ".system-map { padding: 0.5rem; }" not in mobile_css:
-            fail("narrow maps must reduce figure padding so the SVG uses wrap width", failures)
-        tall = raw.split('<svg class="map-tall"', 1)[-1].split("</svg>", 1)[0]
-        if ">Applications Ledger<" in tall:
-            fail(f"{rel} tall map must split Applications Ledger to fit the node", failures)
-        if ">Applications<" not in tall or ">Ledger<" not in tall:
-            fail(f"{rel} tall map must keep Applications and Ledger as split node text", failures)
-        wide = raw.split('<svg class="map-wide"', 1)[-1].split("</svg>", 1)[0]
-        for caption in ("accounts extraction", "checked local processing"):
-            match = re.search(
-                rf'<text class="map-label" x="([\d.]+)" y="([\d.]+)">{re.escape(caption)}</text>',
-                wide,
-            )
-            if not match:
-                fail(f"{rel} wide map missing caption {caption!r}", failures)
-                continue
-            y = float(match.group(2))
-            if not (248 < y < 286):
-                fail(
-                    f"{rel} wide caption {caption!r} y={y} must sit in the lane above the finance nodes "
-                    "(below the group heading, above y=286, not on the Cashflow diagonal)",
-                    failures,
-                )
+    homepage = (ROOT / "index.html").read_text(encoding="utf-8")
+    if 'data-from="cpr"' in homepage or 'class="map-wide"' in homepage:
+        fail("homepage must not keep the selected-systems architecture map", failures)
+    rel = "work/index.html"
+    raw = (ROOT / rel).read_text(encoding="utf-8")
+    found = diagram_rels(raw)
+    missing = expected - found
+    if missing:
+        fail(f"{rel} missing diagram relationships: {sorted(missing)}", failures)
+    if ("budgetflow", "ledgerlink", "payment-export") in found:
+        fail(f"{rel} still sends BudgetFlow payment export to LedgerLink", failures)
+    if ("cpr", "budgetflow", "project-identity") in found or ("cpr", "probables", "project-identity") in found:
+        fail(f"{rel} must not invent extra CPR identity arrows", failures)
+    if "map-wide" not in raw or "map-tall" not in raw:
+        fail(f"{rel} must keep wide and tall connected diagrams", failures)
+    if "Individual systems" not in raw or "Connected workflow" not in raw:
+        fail("Selected Systems must expose Individual systems and Connected workflow views", failures)
+    if "not the general Proof Systems offer" not in raw and "not the general offer" not in raw:
+        fail("connected workflow must not be presented as the general offer", failures)
+    if "weekly labour costs" not in raw.lower():
+        fail("connected workflow missing weekly labour costs caption", failures)
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    label_rule = css.split(".map-label {", 1)[-1].split("}", 1)[0]
+    if "var(--amber)" not in label_rule or "var(--amber-deep)" in label_rule:
+        fail("map labels must use --amber at 4.5:1 rather than --amber-deep", failures)
+    if "font-size: 12px" not in label_rule:
+        fail("map labels must be 12px so they remain readable when scaled", failures)
+    map_rule = css.split(".system-map {", 1)[-1].split("}", 1)[0]
+    if "margin-inline: 0" not in map_rule:
+        fail("system-map must reset user-agent figure horizontal margins", failures)
+    if ".map-tall .map-title { font-size: 15px; }" not in css:
+        fail("tall map titles must enlarge at the mobile breakpoint", failures)
+    mobile_css = css.split("@media (max-width: 760px)", 1)[-1].split("@media", 1)[0]
+    if ".system-map { padding: 0.5rem; }" not in mobile_css:
+        fail("narrow maps must reduce figure padding so the SVG uses wrap width", failures)
+    if "conn-amber" not in css or "conn-blue" not in css:
+        fail("connected diagram must keep amber operational links distinct from blue finance paths", failures)
+    tall_match = re.search(r"<svg[^>]*class=\"[^\"]*map-tall[^\"]*\"[\s\S]*?</svg>", raw)
+    tall = tall_match.group(0) if tall_match else ""
+    if not tall:
+        fail(f"{rel} missing tall connected diagram", failures)
+    if ">APPLICATIONS LEDGER<" in tall or ">Applications Ledger<" in tall:
+        fail(f"{rel} tall map must split Applications Ledger to fit the node", failures)
+    if ">APPLICATIONS<" not in tall or ">LEDGER<" not in tall:
+        fail(f"{rel} tall map must keep Applications and Ledger as split node text", failures)
+    if 'id="view-individual"' not in raw or 'id="view-connected"' not in raw:
+        fail("Selected Systems missing accessible view radios", failures)
+    if 'name="work-view"' not in raw:
+        fail("Selected Systems view control must share a radiogroup name", failures)
 
 
 def check_homepage_structure(failures: list[str]) -> None:
@@ -596,6 +633,55 @@ def check_round2(failures: list[str]) -> None:
             fail(f"{path.name} still expands CPR incorrectly", failures)
 
 
+DESIGN_REFS = {
+    "homepage-stack-erp.png": "2e772a058e52a2d11a02190de0c3acd3752a9e59b2514b1f322960a6c6648216",
+    "homepage-stack-no-erp.png": "665546ba0db36ab937b9ae2948f96a88edefd268c6c3e4ecaabac0464982ddbb",
+    "selected-systems-connected-demo.png": "40ddf929a6147f8be0839679df4f10c12e04d38e772517ae541cdd174dc2b8c6",
+    "01-the-gap.png": "9444732dcae5ca88912395e6256addb4b49e05490fb85ff8d56c0e1eb3365900",
+    "01b-fit.png": "a78c4e805f3d5ed49ebe3b217174ba93e6f419cdcec591c6ec2f8ad9f4c47a9a",
+    "04-approach.png": "141b64df1fe5b1bbca304ac54e7359d027aea533e031550a99cea9e9d6631b40",
+}
+
+
+def check_round3(failures: list[str]) -> None:
+    import hashlib
+
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    if 'data-opening' not in raw or 'class="opening-mark"' not in raw:
+        fail("homepage missing opening node-mark sequence", failures)
+    if 'class="opening-name"' not in raw or ">Proof Systems<" not in raw:
+        fail("homepage must reveal the Proof Systems name after the mark", failures)
+    if 'id="stack-erp"' not in raw or 'id="stack-no-erp"' not in raw:
+        fail("homepage missing With ERP / Without ERP control", failures)
+    if "Inbox" not in raw or "Spreadsheet" not in raw or "Approval" not in raw or "Report" not in raw:
+        fail("Gap chapter missing the Inbox to Report workflow chain", failures)
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if "#about h2" not in css or "#start h2" not in css:
+        fail("operator and enquiry headings must override the global h2 measure", failures)
+    if "max-width: min(16.8em, 100%)" not in css:
+        fail("operator and enquiry headings must use a wider intentional measure", failures)
+    if re.search(r"(?<!backdrop-)filter:\s*blur\(", css):
+        fail("CSS must not use blur filters on type or copy", failures)
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    if "updateOpening" not in js:
+        fail("site.js must drive the opening sequence from natural scroll", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("opening sequence must not hijack scroll", failures)
+    for path in PUBLIC_HTML:
+        html = path.read_text(encoding="utf-8")
+        if "docs/design/age-600-round-3" in html or "generated_images" in html:
+            fail(f"{path.relative_to(ROOT).as_posix()} must not serve design-review rasters", failures)
+    ref_dir = ROOT / "docs" / "design" / "age-600-round-3"
+    for name, digest in DESIGN_REFS.items():
+        path = ref_dir / name
+        if not path.is_file():
+            fail(f"missing design reference {name}", failures)
+            continue
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != digest:
+            fail(f"{name} hash mismatch: {actual}", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -608,14 +694,16 @@ def check() -> int:
     check_architecture(failures)
     check_homepage_structure(failures)
     check_round2(failures)
+    check_round3(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, short enquiry form, omitted client chapter, "
-        "poster-first homepage teasers and public-copy safety"
+        "PASS routes, eight stories, round-3 homepage chapters, proof-grid, "
+        "connected workflow view, enquiry form, omitted client chapter, "
+        "poster-first teasers and public-copy safety"
     )
     return 0
 

@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 3
+
+Local implementation of the attended round-three redesign from approved commit `50cd562`. Homepage opening sequence, general ERP/no-ERP stack, Gap, Fit, Capability, restored proof-grid, Approach, and the Selected Systems Individual/Connected workflow view are in this worktree. Not approved for push, merge or publication.
+
 ## AGE-600 round 2
 
 Local refinement of the cumulative website branch after Mat approved the second attended design review on 29 August 2026. Canonical brand, Inter Variable, Selected Systems, system architecture, AI Team Training, CPR correction and larger Proof bands are in this worktree. Not approved for push, merge or publication.
