@@ -376,6 +376,25 @@ def check_public_copy(failures: list[str]) -> None:
                     fail(f"{rel}: broken {kind} {value}", failures)
 
 
+def check_mobile_header(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if "max-width: 100%" not in css.split(".nav-inner {", 1)[-1].split("}", 1)[0]:
+        fail("nav-inner must cap at the viewport width", failures)
+    mobile = css.split("@media (max-width: 760px)", 1)
+    if len(mobile) != 2:
+        fail("missing 760px header breakpoint", failures)
+        return
+    block = mobile[1].split("@media", 1)[0]
+    if "width: 100%" not in block or "padding-inline: 16px" not in block:
+        fail("mobile nav-inner must use full viewport width with 16px inset padding", failures)
+    if "gap: 0.4rem" not in block:
+        fail("mobile header gap must fit brand, enquiry CTA and Menu inside 390px", failures)
+    if ".nav-cta" not in block or ".nav-toggle" not in block:
+        fail("mobile header must keep the enquiry CTA and Menu control", failures)
+    if "overflow-x" in block:
+        fail("mobile header must fit without using overflow-x as the fix", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -384,6 +403,7 @@ def check() -> int:
     check_stories(failures)
     check_redirects(failures)
     check_public_copy(failures)
+    check_mobile_header(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:

@@ -26,6 +26,10 @@ The design review supplies audience, outcome and film identity, not word-for-wor
 
 CSS and JavaScript live in `assets/css/site.css`, `assets/js/site.js` and `assets/js/form.js`. The site has no framework, WebGL, scroll hijacking, cursor replacement or intro loader. The default CSS `--progress: 1` keeps the workflow diagram readable without JavaScript.
 
+## 2026-08-29 — Mobile header fits 390px without overflow hiding
+
+The 390px overflow came from nowrap brand, enquiry CTA and Menu items plus a 1.25rem flex gap exceeding the wrapped nav width. Below 760px the bar is `width: 100%` with 16px padding and a 0.4rem gap, and the CTA/Menu type is reduced. Desktop and tablet headers are unchanged. Overflow hiding is not the fix.
+
 ## 2026-08-29 — Enquiry field reduction
 
 The Netlify form name `proof-systems-qualifier`, honeypot, POST behaviour and notification path are unchanged. Visible fields are name, business email, company, workflow description and contact consent. Hidden values are `route_key=general-enquiry`, `route_label=Discuss a workflow`, `lead_state=enquiry-received` and `page_source=workflow.html`.

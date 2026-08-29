@@ -2,6 +2,19 @@
 
 Updated: 2026-08-29
 
+## AGE-600 independent review correction 1 — 29 August 2026
+
+Independent Codex review found a 415px document width at 390×844 because the mobile header's Menu control overflowed. The 760px header now uses a 100% `.nav-inner` with 16px inset padding, 0.4rem gap, and reduced CTA/Menu padding and type. Menu and Discuss a workflow remain visible. `body { overflow-x: hidden; }` was not used as the fix. `site_check.py` now asserts those mobile header rules.
+
+- PASS — `python3 site_check.py` (including `check_mobile_header`)
+- PASS — `python3 proof_media_check.py`
+- PASS — `python3 privacy_notice_check.py`
+- PASS — `python3 crawl_check.py`
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`
+- PASS — in-memory Python compile of the four checkers
+- PASS — `git diff --check`
+- NOT RUN — no Chrome or other browser viewport measurement in this correction turn, as instructed.
+
 ## AGE-600 website repositioning — 29 August 2026
 
 Local static implementation only. No preview host, production deploy, production form submission or external contact was made.
