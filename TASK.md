@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 5
+
+Local refinement on the cumulative AGE-600 branch: single no-ERP stack visual, new Fit close, five-stage Capability workflow, Proof demo heading and amber view buttons, and a working amber Selected Systems view selector with card buttons. Not approved for push, merge or publication.
+
 ## AGE-600 round 4
 
 Local refinement of the approved round-three homepage. Correction 2 restores the five exact approved WebP graphics as the primary homepage visuals, with clip-path presentation movement. Proposition copy, ERP explanations, Proof button and `#individual-systems` routing from round four remain. Capability layout is unchanged except that destination. Not approved for push, merge or publication.

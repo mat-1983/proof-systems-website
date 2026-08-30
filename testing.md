@@ -2,6 +2,21 @@
 
 Updated: 2026-08-29
 
+## AGE-600 website refinement round 5 — 29 August 2026
+
+Homepage stack is a single approved no-ERP graphic with the new supporting copy. Fit close is the approved sentence beneath the image. Capability is a five-stage scroll-revealed HTML/CSS/SVG workflow with three amber actions. Proof uses the demo-videos heading, keeps Synthetic demonstration markers, and uses amber view buttons. Selected Systems uses amber selector controls, hash/back-forward sync, and amber card buttons.
+
+- PASS — `python3 site_check.py` including round-5 copy, Capability structure/fallbacks, Proof buttons, selector hashes and Selected Systems card actions.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live browser overflow, sequential Capability reveal, selector click/keyboard and hash navigation. Chrome headless previously SIGSEGV in this environment.
+
+Independent review should check 1280, 1024, 768, 500, 390, 360 and 320 CSS pixels, reduced-motion and no-JavaScript final states, and that the five approved rasters used elsewhere are unchanged.
+
 ## AGE-600 round-four correction 2 — restore approved graphics — 29 August 2026
 
 The five approved homepage WebP assets are again the primary rendered visuals. Progressive movement uses CSS clip-path on those rasters (foundation-up for ERP/no-ERP, left-to-right for Gap and Approach, broad-software then bespoke for Fit). Simplified inline SVG chapter drawings are not rendered. Live copy remains in the DOM; on desktop it is clipped because the artwork already contains those headings; on mobile it is readable beside a crop/pan of the same source. Capability is unchanged except its already-approved destination.

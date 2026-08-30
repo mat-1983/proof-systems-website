@@ -43,19 +43,17 @@ HOMEPAGE_REQUIRED = [
     "05 / OPERATOR FIRST",
     "06 / START",
     "Synthetic demonstration",
-    "These films use synthetic Northstar data to demonstrate systems and workflows I have designed",
-    "Explore SiteLog",
-    "Explore BudgetFlow",
-    "See the finance workflow",
+    "View SiteLog",
+    "View BudgetFlow",
+    "View finance workflow",
     "View all selected systems",
+    "Demo videos: bespoke systems built to solve painful workflows.",
     "I started with the operation, not the technology.",
     "What important work should be easier to run?",
     "The software is there. The flow between it is not.",
-    "With ERP",
-    "Without ERP",
     "Buy the foundation. Build only what makes the business yours.",
     "Use established software where it fits. Add a focused bespoke layer where it does not.",
-    "Not every gap needs a build. The right fit comes first.",
+    "Bespoke fixes the manual work that off-the-shelf software leaves behind.",
     "Start with one useful outcome. Prove it. Extend only when it earns the next step.",
     "Start where the need is clearest",
     "Unused features",
@@ -74,9 +72,15 @@ HOMEPAGE_REQUIRED = [
     "Mobile-first weekly site records, invoices and admin-ready exports.",
     "Weekly labour allocation, budget control and coded payment exports.",
     "Checked accounts extraction into cashflow and management accounts. Deterministic local processing; no AI touches company accounting data.",
-    "Keep the ERP or accounts foundation. Add a focused bespoke layer that connects and extends it.",
-    "Keep the useful tools. Add a bespoke layer connecting accounts software, spreadsheets and operational workflows.",
-    "Proof Systems builds the fitted operational layer. It does not replace every commodity platform.",
+    "Keep the useful tools. Add a bespoke layer that connects accounts or ERP software, spreadsheets and operational workflows.",
+    "Proof Systems builds around what already works.",
+    "Fix the workflow first. Then make it intelligent.",
+    "Disconnected work",
+    "Connected system",
+    "Reliable data",
+    "Controlled automation",
+    "Capable team",
+    "View selected systems",
     "Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software, controlled AI automation and training their teams can use.",
     "Operational systems for owner-led SMEs.",
     "Selected Systems",
@@ -98,6 +102,14 @@ HOMEPAGE_STALE = [
     "View all systems",
     "mobile-first web application",
     "With an ERP or accounts foundation, operational software sits above it",
+    "With ERP",
+    "Without ERP",
+    "Not every gap needs a build. The right fit comes first.",
+    "Improve the operation, not just the interface.",
+    "Working systems make the difference visible.",
+    "These films use synthetic Northstar data to demonstrate systems and workflows I have designed",
+    "Explore SiteLog",
+    "See the finance workflow",
 ]
 
 PUBLIC_REJECTED = [
@@ -693,8 +705,10 @@ def check_round3(failures: list[str]) -> None:
         fail("homepage missing opening node-mark sequence", failures)
     if 'class="opening-name"' not in raw or ">Proof Systems<" not in raw:
         fail("homepage must reveal the Proof Systems name after the mark", failures)
-    if 'id="stack-erp"' not in raw or 'id="stack-no-erp"' not in raw:
-        fail("homepage missing With ERP / Without ERP control", failures)
+    if "homepage-stack-no-erp.webp" not in raw:
+        fail("homepage missing the approved no-ERP stack artwork", failures)
+    if 'id="stack-erp"' in raw or "With ERP" in raw:
+        fail("homepage must not render the With ERP / Without ERP switch", failures)
     if "Inbox" not in raw or "Spreadsheet" not in raw or "Approval" not in raw or "Report" not in raw:
         fail("Gap chapter missing the Inbox to Report workflow chain", failures)
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
@@ -769,30 +783,27 @@ def check_round3(failures: list[str]) -> None:
 
 CAPABILITY_COPY = [
     "02 / CAPABILITY",
-    "Improve the operation, not just the interface.",
-    "Primary",
-    "Operational systems",
-    "Bespoke applications and connected workflows shaped around the people, controls and evidence the business already depends on.",
-    "See selected systems",
-    "Supporting",
-    "Controlled AI automation",
-    "Automate repetitive reading, checking, routing and preparation while keeping ownership, exceptions and review visible.",
+    "Fix the workflow first. Then make it intelligent.",
+    "Disconnected work",
+    "People, spreadsheets and offline documents hold different parts of the process.",
+    "Connected system",
+    "A fitted operational system connects the work, people and controls.",
+    "Reliable data",
+    "The working process creates a connected, usable flow of structured data.",
+    "Controlled automation",
+    "Automation comes after the workflow works. Repetitive tasks can then be automated safely.",
+    "Capable team",
+    "Role-specific training helps people apply AI safely and usefully to the work they already do.",
     "Discuss a workflow",
-    "AI Team Training",
-    "Role-specific training that helps a team apply AI safely and usefully to the work they already do.",
+    "View selected systems",
     "Ask about team training",
-    "Ownership",
-    "Exceptions",
-    "Review",
-    "Roles",
-    "Tools",
-    "Practice",
 ]
 
 GENERAL_SYSTEMS_LABELS = {
     "Selected Systems",
     "See selected systems",
     "View all selected systems",
+    "View selected systems",
     "Back to Selected Systems",
 }
 
@@ -825,15 +836,12 @@ def check_round4(failures: list[str]) -> None:
         fail("proposition lead must use the available composition width", failures)
 
     if "h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); max-width: 22ch;" not in css:
-        fail("global h2 measure must stay 22ch so Capability is unchanged", failures)
-    cap_h2 = css.split("#capability h2", 1)[-1].split("}", 1)[0] if "#capability h2" in css else ""
-    if "max-width: 22ch" not in cap_h2:
-        fail("Capability heading must keep the 22ch measure", failures)
-    for selector in ("#gap h2", "#economics h2", "#approach h2", "#proof h2"):
+        fail("global h2 measure must stay 22ch", failures)
+    for selector in ("#gap h2", "#economics h2", "#approach h2", "#proof h2", "#capability h2"):
         if selector not in css:
             fail(f"{selector} must use a scoped width override", failures)
 
-    cap = re.search(r'<section class="chapter" id="capability">([\s\S]*?)</section>', raw)
+    cap = re.search(r'<section class="chapter" id="capability"[^>]*>([\s\S]*?)</section>', raw)
     if not cap:
         fail("homepage missing Capability section", failures)
     else:
@@ -841,16 +849,16 @@ def check_round4(failures: list[str]) -> None:
         for phrase in CAPABILITY_COPY:
             if phrase not in body:
                 fail(f"Capability copy missing {phrase!r}", failures)
-        if 'class="capability-grid"' not in body or 'class="cap-visual"' not in body or 'class="cap-flow"' not in body:
-            fail("Capability three-card layout, icons or hierarchy changed", failures)
-        if body.count("<article") != 3:
-            fail("Capability must keep exactly three cards", failures)
-        if 'href="work/index.html#individual-systems">See selected systems</a>' not in body:
-            fail("Capability See selected systems destination must be the individual-systems index", failures)
-        if 'class="card-link"' not in body:
-            fail("Capability card links must keep their existing design class", failures)
-    if "capability-grid { grid-template-columns: 1.2fr 0.9fr 0.9fr; }" not in css:
-        fail("Capability grid columns must remain 1.2fr 0.9fr 0.9fr", failures)
+        if 'class="capability-grid"' in body or 'class="cap-visual"' in body:
+            fail("Capability must not keep the three-card layout", failures)
+        if 'class="capability-stages"' not in body or 'class="capability-svg"' not in body:
+            fail("Capability must use a scroll-revealed graphical workflow", failures)
+        if body.count("<li") < 5:
+            fail("Capability must expose five sequential stages", failures)
+        if 'href="work/index.html#individual-systems">View selected systems</a>' not in body:
+            fail("Capability View selected systems must target the individual-systems index", failures)
+        if 'data-cap-step="5"' not in raw:
+            fail("Capability no-JavaScript default must be the complete final workflow", failures)
 
     if "desktop-hide-copy" in raw:
         fail("Gap, Fit and Approach copy must stay live HTML, not visually clipped", failures)
@@ -876,16 +884,14 @@ def check_round4(failures: list[str]) -> None:
     if "WebGL" in raw or "webgl" in js:
         fail("homepage must not add WebGL", failures)
 
-    if 'class="stack-explain"' not in raw or "aria-live" not in raw:
-        fail("ERP/no-ERP explanations must sit outside the scene with a live region", failures)
-    if "stack-figure:has(#stack-erp:checked) .stack-erp-copy" not in css:
-        fail("selected With ERP state must expose its explanation without JavaScript", failures)
-    if "stack-figure:has(#stack-no-erp:checked) .stack-noerp-copy" not in css:
-        fail("selected Without ERP state must expose its explanation without JavaScript", failures)
+    if 'class="stack-explain"' not in raw:
+        fail("stack explanation must sit outside the scene", failures)
+    if "homepage-stack-erp.webp" in raw:
+        fail("homepage must not render the ERP stack artwork", failures)
 
     proof = raw[raw.find('id="proof"'):raw.find('id="approach"')]
-    if "Explore SiteLog" not in proof or "Explore BudgetFlow" not in proof:
-        fail("Proof must keep the SiteLog and BudgetFlow Explore links", failures)
+    if "View SiteLog" not in proof or "View BudgetFlow" not in proof:
+        fail("Proof must keep SiteLog and BudgetFlow view actions", failures)
     if proof.find("View all selected systems") < proof.find('class="proof-grid"'):
         fail("View all selected systems must sit beneath the three-card grid", failures)
     if 'class="button button-systems"' not in proof:
@@ -894,8 +900,10 @@ def check_round4(failures: list[str]) -> None:
         fail("Proof all-systems button must target the individual-systems index", failures)
     if "View all systems" in proof:
         fail("finance card must not keep a general View all systems link", failures)
-    if 'href="work/index.html#finance">See the finance workflow</a>' not in proof:
-        fail("finance-specific Proof link must remain finance-specific", failures)
+    if 'href="work/index.html#finance">View finance workflow</a>' not in proof:
+        fail("finance-specific Proof action must remain finance-specific", failures)
+    if proof.lower().count("synthetic demonstration") < 3:
+        fail("each Proof showcase must keep a visible Synthetic demonstration marker", failures)
 
     if 'id="individual-systems"' not in work:
         fail("Selected Systems must expose id=individual-systems for hash selection", failures)
@@ -905,6 +913,10 @@ def check_round4(failures: list[str]) -> None:
         fail("individual-systems hash must be re-applied after the connected view was previously selected", failures)
     if "#individual-systems:target" not in css:
         fail("no-JavaScript arrival at #individual-systems must still reveal the individual index", failures)
+    if "#connected-workflow:target" not in css:
+        fail("no-JavaScript arrival at #connected-workflow must still reveal the connected view", failures)
+    if "popstate" not in js:
+        fail("Selected Systems must keep browser back/forward in sync with the view", failures)
     if 'href="work/index.html#connected-workflow">Selected Systems' in raw:
         fail("general Selected Systems actions must not default to the connected view", failures)
 
@@ -927,7 +939,6 @@ def check_approved_artwork(failures: list[str]) -> None:
     raw = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     required_src = [
-        'src="assets/img/age-600/homepage-stack-erp.webp"',
         'src="assets/img/age-600/homepage-stack-no-erp.webp"',
         'src="assets/img/age-600/01-the-gap.webp"',
         'src="assets/img/age-600/01b-fit.webp"',
@@ -963,6 +974,38 @@ def check_approved_artwork(failures: list[str]) -> None:
         fail("Fit must keep the live HTML cue for the missing layer", failures)
 
 
+def check_round5(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    if "Bespoke fixes the manual work that off-the-shelf software leaves behind." not in raw:
+        fail("Fit close copy is not the approved sentence", failures)
+    if "Proof Systems builds around what already works." not in raw:
+        fail("stack supporting copy missing the approved closing line", failures)
+    if "updateCapability" not in js:
+        fail("site.js must drive the Capability sequence from normal scroll", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("Capability sequence must not hijack scroll", failures)
+    if "WebGL" in js or "webgl" in raw:
+        fail("Capability must not use WebGL", failures)
+    reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]
+    if ".cap-stage { opacity: 1; }" not in reduced and ".cap-stage { opacity: 1;" not in reduced:
+        fail("reduced-motion must expose the complete Capability workflow", failures)
+    if 'class="button-amber"' not in css.split(".button-amber {", 1)[0] and ".button-amber {" not in css:
+        fail("amber/orange action buttons are missing", failures)
+    if "background: var(--amber)" not in css.split(".view-switch input:checked + label {", 1)[-1][:180]:
+        fail("active Selected Systems control must be solid amber", failures)
+    if "border: 1.5px solid var(--amber)" not in css.split(".view-switch label {", 1)[-1][:260]:
+        fail("inactive Selected Systems control must use an amber border", failures)
+    if work.count('class="button button-amber"') < 8:
+        fail("each Selected Systems card must use a centred amber button", failures)
+    if 'class="card-link" href="sitelog.html">Explore SiteLog' in work:
+        fail("Selected Systems must not keep ordinary Explore text links", failures)
+    if 'id="view-connected"' not in work or 'id="view-individual"' not in work:
+        fail("Selected Systems must keep accessible view radios", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -978,15 +1021,16 @@ def check() -> int:
     check_round3(failures)
     check_round4(failures)
     check_approved_artwork(failures)
+    check_round5(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-4 native chapters, proposition copy, "
-        "ERP explanations, proof button, individual-systems destinations, "
-        "enquiry form, omitted client chapter, poster-first teasers and public-copy safety"
+        "PASS routes, eight stories, round-5 stack, Fit close, Capability workflow, "
+        "Proof actions, Selected Systems selector and buttons, enquiry form, "
+        "omitted client chapter, poster-first teasers and public-copy safety"
     )
     return 0
 

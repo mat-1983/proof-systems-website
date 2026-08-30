@@ -44,6 +44,40 @@
     updateOpening();
   }
 
+  var capability = document.querySelector("[data-capability]");
+
+  function updateCapability() {
+    if (!capability) return;
+    if (reduced) {
+      capability.setAttribute("data-cap-step", "5");
+      return;
+    }
+    if (window.matchMedia("(max-width: 980px)").matches) {
+      var stages = capability.querySelectorAll(".cap-stage");
+      var step = 1;
+      stages.forEach(function (stage, index) {
+        if (stage.getBoundingClientRect().top < window.innerHeight * 0.78) {
+          step = index + 1;
+        }
+      });
+      capability.setAttribute("data-cap-step", String(step));
+      return;
+    }
+    var rect = capability.getBoundingClientRect();
+    var travel = Math.max(capability.offsetHeight - window.innerHeight * 0.65, 1);
+    var progress = clamp(-rect.top / travel, 0, 1);
+    var step = Math.min(5, 1 + Math.floor(progress * 4.999));
+    capability.setAttribute("data-cap-step", String(step));
+  }
+
+  if (capability) {
+    if (!reduced) {
+      window.addEventListener("scroll", updateCapability, { passive: true });
+      window.addEventListener("resize", updateCapability);
+    }
+    updateCapability();
+  }
+
   var scenes = document.querySelectorAll("[data-reveal]");
   if (scenes.length && !reduced && "IntersectionObserver" in window) {
     var reveal = new IntersectionObserver(function (entries) {
@@ -123,17 +157,20 @@
 
   syncWorkView();
   window.addEventListener("hashchange", syncWorkView);
+  window.addEventListener("popstate", syncWorkView);
   window.addEventListener("pageshow", syncWorkView);
 
   var connectedInput = document.getElementById("view-connected");
   var individualInput = document.getElementById("view-individual");
-  if (connectedInput && individualInput && window.history && history.replaceState) {
+  if (connectedInput && individualInput && window.history && history.pushState) {
     connectedInput.addEventListener("change", function () {
-      if (connectedInput.checked) history.replaceState({}, "", "#connected-workflow");
+      if (connectedInput.checked && location.hash !== "#connected-workflow") {
+        history.pushState({}, "", "#connected-workflow");
+      }
     });
     individualInput.addEventListener("change", function () {
-      if (individualInput.checked && location.hash !== "#finance") {
-        history.replaceState({}, "", "#individual-systems");
+      if (individualInput.checked && location.hash !== "#finance" && location.hash !== "#individual-systems") {
+        history.pushState({}, "", "#individual-systems");
       }
     });
   }

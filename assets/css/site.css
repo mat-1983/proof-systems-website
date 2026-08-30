@@ -339,7 +339,7 @@ h3 { font-size: 1.2rem; letter-spacing: -0.02em; }
 #proof h2 {
   max-width: none;
 }
-#capability h2 { max-width: 22ch; }
+#capability h2 { max-width: none; }
 
 .lede, .intro {
   font-size: clamp(1.05rem, 2vw, 1.28rem);
@@ -369,6 +369,30 @@ h3 { font-size: 1.2rem; letter-spacing: -0.02em; }
   background: transparent;
   color: var(--cream);
   border: 1px solid var(--hairline);
+}
+
+.button-amber {
+  background: var(--amber);
+  color: var(--ink);
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.button-amber-ghost {
+  background: transparent;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.panel-cream .button-amber {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
 }
 
 .panel-cream {
@@ -697,20 +721,20 @@ textarea { min-height: 8.5rem; resize: vertical; }
   display: inline-flex;
   align-items: center;
   margin: 0;
-  padding: 0.5rem 0.95rem;
-  border: 1px solid var(--hairline);
+  padding: 0.55rem 1.15rem;
+  border: 1.5px solid var(--amber);
   border-radius: 999px;
-  color: var(--cream);
-  font-weight: 600;
-  font-size: 0.92rem;
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
   background: transparent;
 }
 
 .view-switch input:checked + label {
-  background: var(--cream);
+  background: var(--amber);
   color: var(--ink);
-  border-color: var(--cream);
+  border-color: var(--amber);
 }
 
 .view-switch input:focus-visible + label {
@@ -1169,9 +1193,11 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .fit-close {
   text-align: center;
-  margin: 2rem 0 0;
+  margin: 1.4rem auto 0.4rem;
+  max-width: 40rem;
   color: var(--amber);
   font-weight: 600;
+  font-size: clamp(1.05rem, 2.1vw, 1.28rem);
 }
 
 .panel-ink .fit-note,
@@ -1294,7 +1320,19 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .panel-cream .proof-grid .card .kicker,
 .panel-cream .proof-grid .card .proof-label { color: var(--amber); }
 .proof-grid .media-teaser { margin-top: 1rem; }
-.proof-grid .card-link { margin-right: 0.9rem; }
+.proof-grid .card,
+.work-grid .card {
+  display: flex;
+  flex-direction: column;
+}
+.card-action {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  text-align: center;
+}
+.card-action .button {
+  min-width: 12rem;
+}
 
 .proof-all {
   display: flex;
@@ -1332,17 +1370,33 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .wrap:has(#finance:target) .work-connected {
   display: none !important;
 }
+.wrap:has(#connected-workflow:target) .work-connected {
+  display: block !important;
+}
+.wrap:has(#connected-workflow:target) .work-individual {
+  display: none !important;
+}
 .wrap:has(#individual-systems:target) label[for="view-individual"],
 .wrap:has(#finance:target) label[for="view-individual"] {
-  background: var(--cream);
+  background: var(--amber);
   color: var(--ink);
-  border-color: var(--cream);
+  border-color: var(--amber);
 }
 .wrap:has(#individual-systems:target) label[for="view-connected"],
 .wrap:has(#finance:target) label[for="view-connected"] {
   background: transparent;
-  color: var(--cream);
-  border-color: var(--hairline);
+  color: var(--amber);
+  border-color: var(--amber);
+}
+.wrap:has(#connected-workflow:target) label[for="view-connected"] {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+}
+.wrap:has(#connected-workflow:target) label[for="view-individual"] {
+  background: transparent;
+  color: var(--amber);
+  border-color: var(--amber);
 }
 
 .conn-svg { width: 100%; height: auto; }
@@ -1727,4 +1781,199 @@ textarea { min-height: 8.5rem; resize: vertical; }
   0% { clip-path: inset(0 100% 0 0); }
   40% { clip-path: inset(0 48% 0 0); }
   100% { clip-path: inset(0 0 0 0); }
+}
+
+#capability {
+  --cap: 1;
+}
+
+.capability-sticky { padding: 0; }
+
+.capability-board { margin: 0.4rem 0 1.4rem; }
+
+.capability-svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.cap-path-broken {
+  fill: none;
+  stroke: rgba(243, 238, 228, 0.28);
+  stroke-width: 2.4;
+  stroke-dasharray: 7 10;
+  stroke-linecap: round;
+}
+
+.cap-path-solid {
+  fill: none;
+  stroke: url(#cap-line);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.cap-pulse-path {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-dasharray: 16 240;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.cap-data-points { fill: var(--blue); opacity: 0; }
+
+.cap-node rect,
+.cap-node circle { fill: #2a3038; stroke: rgba(243, 238, 228, 0.28); stroke-width: 1.4; }
+.cap-node path { fill: none; stroke: var(--stone); stroke-width: 1.6; }
+.cap-person { fill: var(--cream); stroke: none; }
+.cap-node-1 rect { fill: #3a322c; stroke: rgba(216, 144, 66, 0.35); }
+.cap-pulse-ring { fill: none; stroke: var(--blue); stroke-width: 1.5; opacity: 0; }
+
+[data-cap-step="2"] .cap-path-solid,
+[data-cap-step="3"] .cap-path-solid,
+[data-cap-step="4"] .cap-path-solid,
+[data-cap-step="5"] .cap-path-solid { opacity: 1; }
+[data-cap-step="2"] .cap-path-broken,
+[data-cap-step="3"] .cap-path-broken,
+[data-cap-step="4"] .cap-path-broken,
+[data-cap-step="5"] .cap-path-broken { opacity: 0; }
+[data-cap-step="2"] .cap-node-2 circle,
+[data-cap-step="3"] .cap-node-2 circle,
+[data-cap-step="4"] .cap-node-2 circle,
+[data-cap-step="5"] .cap-node-2 circle { stroke: var(--amber); fill: #3b2a18; }
+[data-cap-step="3"] .cap-data-points,
+[data-cap-step="4"] .cap-data-points,
+[data-cap-step="5"] .cap-data-points { opacity: 1; }
+[data-cap-step="3"] .cap-node-3 > circle:first-child,
+[data-cap-step="4"] .cap-node-3 > circle:first-child,
+[data-cap-step="5"] .cap-node-3 > circle:first-child { stroke: var(--blue); }
+[data-cap-step="4"] .cap-pulse-path,
+[data-cap-step="5"] .cap-pulse-path { opacity: 1; }
+[data-cap-step="4"] .cap-pulse-ring,
+[data-cap-step="5"] .cap-pulse-ring { opacity: 0.8; }
+[data-cap-step="5"] .cap-node-5 > circle:first-child { stroke: var(--amber); fill: #3b2a18; }
+
+html.js [data-capability]:not([data-cap-step="5"]) .cap-pulse-path {
+  animation: cap-pulse 2.6s linear infinite;
+}
+html.js [data-capability][data-cap-step="4"] .cap-pulse-path,
+html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
+  animation: cap-pulse 2.6s linear infinite;
+}
+
+@keyframes cap-pulse {
+  to { stroke-dashoffset: -256; }
+}
+
+.capability-stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.cap-stage {
+  margin: 0;
+  opacity: 0.28;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.cap-stage h3 {
+  color: var(--amber);
+  font-size: 1.02rem;
+  margin: 0 0 0.4rem;
+}
+
+.cap-stage p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #d5deea;
+}
+
+[data-cap-step="1"] .cap-stage:nth-child(1),
+[data-cap-step="2"] .cap-stage:nth-child(-n+2),
+[data-cap-step="3"] .cap-stage:nth-child(-n+3),
+[data-cap-step="4"] .cap-stage:nth-child(-n+4),
+[data-cap-step="5"] .cap-stage { opacity: 1; }
+
+.capability-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-cap-step="5"] .capability-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 981px) {
+  html.js #capability[data-capability] {
+    min-height: 260vh;
+  }
+  html.js #capability .capability-sticky {
+    position: sticky;
+    top: var(--nav-h);
+    min-height: calc(100vh - var(--nav-h));
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0 2rem;
+  }
+}
+
+@media (max-width: 980px) {
+  .capability-board { display: none; }
+  .capability-stages {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .cap-stage {
+    position: relative;
+    opacity: 1;
+    padding: 0 0 1.3rem 2.2rem;
+  }
+  .cap-stage::before {
+    content: "";
+    position: absolute;
+    left: 0.3rem;
+    top: 0.45rem;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+  .cap-stage::after {
+    content: "";
+    position: absolute;
+    left: 0.6rem;
+    top: 1.3rem;
+    bottom: 0;
+    width: 2px;
+    background: rgba(216, 144, 66, 0.35);
+  }
+  .cap-stage:last-child::after { display: none; }
+  .cap-stage h3 { font-size: 1.12rem; }
+  .cap-stage p { font-size: 1rem; }
+  .capability-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js #capability[data-capability] { min-height: 0; }
+  html.js #capability .capability-sticky { position: static; min-height: 0; }
+  .cap-stage { opacity: 1; }
+  .capability-actions { opacity: 1; pointer-events: auto; }
+  .cap-pulse-path { animation: none !important; }
 }
