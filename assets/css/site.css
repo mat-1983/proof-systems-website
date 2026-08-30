@@ -1333,7 +1333,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .panel-cream .proof-grid .card p { color: var(--cream); }
 .panel-cream .proof-grid .card .kicker,
 .panel-cream .proof-grid .card .proof-label { color: var(--amber); }
-.panel-cream .proof-grid .card .proof-line { color: var(--ink); }
+.panel-cream .proof-grid .card .proof-line { color: var(--cream); }
 .proof-grid .media-teaser { margin-top: 1rem; }
 .proof-grid .card,
 .work-grid .card {
@@ -1943,8 +1943,14 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
     transition: opacity 0.4s ease 0.35s, visibility 0s linear 0.2s;
   }
   html.js #capability[data-capability]:not([data-cap-step="5"]) .capability-actions {
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
+  }
+  html.js #capability[data-capability][data-cap-step="5"] .capability-actions {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -1982,6 +1988,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   .cap-stage h3 { font-size: 1.12rem; }
   .cap-stage p { font-size: 1rem; }
   .capability-actions {
+    visibility: visible;
     opacity: 1;
     pointer-events: auto;
   }
@@ -1998,5 +2005,10 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   html.js .cap-connector {
     stroke-dashoffset: 0 !important;
   }
-  .capability-actions { opacity: 1; pointer-events: auto; }
+  html.js .capability-actions,
+  .capability-actions {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
 }

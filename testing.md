@@ -1,6 +1,19 @@
 # Proof Systems Website Testing
 
-Updated: 2026-08-29
+Updated: 2026-08-30
+
+## AGE-600 round 6 review corrections — 30 August 2026
+
+Proof-card supporting lines use cream on the dark raised cards. Capability actions are `visibility: hidden`, `inert` and `aria-hidden` before stage 5, then exposed at stage 5. Reduced-motion and no-JavaScript still show the actions.
+
+- PASS — `python3 site_check.py` including `check_round6_review_corrections`. Those assertions fail against commit `035d24e` CSS/JS and pass on the corrected tree.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live desktop contrast sampling and keyboard tab-order through Capability. Chrome headless aborted with SIGSEGV (exit 139) in this environment.
 
 ## AGE-600 desktop refinement round 6 — 29 August 2026
 

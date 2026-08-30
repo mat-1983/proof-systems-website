@@ -4,7 +4,7 @@ Updated: 2026-08-29
 
 ## AGE-600 round 6
 
-Desktop homepage refinement: wider proposition/stack/Start copy, cropped Fit artwork, Proof card copy and kickers, and five independent Capability scroll states. Mobile layout is unchanged as a usable fallback. Not approved for push, merge or publication.
+Desktop homepage refinement: wider proposition/stack/Start copy, cropped Fit artwork, Proof card copy and kickers, and five independent Capability scroll states. Review correction: cream Proof-line colour on dark cards, and Capability actions hidden from pointer, keyboard and AT until stage 5. Mobile layout is unchanged as a usable fallback. Not approved for push, merge or publication.
 
 ## AGE-600 round 5
 

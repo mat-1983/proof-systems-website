@@ -1160,6 +1160,65 @@ def check_round6(failures: list[str]) -> None:
     radio_block = css.split(".wrap:has(#view-connected:checked) .work-connected", 1)[-1][:80]
     if "display: block" not in radio_block:
         fail("JavaScript checked-radio state must show the connected view", failures)
+    check_round6_review_corrections(css, js, failures)
+
+
+def check_round6_review_corrections(css: str, js: str, failures: list[str]) -> None:
+    for match in re.finditer(r"\.proof-line[^{]*\{([^}]*)\}", css):
+        body = match.group(1)
+        if re.search(r"color:\s*var\(--ink\)", body) or re.search(r"color:\s*#17120d", body, re.I):
+            fail("Proof supporting lines must not use ink on the dark Proof cards", failures)
+        colors = re.findall(r"color:\s*([^;]+)", body)
+        for value in colors:
+            token = value.strip().lower()
+            if token in {"var(--cream)", "var(--text)", "#f3eee4", "#fffdf8", "#ffffff"}:
+                continue
+            fail(f"Proof supporting lines must use a light colour, found {value.strip()}", failures)
+    if "var(--cream)" not in css.split(".proof-line {", 1)[-1].split("}", 1)[0]:
+        fail("base .proof-line colour must be cream", failures)
+    if "var(--raised)" not in css.split(".panel-cream .proof-grid .card {", 1)[-1].split("}", 1)[0]:
+        fail("homepage Proof cards must keep the dark raised background", failures)
+
+    hidden_sel = 'html.js #capability[data-capability]:not([data-cap-step="5"]) .capability-actions {'
+    if hidden_sel not in css:
+        fail("desktop JS must hide Capability actions until stage 5", failures)
+    else:
+        hidden = css.split(hidden_sel, 1)[-1].split("}", 1)[0]
+        if "visibility: hidden" not in hidden:
+            fail("Capability actions must be visibility:hidden before stage 5 so they leave keyboard focus and AT", failures)
+        if "pointer-events: none" not in hidden:
+            fail("Capability actions must ignore pointer input before stage 5", failures)
+        if "opacity: 0" not in hidden:
+            fail("Capability actions must be visually hidden before stage 5", failures)
+        if "visibility: visible" in hidden:
+            fail("pre-stage-5 Capability actions must not stay visibility:visible", failures)
+    shown_sel = 'html.js #capability[data-capability][data-cap-step="5"] .capability-actions {'
+    if shown_sel not in css:
+        fail("stage 5 must explicitly expose Capability actions", failures)
+    else:
+        shown = css.split(shown_sel, 1)[-1].split("}", 1)[0]
+        if "visibility: visible" not in shown:
+            fail("stage 5 Capability actions must be visibility:visible", failures)
+        if "pointer-events: auto" not in shown:
+            fail("stage 5 Capability actions must be pointer-reachable", failures)
+    if "syncCapabilityActions" not in js:
+        fail("site.js must sync Capability action exposure with the current stage", failures)
+    if 'setAttribute("inert"' not in js or 'setAttribute("aria-hidden"' not in js:
+        fail("Capability actions must be inert and aria-hidden before stage 5", failures)
+    if 'removeAttribute("inert")' not in js or 'removeAttribute("aria-hidden")' not in js:
+        fail("Capability actions must drop inert/aria-hidden at stage 5", failures)
+    if 'String(step) === "5"' not in js:
+        fail("Capability action exposure must follow the stage-5 threshold", failures)
+    reduced_exposes = False
+    for block in css.split("@media (prefers-reduced-motion: reduce)")[1:]:
+        body = block.split("@media", 1)[0]
+        if ".capability-actions" not in body:
+            continue
+        rule = body.split(".capability-actions", 1)[-1][:240]
+        if "visibility: visible !important" in rule and "pointer-events: auto" in rule:
+            reduced_exposes = True
+    if not reduced_exposes:
+        fail("reduced-motion must expose Capability actions without waiting for animation", failures)
 
 
 def check() -> int:
