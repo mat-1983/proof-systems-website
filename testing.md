@@ -2,6 +2,19 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 5 review correction — Selected Systems selector — 29 August 2026
+
+Clicking Connected workflow after landing on `#individual-systems` used `history.pushState`, so `:target` stayed on `#individual-systems` and `!important` `:target` rules kept the individual grid visible. `:target` fallbacks are now scoped to `html:not(.js)`. With JavaScript, the checked radio is authoritative.
+
+- PASS — `python3 site_check.py` including the precedence assertion that `#individual-systems:target` is not unscoped and is prefixed with `html:not(.js)`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory compile of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live click, keyboard, hash and back/forward in a layout engine. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 website refinement round 5 — 29 August 2026
 
 Homepage stack is a single approved no-ERP graphic with the new supporting copy. Fit close is the approved sentence beneath the image. Capability is a five-stage scroll-revealed HTML/CSS/SVG workflow with three amber actions. Proof uses the demo-videos heading, keeps Synthetic demonstration markers, and uses amber view buttons. Selected Systems uses amber selector controls, hash/back-forward sync, and amber card buttons.

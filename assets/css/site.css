@@ -1361,39 +1361,39 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .wrap:has(#view-connected:checked) .work-individual { display: none; }
 .wrap:has(#view-connected:checked) .work-connected { display: block; }
 
-#individual-systems:target,
-.wrap:has(#individual-systems:target) .work-individual,
-.wrap:has(#finance:target) .work-individual {
+html:not(.js) #individual-systems:target,
+html:not(.js) .wrap:has(#individual-systems:target) .work-individual,
+html:not(.js) .wrap:has(#finance:target) .work-individual {
   display: grid !important;
 }
-.wrap:has(#individual-systems:target) .work-connected,
-.wrap:has(#finance:target) .work-connected {
+html:not(.js) .wrap:has(#individual-systems:target) .work-connected,
+html:not(.js) .wrap:has(#finance:target) .work-connected {
   display: none !important;
 }
-.wrap:has(#connected-workflow:target) .work-connected {
+html:not(.js) .wrap:has(#connected-workflow:target) .work-connected {
   display: block !important;
 }
-.wrap:has(#connected-workflow:target) .work-individual {
+html:not(.js) .wrap:has(#connected-workflow:target) .work-individual {
   display: none !important;
 }
-.wrap:has(#individual-systems:target) label[for="view-individual"],
-.wrap:has(#finance:target) label[for="view-individual"] {
+html:not(.js) .wrap:has(#individual-systems:target) label[for="view-individual"],
+html:not(.js) .wrap:has(#finance:target) label[for="view-individual"] {
   background: var(--amber);
   color: var(--ink);
   border-color: var(--amber);
 }
-.wrap:has(#individual-systems:target) label[for="view-connected"],
-.wrap:has(#finance:target) label[for="view-connected"] {
+html:not(.js) .wrap:has(#individual-systems:target) label[for="view-connected"],
+html:not(.js) .wrap:has(#finance:target) label[for="view-connected"] {
   background: transparent;
   color: var(--amber);
   border-color: var(--amber);
 }
-.wrap:has(#connected-workflow:target) label[for="view-connected"] {
+html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-connected"] {
   background: var(--amber);
   color: var(--ink);
   border-color: var(--amber);
 }
-.wrap:has(#connected-workflow:target) label[for="view-individual"] {
+html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"] {
   background: transparent;
   color: var(--amber);
   border-color: var(--amber);

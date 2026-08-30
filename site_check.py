@@ -1004,6 +1004,19 @@ def check_round5(failures: list[str]) -> None:
         fail("Selected Systems must not keep ordinary Explore text links", failures)
     if 'id="view-connected"' not in work or 'id="view-individual"' not in work:
         fail("Selected Systems must keep accessible view radios", failures)
+    if "html:not(.js) #individual-systems:target" not in css:
+        fail(
+            "no-JavaScript :target fallback must be scoped so it cannot "
+            "override the checked radio after history.pushState",
+            failures,
+        )
+    if re.search(r"(?m)^#individual-systems:target", css):
+        fail("unscoped #individual-systems:target would keep the individual view visible after Connected is checked", failures)
+    if "html:not(.js) .wrap:has(#connected-workflow:target)" not in css:
+        fail("no-JavaScript #connected-workflow hash must still select the connected view", failures)
+    radio_block = css.split(".wrap:has(#view-connected:checked) .work-connected", 1)[-1][:80]
+    if "display: block" not in radio_block:
+        fail("JavaScript checked-radio state must show the connected view", failures)
 
 
 def check() -> int:
