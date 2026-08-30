@@ -482,6 +482,19 @@ h3 { font-size: 1.2rem; letter-spacing: -0.02em; }
   margin: 0 0 0.55rem;
 }
 
+.proof-grid .kicker {
+  font-size: clamp(1rem, 1.7vw, 1.22rem);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.85rem;
+}
+
+.proof-line {
+  display: block;
+  margin: 0.45rem 0 0;
+  font-weight: 600;
+  color: var(--cream);
+}
+
 .proof-label {
   color: var(--amber);
   font-size: 0.78rem;
@@ -799,6 +812,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
   color: #ddd6cb;
   margin: 0;
   overflow-wrap: break-word;
+  text-align: left;
 }
 
 #gap .gap-copy p,
@@ -1319,6 +1333,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
 .panel-cream .proof-grid .card p { color: var(--cream); }
 .panel-cream .proof-grid .card .kicker,
 .panel-cream .proof-grid .card .proof-label { color: var(--amber); }
+.panel-cream .proof-grid .card .proof-line { color: var(--ink); }
 .proof-grid .media-teaser { margin-top: 1rem; }
 .proof-grid .card,
 .work-grid .card {
@@ -1798,75 +1813,30 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   overflow: visible;
 }
 
-.cap-path-broken {
-  fill: none;
-  stroke: rgba(243, 238, 228, 0.28);
-  stroke-width: 2.4;
-  stroke-dasharray: 7 10;
-  stroke-linecap: round;
-}
-
-.cap-path-solid {
+.cap-connector {
   fill: none;
   stroke: url(#cap-line);
   stroke-width: 3;
   stroke-linecap: round;
-  opacity: 0;
 }
 
-.cap-pulse-path {
+.cap-icon rect,
+.cap-icon circle,
+.cap-icon ellipse {
+  fill: #2a3038;
+  stroke: var(--amber);
+  stroke-width: 1.6;
+}
+.cap-icon path {
   fill: none;
-  stroke: var(--blue);
-  stroke-width: 3;
-  stroke-dasharray: 16 240;
+  stroke: var(--cream);
+  stroke-width: 1.6;
   stroke-linecap: round;
-  opacity: 0;
 }
-
-.cap-data-points { fill: var(--blue); opacity: 0; }
-
-.cap-node rect,
-.cap-node circle { fill: #2a3038; stroke: rgba(243, 238, 228, 0.28); stroke-width: 1.4; }
-.cap-node path { fill: none; stroke: var(--stone); stroke-width: 1.6; }
-.cap-person { fill: var(--cream); stroke: none; }
-.cap-node-1 rect { fill: #3a322c; stroke: rgba(216, 144, 66, 0.35); }
-.cap-pulse-ring { fill: none; stroke: var(--blue); stroke-width: 1.5; opacity: 0; }
-
-[data-cap-step="2"] .cap-path-solid,
-[data-cap-step="3"] .cap-path-solid,
-[data-cap-step="4"] .cap-path-solid,
-[data-cap-step="5"] .cap-path-solid { opacity: 1; }
-[data-cap-step="2"] .cap-path-broken,
-[data-cap-step="3"] .cap-path-broken,
-[data-cap-step="4"] .cap-path-broken,
-[data-cap-step="5"] .cap-path-broken { opacity: 0; }
-[data-cap-step="2"] .cap-node-2 circle,
-[data-cap-step="3"] .cap-node-2 circle,
-[data-cap-step="4"] .cap-node-2 circle,
-[data-cap-step="5"] .cap-node-2 circle { stroke: var(--amber); fill: #3b2a18; }
-[data-cap-step="3"] .cap-data-points,
-[data-cap-step="4"] .cap-data-points,
-[data-cap-step="5"] .cap-data-points { opacity: 1; }
-[data-cap-step="3"] .cap-node-3 > circle:first-child,
-[data-cap-step="4"] .cap-node-3 > circle:first-child,
-[data-cap-step="5"] .cap-node-3 > circle:first-child { stroke: var(--blue); }
-[data-cap-step="4"] .cap-pulse-path,
-[data-cap-step="5"] .cap-pulse-path { opacity: 1; }
-[data-cap-step="4"] .cap-pulse-ring,
-[data-cap-step="5"] .cap-pulse-ring { opacity: 0.8; }
-[data-cap-step="5"] .cap-node-5 > circle:first-child { stroke: var(--amber); fill: #3b2a18; }
-
-html.js [data-capability]:not([data-cap-step="5"]) .cap-pulse-path {
-  animation: cap-pulse 2.6s linear infinite;
-}
-html.js [data-capability][data-cap-step="4"] .cap-pulse-path,
-html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
-  animation: cap-pulse 2.6s linear infinite;
-}
-
-@keyframes cap-pulse {
-  to { stroke-dashoffset: -256; }
-}
+.cap-icon .cap-check { stroke: var(--blue); stroke-width: 2.2; }
+.cap-icon .cap-spark { fill: var(--amber); stroke: none; }
+.cap-icon[data-cap-from="3"] ellipse,
+.cap-icon[data-cap-from="3"] path { stroke: var(--blue); }
 
 .capability-stages {
   list-style: none;
@@ -1879,7 +1849,6 @@ html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
 
 .cap-stage {
   margin: 0;
-  opacity: 0.28;
   min-width: 0;
   overflow-wrap: break-word;
 }
@@ -1897,29 +1866,22 @@ html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
   color: #d5deea;
 }
 
-[data-cap-step="1"] .cap-stage:nth-child(1),
-[data-cap-step="2"] .cap-stage:nth-child(-n+2),
-[data-cap-step="3"] .cap-stage:nth-child(-n+3),
-[data-cap-step="4"] .cap-stage:nth-child(-n+4),
-[data-cap-step="5"] .cap-stage { opacity: 1; }
-
 .capability-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
   margin-top: 2rem;
-  opacity: 0;
-  pointer-events: none;
-}
-
-[data-cap-step="5"] .capability-actions {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 @media (min-width: 981px) {
+  .proposition-support,
+  .stack-explain,
+  #start .lede {
+    max-width: none;
+    text-align: left;
+  }
   html.js #capability[data-capability] {
-    min-height: 260vh;
+    min-height: 560vh;
   }
   html.js #capability .capability-sticky {
     position: sticky;
@@ -1928,6 +1890,61 @@ html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
     display: flex;
     align-items: center;
     padding: 1.5rem 0 2rem;
+  }
+  html.js .cap-gated,
+  html.js .cap-stage {
+    visibility: hidden;
+    opacity: 0;
+  }
+  html.js .cap-connector.cap-gated {
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+  }
+  html.js [data-cap-step="1"] .cap-gated[data-cap-from="1"],
+  html.js [data-cap-step="1"] .cap-stage:nth-child(1) {
+    visibility: visible;
+    opacity: 1;
+  }
+  html.js [data-cap-step="2"] .cap-gated[data-cap-from="1"],
+  html.js [data-cap-step="2"] .cap-gated[data-cap-from="2"],
+  html.js [data-cap-step="2"] .cap-stage:nth-child(-n+2),
+  html.js [data-cap-step="3"] .cap-gated[data-cap-from="1"],
+  html.js [data-cap-step="3"] .cap-gated[data-cap-from="2"],
+  html.js [data-cap-step="3"] .cap-gated[data-cap-from="3"],
+  html.js [data-cap-step="3"] .cap-stage:nth-child(-n+3),
+  html.js [data-cap-step="4"] .cap-gated[data-cap-from="1"],
+  html.js [data-cap-step="4"] .cap-gated[data-cap-from="2"],
+  html.js [data-cap-step="4"] .cap-gated[data-cap-from="3"],
+  html.js [data-cap-step="4"] .cap-gated[data-cap-from="4"],
+  html.js [data-cap-step="4"] .cap-stage:nth-child(-n+4),
+  html.js [data-cap-step="5"] .cap-gated,
+  html.js [data-cap-step="5"] .cap-stage {
+    visibility: visible;
+    opacity: 1;
+  }
+  html.js [data-cap-step="2"] .cap-connector[data-cap-from="2"],
+  html.js [data-cap-step="3"] .cap-connector[data-cap-from="2"],
+  html.js [data-cap-step="3"] .cap-connector[data-cap-from="3"],
+  html.js [data-cap-step="4"] .cap-connector[data-cap-from="2"],
+  html.js [data-cap-step="4"] .cap-connector[data-cap-from="3"],
+  html.js [data-cap-step="4"] .cap-connector[data-cap-from="4"],
+  html.js [data-cap-step="5"] .cap-connector {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.55s ease, opacity 0.35s ease;
+  }
+  html.js [data-cap-step="2"] .cap-icon[data-cap-from="2"],
+  html.js [data-cap-step="2"] .cap-stage:nth-child(2),
+  html.js [data-cap-step="3"] .cap-icon[data-cap-from="3"],
+  html.js [data-cap-step="3"] .cap-stage:nth-child(3),
+  html.js [data-cap-step="4"] .cap-icon[data-cap-from="4"],
+  html.js [data-cap-step="4"] .cap-stage:nth-child(4),
+  html.js [data-cap-step="5"] .cap-icon[data-cap-from="5"],
+  html.js [data-cap-step="5"] .cap-stage:nth-child(5) {
+    transition: opacity 0.4s ease 0.35s, visibility 0s linear 0.2s;
+  }
+  html.js #capability[data-capability]:not([data-cap-step="5"]) .capability-actions {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -1973,7 +1990,13 @@ html.js [data-capability][data-cap-step="5"] .cap-pulse-path {
 @media (prefers-reduced-motion: reduce) {
   html.js #capability[data-capability] { min-height: 0; }
   html.js #capability .capability-sticky { position: static; min-height: 0; }
-  .cap-stage { opacity: 1; }
+  html.js .cap-gated,
+  html.js .cap-stage {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  html.js .cap-connector {
+    stroke-dashoffset: 0 !important;
+  }
   .capability-actions { opacity: 1; pointer-events: auto; }
-  .cap-pulse-path { animation: none !important; }
 }

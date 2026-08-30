@@ -42,7 +42,6 @@ HOMEPAGE_REQUIRED = [
     "04 / APPROACH",
     "05 / OPERATOR FIRST",
     "06 / START",
-    "Synthetic demonstration",
     "View SiteLog",
     "View BudgetFlow",
     "View finance workflow",
@@ -69,9 +68,13 @@ HOMEPAGE_REQUIRED = [
     "Workflow diagnostic",
     "Team capability",
     "AI training",
-    "Mobile-first weekly site records, invoices and admin-ready exports.",
-    "Weekly labour allocation, budget control and coded payment exports.",
-    "Checked accounts extraction into cashflow and management accounts. Deterministic local processing; no AI touches company accounting data.",
+    "Mobile-first weekly site record bespoke to business function.",
+    "Admin Ready Invoices &amp; Exports",
+    "Turn weekly labour costs into visible budget decisions.",
+    "Weekly labour allocation",
+    "Budget Control",
+    "Accounts Software Exports",
+    "Data extracts directly from accounts systems ready for integration to bespoke systems",
     "Keep the useful tools. Add a bespoke layer that connects accounts or ERP software, spreadsheets and operational workflows.",
     "Proof Systems builds around what already works.",
     "Fix the workflow first. Then make it intelligent.",
@@ -81,10 +84,11 @@ HOMEPAGE_REQUIRED = [
     "Controlled automation",
     "Capable team",
     "View selected systems",
-    "Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software, controlled AI automation and training their teams can use.",
+    "Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software integrated with existing technology, controlled AI automation and training their teams can use.",
     "Operational systems for owner-led SMEs.",
     "Selected Systems",
     "Ask about team training",
+    "Ask about AI team training",
     "https://www.linkedin.com/in/mat-glendenning",
 ]
 
@@ -110,6 +114,10 @@ HOMEPAGE_STALE = [
     "These films use synthetic Northstar data to demonstrate systems and workflows I have designed",
     "Explore SiteLog",
     "See the finance workflow",
+    "Operator-led. Built around the real workflow. Technology used where it earns its place.",
+    "Make the correct weekly record the easiest one to create.",
+    "Move from accounts data to decisions without rebuilding the story by hand.",
+    "Mobile-first weekly site records, invoices and admin-ready exports.",
 ]
 
 PUBLIC_REJECTED = [
@@ -683,8 +691,10 @@ PUBLIC_WEBPS = {
         "max_bytes": 500000,
     },
     "assets/img/age-600/01b-fit.webp": {
-        "sha256": "77ece0c13101ed9fbfd95c424701fcd7061dae25fb1e1614f836d841a7ec2e6b",
+        "sha256": "42582734d95b1a51cac3c9cb61360aa10c695c5d21d7b83c897967815f63cfc2",
         "max_bytes": 500000,
+        "width": 1672,
+        "height": 840,
     },
     "assets/img/age-600/04-approach.webp": {
         "sha256": "4374c811d7dd31d9138f56efdc4a91d5483b75e117600357800fd1fe2ea5d686",
@@ -757,6 +767,10 @@ def check_round3(failures: list[str]) -> None:
             fail(f"{rel} hash mismatch: {actual}", failures)
         if path.stat().st_size > meta["max_bytes"]:
             fail(f"{rel} exceeds {meta['max_bytes']} bytes", failures)
+        if "width" in meta or "height" in meta:
+            width, height = webp_dimensions(path)
+            if width != meta.get("width", width) or height != meta.get("height", height):
+                fail(f"{rel} dimensions {width}x{height} != {meta.get('width')}x{meta.get('height')}", failures)
     if 'src="../assets/img/age-600/selected-systems-connected-demo.webp"' not in work:
         fail("Selected Systems missing connected approved visual", failures)
     if 'loading="lazy"' not in work or 'decoding="async"' not in work:
@@ -796,7 +810,7 @@ CAPABILITY_COPY = [
     "Role-specific training helps people apply AI safely and usefully to the work they already do.",
     "Discuss a workflow",
     "View selected systems",
-    "Ask about team training",
+    "Ask about AI team training",
 ]
 
 GENERAL_SYSTEMS_LABELS = {
@@ -902,8 +916,8 @@ def check_round4(failures: list[str]) -> None:
         fail("finance card must not keep a general View all systems link", failures)
     if 'href="work/index.html#finance">View finance workflow</a>' not in proof:
         fail("finance-specific Proof action must remain finance-specific", failures)
-    if proof.lower().count("synthetic demonstration") < 3:
-        fail("each Proof showcase must keep a visible Synthetic demonstration marker", failures)
+    if 'class="proof-label"' in proof:
+        fail("homepage Proof cards must not show Synthetic demonstration labels", failures)
 
     if 'id="individual-systems"' not in work:
         fail("Selected Systems must expose id=individual-systems for hash selection", failures)
@@ -957,7 +971,10 @@ def check_approved_artwork(failures: list[str]) -> None:
             raw,
         ):
             tag = match.group(0)
-            if 'width="1672"' not in tag or 'height="941"' not in tag:
+            if "01b-fit.webp" in tag:
+                if 'width="1672"' not in tag or 'height="840"' not in tag:
+                    fail(f"cropped Fit visual must declare 1672x840: {tag[:140]}", failures)
+            elif 'width="1672"' not in tag or 'height="941"' not in tag:
                 fail(f"approved homepage visual must declare source 1672x941: {tag[:120]}", failures)
             if 'loading="lazy"' not in tag or 'decoding="async"' not in tag:
                 fail("approved homepage visuals must use lazy loading and async decoding", failures)
@@ -990,7 +1007,7 @@ def check_round5(failures: list[str]) -> None:
     if "WebGL" in js or "webgl" in raw:
         fail("Capability must not use WebGL", failures)
     reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]
-    if ".cap-stage { opacity: 1; }" not in reduced and ".cap-stage { opacity: 1;" not in reduced:
+    if "html.js .cap-stage" not in reduced or "opacity: 1 !important" not in reduced:
         fail("reduced-motion must expose the complete Capability workflow", failures)
     if 'class="button-amber"' not in css.split(".button-amber {", 1)[0] and ".button-amber {" not in css:
         fail("amber/orange action buttons are missing", failures)
@@ -1014,6 +1031,132 @@ def check_round5(failures: list[str]) -> None:
         fail("unscoped #individual-systems:target would keep the individual view visible after Connected is checked", failures)
     if "html:not(.js) .wrap:has(#connected-workflow:target)" not in css:
         fail("no-JavaScript #connected-workflow hash must still select the connected view", failures)
+
+
+def webp_dimensions(path: pathlib.Path) -> tuple[int, int]:
+    data = path.read_bytes()
+    if data[12:16] == b"VP8X":
+        width = 1 + int.from_bytes(data[24:27], "little")
+        height = 1 + int.from_bytes(data[27:30], "little")
+        return width, height
+    if data[12:16] == b"VP8 ":
+        width = int.from_bytes(data[26:28], "little") & 0x3FFF
+        height = int.from_bytes(data[28:30], "little") & 0x3FFF
+        return width, height
+    raise ValueError(f"unrecognised WebP layout in {path}")
+
+
+def desktop_cap_step(progress: float) -> int:
+    import math
+
+    return min(5, 1 + math.floor(progress * 5))
+
+
+def check_round6(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    if "practical software integrated with existing technology" not in raw:
+        fail("proposition support must include integrated with existing technology", failures)
+    if "Operator-led" in raw and "Built around the real workflow" in raw:
+        fail("homepage still contains the deleted quiet line", failures)
+    desktop = css.split("@media (min-width: 981px)", 1)[-1].split("@media", 1)[0]
+    if ".proposition-support" not in desktop or "#start .lede" not in desktop or ".stack-explain" not in desktop:
+        fail("desktop wrap must drop half-width caps on proposition, stack copy and Start lede", failures)
+    if "max-width: none" not in desktop:
+        fail("desktop copy must use the full wrap width", failures)
+    if "text-align: center" in desktop.split(".proposition-support", 1)[-1][:120]:
+        fail("desktop proposition copy must stay left aligned", failures)
+    proof = raw[raw.find('id="proof"'):raw.find('id="approach"')]
+    if 'class="proof-label"' in proof:
+        fail("homepage Proof cards must not show Synthetic demonstration labels", failures)
+    if work.count('class="proof-label"') < 8:
+        fail("Selected Systems index must keep synthetic provenance on every card", failures)
+    for slug in STORY_SLUGS:
+        story = (ROOT / "work" / f"{slug}.html").read_text(encoding="utf-8")
+        if "Synthetic demonstration" not in story:
+            fail(f"{slug} story must keep synthetic provenance", failures)
+    for phrase in (
+        "Frontline capture",
+        "Project control",
+        "Finance and reporting",
+        "Mobile-first weekly site record bespoke to business function.",
+        "Admin Ready Invoices &amp; Exports",
+        "Turn weekly labour costs into visible budget decisions.",
+        "Weekly labour allocation",
+        "Budget Control",
+        "Accounts Software Exports",
+        "Data extracts directly from accounts systems ready for integration to bespoke systems",
+    ):
+        if phrase not in proof:
+            fail(f"Proof cards missing {phrase!r}", failures)
+    if proof.count('class="proof-line"') < 6:
+        fail("Proof supporting copy must be separate visible lines", failures)
+    kicker = css.split(".proof-grid .kicker {", 1)[-1].split("}", 1)[0] if ".proof-grid .kicker {" in css else ""
+    if "clamp(1rem" not in kicker:
+        fail("homepage Proof kickers must be visibly larger than the default kicker", failures)
+    if 'height="840"' not in raw or "01b-fit.webp" not in raw:
+        fail("Fit raster must use the cropped intrinsic height", failures)
+    fit_path = ROOT / "assets/img/age-600/01b-fit.webp"
+    fit_w, fit_h = webp_dimensions(fit_path)
+    if (fit_w, fit_h) != (1672, 840):
+        fail(f"Fit raster must be 1672x840 without stretch, found {fit_w}x{fit_h}", failures)
+    if "Not every gap needs a build" in raw:
+        fail("Fit caption copy must not remain in the homepage source", failures)
+    cap = re.search(r'<svg class="capability-svg"[\s\S]*?</svg>', raw)
+    if not cap:
+        fail("Capability illustration is missing", failures)
+        return
+    svg = cap.group(0)
+    if svg.count("<path class=\"cap-connector") != 4:
+        fail("Capability must use four separate connector path segments", failures)
+    connectors = re.findall(r'class="cap-connector cap-gated" data-cap-from="([2-5])"', svg)
+    if connectors != ["2", "3", "4", "5"]:
+        fail(f"Capability must have four independently gated connectors, found {connectors}", failures)
+    icons = re.findall(r'class="cap-icon cap-gated" data-cap-from="([1-5])"', svg)
+    if icons != ["1", "2", "3", "4", "5"]:
+        fail(f"Capability must independently gate five relevant icons, found {icons}", failures)
+    if "cap-spark" not in svg or "cap-check" not in svg:
+        fail("Capability icons must include automation-control and team-learning cues", failures)
+    if "visibility: hidden" not in css.split("html.js .cap-stage", 1)[-1][:180]:
+        fail("future Capability captions must be fully hidden, not dimmed", failures)
+    if re.search(r"\.cap-stage[^{]*\{[^}]*opacity:\s*0\.28", css):
+        fail("Capability must not leave inactive stages visible as dimmed text", failures)
+    if "Ask about AI team training" not in raw:
+        fail("Capability action must be Ask about AI team training", failures)
+    if "Math.min(5, 1 + Math.floor(progress * 5))" not in js:
+        fail("Capability desktop steps must use five equal travel buckets", failures)
+    if "560vh" not in css:
+        fail("desktop Capability travel must be long enough for four distinct transitions", failures)
+    expected_steps = {
+        0.00: 1,
+        0.19: 1,
+        0.20: 2,
+        0.39: 2,
+        0.40: 3,
+        0.59: 3,
+        0.60: 4,
+        0.79: 4,
+        0.80: 5,
+        1.00: 5,
+    }
+    for progress, want in expected_steps.items():
+        got = desktop_cap_step(progress)
+        if got != want:
+            fail(f"Capability step at progress {progress} is {got}, expected {want}", failures)
+    previous = 1
+    for index in range(0, 101):
+        current = desktop_cap_step(index / 100)
+        if current < previous:
+            fail("Capability desktop steps must stay coherent when scrolling forward", failures)
+        previous = current
+    previous = 5
+    for index in range(100, -1, -1):
+        current = desktop_cap_step(index / 100)
+        if current > previous:
+            fail("Capability desktop steps must stay coherent when scrolling back", failures)
+        previous = current
     radio_block = css.split(".wrap:has(#view-connected:checked) .work-connected", 1)[-1][:80]
     if "display: block" not in radio_block:
         fail("JavaScript checked-radio state must show the connected view", failures)
@@ -1035,15 +1178,16 @@ def check() -> int:
     check_round4(failures)
     check_approved_artwork(failures)
     check_round5(failures)
+    check_round6(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-5 stack, Fit close, Capability workflow, "
-        "Proof actions, Selected Systems selector and buttons, enquiry form, "
-        "omitted client chapter, poster-first teasers and public-copy safety"
+        "PASS routes, eight stories, round-6 proposition/Fit/Proof/Capability, "
+        "round-5 stack and selector, enquiry form, omitted client chapter, "
+        "poster-first teasers and public-copy safety"
     )
     return 0
 

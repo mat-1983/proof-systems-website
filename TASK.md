@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 6
+
+Desktop homepage refinement: wider proposition/stack/Start copy, cropped Fit artwork, Proof card copy and kickers, and five independent Capability scroll states. Mobile layout is unchanged as a usable fallback. Not approved for push, merge or publication.
+
 ## AGE-600 round 5
 
 Local refinement on the cumulative AGE-600 branch: single no-ERP stack visual, new Fit close, five-stage Capability workflow, Proof demo heading and amber view buttons, and a working amber Selected Systems view selector with card buttons. Not approved for push, merge or publication.

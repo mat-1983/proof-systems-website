@@ -2,6 +2,20 @@
 
 Updated: 2026-08-29
 
+## AGE-600 desktop refinement round 6 — 29 August 2026
+
+Proposition support copy widened and updated; quiet line removed. Fit WebP cropped to 1672×840 to drop the baked-in footer caption lockup. Homepage Proof cards no longer show Synthetic demonstration labels; kickers are larger and card copy matches the attended review. Capability uses four independent connectors and five gated icons/captions with 560vh desktop travel and five equal scroll buckets.
+
+- PASS — `python3 site_check.py` including `check_round6` (copy, Fit 1672×840 hash/dimensions, four gated connectors, five gated icons, no dimmed captions, five equal scroll buckets).
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- PASS — independent Node evaluation of the five Capability progress buckets, including reverse.
+- NOT COMPLETE — live desktop five-state Capability scroll, reverse, and overflow. Chrome headless aborted with SIGSEGV (exit 139) and Crashpad permission errors in this environment.
+
 ## AGE-600 round 5 review correction — Selected Systems selector — 29 August 2026
 
 Clicking Connected workflow after landing on `#individual-systems` used `history.pushState`, so `:target` stayed on `#individual-systems` and `!important` `:target` rules kept the individual grid visible. `:target` fallbacks are now scoped to `html:not(.js)`. With JavaScript, the checked radio is authoritative.

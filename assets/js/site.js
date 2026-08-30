@@ -64,9 +64,9 @@
       return;
     }
     var rect = capability.getBoundingClientRect();
-    var travel = Math.max(capability.offsetHeight - window.innerHeight * 0.65, 1);
+    var travel = Math.max(capability.offsetHeight - window.innerHeight, 1);
     var progress = clamp(-rect.top / travel, 0, 1);
-    var step = Math.min(5, 1 + Math.floor(progress * 4.999));
+    var step = Math.min(5, 1 + Math.floor(progress * 5));
     capability.setAttribute("data-cap-step", String(step));
   }
 

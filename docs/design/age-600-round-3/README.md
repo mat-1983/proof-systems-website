@@ -19,13 +19,13 @@ Copied 2026-08-29 from Codex generated images. Master bytes preserved; durable n
 
 ## Public derivatives (`assets/img/age-600/`)
 
-All files are 1672×941. Quality 90 was chosen so embedded type and small labels stay sharp at 1180–1320px render widths; each file is under 500KB.
+Most files are 1672×941. `01b-fit.webp` was cropped to 1672×840 on 29 August 2026, just above the old footer caption lockup. Quality 90; each file is under 500KB.
 
 | Public file | Bytes | SHA-256 |
 | --- | --- | --- |
 | `homepage-stack-erp.webp` | 152190 | `78b1d07a363b49c994e33cc1763f42a9e6e4d3f04722ec2cb1e67841373be230` |
 | `homepage-stack-no-erp.webp` | 124514 | `c4e45e6f5e0d2812a70b1ff7d10aef9d1f711eb1bd6bea7bab3c93c74d8beedd` |
 | `01-the-gap.webp` | 118296 | `091990e87569fc38d4eaf26b18034dee5cb89035c4a5e1924313f2d8fb4096e0` |
-| `01b-fit.webp` | 131662 | `77ece0c13101ed9fbfd95c424701fcd7061dae25fb1e1614f836d841a7ec2e6b` |
+| `01b-fit.webp` | 123838 | `42582734d95b1a51cac3c9cb61360aa10c695c5d21d7b83c897967815f63cfc2` |
 | `04-approach.webp` | 270062 | `4374c811d7dd31d9138f56efdc4a91d5483b75e117600357800fd1fe2ea5d686` |
 | `selected-systems-connected-demo.webp` | 140150 | `0147e15be2fb8a040bdf18d040bf8f4904fc92039292c6d6f879744c2459c71b` |
