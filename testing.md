@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 round 7 review correction — Selected Systems hash offset — 31 August 2026
+
+`#individual-systems`, `#connected-workflow` and `#finance` use `scroll-margin-top: calc(var(--nav-h) + 0.5rem)` so direct hash arrival clears the sticky desktop navigation.
+
+- PASS — `python3 site_check.py` including the Selected Systems `scroll-margin-top` / `--nav-h` assertion.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1280/1024 hash-arrival measurement of the first card heading versus the sticky nav. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 attended desktop refinement round 7 — 31 August 2026
 
 Six-state Capability with 480vh travel; training wrap and in-person half-day copy; Selected Systems disclosure, card labels and removed map-text; five story-page copy/nav edits; desktop chapter-join padding; centred enquiry column; LinkedIn profile URL.

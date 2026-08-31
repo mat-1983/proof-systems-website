@@ -1306,6 +1306,15 @@ def check_round7(failures: list[str]) -> None:
         fail("enquiry page must centre a bounded desktop column", failures)
     if "width: min(46rem" not in css.split(".page-enquiry .page-main .wrap", 1)[-1][:120]:
         fail("enquiry column must stay a readable centred measure, not viewport-edge", failures)
+    if "#individual-systems" not in css or "#connected-workflow" not in css:
+        fail("Selected Systems hash targets must be present in CSS", failures)
+    margin_src = css
+    if "scroll-margin-top" not in margin_src or "var(--nav-h)" not in margin_src.split("scroll-margin-top", 1)[-1][:80]:
+        fail("Selected Systems anchors must offset hash scroll by --nav-h so cards clear the sticky nav", failures)
+    for target in ("#individual-systems", "#connected-workflow", "#finance"):
+        nearby = css.split(target, 1)
+        if len(nearby) < 2 or "scroll-margin-top" not in nearby[-1][:280] and "scroll-margin-top" not in css[max(0, css.find(target) - 160):css.find(target) + 220]:
+            fail(f"{target} must use scroll-margin-top so hash navigation clears the sticky nav", failures)
     for path in PUBLIC_HTML:
         html = path.read_text(encoding="utf-8")
         rel = path.relative_to(ROOT).as_posix()

@@ -1395,6 +1395,11 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 .work-connected { display: none; }
 .work-connected h2 { max-width: none; }
+#individual-systems,
+#connected-workflow,
+#finance {
+  scroll-margin-top: calc(var(--nav-h) + 0.5rem);
+}
 .wrap:has(#view-individual:checked) .work-individual { display: grid; }
 .wrap:has(#view-individual:checked) .work-connected { display: none; }
 .wrap:has(#view-connected:checked) .work-individual { display: none; }

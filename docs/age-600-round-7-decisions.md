@@ -9,3 +9,4 @@ Append-only log of material implementation choices. Routine edits are not record
 | 2026-08-31 | Connected workflow disclosure is the approved integrated-system sentence. The `.map-text` paragraph under the diagram is removed. Individual cards drop `proof-label` and split Outcome / Evidence shown. |
 | 2026-08-31 | Desktop chapter joins zero the empty outgoing/incoming padding at proposition→Gap, Gap→Fit, Proof→Approach and Approach→About. Artwork is not cropped. |
 | 2026-08-31 | Enquiry desktop content sits in a centred 46rem column with left-aligned text. LinkedIn destinations use `https://www.linkedin.com/in/mathew-glendenning-90670649/`. |
+| 2026-08-31 | `#individual-systems`, `#connected-workflow` and `#finance` use `scroll-margin-top: calc(var(--nav-h) + 0.5rem)` so hash arrival sits below the sticky nav. |
