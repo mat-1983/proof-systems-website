@@ -1277,7 +1277,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
   align-items: end;
 }
 
-.approach-stage {
+.approach-stages .approach-stage {
   background: linear-gradient(180deg, #2a3038 0%, #161a20 100%);
   border: 1px solid rgba(23, 18, 13, 0.28);
   border-radius: 1rem;
@@ -1286,12 +1286,12 @@ textarea { min-height: 8.5rem; resize: vertical; }
   box-shadow: 0 0.55rem 0 #111318;
 }
 
-.approach-stage:nth-child(1) { min-height: 8.4rem; }
-.approach-stage:nth-child(2) { min-height: 9.2rem; }
-.approach-stage:nth-child(3) { min-height: 10.2rem; }
-.approach-stage:nth-child(4) { min-height: 11.2rem; }
+.approach-stages .approach-stage:nth-child(1) { min-height: 8.4rem; }
+.approach-stages .approach-stage:nth-child(2) { min-height: 9.2rem; }
+.approach-stages .approach-stage:nth-child(3) { min-height: 10.2rem; }
+.approach-stages .approach-stage:nth-child(4) { min-height: 11.2rem; }
 
-.approach-stage strong {
+.approach-stages .approach-stage strong {
   display: block;
   color: var(--amber);
   font-size: 0.78rem;
@@ -1299,14 +1299,14 @@ textarea { min-height: 8.5rem; resize: vertical; }
   text-transform: uppercase;
 }
 
-.approach-stage span {
+.approach-stages .approach-stage span {
   display: block;
   margin-top: 0.35rem;
   color: var(--cream);
   font-weight: 700;
 }
 
-.approach-stage em {
+.approach-stages .approach-stage em {
   display: block;
   margin-top: 0.55rem;
   font-style: normal;
@@ -1681,7 +1681,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   .gap-steps,
   .gap-cues,
   .gap-legend { grid-template-columns: 1fr 1fr; }
-  .approach-stage:nth-child(n) { min-height: 0; }
+  .approach-stages .approach-stage:nth-child(n) { min-height: 0; }
 }
 
 @media (max-width: 760px) {
@@ -2339,15 +2339,25 @@ html.js [data-fit-step="3"] .fit-bent-path circle,
 html.js [data-fit-step="4"] .fit-bent-path circle { opacity: 1; }
 
 .approach-journey { position: relative; }
-.approach-stage { position: relative; }
+.approach-journey .approach-stage {
+  position: relative;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  color: var(--ink);
+  box-shadow: none;
+  min-height: 0;
+}
 .approach-meta { display: flex; align-items: baseline; gap: 0.65rem; margin-bottom: 0.6rem; }
+.approach-journey .approach-number,
 .approach-meta h3 {
   margin: 0;
   color: var(--ink);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 1.05rem;
 }
+.approach-meta h3 { font-size: 1.05rem; }
 .approach-platform {
   position: relative;
   min-height: 8.5rem;

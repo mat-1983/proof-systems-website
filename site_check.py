@@ -1423,6 +1423,42 @@ def check_narrow_gap_overflow(css: str, failures: list[str]) -> None:
         fail("narrow Gap must keep the approved rotated connector composition", failures)
     if "overflow-x: hidden" in body:
         fail("Gap overflow must be contained on the scene, not by hiding page overflow", failures)
+    check_approach_stage_scope(css, failures)
+
+
+def check_approach_stage_scope(css: str, failures: list[str]) -> None:
+    for match in re.finditer(r"(?m)^\.approach-stage\s*\{([^}]*)\}", css):
+        body = match.group(1)
+        if "linear-gradient" in body or "#2a3038" in body:
+            fail(
+                "unscoped .approach-stage must not paint the legacy dark card behind journey titles",
+                failures,
+            )
+    if re.search(r"(?m)^\.approach-stage span\s*\{", css):
+        fail(
+            "legacy .approach-stage span must be scoped so it cannot restyle journey SVG nodes",
+            failures,
+        )
+    if re.search(r"(?m)^\.approach-stage strong\s*\{", css) or re.search(
+        r"(?m)^\.approach-stage em\s*\{", css
+    ):
+        fail("legacy .approach-stage strong/em must be scoped to .approach-stages", failures)
+    journey = css.split(".approach-journey .approach-stage {", 1)
+    if len(journey) < 2:
+        fail("Approach journey stage wrapper needs an explicit transparent reset", failures)
+        return
+    reset = journey[-1].split("}", 1)[0]
+    if "background: none" not in reset and "background: transparent" not in reset:
+        fail("Approach journey stage wrapper must be transparent on the sand section", failures)
+    if "box-shadow: none" not in reset:
+        fail("Approach journey stage wrapper must not keep the legacy drop shadow", failures)
+    if "border: 0" not in reset and "border: none" not in reset:
+        fail("Approach journey stage wrapper must be unframed", failures)
+    meta = css.split(".approach-meta h3 {", 1)
+    if len(meta) < 2 or "var(--ink)" not in meta[-1].split("}", 1)[0]:
+        fail("Approach stage titles must use ink so they read on the sand background", failures)
+    if ".approach-stages .approach-stage" not in css:
+        fail("legacy Approach card styling must remain scoped to .approach-stages", failures)
 
 
 def check() -> int:
