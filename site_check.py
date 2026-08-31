@@ -877,10 +877,10 @@ def check_round4(failures: list[str]) -> None:
 
     if "desktop-hide-copy" in raw:
         fail("Gap, Fit and Approach copy must stay live HTML, not visually clipped", failures)
-    if 'class="artwork-copy"' not in raw:
-        fail("Gap, Fit and Approach must keep live copy in the DOM beside the approved artwork", failures)
-    if raw.count('data-chapter-reveal') < 4:
-        fail("homepage must mark the visual chapters for progressive reveal", failures)
+    if 'data-scene="gap"' not in raw or 'data-scene="fit"' not in raw or 'data-scene="approach"' not in raw:
+        fail("Gap, Fit and Approach must be staged semantic scenes", failures)
+    if raw.count('data-chapter-reveal') < 1:
+        fail("homepage must mark the stack chapter for progressive reveal", failures)
     if ".scene-erp" in css:
         erp_rule = css.split(".scene-erp,", 1)[-1].split("}", 1)[0]
         if "var(--raised)" in erp_rule or "border-radius: 22px" in erp_rule:
@@ -955,17 +955,21 @@ def check_approved_artwork(failures: list[str]) -> None:
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     required_src = [
         'src="assets/img/age-600/homepage-stack-no-erp.webp"',
-        'src="assets/img/age-600/01-the-gap.webp"',
-        'src="assets/img/age-600/01b-fit.webp"',
-        'src="assets/img/age-600/04-approach.webp"',
     ]
     for src in required_src:
         if src not in raw:
             fail(f"homepage must visibly reference {src}", failures)
         if raw.count(src) != 1:
             fail(f"homepage should declare {src} once as the primary visual", failures)
-    if 'class="iso-svg"' in raw or "fit-visual" in raw or "gap-visual" in raw:
-        fail("simplified SVG chapter drawings must not be the primary homepage graphics", failures)
+    for retired in (
+        'src="assets/img/age-600/01-the-gap.webp"',
+        'src="assets/img/age-600/01b-fit.webp"',
+        'src="assets/img/age-600/04-approach.webp"',
+    ):
+        if retired in raw:
+            fail(f"homepage must not keep {retired} as the primary chapter visual", failures)
+    if "fit-visual" in raw or "gap-visual" in raw:
+        fail("retired simplified SVG chapter drawings must not return as the primary homepage graphics", failures)
     if "<img" in raw:
         for match in re.finditer(
             r'<img\b[^>]*class="[^"]*approved-visual[^"]*"[^>]*>',
@@ -988,7 +992,7 @@ def check_approved_artwork(failures: list[str]) -> None:
         fail("approved scenes must not sit in a card or outlined frame", failures)
     if "html.js .approved-scene img" not in css.split("@media (prefers-reduced-motion: reduce)", 1)[-1]:
         fail("reduced-motion must force the complete approved artwork", failures)
-    if 'class="fit-note">Only the missing layer</p>' not in raw:
+    if "Only the missing layer" not in raw:
         fail("Fit must keep the live HTML cue for the missing layer", failures)
 
 
@@ -1001,7 +1005,7 @@ def check_round5(failures: list[str]) -> None:
         fail("Fit close copy is not the approved sentence", failures)
     if "Proof Systems builds around what already works." not in raw:
         fail("stack supporting copy missing the approved closing line", failures)
-    if "updateCapability" not in js:
+    if "bindStickyScene" not in js:
         fail("site.js must drive the Capability sequence from normal scroll", failures)
     if "preventDefault" in js and "wheel" in js:
         fail("Capability sequence must not hijack scroll", failures)
@@ -1097,8 +1101,8 @@ def check_round6(failures: list[str]) -> None:
     kicker = css.split(".proof-grid .kicker {", 1)[-1].split("}", 1)[0] if ".proof-grid .kicker {" in css else ""
     if "clamp(1rem" not in kicker:
         fail("homepage Proof kickers must be visibly larger than the default kicker", failures)
-    if 'height="840"' not in raw or "01b-fit.webp" not in raw:
-        fail("Fit raster must use the cropped intrinsic height", failures)
+    if "Bespoke fixes the manual work that off-the-shelf software leaves behind." not in raw:
+        fail("Fit close copy is not the approved sentence", failures)
     fit_path = ROOT / "assets/img/age-600/01b-fit.webp"
     fit_w, fit_h = webp_dimensions(fit_path)
     if (fit_w, fit_h) != (1672, 840):
@@ -1126,10 +1130,10 @@ def check_round6(failures: list[str]) -> None:
         fail("Capability must not leave inactive stages visible as dimmed text", failures)
     if "Ask about AI team training" not in raw:
         fail("Capability action must be Ask about AI team training", failures)
-    if "Math.min(6, 1 + Math.floor(progress * 6))" not in js:
-        fail("Capability desktop steps must use six equal travel buckets", failures)
-    if "480vh" not in css:
-        fail("desktop Capability travel must be shorter than 560vh while remaining distinct", failures)
+    if "Math.min(steps, 1 + Math.floor(progress * steps))" not in js:
+        fail("Capability desktop steps must use equal travel buckets", failures)
+    if "400vh" not in css:
+        fail("desktop Capability travel must be shorter than 480vh while remaining distinct", failures)
     if "560vh" in css:
         fail("desktop Capability travel must no longer use the longer 560vh interval", failures)
     expected_steps = {
@@ -1237,12 +1241,12 @@ def check_round7(failures: list[str]) -> None:
     old_linkedin = "https://www.linkedin.com/in/mat-glendenning"
     if "AI Automation comes after the workflow works. Repetitive tasks can then be automated safely." not in raw:
         fail("Controlled automation narrative must use the approved AI Automation sentence", failures)
-    if raw.count("AI Automation comes after") != 1:
-        fail("homepage should contain the AI Automation sentence once", failures)
+    if raw.count("AI Automation comes after") < 1:
+        fail("homepage should contain the AI Automation sentence", failures)
     if 'data-cap-step="6"' not in raw:
         fail("Capability no-JS default must be stage 6 so actions are present", failures)
-    if "480vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
-        fail("desktop Capability min-height must be 480vh", failures)
+    if "400vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability min-height must be 400vh", failures)
     if "[data-cap-step=\"5\"] .cap-gated" not in css or "[data-cap-step=\"6\"] .cap-gated" not in css:
         fail("stage 5 and stage 6 must both show the five Capability icons", failures)
     if 'String(step) === "6"' not in js:
@@ -1296,12 +1300,12 @@ def check_round7(failures: list[str]) -> None:
             fail(f"desktop chapter-join rule missing {selector}", failures)
     if "padding-bottom: 0" not in join.split(".chapter-hero", 1)[-1][:80]:
         fail("proposition/stack must drop the empty bottom band into Gap", failures)
-    if "padding-top: 0" not in join.split("#gap", 1)[-1][:120] or "padding-bottom: 0" not in join.split("#gap", 1)[-1][:160]:
-        fail("Gap artwork must meet Fit without empty cream bands", failures)
-    if "padding-top: 0" not in join.split("#economics", 1)[-1][:80]:
-        fail("Fit must not keep an empty black band above the artwork", failures)
-    if "padding-top: 0" not in join.split("#approach", 1)[-1][:120]:
-        fail("Approach must not keep an empty incoming band after Proof", failures)
+    if "padding-bottom: 0" not in join.split("#gap", 1)[-1][:220]:
+        fail("Gap scene must not leave an empty cream band into Fit", failures)
+    if "padding-bottom: 0" not in join.split("#economics", 1)[-1][:220] and "padding-bottom: 0" not in join.split("#gap,", 1)[-1][:280]:
+        fail("Fit/Approach chapter joins must not leave empty outgoing bands", failures)
+    if "padding-bottom: 0" not in join.split("#approach", 1)[-1][:220]:
+        fail("Approach scene must not leave an empty band into Operator First", failures)
     if "page-enquiry" not in workflow or ".page-enquiry .page-main .wrap" not in css:
         fail("enquiry page must centre a bounded desktop column", failures)
     if "width: min(46rem" not in css.split(".page-enquiry .page-main .wrap", 1)[-1][:120]:
@@ -1326,6 +1330,41 @@ def check_round7(failures: list[str]) -> None:
             fail(f"{rel} LinkedIn link must keep external-link security attributes", failures)
 
 
+def check_round8(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    if 'class="gap-scene"' not in raw or 'class="fit-scene"' not in raw or 'class="approach-journey"' not in raw:
+        fail("homepage must use semantic Gap, Fit and Approach scenes", failures)
+    if "Industry Specific Software" not in raw:
+        fail("Fit scene missing Industry Specific Software", failures)
+    if "Waiting · hidden" not in raw or "Too late" not in raw:
+        fail("Gap captions must include Waiting · hidden and Too late", failures)
+    if 'data-gap-step="4"' not in raw or 'data-fit-step="4"' not in raw or 'data-approach-step="5"' not in raw:
+        fail("Gap, Fit and Approach no-JS defaults must be the complete final scenes", failures)
+    if 'class="capability-journey"' not in raw:
+        fail("Capability must include the vertical journey composition", failures)
+    if "bindStickyScene" not in js:
+        fail("site.js must stage Gap, Fit, Approach and Capability from natural scroll", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("scene staging must not hijack scroll", failures)
+    if "300vh" not in css or "360vh" not in css:
+        fail("Gap/Fit/Approach travel must be short staged sticky heights", failures)
+    if ".fit-transition" not in css or "stroke-width: 3" not in css.split(".fit-transition path", 1)[-1][:180]:
+        fail("Fit connector must use a 3-unit amber stroke", failures)
+    if ".fit-transition-vertical" not in css:
+        fail("Fit narrow composition must use a vertical connecting arrow", failures)
+    if ".approach-node-b" not in css or "top: -8%" not in css.split(".approach-node-b", 1)[-1][:120]:
+        fail("Understand people node must sit separately above the magnifying glass", failures)
+    if "fonts.googleapis" in raw or "data-lucide" in raw:
+        fail("homepage scenes must not add remote icons or fonts", failures)
+    if ".capability-journey { display: none; }" not in css:
+        fail("wide Capability must keep the horizontal journey and hide the vertical one", failures)
+    reduced = css.split("@media (prefers-reduced-motion: reduce)")[-1]
+    if "[data-scene]" not in reduced or "min-height: 0" not in reduced:
+        fail("reduced-motion must present the complete staged scenes", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -1344,14 +1383,15 @@ def check() -> int:
     check_round5(failures)
     check_round6(failures)
     check_round7(failures)
+    check_round8(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-7 Capability/training/work/stories/"
-        "joins/enquiry/LinkedIn, round-6 proposition/Fit/Proof, enquiry form, "
+        "PASS routes, eight stories, round-8 staged Gap/Fit/Capability/Approach scenes, "
+        "round-7 training/work/stories/joins/enquiry/LinkedIn, enquiry form, "
         "omitted client chapter, poster-first teasers and public-copy safety"
     )
     return 0

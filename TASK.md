@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 8
+
+Staged semantic Gap, Fit, Capability and Approach scenes on the homepage. Rasters remain on disk but are no longer the Gap/Fit/Approach visuals. Not approved for push, merge or publication.
+
 ## AGE-600 round 7
 
 Desktop-focused refinement from independently approved `0afc6ce`: shorter six-state Capability, training wrap and half-day copy, Selected Systems connected/card hierarchy, story-page factual copy, chapter-join padding, centred enquiry column and the Mathew Glendenning LinkedIn URL. Not approved for push, merge or publication.

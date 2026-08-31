@@ -79,50 +79,137 @@
       </figure>
   </section>
 
-  <section class="chapter panel-cream" id="gap">
+  <section class="chapter panel-cream" id="gap" data-scene="gap" data-scene-steps="4" data-gap-step="4">
+    <div class="scene-sticky">
     <div class="wrap">
-      <div class="artwork-copy">
-        <p class="marker">01 / THE GAP</p>
-        <h2>Important work often sits between people, spreadsheets and software.</h2>
-        <p>The software is there.&nbsp; The flow between it is not.</p>
-        <ol class="gap-key">
-          <li>Inbox</li>
-          <li>Spreadsheet</li>
-          <li>Software</li>
-          <li>Approval</li>
-          <li>Report</li>
-        </ol>
-        <ul class="gap-legend">
-          <li>Re-entered</li>
-          <li>Dependent</li>
-          <li>Hidden</li>
-          <li>Late</li>
-        </ul>
+      <p class="marker">01 / THE GAP</p>
+      <h2>Important work often sits between people, spreadsheets and software.</h2>
+      <p>The software is there.&nbsp; The flow between it is not.</p>
+      <div class="gap-scene" role="img" aria-label="A staged workflow from Inbox through Spreadsheet, Software and Approval to a late Report, with re-entered, dependent, waiting-hidden and too-late friction.">
+        <svg class="gap-links" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="gap-line" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#d89042"/><stop offset="1" stop-color="#f1b35d"/>
+            </linearGradient>
+          </defs>
+          <path class="gap-connection gap-c1" d="M106 253 C175 253 196 178 262 178"/>
+          <path class="gap-connection gap-c2" d="M318 178 C382 178 398 288 466 288"/>
+          <path class="gap-connection gap-c3" d="M522 288 C585 288 608 166 672 166"/>
+          <path class="gap-connection gap-c4" d="M728 166 C794 166 814 250 882 250"/>
+          <circle class="gap-pulse gap-p1" cx="184" cy="219" r="6"/>
+          <circle class="gap-pulse gap-p2" cx="394" cy="239" r="6"/>
+          <circle class="gap-pulse gap-p3" cx="604" cy="217" r="6"/>
+          <circle class="gap-pulse gap-p4" cx="806" cy="211" r="6"/>
+        </svg>
+        <div class="gap-node gap-node-1" data-gap-from="1">
+          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
+          <strong>Inbox</strong>
+        </div>
+        <div class="gap-node gap-node-2" data-gap-from="1">
+          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div>
+          <strong>Spreadsheet</strong>
+        </div>
+        <div class="gap-node gap-node-3" data-gap-from="2">
+          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div>
+          <strong>Software</strong>
+        </div>
+        <div class="gap-node gap-node-4" data-gap-from="3">
+          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14v4H5z"/><path d="M8 11v6M16 11v6"/><path d="M7 17h10"/><path d="M9 4h6l1 3H8z"/></svg></div>
+          <strong>Approval</strong>
+        </div>
+        <div class="gap-node gap-node-5" data-gap-from="4">
+          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h2v5H8zM12 16h2v2h-2zM16 11h2v7h-2z"/></svg></div>
+          <strong>Report</strong>
+        </div>
+        <span class="gap-callout gap-callout-1" data-gap-from="1">Re-entered</span>
+        <span class="gap-callout gap-callout-2" data-gap-from="2">Dependent</span>
+        <span class="gap-callout gap-callout-3" data-gap-from="3">Waiting · hidden</span>
+        <span class="gap-callout gap-callout-4" data-gap-from="4">Too late</span>
+      </div>
+      <ol class="gap-key">
+        <li>Inbox</li>
+        <li>Spreadsheet</li>
+        <li>Software</li>
+        <li>Approval</li>
+        <li>Report</li>
+      </ol>
+      <div class="gap-legend" aria-hidden="true">
+        <span data-gap-from="1">Re-entered</span>
+        <span data-gap-from="2">Dependent</span>
+        <span data-gap-from="3">Hidden</span>
+        <span data-gap-from="4">Late</span>
       </div>
     </div>
-    <figure class="approved-scene approved-scene-ltr" data-chapter-reveal data-reveal>
-      <img class="approved-visual" src="assets/img/age-600/01-the-gap.webp" width="1672" height="941" alt="Five-stage workflow from Inbox through Spreadsheet, Software and Approval to a late Report, with re-entered, waiting, hidden and too-late friction." loading="lazy" decoding="async">
-    </figure>
+    </div>
   </section>
 
-  <section class="chapter panel-ink" id="economics">
+  <section class="chapter panel-ink" id="economics" data-scene="fit" data-scene-steps="4" data-fit-step="4">
+    <div class="scene-sticky">
     <div class="wrap">
-      <div class="artwork-copy">
       <p class="marker">01B / FIT</p>
       <h2>Buy the foundation.&nbsp; Build only what makes <span class="accent">the business yours.</span></h2>
       <p>Use established software where it fits.&nbsp; Add a focused bespoke layer where it does not.</p>
-        <div class="fit-notes">
-          <p class="fit-note">Unused features</p>
-          <p class="fit-note">Process bends</p>
-          <p class="fit-note">Only the missing layer</p>
+      <div class="fit-scene" role="img" aria-label="Industry-specific software with unused features and process bends, then a two-way connection to a precise bespoke layer over accounts, software and spreadsheets.">
+        <div class="fit-monolith" data-fit-from="1">
+          <div class="fit-sign">Industry Specific Software</div>
+          <div class="fit-grid" aria-hidden="true">
+            <span class="fit-cube fit-cube-a"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/><path d="M21 20c-.4-2.4-2-4-4-4"/></svg></span>
+            <span class="fit-cube fit-cube-b"></span>
+            <span class="fit-cube fit-cube-c"><svg viewBox="0 0 24 24"><path d="M6 20V10M12 20V4M18 20v-8"/></svg></span>
+            <span class="fit-cube fit-cube-d"></span>
+            <span class="fit-cube fit-cube-e"><svg viewBox="0 0 24 24"><path d="M3 7h6v6H3zM15 7h6v6h-6zM9 15h6v6H9z"/></svg></span>
+            <span class="fit-cube fit-cube-f"></span>
+            <span class="fit-cube fit-cube-g"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M15 14h1M8 18h8"/></svg></span>
+            <span class="fit-cube fit-cube-h"></span>
+            <span class="fit-cube fit-cube-i"></span>
+            <span class="fit-cube fit-cube-j"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></span>
+            <span class="fit-cube fit-cube-k"></span>
+            <span class="fit-cube fit-cube-l"></span>
+          </div>
+          <svg class="fit-bent-path" viewBox="0 0 330 250" aria-hidden="true">
+            <path d="M10 220 H76 V172 H130 V204 H184 V104 H238 V142 H318"/>
+            <circle cx="76" cy="172" r="5"/><circle cx="184" cy="104" r="5"/><circle cx="238" cy="142" r="5"/>
+          </svg>
         </div>
+        <span class="fit-note fit-unused" data-fit-from="2">Unused features</span>
+        <span class="fit-note fit-bends" data-fit-from="2">Process bends</span>
+        <svg class="fit-transition fit-transition-wide" viewBox="0 0 170 80" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
+          <path d="M8 40 H153"/>
+          <path d="M20 28 L8 40 20 52"/>
+          <path d="M141 28 L153 40 141 52"/>
+          <path d="M153 5 V75"/>
+          <circle cx="153" cy="5" r="3"/><circle cx="153" cy="75" r="3"/>
+        </svg>
+        <svg class="fit-transition fit-transition-vertical" viewBox="0 0 80 170" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
+          <path d="M40 4 V166"/>
+          <path d="M28 20 L40 4 52 20"/>
+          <path d="M28 150 L40 166 52 150"/>
+        </svg>
+        <div class="fit-foundation" data-fit-from="3">
+          <div class="fit-base-tile">
+            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-6h4v6"/></svg></div>
+            <strong>Accounts</strong>
+          </div>
+          <div class="fit-base-tile">
+            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><circle cx="12" cy="10" r="2"/></svg></div>
+            <strong>Software</strong>
+          </div>
+          <div class="fit-base-tile">
+            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div>
+            <strong>Spreadsheets</strong>
+          </div>
+        </div>
+        <div class="fit-layer" data-fit-from="4">
+          <span>Bespoke layer</span>
+          <svg viewBox="0 0 500 88" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M84 0 V88 M250 0 V88 M416 0 V88"/>
+            <circle cx="84" cy="88" r="5"/><circle cx="250" cy="88" r="5"/><circle cx="416" cy="88" r="5"/>
+          </svg>
+        </div>
+        <span class="fit-note fit-missing" data-fit-from="4">Only the missing layer</span>
       </div>
+      <p class="fit-close" data-fit-from="4">Bespoke fixes the manual work that off-the-shelf software leaves behind.</p>
     </div>
-    <figure class="approved-scene approved-scene-fit" data-chapter-reveal data-reveal>
-      <img class="approved-visual" src="assets/img/age-600/01b-fit.webp" width="1672" height="840" alt="Comparison of an oversized broad-software monolith with unused features and process bends against a precise bespoke layer over accounts, software and spreadsheets." loading="lazy" decoding="async">
-    </figure>
-    <div class="wrap">
-      <p class="fit-close">Bespoke fixes the manual work that off-the-shelf software leaves behind.</p>
     </div>
   </section>
 
@@ -197,6 +284,58 @@
           <p>Role-specific training helps people apply AI safely and usefully to the work they already do.</p>
         </li>
       </ol>
+      <div class="capability-journey" aria-hidden="true">
+        <article class="cap-leg cap-leg-a" data-cap-from="1">
+          <div class="cap-rail">
+            <span class="cap-rail-node"><svg viewBox="0 0 56 36"><rect x="0" y="12" width="24" height="24" rx="3"/><rect x="28" y="0" width="24" height="24" rx="3"/></svg></span>
+            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="2"><path d="M24 0 C24 54 44 54 44 108"/></svg>
+          </div>
+          <div class="cap-leg-copy">
+            <h3>Disconnected work</h3>
+            <p>People, spreadsheets and offline documents hold different parts of the process.</p>
+          </div>
+        </article>
+        <article class="cap-leg cap-leg-b" data-cap-from="2">
+          <div class="cap-rail">
+            <span class="cap-rail-node"><svg viewBox="0 0 56 56"><circle cx="28" cy="30" r="8"/><circle cx="8" cy="10" r="6"/><circle cx="48" cy="12" r="6"/><circle cx="46" cy="48" r="6"/><path d="M13 14 L22 24M43 17 L34 25M42 43 L35 36"/></svg></span>
+            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="3"><path d="M44 0 C44 54 24 54 24 108"/></svg>
+          </div>
+          <div class="cap-leg-copy">
+            <h3>Connected system</h3>
+            <p>A fitted operational system connects the work, people and controls.</p>
+          </div>
+        </article>
+        <article class="cap-leg cap-leg-a" data-cap-from="3">
+          <div class="cap-rail">
+            <span class="cap-rail-node"><svg viewBox="0 0 56 40"><ellipse cx="28" cy="8" rx="20" ry="7"/><path d="M8 8 v16 c0 7 40 7 40 0 V8"/><ellipse cx="28" cy="18" rx="20" ry="7"/><ellipse cx="28" cy="28" rx="20" ry="7"/></svg></span>
+            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="4"><path d="M24 0 C24 54 44 54 44 108"/></svg>
+          </div>
+          <div class="cap-leg-copy">
+            <h3>Reliable data</h3>
+            <p>The working process creates a connected, usable flow of structured data.</p>
+          </div>
+        </article>
+        <article class="cap-leg cap-leg-b" data-cap-from="4">
+          <div class="cap-rail">
+            <span class="cap-rail-node"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="10"/><path d="M28 8 v8M28 40 v8M8 28 h8M40 28 h8"/><path class="cap-check" d="M21 29 l5 5 10-12"/></svg></span>
+            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="5"><path d="M44 0 C44 54 24 54 24 108"/></svg>
+          </div>
+          <div class="cap-leg-copy">
+            <h3>Controlled automation</h3>
+            <p>AI Automation comes after the workflow works. Repetitive tasks can then be automated safely.</p>
+          </div>
+        </article>
+        <article class="cap-leg cap-leg-a cap-leg-last" data-cap-from="5">
+          <div class="cap-rail">
+            <span class="cap-rail-node"><svg viewBox="0 0 56 48"><circle cx="16" cy="12" r="7"/><path d="M3 40c2-11 8-15 13-15s11 4 13 15"/><circle cx="38" cy="14" r="6"/><path d="M26 40c2-9 7-13 12-13s10 4 12 13"/><path class="cap-spark" d="M50 4 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5-4 -4-1.5 4-1.5 z"/></svg></span>
+            <span class="cap-rail-tail" data-cap-from="6"></span>
+          </div>
+          <div class="cap-leg-copy">
+            <h3>Capable team</h3>
+            <p>Role-specific training helps people apply AI safely and usefully to the work they already do.</p>
+          </div>
+        </article>
+      </div>
       <div class="capability-actions">
         <a class="button button-amber" href="workflow.html">Discuss a workflow</a>
         <a class="button button-amber-ghost" href="work/index.html#individual-systems">View selected systems</a>
@@ -246,41 +385,94 @@
     </div>
   </section>
 
-  <section class="chapter panel-sand" id="approach">
+  <section class="chapter panel-sand" id="approach" data-scene="approach" data-scene-steps="5" data-approach-step="5">
+    <div class="scene-sticky">
     <div class="wrap">
-      <div class="artwork-copy">
       <p class="marker">04 / APPROACH</p>
       <h2>Start with one useful outcome.&nbsp; Prove it.&nbsp; Extend only when it earns the next step.</h2>
-      <p class="approach-banner">Start where the need is clearest</p>
-      <ol class="approach-key">
-        <li><strong>Understand</strong> Observe real workflow</li>
-        <li><strong>Choose</strong> One useful outcome</li>
-        <li><strong>Prove</strong> Initial build</li>
-        <li><strong>Extend</strong> Future development</li>
-      </ol>
-      <div class="start-routes">
-        <article class="card route-pad">
-          <svg class="route-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 5v14M12 9H8M12 14h6"/></svg>
-          <h3>Clear workflow</h3>
-          <p>Focused build</p>
+      <div class="approach-journey" aria-label="A four-stage journey from understanding the real workflow to evidence-led extension">
+        <article class="approach-stage" data-approach-from="1">
+          <div class="approach-meta"><span class="approach-number">01</span><h3>Understand</h3></div>
+          <div class="approach-platform">
+            <div class="approach-visual approach-understand" aria-hidden="true">
+              <svg class="approach-visual-links" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M28 57 H82 V27 H132 V63 H189 V33 H232"/></svg>
+              <span class="approach-mini approach-node-a"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg></span>
+              <span class="approach-mini approach-node-b"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/></svg></span>
+              <span class="approach-mini approach-node-c"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></span>
+              <span class="approach-lens"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
+            </div>
+            <strong>Observe real workflow</strong>
+          </div>
+          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="2">
+            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
+          </svg>
         </article>
-        <article class="card route-pad">
-          <svg class="route-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="4"/><path d="M13 13l5 5"/></svg>
-          <h3>Needs clarity</h3>
-          <p>Workflow diagnostic</p>
+        <article class="approach-stage" data-approach-from="2">
+          <div class="approach-meta"><span class="approach-number">02</span><h3>Choose</h3></div>
+          <div class="approach-platform">
+            <div class="approach-visual approach-choose" aria-hidden="true">
+              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
+              <span class="approach-choice approach-choice-selected"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span>
+              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18"/></svg></span>
+              <svg class="approach-choice-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M57 42 H105 M203 42 H155"/></svg>
+            </div>
+            <strong>One useful outcome</strong>
+          </div>
+          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="3">
+            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
+          </svg>
         </article>
-        <article class="card route-pad">
-          <svg class="route-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="9" cy="8" r="2"/><circle cx="16" cy="9" r="1.6"/><path d="M5 18c.4-2.4 2.2-3.6 4-3.6s3.6 1.2 4 3.6"/></svg>
-          <h3>Team capability</h3>
-          <p>AI training</p>
-          <a class="card-link" href="training.html">Ask about team training</a>
+        <article class="approach-stage" data-approach-from="3">
+          <div class="approach-meta"><span class="approach-number">03</span><h3>Prove</h3></div>
+          <div class="approach-platform">
+            <div class="approach-visual approach-prove" aria-hidden="true">
+              <svg class="approach-proof-line" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M42 42 H218"/></svg>
+              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/></svg></span>
+              <span class="approach-proof-node approach-proof-checked"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg></span>
+            </div>
+            <strong>Initial build</strong>
+          </div>
+          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="4">
+            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
+          </svg>
         </article>
-      </div>
+        <article class="approach-stage" data-approach-from="4">
+          <div class="approach-meta"><span class="approach-number">04</span><h3>Extend</h3></div>
+          <div class="approach-platform">
+            <div class="approach-visual approach-extend" aria-hidden="true">
+              <svg class="approach-branch-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M130 42 H54 M130 42 H206"/></svg>
+              <span class="approach-branch-core"><svg viewBox="0 0 24 24"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9M12 12v3"/></svg></span>
+              <span class="approach-branch-node approach-branch-left"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
+              <span class="approach-branch-node approach-branch-right"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
+            </div>
+            <strong>Future development</strong>
+          </div>
+          <svg class="approach-connector approach-connector-final" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="5">
+            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
+          </svg>
+        </article>
+        <div class="approach-routes" data-approach-from="5" aria-label="Three ways to begin">
+          <p class="approach-banner">Start where the need is clearest</p>
+          <div class="approach-route-list">
+            <article class="approach-route route-pad">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M12 9H8M12 14h6"/></svg></span>
+              <p><strong>Clear workflow</strong><em>Focused build</em></p>
+            </article>
+            <article class="approach-route route-pad">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
+              <p><strong>Needs clarity</strong><em>Workflow diagnostic</em></p>
+            </article>
+            <article class="approach-route route-pad">
+              <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/></svg></span>
+              <p><strong>Team capability</strong><em>AI training</em></p>
+              <a class="card-link" href="training.html">Ask about team training</a>
+            </article>
+          </div>
+        </div>
       </div>
     </div>
-    <figure class="approved-scene approved-scene-ltr approved-scene-approach" data-chapter-reveal data-reveal>
-      <img class="approved-visual" src="assets/img/age-600/04-approach.webp" width="1672" height="941" alt="Four connected stages — Understand, Choose, Prove and Extend — with a central banner to start where the need is clearest, and routes for a focused build, a workflow diagnostic or AI training." loading="lazy" decoding="async">
-    </figure>
+    </div>
   </section>
 
   <section class="chapter" id="about">

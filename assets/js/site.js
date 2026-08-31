@@ -44,12 +44,34 @@
     updateOpening();
   }
 
+  function bindStickyScene(root, attr, steps, onStep) {
+    if (!root) return;
+    function update() {
+      if (reduced) {
+        root.setAttribute(attr, String(steps));
+        if (onStep) onStep(steps);
+        return;
+      }
+      var rect = root.getBoundingClientRect();
+      var travel = Math.max(root.offsetHeight - window.innerHeight, 1);
+      var progress = clamp(-rect.top / travel, 0, 1);
+      var step = Math.min(steps, 1 + Math.floor(progress * steps));
+      root.setAttribute(attr, String(step));
+      if (onStep) onStep(step);
+    }
+    if (!reduced) {
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+    }
+    update();
+  }
+
   var capability = document.querySelector("[data-capability]");
 
   function syncCapabilityActions(step) {
     var actions = capability.querySelector(".capability-actions");
     if (!actions) return;
-    var expose = reduced || window.matchMedia("(max-width: 980px)").matches || String(step) === "6";
+    var expose = reduced || String(step) === "6";
     if (expose) {
       actions.removeAttribute("inert");
       actions.removeAttribute("aria-hidden");
@@ -59,40 +81,15 @@
     }
   }
 
-  function updateCapability() {
-    if (!capability) return;
-    if (reduced) {
-      capability.setAttribute("data-cap-step", "6");
-      syncCapabilityActions(6);
-      return;
-    }
-    if (window.matchMedia("(max-width: 980px)").matches) {
-      var stages = capability.querySelectorAll(".cap-stage");
-      var step = 1;
-      stages.forEach(function (stage, index) {
-        if (stage.getBoundingClientRect().top < window.innerHeight * 0.78) {
-          step = index + 1;
-        }
-      });
-      capability.setAttribute("data-cap-step", String(step));
-      syncCapabilityActions(step);
-      return;
-    }
-    var rect = capability.getBoundingClientRect();
-    var travel = Math.max(capability.offsetHeight - window.innerHeight, 1);
-    var progress = clamp(-rect.top / travel, 0, 1);
-    var step = Math.min(6, 1 + Math.floor(progress * 6));
-    capability.setAttribute("data-cap-step", String(step));
-    syncCapabilityActions(step);
-  }
+  bindStickyScene(capability, "data-cap-step", 6, function (step) {
+    if (capability) syncCapabilityActions(step);
+  });
 
-  if (capability) {
-    if (!reduced) {
-      window.addEventListener("scroll", updateCapability, { passive: true });
-      window.addEventListener("resize", updateCapability);
-    }
-    updateCapability();
-  }
+  document.querySelectorAll("[data-scene]").forEach(function (scene) {
+    var steps = parseInt(scene.getAttribute("data-scene-steps") || "4", 10);
+    var name = scene.getAttribute("data-scene");
+    bindStickyScene(scene, "data-" + name + "-step", steps);
+  });
 
   var scenes = document.querySelectorAll("[data-reveal]");
   if (scenes.length && !reduced && "IntersectionObserver" in window) {
