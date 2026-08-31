@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 round 7
+
+Desktop-focused refinement from independently approved `0afc6ce`: shorter six-state Capability, training wrap and half-day copy, Selected Systems connected/card hierarchy, story-page factual copy, chapter-join padding, centred enquiry column and the Mathew Glendenning LinkedIn URL. Not approved for push, merge or publication.
+
 ## AGE-600 round 6
 
 Desktop homepage refinement: wider proposition/stack/Start copy, cropped Fit artwork, Proof card copy and kickers, and five independent Capability scroll states. Review correction: cream Proof-line colour on dark cards, and Capability actions hidden from pointer, keyboard and AT until stage 5. Mobile layout is unchanged as a usable fallback. Not approved for push, merge or publication.

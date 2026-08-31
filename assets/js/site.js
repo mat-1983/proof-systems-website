@@ -49,7 +49,7 @@
   function syncCapabilityActions(step) {
     var actions = capability.querySelector(".capability-actions");
     if (!actions) return;
-    var expose = reduced || window.matchMedia("(max-width: 980px)").matches || String(step) === "5";
+    var expose = reduced || window.matchMedia("(max-width: 980px)").matches || String(step) === "6";
     if (expose) {
       actions.removeAttribute("inert");
       actions.removeAttribute("aria-hidden");
@@ -62,8 +62,8 @@
   function updateCapability() {
     if (!capability) return;
     if (reduced) {
-      capability.setAttribute("data-cap-step", "5");
-      syncCapabilityActions(5);
+      capability.setAttribute("data-cap-step", "6");
+      syncCapabilityActions(6);
       return;
     }
     if (window.matchMedia("(max-width: 980px)").matches) {
@@ -81,7 +81,7 @@
     var rect = capability.getBoundingClientRect();
     var travel = Math.max(capability.offsetHeight - window.innerHeight, 1);
     var progress = clamp(-rect.top / travel, 0, 1);
-    var step = Math.min(5, 1 + Math.floor(progress * 5));
+    var step = Math.min(6, 1 + Math.floor(progress * 6));
     capability.setAttribute("data-cap-step", String(step));
     syncCapabilityActions(step);
   }

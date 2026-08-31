@@ -89,7 +89,7 @@ HOMEPAGE_REQUIRED = [
     "Selected Systems",
     "Ask about team training",
     "Ask about AI team training",
-    "https://www.linkedin.com/in/mat-glendenning",
+    "https://www.linkedin.com/in/mathew-glendenning-90670649/",
 ]
 
 HOMEPAGE_STALE = [
@@ -118,6 +118,7 @@ HOMEPAGE_STALE = [
     "Make the correct weekly record the easiest one to create.",
     "Move from accounts data to decisions without rebuilding the story by hand.",
     "Mobile-first weekly site records, invoices and admin-ready exports.",
+    "https://www.linkedin.com/in/mat-glendenning",
 ]
 
 PUBLIC_REJECTED = [
@@ -570,8 +571,8 @@ def check_architecture(failures: list[str]) -> None:
         fail(f"{rel} must keep wide and tall connected diagrams", failures)
     if "Individual systems" not in raw or "Connected workflow" not in raw:
         fail("Selected Systems must expose Individual systems and Connected workflow views", failures)
-    if "not the general Proof Systems offer" not in raw and "not the general offer" not in raw:
-        fail("connected workflow must not be presented as the general offer", failures)
+    if "began as independent bespoke systems" not in raw:
+        fail("connected workflow must keep the approved independent-then-integrated meaning", failures)
     if "weekly labour costs" not in raw.lower():
         fail("connected workflow missing weekly labour costs caption", failures)
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
@@ -805,7 +806,7 @@ CAPABILITY_COPY = [
     "Reliable data",
     "The working process creates a connected, usable flow of structured data.",
     "Controlled automation",
-    "Automation comes after the workflow works. Repetitive tasks can then be automated safely.",
+    "AI Automation comes after the workflow works. Repetitive tasks can then be automated safely.",
     "Capable team",
     "Role-specific training helps people apply AI safely and usefully to the work they already do.",
     "Discuss a workflow",
@@ -871,7 +872,7 @@ def check_round4(failures: list[str]) -> None:
             fail("Capability must expose five sequential stages", failures)
         if 'href="work/index.html#individual-systems">View selected systems</a>' not in body:
             fail("Capability View selected systems must target the individual-systems index", failures)
-        if 'data-cap-step="5"' not in raw:
+        if 'data-cap-step="6"' not in raw:
             fail("Capability no-JavaScript default must be the complete final workflow", failures)
 
     if "desktop-hide-copy" in raw:
@@ -1049,7 +1050,7 @@ def webp_dimensions(path: pathlib.Path) -> tuple[int, int]:
 def desktop_cap_step(progress: float) -> int:
     import math
 
-    return min(5, 1 + math.floor(progress * 5))
+    return min(6, 1 + math.floor(progress * 6))
 
 
 def check_round6(failures: list[str]) -> None:
@@ -1071,8 +1072,8 @@ def check_round6(failures: list[str]) -> None:
     proof = raw[raw.find('id="proof"'):raw.find('id="approach"')]
     if 'class="proof-label"' in proof:
         fail("homepage Proof cards must not show Synthetic demonstration labels", failures)
-    if work.count('class="proof-label"') < 8:
-        fail("Selected Systems index must keep synthetic provenance on every card", failures)
+    if 'class="proof-label"' in work:
+        fail("Selected Systems index must not show card-level Synthetic demonstration labels", failures)
     for slug in STORY_SLUGS:
         story = (ROOT / "work" / f"{slug}.html").read_text(encoding="utf-8")
         if "Synthetic demonstration" not in story:
@@ -1125,21 +1126,25 @@ def check_round6(failures: list[str]) -> None:
         fail("Capability must not leave inactive stages visible as dimmed text", failures)
     if "Ask about AI team training" not in raw:
         fail("Capability action must be Ask about AI team training", failures)
-    if "Math.min(5, 1 + Math.floor(progress * 5))" not in js:
-        fail("Capability desktop steps must use five equal travel buckets", failures)
-    if "560vh" not in css:
-        fail("desktop Capability travel must be long enough for four distinct transitions", failures)
+    if "Math.min(6, 1 + Math.floor(progress * 6))" not in js:
+        fail("Capability desktop steps must use six equal travel buckets", failures)
+    if "480vh" not in css:
+        fail("desktop Capability travel must be shorter than 560vh while remaining distinct", failures)
+    if "560vh" in css:
+        fail("desktop Capability travel must no longer use the longer 560vh interval", failures)
     expected_steps = {
         0.00: 1,
-        0.19: 1,
-        0.20: 2,
-        0.39: 2,
-        0.40: 3,
-        0.59: 3,
-        0.60: 4,
-        0.79: 4,
-        0.80: 5,
-        1.00: 5,
+        0.16: 1,
+        0.17: 2,
+        0.33: 2,
+        0.34: 3,
+        0.49: 3,
+        0.50: 4,
+        0.66: 4,
+        0.67: 5,
+        0.83: 5,
+        0.84: 6,
+        1.00: 6,
     }
     for progress, want in expected_steps.items():
         got = desktop_cap_step(progress)
@@ -1151,7 +1156,7 @@ def check_round6(failures: list[str]) -> None:
         if current < previous:
             fail("Capability desktop steps must stay coherent when scrolling forward", failures)
         previous = current
-    previous = 5
+    previous = 6
     for index in range(100, -1, -1):
         current = desktop_cap_step(index / 100)
         if current > previous:
@@ -1179,36 +1184,36 @@ def check_round6_review_corrections(css: str, js: str, failures: list[str]) -> N
     if "var(--raised)" not in css.split(".panel-cream .proof-grid .card {", 1)[-1].split("}", 1)[0]:
         fail("homepage Proof cards must keep the dark raised background", failures)
 
-    hidden_sel = 'html.js #capability[data-capability]:not([data-cap-step="5"]) .capability-actions {'
+    hidden_sel = 'html.js #capability[data-capability]:not([data-cap-step="6"]) .capability-actions {'
     if hidden_sel not in css:
-        fail("desktop JS must hide Capability actions until stage 5", failures)
+        fail("desktop JS must hide Capability actions until stage 6", failures)
     else:
         hidden = css.split(hidden_sel, 1)[-1].split("}", 1)[0]
         if "visibility: hidden" not in hidden:
-            fail("Capability actions must be visibility:hidden before stage 5 so they leave keyboard focus and AT", failures)
+            fail("Capability actions must be visibility:hidden before stage 6 so they leave keyboard focus and AT", failures)
         if "pointer-events: none" not in hidden:
-            fail("Capability actions must ignore pointer input before stage 5", failures)
+            fail("Capability actions must ignore pointer input before stage 6", failures)
         if "opacity: 0" not in hidden:
-            fail("Capability actions must be visually hidden before stage 5", failures)
+            fail("Capability actions must be visually hidden before stage 6", failures)
         if "visibility: visible" in hidden:
-            fail("pre-stage-5 Capability actions must not stay visibility:visible", failures)
-    shown_sel = 'html.js #capability[data-capability][data-cap-step="5"] .capability-actions {'
+            fail("pre-stage-6 Capability actions must not stay visibility:visible", failures)
+    shown_sel = 'html.js #capability[data-capability][data-cap-step="6"] .capability-actions {'
     if shown_sel not in css:
-        fail("stage 5 must explicitly expose Capability actions", failures)
+        fail("stage 6 must explicitly expose Capability actions", failures)
     else:
         shown = css.split(shown_sel, 1)[-1].split("}", 1)[0]
         if "visibility: visible" not in shown:
-            fail("stage 5 Capability actions must be visibility:visible", failures)
+            fail("stage 6 Capability actions must be visibility:visible", failures)
         if "pointer-events: auto" not in shown:
-            fail("stage 5 Capability actions must be pointer-reachable", failures)
+            fail("stage 6 Capability actions must be pointer-reachable", failures)
     if "syncCapabilityActions" not in js:
         fail("site.js must sync Capability action exposure with the current stage", failures)
     if 'setAttribute("inert"' not in js or 'setAttribute("aria-hidden"' not in js:
-        fail("Capability actions must be inert and aria-hidden before stage 5", failures)
+        fail("Capability actions must be inert and aria-hidden before stage 6", failures)
     if 'removeAttribute("inert")' not in js or 'removeAttribute("aria-hidden")' not in js:
-        fail("Capability actions must drop inert/aria-hidden at stage 5", failures)
-    if 'String(step) === "5"' not in js:
-        fail("Capability action exposure must follow the stage-5 threshold", failures)
+        fail("Capability actions must drop inert/aria-hidden at stage 6", failures)
+    if 'String(step) === "6"' not in js:
+        fail("Capability action exposure must follow the stage-6 threshold", failures)
     reduced_exposes = False
     for block in css.split("@media (prefers-reduced-motion: reduce)")[1:]:
         body = block.split("@media", 1)[0]
@@ -1219,6 +1224,97 @@ def check_round6_review_corrections(css: str, js: str, failures: list[str]) -> N
             reduced_exposes = True
     if not reduced_exposes:
         fail("reduced-motion must expose Capability actions without waiting for animation", failures)
+
+
+def check_round7(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    training = (ROOT / "training.html").read_text(encoding="utf-8")
+    workflow = (ROOT / "workflow.html").read_text(encoding="utf-8")
+    new_linkedin = "https://www.linkedin.com/in/mathew-glendenning-90670649/"
+    old_linkedin = "https://www.linkedin.com/in/mat-glendenning"
+    if "AI Automation comes after the workflow works. Repetitive tasks can then be automated safely." not in raw:
+        fail("Controlled automation narrative must use the approved AI Automation sentence", failures)
+    if raw.count("AI Automation comes after") != 1:
+        fail("homepage should contain the AI Automation sentence once", failures)
+    if 'data-cap-step="6"' not in raw:
+        fail("Capability no-JS default must be stage 6 so actions are present", failures)
+    if "480vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability min-height must be 480vh", failures)
+    if "[data-cap-step=\"5\"] .cap-gated" not in css or "[data-cap-step=\"6\"] .cap-gated" not in css:
+        fail("stage 5 and stage 6 must both show the five Capability icons", failures)
+    if 'String(step) === "6"' not in js:
+        fail("Capability actions must wait for stage 6", failures)
+    if training.count("A remote or in-person half-day") != 2:
+        fail("training page must use A remote or in-person half-day twice", failures)
+    if "A remote half-day" in training:
+        fail("training page still uses A remote half-day", failures)
+    if "page-training" not in training or ".page-training h1" not in css or ".page-training .intro" not in css:
+        fail("training heading and intro must use the full desktop wrap", failures)
+    if "This connected workflow began as independent bespoke systems, built one at a time with a long-term approach that allowed them to form one fully integrated system." not in work:
+        fail("Connected workflow disclosure is not the approved sentence", failures)
+    if "synthetic Northstar business story" in work:
+        fail("old Connected workflow disclosure remains", failures)
+    if 'class="map-text"' in work:
+        fail("connected-workflow map-text paragraph must be removed", failures)
+    if "These are operator-built systems demonstrated with synthetic Northstar data" not in work:
+        fail("Selected Systems must keep the page-level synthetic Northstar explanation", failures)
+    if work.count('class="card-label">Outcome</p>') != 8:
+        fail("each Selected Systems card must show Outcome as its own label", failures)
+    if work.count('class="card-label">Evidence shown</p>') != 8:
+        fail("each Selected Systems card must show Evidence shown as its own label", failures)
+    if "<strong>Outcome." in work or "<strong>Evidence shown." in work:
+        fail("Selected Systems cards must not keep Outcome/Evidence as inline strong prefixes", failures)
+    sitelog = (ROOT / "work/sitelog.html").read_text(encoding="utf-8")
+    if "Off-the-shelf options didn't fit how the business operated and became expensive through per-user charges." not in sitelog:
+        fail("SiteLog problem copy is not the approved paragraph", failures)
+    budgetflow = (ROOT / "work/budgetflow.html").read_text(encoding="utf-8")
+    if "Off-the-shelf options require the business to change its operating approach to fit the software." not in budgetflow:
+        fail("BudgetFlow problem copy is not the approved paragraph", failures)
+    if 'href="applications-ledger.html">Suggested next: Applications Ledger</a>' not in budgetflow:
+        fail("BudgetFlow suggested next must be Applications Ledger", failures)
+    if "ledgerlink.html" in budgetflow[budgetflow.find("Suggested next"):budgetflow.find("Suggested next") + 180]:
+        fail("BudgetFlow suggested next must not remain LedgerLink", failures)
+    apps = (ROOT / "work/applications-ledger.html").read_text(encoding="utf-8")
+    if "This makes it difficult to maintain business-wide visibility of late payments and outstanding actions." not in apps:
+        fail("Applications Ledger problem copy is not the approved paragraph", failures)
+    cashflow = (ROOT / "work/cashflow.html").read_text(encoding="utf-8")
+    if "Cash views are often rebuilt manually in Excel from applications, bank files and project schedules that do not share a source." not in cashflow:
+        fail("Cashflow problem copy is not the approved paragraph", failures)
+    cpr = (ROOT / "work/cpr.html").read_text(encoding="utf-8")
+    if "<h2>How it is used</h2>" not in cpr:
+        fail("CPR heading must be How it is used", failures)
+    if "Every bespoke system draws on one trusted source of project information." not in cpr:
+        fail("CPR How it is used copy is not the approved paragraph", failures)
+    if "<h2>Who uses it</h2>" in cpr:
+        fail("CPR must not keep Who uses it", failures)
+    join = css.split("@media (min-width: 761px)", 1)[-1].split("@media", 1)[0]
+    for selector in (".chapter-hero", "#gap", "#economics", "#proof", "#approach", "#about"):
+        if selector not in join:
+            fail(f"desktop chapter-join rule missing {selector}", failures)
+    if "padding-bottom: 0" not in join.split(".chapter-hero", 1)[-1][:80]:
+        fail("proposition/stack must drop the empty bottom band into Gap", failures)
+    if "padding-top: 0" not in join.split("#gap", 1)[-1][:120] or "padding-bottom: 0" not in join.split("#gap", 1)[-1][:160]:
+        fail("Gap artwork must meet Fit without empty cream bands", failures)
+    if "padding-top: 0" not in join.split("#economics", 1)[-1][:80]:
+        fail("Fit must not keep an empty black band above the artwork", failures)
+    if "padding-top: 0" not in join.split("#approach", 1)[-1][:120]:
+        fail("Approach must not keep an empty incoming band after Proof", failures)
+    if "page-enquiry" not in workflow or ".page-enquiry .page-main .wrap" not in css:
+        fail("enquiry page must centre a bounded desktop column", failures)
+    if "width: min(46rem" not in css.split(".page-enquiry .page-main .wrap", 1)[-1][:120]:
+        fail("enquiry column must stay a readable centred measure, not viewport-edge", failures)
+    for path in PUBLIC_HTML:
+        html = path.read_text(encoding="utf-8")
+        rel = path.relative_to(ROOT).as_posix()
+        if old_linkedin in html:
+            fail(f"{rel} still uses the old LinkedIn destination", failures)
+        if "LinkedIn" in html and new_linkedin not in html:
+            fail(f"{rel} LinkedIn label is missing the approved profile URL", failures)
+        if new_linkedin in html and 'rel="noopener noreferrer"' not in html:
+            fail(f"{rel} LinkedIn link must keep external-link security attributes", failures)
 
 
 def check() -> int:
@@ -1238,15 +1334,16 @@ def check() -> int:
     check_approved_artwork(failures)
     check_round5(failures)
     check_round6(failures)
+    check_round7(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-6 proposition/Fit/Proof/Capability, "
-        "round-5 stack and selector, enquiry form, omitted client chapter, "
-        "poster-first teasers and public-copy safety"
+        "PASS routes, eight stories, round-7 Capability/training/work/stories/"
+        "joins/enquiry/LinkedIn, round-6 proposition/Fit/Proof, enquiry form, "
+        "omitted client chapter, poster-first teasers and public-copy safety"
     )
     return 0
 

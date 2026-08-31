@@ -312,6 +312,21 @@ summary:focus-visible,
 
 .chapter-hero { padding: clamp(3rem, 8vh, 6rem) 0 4.5rem; }
 
+@media (min-width: 761px) {
+  .chapter-hero { padding-bottom: 0; }
+  #gap {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  #economics { padding-top: 0; }
+  #proof { padding-bottom: clamp(2.4rem, 5vh, 3.4rem); }
+  #approach {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  #about { padding-top: clamp(2.8rem, 6vh, 4.5rem); }
+}
+
 .marker {
   color: var(--amber);
   font-size: 0.78rem;
@@ -648,6 +663,15 @@ footer {
   padding: clamp(1.2rem, 4vw, 2.2rem);
   max-width: 46rem;
 }
+
+.work-individual .card-label {
+  margin: 0.9rem 0 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+.work-individual .card-label + p { margin: 0; }
 
 .notice {
   border-left: 3px solid var(--amber);
@@ -1881,7 +1905,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
     text-align: left;
   }
   html.js #capability[data-capability] {
-    min-height: 560vh;
+    min-height: 480vh;
   }
   html.js #capability .capability-sticky {
     position: sticky;
@@ -1918,7 +1942,9 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   html.js [data-cap-step="4"] .cap-gated[data-cap-from="4"],
   html.js [data-cap-step="4"] .cap-stage:nth-child(-n+4),
   html.js [data-cap-step="5"] .cap-gated,
-  html.js [data-cap-step="5"] .cap-stage {
+  html.js [data-cap-step="5"] .cap-stage,
+  html.js [data-cap-step="6"] .cap-gated,
+  html.js [data-cap-step="6"] .cap-stage {
     visibility: visible;
     opacity: 1;
   }
@@ -1928,7 +1954,8 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   html.js [data-cap-step="4"] .cap-connector[data-cap-from="2"],
   html.js [data-cap-step="4"] .cap-connector[data-cap-from="3"],
   html.js [data-cap-step="4"] .cap-connector[data-cap-from="4"],
-  html.js [data-cap-step="5"] .cap-connector {
+  html.js [data-cap-step="5"] .cap-connector,
+  html.js [data-cap-step="6"] .cap-connector {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.55s ease, opacity 0.35s ease;
   }
@@ -1942,16 +1969,35 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   html.js [data-cap-step="5"] .cap-stage:nth-child(5) {
     transition: opacity 0.4s ease 0.35s, visibility 0s linear 0.2s;
   }
-  html.js #capability[data-capability]:not([data-cap-step="5"]) .capability-actions {
+  html.js #capability[data-capability]:not([data-cap-step="6"]) .capability-actions {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
   }
-  html.js #capability[data-capability][data-cap-step="5"] .capability-actions {
+  html.js #capability[data-capability][data-cap-step="6"] .capability-actions {
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
   }
+}
+
+@media (min-width: 981px) {
+  .page-training h1,
+  .page-training .intro {
+    max-width: none;
+    text-align: left;
+  }
+  .page-enquiry .page-main .wrap {
+    width: min(46rem, calc(100% - 48px));
+    margin-inline: auto;
+    text-align: left;
+  }
+  .page-enquiry .page-main h1,
+  .page-enquiry .intro,
+  .page-enquiry .form-card {
+    max-width: none;
+  }
+  .page-enquiry .form-card { margin-inline: auto; }
 }
 
 @media (max-width: 980px) {

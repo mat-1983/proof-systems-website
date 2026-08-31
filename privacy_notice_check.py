@@ -305,7 +305,7 @@ def check() -> int:
         if parsed.scheme in {"mailto", "https"}:
             if parsed.scheme == "https" and not (
                 href.startswith("https://ico.org.uk/")
-                or href.startswith("https://www.linkedin.com/in/mat-glendenning")
+                or href.startswith("https://www.linkedin.com/in/mathew-glendenning-90670649/")
             ):
                 fail(f"unexpected external URL: {href}", failures)
             continue
