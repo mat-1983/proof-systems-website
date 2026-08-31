@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-08-31 — Fluid narrow journeys and adaptive enquiry
+
+On 900px and below, Gap, Capability and Approach travel in ordinary document flow. Items reveal once as they enter the viewport; reverse scrolling does not re-hide them. Fit and the opening sequence stay as approved. Desktop Approach travel is 240vh with the route block revealed at 93% so the sand tail is ordinary chapter spacing. Operator First includes the approved Jobhawk paragraph. One `proof-systems-qualifier` form adapts heading/copy and hidden `interest_source` to `focused-build`, `workflow-diagnostic` or `ai-team-training`.
+
 ## 2026-08-31 — Responsive Approach modules and Selected Systems destinations
 
 Approach is four independent modules plus a fifth route stage. Desktop keeps the headline and all four module positions in view; mobile accumulates a vertical journey at 220vh. Closing routes are whole-route links to `workflow.html` and `training.html`. Generic Selected Systems actions open the index top; `#finance` and `#connected-workflow` remain contextual. Mobile opening uses the same mark/name/tagline sequence with shorter travel. Approach restores a cream/sand gradient, an active amber glow and a completed blue connector glow.

@@ -2020,7 +2020,19 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
 /* AGE-600 round 8 staged semantic scenes */
 html.js [data-scene="gap"] { min-height: 300vh; }
 html.js [data-scene="fit"] { min-height: 300vh; }
-html.js [data-scene="approach"] { min-height: 360vh; }
+html.js [data-scene="approach"] { min-height: 240vh; }
+html:not(.js) .gap-connection,
+html:not(.js) .fit-bent-path path,
+html:not(.js) .fit-link-line,
+html:not(.js) .approach-connector path,
+html:not(.js) .cap-rail-link path,
+html:not(.js) .cap-connector {
+  stroke-dashoffset: 0;
+}
+html:not(.js) .gap-pulse,
+html:not(.js) .fit-bent-path circle {
+  opacity: 1;
+}
 html.js [data-scene] .scene-sticky,
 html.js #capability .capability-sticky {
   position: sticky;
@@ -2810,26 +2822,84 @@ html.js [data-cap-step="6"] .cap-leg {
   }
   .approach-route-list { justify-items: center; }
   .fit-sign { white-space: normal; }
-  html.js [data-scene="approach"] { min-height: 220vh; }
-  html.js [data-scene="approach"] .scene-sticky {
-    min-height: 0;
-    align-items: flex-start;
-    padding-top: 0.7rem;
+  #approach {
+    padding-bottom: clamp(4.5rem, 10vh, 7.5rem);
   }
-  html.js .approach-stage,
-  html.js .approach-routes { display: none; }
-  html.js [data-approach-step="1"] .approach-stage[data-approach-from="1"],
-  html.js [data-approach-step="2"] .approach-stage[data-approach-from="1"],
-  html.js [data-approach-step="2"] .approach-stage[data-approach-from="2"],
-  html.js [data-approach-step="3"] .approach-stage[data-approach-from="1"],
-  html.js [data-approach-step="3"] .approach-stage[data-approach-from="2"],
-  html.js [data-approach-step="3"] .approach-stage[data-approach-from="3"],
-  html.js [data-approach-step="4"] .approach-stage[data-approach-from="1"],
-  html.js [data-approach-step="4"] .approach-stage[data-approach-from="2"],
-  html.js [data-approach-step="4"] .approach-stage[data-approach-from="3"],
-  html.js [data-approach-step="4"] .approach-stage[data-approach-from="4"],
-  html.js [data-approach-step="5"] .approach-stage,
-  html.js [data-approach-step="5"] .approach-routes { display: block; }
+  html.js [data-scene="gap"],
+  html.js [data-scene="approach"],
+  html.js #capability[data-capability] {
+    min-height: 0;
+  }
+  html.js [data-scene="gap"] .scene-sticky,
+  html.js [data-scene="approach"] .scene-sticky,
+  html.js #capability .capability-sticky {
+    position: static;
+    min-height: 0;
+    display: block;
+    align-items: stretch;
+    padding: 0;
+  }
+  html.js #approach .approach-stage,
+  html.js #approach .approach-routes {
+    display: block;
+  }
+  html.js #gap .gap-node,
+  html.js #gap .gap-callout,
+  html.js #gap .gap-legend span,
+  html.js #approach .approach-stage,
+  html.js #approach .approach-routes,
+  html.js #capability .cap-leg {
+    visibility: visible;
+    opacity: 0;
+    transform: translate3d(0, 0.7rem, 0);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  html.js #gap .gap-node.is-arrived,
+  html.js #gap .gap-callout.is-arrived,
+  html.js #gap .gap-legend span.is-arrived,
+  html.js #approach .approach-stage.is-arrived,
+  html.js #approach .approach-routes.is-arrived,
+  html.js #capability .cap-leg.is-arrived {
+    opacity: 1;
+    transform: none;
+  }
+  html.js #gap .gap-connection {
+    stroke-dashoffset: 360;
+  }
+  html.js #gap .gap-connection.is-arrived {
+    stroke-dashoffset: 0;
+  }
+  html.js #gap .gap-pulse {
+    opacity: 0;
+  }
+  html.js #gap .gap-pulse.is-arrived {
+    opacity: 1;
+  }
+  html.js #approach .approach-connector path {
+    stroke-dashoffset: 110;
+  }
+  html.js #approach .approach-connector.is-arrived path {
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 0.35rem rgba(67, 167, 255, 0.55));
+  }
+  html.js #approach .approach-stage.is-arrived .approach-platform {
+    box-shadow:
+      0 0.62rem 0 #16130f,
+      0 0 0 1px rgba(216, 144, 66, 0.45),
+      0 0 1.05rem rgba(216, 144, 66, 0.36);
+  }
+  html.js #capability .cap-rail-link path {
+    stroke-dashoffset: 160;
+  }
+  html.js #capability .cap-leg.is-arrived .cap-rail-link.is-arrived path,
+  html.js #capability .cap-rail-link.is-arrived path {
+    stroke-dashoffset: 0;
+  }
+  html.js #capability[data-capability] .capability-actions {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2873,6 +2943,15 @@ html.js [data-cap-step="6"] .cap-leg {
   }
   html.js .approach-stage,
   html.js .approach-routes { display: block !important; }
+  html.js #gap .gap-node,
+  html.js #gap .gap-callout,
+  html.js #gap .gap-legend span,
+  html.js #approach .approach-stage,
+  html.js #approach .approach-routes,
+  html.js #capability .cap-leg {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 .scroll-cue {

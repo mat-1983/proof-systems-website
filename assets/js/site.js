@@ -44,6 +44,18 @@
     updateOpening();
   }
 
+  var narrowMq = window.matchMedia("(max-width: 900px)");
+  function isNarrow() {
+    return narrowMq.matches;
+  }
+  function onNarrowChange(handler) {
+    if (typeof narrowMq.addEventListener === "function") {
+      narrowMq.addEventListener("change", handler);
+    } else if (typeof narrowMq.addListener === "function") {
+      narrowMq.addListener(handler);
+    }
+  }
+
   function bindStickyScene(root, attr, steps, onStep) {
     if (!root) return;
     function update() {
@@ -52,18 +64,100 @@
         if (onStep) onStep(steps);
         return;
       }
+      if (root.hasAttribute("data-fluid-narrow") && isNarrow()) {
+        root.setAttribute(attr, String(steps));
+        if (onStep) onStep(steps);
+        return;
+      }
       var rect = root.getBoundingClientRect();
       var travel = Math.max(root.offsetHeight - window.innerHeight, 1);
       var progress = clamp(-rect.top / travel, 0, 1);
       var step = Math.min(steps, 1 + Math.floor(progress * steps));
+      if (attr === "data-approach-step") {
+        step = progress >= 0.93 ? steps : Math.min(steps - 1, 1 + Math.floor((progress / 0.93) * (steps - 1)));
+      }
       root.setAttribute(attr, String(step));
       if (onStep) onStep(step);
     }
     if (!reduced) {
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
+      onNarrowChange(update);
     }
     update();
+  }
+
+  function bindFluidJourney(root) {
+    if (!root) return;
+    var items = root.querySelectorAll(
+      ".gap-node, .gap-callout, .gap-legend span, .approach-stage, .approach-connector, .approach-routes, .cap-leg, .cap-rail-link, .cap-rail-tail"
+    );
+    var observer = null;
+
+    function reveal(el) {
+      if (el.classList.contains("is-arrived")) return;
+      el.classList.add("is-arrived");
+      if (root.id === "gap") {
+        var nodeMatch = /gap-node-(\d)/.exec(el.className);
+        if (nodeMatch) {
+          var index = parseInt(nodeMatch[1], 10);
+          if (index >= 2) {
+            var connector = root.querySelector(".gap-c" + (index - 1));
+            var pulse = root.querySelector(".gap-p" + (index - 1));
+            if (connector) connector.classList.add("is-arrived");
+            if (pulse) pulse.classList.add("is-arrived");
+          }
+        }
+      }
+      if (root.id === "approach" && el.classList.contains("approach-stage")) {
+        var approachFrom = el.getAttribute("data-approach-from");
+        var incoming = root.querySelector('.approach-connector[data-approach-from="' + approachFrom + '"]');
+        if (incoming) incoming.classList.add("is-arrived");
+      }
+      if (root.id === "approach" && el.classList.contains("approach-routes")) {
+        var finalLink = root.querySelector(".approach-connector[data-approach-from='5']");
+        if (finalLink) finalLink.classList.add("is-arrived");
+      }
+      if (root.id === "capability" && el.classList.contains("cap-leg")) {
+        var capFrom = el.getAttribute("data-cap-from");
+        var rail = root.querySelector('.cap-rail-link[data-cap-from="' + capFrom + '"]');
+        if (rail) rail.classList.add("is-arrived");
+      }
+    }
+
+    function revealAll() {
+      items.forEach(reveal);
+    }
+
+    function stop() {
+      if (!observer) return;
+      observer.disconnect();
+      observer = null;
+    }
+
+    if (reduced || !("IntersectionObserver" in window)) {
+      revealAll();
+      return;
+    }
+
+    function apply() {
+      stop();
+      if (!isNarrow()) return;
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target);
+          if (observer) observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.22, rootMargin: "0px 0px -8% 0px" });
+      items.forEach(function (el) {
+        if (el.classList.contains("is-arrived")) return;
+        observer.observe(el);
+      });
+    }
+
+    apply();
+    onNarrowChange(apply);
   }
 
   var capability = document.querySelector("[data-capability]");
@@ -71,7 +165,7 @@
   function syncCapabilityActions(step) {
     var actions = capability.querySelector(".capability-actions");
     if (!actions) return;
-    var expose = reduced || String(step) === "6";
+    var expose = reduced || isNarrow() || String(step) === "6";
     if (expose) {
       actions.removeAttribute("inert");
       actions.removeAttribute("aria-hidden");
@@ -90,6 +184,8 @@
     var name = scene.getAttribute("data-scene");
     bindStickyScene(scene, "data-" + name + "-step", steps);
   });
+
+  document.querySelectorAll("[data-fluid-narrow]").forEach(bindFluidJourney);
 
   var scenes = document.querySelectorAll("[data-reveal]");
   if (scenes.length && !reduced && "IntersectionObserver" in window) {

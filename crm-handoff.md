@@ -1,6 +1,6 @@
 # General enquiry handoff
 
-Updated: 2026-08-29
+Updated: 2026-08-31
 
 ## System boundary
 
@@ -17,7 +17,10 @@ Updated: 2026-08-29
 | `route_label: Discuss a workflow` | Public enquiry action | Respond by next working day |
 | `lead_state: enquiry-received` | Submitted and awaiting review | Respond by next working day |
 | `page_source: workflow.html` | Short enquiry form | Keep visitor answers out of URLs |
-| `interest_source: ai-team-training` | Reached from Ask about team training | Discuss the workshop; same general-enquiry route |
+| `interest_source:` (empty) | Generic Discuss a workflow | Review as a general enquiry |
+| `interest_source: focused-build` | Reached from Clear workflow / Focused build | Discuss the named workflow; same general-enquiry route |
+| `interest_source: workflow-diagnostic` | Reached from Needs clarity / Workflow diagnostic | Help identify the smallest useful starting point; same general-enquiry route |
+| `interest_source: ai-team-training` | Reached from Ask about AI team training | Discuss the workshop; same general-enquiry route |
 
 ## Manual handoff
 

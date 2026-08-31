@@ -371,6 +371,19 @@ def check_form(failures: list[str]) -> None:
         fail("form.js must intercept local submissions", failures)
     if "ai-team-training" not in js or "replaceState" not in js:
         fail("form.js must capture ai-team-training interest and strip it from the URL", failures)
+    for key in ("focused-build", "workflow-diagnostic", "ai-team-training"):
+        if key not in js:
+            fail(f"form.js must allow-list interest {key}", failures)
+    if "Tell me about the workflow you want to improve." not in js:
+        fail("form.js missing focused-build heading", failures)
+    if "Tell me where the workflow lacks clarity." not in js:
+        fail("form.js missing workflow-diagnostic heading", failures)
+    if "Tell me about the team and the work where AI could help." not in js:
+        fail("form.js missing ai-team-training heading", failures)
+    if "INTERESTS[requested]" not in js:
+        fail("form.js must ignore interest values outside the allow-list", failures)
+    if js.find("applyInterest(requested)") > js.find("history.replaceState"):
+        fail("visible enquiry context must be applied before the query is removed", failures)
 
 
 def check_stories(failures: list[str]) -> None:
@@ -649,7 +662,7 @@ def check_round2(failures: list[str]) -> None:
     training = (ROOT / "training.html").read_text(encoding="utf-8")
     if "Train your team to use AI on real workflows, not toy examples." not in training:
         fail("training page missing primary line", failures)
-    if "Ask about team training" not in training:
+    if "Ask about AI team training" not in training:
         fail("training page missing training CTA", failures)
     if "workflow.html?interest=ai-team-training" not in training:
         fail("training CTA must reuse the general enquiry form with interest=ai-team-training", failures)
@@ -1354,8 +1367,8 @@ def check_round8(failures: list[str]) -> None:
         fail("site.js must stage Gap, Fit, Approach and Capability from natural scroll", failures)
     if "preventDefault" in js and "wheel" in js:
         fail("scene staging must not hijack scroll", failures)
-    if "300vh" not in css or "360vh" not in css:
-        fail("Gap/Fit/Approach travel must be short staged sticky heights", failures)
+    if "300vh" not in css:
+        fail("Gap/Fit travel must be short staged sticky heights", failures)
     if ".fit-transition" not in css or "stroke-width: 3" not in css.split(".fit-transition path", 1)[-1][:180]:
         fail("Fit connector must use a 3-unit amber stroke", failures)
     if ".fit-transition-vertical" not in css:
@@ -1862,25 +1875,24 @@ def check_round10(failures: list[str]) -> None:
         fail("Approach must draw connections between the four modules", failures)
     if "approach-connector-h" not in approach or "approach-connector-v" not in approach:
         fail("Approach connectors must have horizontal and vertical orientations", failures)
-    if 'href="workflow.html"' not in approach or approach.count('href="workflow.html"') < 2:
-        fail("Clear workflow and Needs clarity must be whole-route links to workflow.html", failures)
+    if 'href="workflow.html?interest=focused-build"' not in approach:
+        fail("Clear workflow / Focused build must use interest=focused-build", failures)
+    if 'href="workflow.html?interest=workflow-diagnostic"' not in approach:
+        fail("Needs clarity / Workflow diagnostic must use interest=workflow-diagnostic", failures)
     if 'href="training.html"' not in approach:
         fail("Team capability must be a whole-route link to training.html", failures)
-    if "?interest=" in approach:
-        fail("Approach routes must not add query-string routing", failures)
-    if not re.search(r'<a class="approach-route route-pad" href="workflow.html">', approach):
-        fail("closing Approach routes must be semantic whole-route links", failures)
+    if not re.search(r'<a class="approach-route route-pad" href="workflow.html\?interest=', approach):
+        fail("closing Approach workflow routes must be semantic whole-route links", failures)
     if ".approach-route:focus-visible" not in css:
         fail("Approach route links must have a visible keyboard focus treatment", failures)
     if "grid-template-columns: repeat(4, minmax(0, 1fr))" not in css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]:
         fail("desktop Approach must keep all four module positions in one row", failures)
-    if "min-height: 360vh" not in css:
-        fail("desktop Approach travel must remain 360vh", failures)
-    narrow = css.split("@media (max-width: 900px)", 1)[-1]
-    if "min-height: 220vh" not in narrow.split("@media", 1)[0] and "min-height: 220vh" not in narrow:
-        fail("mobile Approach travel must be shorter than desktop 360vh", failures)
-    if "html.js .approach-stage" not in narrow or "display: none" not in narrow.split("html.js .approach-stage", 1)[-1][:120]:
-        fail("mobile Approach must accumulate modules instead of shrinking a desktop composition", failures)
+    if "min-height: 240vh" not in css:
+        fail("desktop Approach travel must be 240vh so completed routes leave only a short tail", failures)
+    if "min-height: 360vh" in css:
+        fail("desktop Approach travel must no longer use the 360vh empty tail", failures)
+    if "220vh" in css:
+        fail("mobile Approach must not keep a 220vh sticky travel bucket", failures)
     if "linear-gradient(180deg, #EDE6D8" not in css.split("#approach.panel-sand", 1)[-1][:220]:
         fail("Approach section must use a warm cream/sand gradient", failures)
     if "rgba(216, 144, 66, 0.36)" not in css:
@@ -1918,6 +1930,125 @@ def check_round10(failures: list[str]) -> None:
         fail("finance-specific Proof action must keep its #finance anchor", failures)
 
 
+def _narrow_css(css: str) -> str:
+    parts = css.split("@media (max-width: 900px)")
+    if len(parts) < 2:
+        return ""
+    return parts[1].split("@media", 1)[0]
+
+
+def check_round11(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    form_js = (ROOT / "assets/js/form.js").read_text(encoding="utf-8")
+    workflow = (ROOT / "workflow.html").read_text(encoding="utf-8")
+    training = (ROOT / "training.html").read_text(encoding="utf-8")
+    privacy = (ROOT / "privacy.html").read_text(encoding="utf-8")
+    crm = (ROOT / "crm-handoff.md").read_text(encoding="utf-8")
+    about = raw[raw.find('id="about"'):raw.find('id="start"')]
+    approach = raw[raw.find('id="approach"'):raw.find('id="about"')]
+    gap = raw[raw.find('id="gap"'):raw.find('id="economics"')]
+    fit = raw[raw.find('id="economics"'):raw.find('id="capability"')]
+    capability = raw[raw.find('id="capability"'):raw.find('id="proof"')]
+    start = raw[raw.find('id="start"'):]
+    narrow = _narrow_css(css)
+
+    jobhawk = "In 2016, I co-founded Jobhawk, a mobile-first construction recruitment marketplace. We raised £1m+, with the Isle of Man Government as lead investor. That experience sharpened my understanding of product fit, adoption and the operating realities that determine whether technology succeeds."
+    compact_about = visible_text(about)
+    if compact_about.count("Jobhawk") != 1:
+        fail("Operator First must include the approved Jobhawk paragraph once", failures)
+    if jobhawk not in compact_about:
+        fail("Operator First is missing the approved Jobhawk paragraph", failures)
+    if re.search(r"href=[\"'][^\"']*jobhawk", raw, re.I):
+        fail("Jobhawk must not add an external link", failures)
+    if re.search(r"<img[^>]+jobhawk", raw, re.I):
+        fail("Jobhawk must not add a logo or portrait", failures)
+    if "lead investor" in compact_about and compact_about.count("£1m+") != 1:
+        fail("Jobhawk funding detail must stay the approved £1m+ sentence only", failures)
+
+    if "data-fluid-narrow" not in gap or "data-fluid-narrow" not in capability or "data-fluid-narrow" not in approach:
+        fail("Gap, Capability and Approach must opt into the narrow fluid journey", failures)
+    if "data-fluid-narrow" in fit:
+        fail("Fit must keep the approved sticky composition and must not use the fluid-narrow journey", failures)
+    if "data-opening" not in raw or 'class="opening-mark"' not in raw:
+        fail("opening logo sequence must remain", failures)
+    if "min-height: 300vh" not in css or 'data-scene="fit"' not in fit:
+        fail("Fit desktop/narrow sticky travel must remain", failures)
+
+    if "position: static" not in narrow.split('[data-scene="gap"] .scene-sticky', 1)[-1][:220]:
+        fail("narrow Gap must travel in ordinary document flow, not a sticky scene", failures)
+    if "position: static" not in narrow.split('[data-scene="approach"] .scene-sticky', 1)[-1][:220]:
+        fail("narrow Approach must travel in ordinary document flow, not a sticky scene", failures)
+    if "position: static" not in narrow.split("#capability .capability-sticky", 1)[-1][:220]:
+        fail("narrow Capability must travel in ordinary document flow, not a sticky scene", failures)
+    if 'html.js [data-scene="gap"]' not in narrow or "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
+        fail("narrow Gap must not keep a 300vh travel bucket", failures)
+    if "display: none" in narrow.split("html.js #approach .approach-stage", 1)[-1][:80]:
+        fail("narrow Approach must not hide modules with display:none", failures)
+    if "scroll-snap" in css:
+        fail("narrow journeys must not use scroll snapping", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("narrow journeys must not intercept wheel scrolling", failures)
+    if "is-arrived" not in js or "IntersectionObserver" not in js:
+        fail("narrow journeys must reveal items as they enter the viewport", failures)
+    if "unobserve" not in js:
+        fail("once a mobile journey item has entered it must stay revealed", failures)
+    if "data-fluid-narrow" not in js or "isNarrow" not in js:
+        fail("sticky discrete steps must be skipped on the narrow breakpoint", failures)
+    if "progress >= 0.93" not in js:
+        fail("desktop Approach must reveal the route block late enough to leave only a short tail", failures)
+    leftover_vh = 0.07 * (240 - 100)
+    if leftover_vh > 15 or leftover_vh < 8:
+        fail(f"desktop Approach completed tail is {leftover_vh:.1f}vh, expected about 10-15vh", failures)
+    previous = 1
+    for index in range(0, 101):
+        progress = index / 100
+        current = 5 if progress >= 0.93 else min(4, 1 + int((progress / 0.93) * 4))
+        if current < previous:
+            fail("desktop Approach steps must stay coherent when scrolling forward", failures)
+        previous = current
+    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("Fit must keep 300vh sticky travel", failures)
+
+    if 'id="enquiry-marker"' not in workflow or 'id="enquiry-heading"' not in workflow or 'id="enquiry-intro"' not in workflow:
+        fail("enquiry page must expose marker, heading and intro for adaptive context", failures)
+    if "Tell me about one workflow that should work better." not in workflow:
+        fail("generic enquiry heading must remain the no-JavaScript fallback", failures)
+    if 'name="route_key" value="general-enquiry"' not in workflow or 'name="lead_state" value="enquiry-received"' not in workflow:
+        fail("adaptive enquiry must keep route_key and lead_state", failures)
+    if "proof-systems-qualifier" not in workflow:
+        fail("must keep the single proof-systems-qualifier form", failures)
+    if workflow.count("<form") != 1:
+        fail("must not create separate Netlify forms", failures)
+    if "Focused build" not in form_js or "Workflow diagnostic" not in form_js or "AI team training" not in form_js:
+        fail("form.js must include the three allow-listed interest markers", failures)
+    if "applyInterest(requested)" not in form_js:
+        fail("form.js must apply the visible context before stripping the query", failures)
+    if form_js.find("applyInterest(requested)") > form_js.find("history.replaceState"):
+        fail("visible enquiry context must be applied before the query is removed", failures)
+    if "Ask about AI team training" not in training or "workflow.html?interest=ai-team-training" not in training:
+        fail("training enquiry CTA must read Ask about AI team training and keep interest=ai-team-training", failures)
+    if 'href="workflow.html"' not in training:
+        fail("training page must keep a generic Discuss a workflow link", failures)
+    if 'href="workflow.html?interest=' in raw.split('class="nav-cta"', 1)[-1][:80]:
+        fail("generic Discuss a workflow links must not add an interest query", failures)
+    if 'href="workflow.html?interest=' in start:
+        fail("Start chapter Discuss a workflow must remain generic", failures)
+    if 'href="training.html">Ask about AI team training</a>' not in capability:
+        fail("Capability training action must remain an informational training.html link", failures)
+    if "focused-build" not in privacy or "workflow-diagnostic" not in privacy or "ai-team-training" not in privacy:
+        fail("privacy notice must describe the allow-listed interest sources", failures)
+    if "interest_source: focused-build" not in crm or "interest_source: workflow-diagnostic" not in crm:
+        fail("CRM handoff must document the allow-listed Approach interests", failures)
+    if "interest_source: ai-team-training" not in crm:
+        fail("CRM handoff must keep the AI team training interest", failures)
+    if "route_key: general-enquiry" not in crm:
+        fail("CRM handoff must keep the single general-enquiry route", failures)
+    if "html:not(.js) .gap-connection" not in css or "html:not(.js) .approach-connector path" not in css:
+        fail("no-JavaScript users must receive drawn Gap and Approach connectors", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -1939,13 +2070,15 @@ def check() -> int:
     check_round8(failures)
     check_round9(failures)
     check_round10(failures)
+    check_round11(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-10 responsive Approach and Selected Systems, "
+        "PASS routes, eight stories, round-11 fluid narrow journeys and adaptive enquiry, "
+        "round-10 responsive Approach and Selected Systems, "
         "round-9 continuous Fit and scroll cue, round-8 staged scenes, "
         "round-7 training/work/stories, enquiry form, omitted client chapter, "
         "poster-first teasers and public-copy safety"

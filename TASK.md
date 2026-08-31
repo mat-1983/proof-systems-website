@@ -2,6 +2,10 @@
 
 Updated: 2026-08-31
 
+## AGE-600 fluid narrow journeys and adaptive enquiry
+
+Narrow Gap, Capability and Approach travel with the viewport. Approach no longer jumps or leaves a long sand tail. Operator First includes the approved Jobhawk paragraph. The single enquiry form reflects focused-build, workflow-diagnostic and AI team training routes. Not approved for push, merge or publication.
+
 ## AGE-600 responsive Approach and navigation
 
 Four independent Approach modules replace the single field. Mobile opening follows the desktop sequence with shorter travel. Generic Selected Systems destinations open the index top. Not approved for push, merge or publication.

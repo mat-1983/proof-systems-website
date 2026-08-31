@@ -2,6 +2,20 @@
 
 Updated: 2026-08-31
 
+## AGE-600 fluid narrow journeys and adaptive enquiry — 31 August 2026
+
+Narrow Gap, Capability and Approach are ordinary vertical journeys. Desktop Approach keeps the four-module composition with a short completed tail. The enquiry form adapts to three allow-listed interests and falls back to generic copy without JavaScript.
+
+- PASS — `python3 site_check.py` including `check_round11`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- PASS — Node stub-DOM execution of `form.js` for generic, `focused-build`, `workflow-diagnostic`, `ai-team-training`, invalid and injected query values. Visible copy is applied before `history.replaceState` strips the query; invalid values stay generic.
+- NOT COMPLETE — live 1440 plus 390/360/320 CSS-pixel UAT of stationary scroll, reverse-scroll jumps, Approach tail, reduced-motion and no-JavaScript. Chrome headless in this environment cannot create a unique user-data directory and is blocked from writing Crashpad state.
+
 ## AGE-600 responsive Approach, mobile opening and Selected Systems destinations — 31 August 2026
 
 Approach is four independent modules with a fifth whole-route stage. Desktop keeps the `04 / APPROACH` headline and all four module positions in view. Mobile accumulates a readable vertical journey at shorter sticky travel. Generic Selected Systems links open the index top. Mobile opening uses the same mark → name → tagline sequence with `125vh` travel.
