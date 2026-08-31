@@ -2,6 +2,10 @@
 
 Updated: 2026-08-29
 
+## AGE-600 continuous Fit/Approach and scroll cue
+
+Fit and Approach evolve as persistent scenes. A Continue scrolling cue is fixed at the bottom until the Start chapter. Not approved for push, merge or publication.
+
 ## AGE-600 round 8
 
 Staged semantic Gap, Fit, Capability and Approach scenes on the homepage. Rasters remain on disk but are no longer the Gap/Fit/Approach visuals. Not approved for push, merge or publication.

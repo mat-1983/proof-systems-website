@@ -173,17 +173,15 @@
         </div>
         <span class="fit-note fit-unused" data-fit-from="2">Unused features</span>
         <span class="fit-note fit-bends" data-fit-from="2">Process bends</span>
-        <svg class="fit-transition fit-transition-wide" viewBox="0 0 170 80" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
-          <path d="M8 40 H153"/>
-          <path d="M20 28 L8 40 20 52"/>
-          <path d="M141 28 L153 40 141 52"/>
-          <path d="M153 5 V75"/>
-          <circle cx="153" cy="5" r="3"/><circle cx="153" cy="75" r="3"/>
+        <svg class="fit-transition fit-transition-wide" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
+          <path class="fit-link-line" d="M10 14 H190"/>
+          <path d="M18 8 L10 14 L18 20"/>
+          <path d="M182 8 L190 14 L182 20"/>
         </svg>
-        <svg class="fit-transition fit-transition-vertical" viewBox="0 0 80 170" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
-          <path d="M40 4 V166"/>
-          <path d="M28 20 L40 4 52 20"/>
-          <path d="M28 150 L40 166 52 150"/>
+        <svg class="fit-transition fit-transition-vertical" viewBox="0 0 28 200" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
+          <path class="fit-link-line" d="M14 10 V190"/>
+          <path d="M8 18 L14 10 L20 18"/>
+          <path d="M8 182 L14 190 L20 182"/>
         </svg>
         <div class="fit-foundation" data-fit-from="3">
           <div class="fit-base-tile">
@@ -391,67 +389,40 @@
       <p class="marker">04 / APPROACH</p>
       <h2>Start with one useful outcome.&nbsp; Prove it.&nbsp; Extend only when it earns the next step.</h2>
       <div class="approach-journey" aria-label="A four-stage journey from understanding the real workflow to evidence-led extension">
-        <article class="approach-stage" data-approach-from="1">
-          <div class="approach-meta"><span class="approach-number">01</span><h3>Understand</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-understand" aria-hidden="true">
-              <svg class="approach-visual-links" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M28 57 H82 V27 H132 V63 H189 V33 H232"/></svg>
-              <span class="approach-mini approach-node-a"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg></span>
-              <span class="approach-mini approach-node-b"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/></svg></span>
-              <span class="approach-mini approach-node-c"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></span>
-              <span class="approach-lens"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
-            </div>
+        <ol class="approach-rail">
+          <li class="approach-stage" data-approach-from="1">
+            <div class="approach-meta"><span class="approach-number">01</span><h3>Understand</h3></div>
             <strong>Observe real workflow</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="2">
-            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="2">
-          <div class="approach-meta"><span class="approach-number">02</span><h3>Choose</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-choose" aria-hidden="true">
-              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
-              <span class="approach-choice approach-choice-selected"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span>
-              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18"/></svg></span>
-              <svg class="approach-choice-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M57 42 H105 M203 42 H155"/></svg>
-            </div>
+          </li>
+          <li class="approach-stage" data-approach-from="2">
+            <div class="approach-meta"><span class="approach-number">02</span><h3>Choose</h3></div>
             <strong>One useful outcome</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="3">
-            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="3">
-          <div class="approach-meta"><span class="approach-number">03</span><h3>Prove</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-prove" aria-hidden="true">
-              <svg class="approach-proof-line" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M42 42 H218"/></svg>
-              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/></svg></span>
-              <span class="approach-proof-node approach-proof-checked"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg></span>
-            </div>
+          </li>
+          <li class="approach-stage" data-approach-from="3">
+            <div class="approach-meta"><span class="approach-number">03</span><h3>Prove</h3></div>
             <strong>Initial build</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="4">
-            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="4">
-          <div class="approach-meta"><span class="approach-number">04</span><h3>Extend</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-extend" aria-hidden="true">
-              <svg class="approach-branch-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M130 42 H54 M130 42 H206"/></svg>
-              <span class="approach-branch-core"><svg viewBox="0 0 24 24"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9M12 12v3"/></svg></span>
-              <span class="approach-branch-node approach-branch-left"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
-              <span class="approach-branch-node approach-branch-right"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
-            </div>
+          </li>
+          <li class="approach-stage" data-approach-from="4">
+            <div class="approach-meta"><span class="approach-number">04</span><h3>Extend</h3></div>
             <strong>Future development</strong>
+          </li>
+        </ol>
+        <div class="approach-field" aria-hidden="true">
+          <div class="approach-platform">
+            <svg class="approach-field-links" viewBox="0 0 520 150" preserveAspectRatio="none">
+              <path class="approach-scatter" d="M36 108 H118 V46 H208 V118 H312 V52 H408 V102 H484"/>
+              <path class="approach-spine" d="M70 82 H450"/>
+              <path class="approach-branches" d="M260 82 H70 M260 82 H450"/>
+            </svg>
+            <span class="approach-mini approach-node-a"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg></span>
+            <span class="approach-mini approach-node-b"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/></svg></span>
+            <span class="approach-mini approach-node-c"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></span>
+            <span class="approach-lens"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
+            <span class="approach-proof-checked" data-approach-from="3"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg></span>
+            <span class="approach-branch-node approach-branch-left" data-approach-from="4"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
+            <span class="approach-branch-node approach-branch-right" data-approach-from="4"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
           </div>
-          <svg class="approach-connector approach-connector-final" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="5">
-            <path d="M40 0 V66"/><path d="M29 56 L40 72 51 56"/>
-          </svg>
-        </article>
+        </div>
         <div class="approach-routes" data-approach-from="5" aria-label="Three ways to begin">
           <p class="approach-banner">Start where the need is clearest</p>
           <div class="approach-route-list">
@@ -508,6 +479,9 @@
     </div>
   </div>
 </footer>
+<button type="button" class="scroll-cue" hidden aria-label="Continue scrolling">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+</button>
 <script src="assets/js/site.js" defer></script>
 </body>
 </html>

@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 continuous Fit/Approach and scroll cue — 31 August 2026
+
+Fit recedes the industry-software structure and grows a two-way amber link. Approach is one evolving field plus caption rail. A `Continue scrolling` cue is fixed at the bottom centre.
+
+- PASS — `python3 site_check.py` including `check_round9`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 320–1440 composition, reverse scroll, cue hide-at-bottom and reduced-motion. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 round 8 review correction 3 — Approach route icons — 31 August 2026
 
 `.approach-route > span svg` now sets `fill: none` and `stroke: currentColor` so Clear workflow, Needs clarity and Team capability icons are visible on the dark tiles.

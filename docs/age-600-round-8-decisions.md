@@ -11,3 +11,6 @@ Append-only log of material implementation choices. Routine edits are not record
 | 2026-08-31 | Narrow Gap clips `.gap-scene` (`overflow: hidden`) so the rotated `.gap-links` AABB cannot widen the document at 320/360/390. Nodes and labels stay inside the scene. Page-level overflow-x is not the fix. |
 | 2026-08-31 | Legacy `.approach-stage` card/span/strong/em rules are scoped to `.approach-stages`. `.approach-journey .approach-stage` is a transparent unframed wrapper so numbers/titles read in ink on the sand section. |
 | 2026-08-31 | Closing Approach route SVGs use `fill: none; stroke: currentColor` so the three symbols read as cream lines on the dark tiles. |
+| 2026-08-31 | Fit recedes the industry-software structure and grows a slender two-way amber link, then the foundation and bespoke layer, instead of swapping snapshot cards. |
+| 2026-08-31 | Approach is one persistent field with a caption rail: scatter recedes, the lens becomes the selected core, a check and branches grow, then the three routes appear beneath. |
+| 2026-08-31 | A fixed `Continue scrolling` cue uses scrollBy, hides at `#start`/page bottom, and animates only under `prefers-reduced-motion: no-preference`. |

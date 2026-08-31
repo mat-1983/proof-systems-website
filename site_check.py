@@ -1476,6 +1476,41 @@ def check_approach_route_icons(css: str, failures: list[str]) -> None:
         fail("Approach route SVGs must set an explicit stroke-width", failures)
 
 
+def check_round9(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    if 'class="approach-field"' not in raw or 'class="approach-rail"' not in raw:
+        fail("Approach must use one evolving field with a caption rail, not four standalone cards", failures)
+    if raw.count('class="approach-platform"') != 1:
+        fail("Approach must keep a single persistent platform rather than one card per stage", failures)
+    if "fit-link-line" not in raw:
+        fail("Fit must grow a continuous two-way connection rather than a snapshot arrow", failures)
+    if "translateX(-8%) scale(0.9)" not in css:
+        fail("Fit industry-software structure must recede to make space for the foundation", failures)
+    if "scaleY(0.18)" not in css:
+        fail("Fit bespoke layer must grow from the foundation rather than pop in", failures)
+    if ".fit-transition-vertical" not in css:
+        fail("Fit narrow composition must keep a vertical connection", failures)
+    if 'aria-label="Continue scrolling"' not in raw:
+        fail("scroll cue must have the accessible name Continue scrolling", failures)
+    if 'class="scroll-cue" hidden' not in raw:
+        fail("scroll cue must be hidden until JavaScript shows it", failures)
+    if "updateScrollCue" not in js or "scrollBy" not in js:
+        fail("scroll cue must advance the page with scrollBy and hide at the enquiry/bottom", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("scroll cue must not hijack wheel scrolling", failures)
+    if 'getElementById("start")' not in js:
+        fail("scroll cue must hide when the final Start/enquiry area is reached", failures)
+    cue = css.split(".scroll-cue {", 1)
+    if len(cue) < 2 or "position: fixed" not in cue[-1].split("}", 1)[0]:
+        fail("scroll cue must be a fixed bottom-centre control", failures)
+    if "@media (prefers-reduced-motion: no-preference)" not in css or "scroll-cue-nudge" not in css:
+        fail("scroll cue motion must be gated to users who permit animation", failures)
+    if ".approach-scatter" not in css or ".approach-spine" not in css or ".approach-branches" not in css:
+        fail("Approach field must evolve scatter, spine and branch connections in place", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -1495,14 +1530,15 @@ def check() -> int:
     check_round6(failures)
     check_round7(failures)
     check_round8(failures)
+    check_round9(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-8 staged Gap/Fit/Capability/Approach scenes, "
-        "round-7 training/work/stories/joins/enquiry/LinkedIn, enquiry form, "
+        "PASS routes, eight stories, round-9 continuous Fit/Approach and scroll cue, "
+        "round-8 staged scenes, round-7 training/work/stories, enquiry form, "
         "omitted client chapter, poster-first teasers and public-copy safety"
     )
     return 0

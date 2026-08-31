@@ -187,4 +187,23 @@
       }
     });
   }
+
+  var scrollCue = document.querySelector(".scroll-cue");
+  function updateScrollCue() {
+    if (!scrollCue) return;
+    var start = document.getElementById("start");
+    var remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    var startNear = start && start.getBoundingClientRect().top < window.innerHeight - 72;
+    scrollCue.hidden = remaining < 48 || Boolean(startNear);
+  }
+  if (scrollCue) {
+    window.addEventListener("scroll", updateScrollCue, { passive: true });
+    window.addEventListener("resize", updateScrollCue);
+    updateScrollCue();
+    scrollCue.addEventListener("click", function () {
+      var distance = Math.max(window.innerHeight * 0.78, 280);
+      if (reduced) window.scrollBy(0, distance);
+      else window.scrollBy({ top: distance, left: 0, behavior: "smooth" });
+    });
+  }
 })();

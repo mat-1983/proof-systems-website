@@ -2049,6 +2049,7 @@ html.js #capability[data-capability]:not([data-cap-step="6"]) .capability-action
 .gap-scene svg,
 .fit-scene svg,
 .approach-visual svg,
+.approach-field svg,
 .cap-rail-node svg,
 .cap-rail-link,
 .approach-connector {
@@ -2265,12 +2266,15 @@ html.js [data-gap-step="4"] .gap-pulse { opacity: 1; }
 .fit-unused { left: 0; top: 42%; }
 .fit-bends { left: 1%; bottom: 1%; }
 .fit-missing { right: 0; top: 17%; text-align: right; }
+.fit-monolith {
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
 .fit-transition {
   position: absolute;
-  left: 27.8%;
-  top: 30.5%;
-  width: 33.2%;
-  height: 6.4rem;
+  left: 23%;
+  top: 54%;
+  width: 30%;
+  height: 1.7rem;
   overflow: visible;
   z-index: 2;
   stroke: none;
@@ -2283,7 +2287,15 @@ html.js [data-gap-step="4"] .gap-pulse { opacity: 1; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.fit-transition circle { fill: var(--amber); }
+.fit-transition .fit-link-line {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fit-foundation,
+.fit-layer {
+  transition: opacity 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+}
 .fit-foundation {
   position: absolute;
   right: 1%;
@@ -2337,8 +2349,79 @@ html.js [data-fit-step="4"] .fit-bent-path path { stroke-dashoffset: 0; }
 html.js [data-fit-step="2"] .fit-bent-path circle,
 html.js [data-fit-step="3"] .fit-bent-path circle,
 html.js [data-fit-step="4"] .fit-bent-path circle { opacity: 1; }
+html.js [data-fit-step="3"] .fit-monolith,
+html.js [data-fit-step="4"] .fit-monolith { transform: translateX(-8%) scale(0.9); }
+html.js .fit-foundation { transform: translateY(1.1rem) scale(0.94); }
+html.js [data-fit-step="3"] .fit-foundation,
+html.js [data-fit-step="4"] .fit-foundation { transform: none; }
+html.js .fit-layer { transform: scaleY(0.18); transform-origin: bottom center; }
+html.js [data-fit-step="4"] .fit-layer { transform: none; }
+html.js [data-fit-step="3"] .fit-link-line,
+html.js [data-fit-step="4"] .fit-link-line { stroke-dashoffset: 0; }
 
 .approach-journey { position: relative; }
+.approach-rail {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.approach-journey .approach-stage strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.approach-field { position: relative; }
+.approach-field .approach-platform {
+  overflow: visible;
+  min-height: 10.5rem;
+}
+.approach-field-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  stroke: none;
+}
+.approach-scatter {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.4s ease;
+}
+.approach-spine,
+.approach-branches {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.approach-proof-checked {
+  left: 50%;
+  top: 58%;
+  transform: translateX(-50%);
+  color: var(--blue);
+  border-color: rgba(66, 168, 255, 0.7);
+}
+.approach-proof-checked svg,
+.approach-branch-node svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .approach-journey .approach-stage {
   position: relative;
   background: none;
@@ -2535,6 +2618,46 @@ html.js [data-approach-step="4"] [data-approach-from="2"] path,
 html.js [data-approach-step="4"] [data-approach-from="3"] path,
 html.js [data-approach-step="4"] [data-approach-from="4"] path,
 html.js [data-approach-step="5"] .approach-connector path { stroke-dashoffset: 0; }
+html.js .approach-proof-checked,
+html.js .approach-branch-node {
+  visibility: hidden;
+  opacity: 0;
+}
+html.js [data-approach-step="2"] .approach-node-a,
+html.js [data-approach-step="2"] .approach-node-c,
+html.js [data-approach-step="3"] .approach-node-a,
+html.js [data-approach-step="3"] .approach-node-c,
+html.js [data-approach-step="4"] .approach-node-a,
+html.js [data-approach-step="4"] .approach-node-c,
+html.js [data-approach-step="5"] .approach-node-a,
+html.js [data-approach-step="5"] .approach-node-c {
+  opacity: 0.32;
+  transform: scale(0.86);
+}
+html.js [data-approach-step="2"] .approach-scatter,
+html.js [data-approach-step="3"] .approach-scatter,
+html.js [data-approach-step="4"] .approach-scatter,
+html.js [data-approach-step="5"] .approach-scatter { opacity: 0.2; }
+html.js [data-approach-step="2"] .approach-lens,
+html.js [data-approach-step="3"] .approach-lens,
+html.js [data-approach-step="4"] .approach-lens,
+html.js [data-approach-step="5"] .approach-lens {
+  width: 3.55rem;
+  height: 3.55rem;
+}
+html.js [data-approach-step="3"] .approach-proof-checked,
+html.js [data-approach-step="4"] .approach-proof-checked,
+html.js [data-approach-step="5"] .approach-proof-checked,
+html.js [data-approach-step="4"] .approach-branch-node,
+html.js [data-approach-step="5"] .approach-branch-node {
+  visibility: visible;
+  opacity: 1;
+}
+html.js [data-approach-step="3"] .approach-spine,
+html.js [data-approach-step="4"] .approach-spine,
+html.js [data-approach-step="5"] .approach-spine,
+html.js [data-approach-step="4"] .approach-branches,
+html.js [data-approach-step="5"] .approach-branches { stroke-dashoffset: 0; }
 
 .cap-leg { display: grid; grid-template-columns: 4.4rem minmax(0, 1fr); gap: 0.8rem; }
 .cap-rail { position: relative; min-height: 8.2rem; }
@@ -2611,28 +2734,15 @@ html.js [data-cap-step="6"] .cap-leg {
 }
 
 @media (min-width: 901px) {
-  .approach-journey {
+  .approach-rail {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
-    align-items: start;
   }
-  .approach-meta { display: block; min-height: 3.7rem; }
-  .approach-connector {
-    position: absolute;
-    z-index: 5;
-    top: 7.4rem;
-    right: -2.4rem;
-    width: 3.6rem;
-    height: 3.6rem;
-    margin: 0;
-    transform: rotate(-90deg);
-  }
-  .approach-connector-final { display: none; }
+  .approach-meta { display: block; min-height: 3.4rem; }
   .approach-routes {
-    grid-column: 1 / -1;
     width: min(100%, 47rem);
-    margin: 2.2rem auto 0;
+    margin: 1.8rem auto 0;
   }
   .approach-route-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2691,11 +2801,19 @@ html.js [data-cap-step="6"] .cap-leg {
   .fit-transition-vertical {
     display: block;
     left: 50%;
-    top: 35.5%;
-    width: 4.5rem;
-    height: 13rem;
+    top: 34%;
+    width: 1.7rem;
+    height: 8.5rem;
     transform: translateX(-50%);
   }
+  html.js .fit-monolith { transform: translateX(-50%); }
+  html.js [data-fit-step="3"] .fit-monolith,
+  html.js [data-fit-step="4"] .fit-monolith { transform: translateX(-50%) scale(0.86); }
+  html.js .fit-foundation { transform: translateX(-50%) translateY(1rem) scale(0.94); }
+  html.js [data-fit-step="3"] .fit-foundation,
+  html.js [data-fit-step="4"] .fit-foundation { transform: translateX(-50%); }
+  html.js .fit-layer { transform: translateX(-50%) scaleY(0.18); transform-origin: bottom center; }
+  html.js [data-fit-step="4"] .fit-layer { transform: translateX(-50%) scaleY(1); }
   .fit-foundation {
     left: 50%;
     right: auto;
@@ -2730,6 +2848,8 @@ html.js [data-cap-step="6"] .cap-leg {
   html.js [data-fit-from],
   html.js .approach-stage,
   html.js .approach-routes,
+  html.js .approach-proof-checked,
+  html.js .approach-branch-node,
   html.js .cap-leg,
   html.js .cap-gated,
   html.js .cap-stage {
@@ -2738,9 +2858,52 @@ html.js [data-cap-step="6"] .cap-leg {
   }
   html.js .gap-connection,
   html.js .fit-bent-path path,
+  html.js .fit-link-line,
   html.js .approach-connector path,
+  html.js .approach-spine,
+  html.js .approach-branches,
   html.js .cap-rail-link path,
   html.js .cap-connector {
     stroke-dashoffset: 0 !important;
   }
+  html.js .fit-monolith,
+  html.js .fit-foundation,
+  html.js .fit-layer { transform: none !important; }
+}
+
+.scroll-cue {
+  position: fixed;
+  left: 50%;
+  bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: 1px solid rgba(216, 144, 66, 0.5);
+  border-radius: 999px;
+  background: rgba(10, 11, 13, 0.72);
+  color: var(--amber);
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.scroll-cue[hidden] { display: none; }
+.scroll-cue svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue {
+    animation: scroll-cue-nudge 1.8s ease-in-out infinite;
+  }
+}
+@keyframes scroll-cue-nudge {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(0.28rem); }
 }
