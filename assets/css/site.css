@@ -2271,10 +2271,13 @@ html.js [data-gap-step="4"] .gap-pulse { opacity: 1; }
 }
 .fit-transition {
   position: absolute;
-  left: 23%;
-  top: 54%;
-  width: 30%;
+  left: calc(4% + 14.8rem);
+  right: auto;
+  top: auto;
+  bottom: 5.4rem;
+  width: calc(55% - 14.8rem);
   height: 1.7rem;
+  max-width: none;
   overflow: visible;
   z-index: 2;
   stroke: none;
@@ -2793,6 +2796,7 @@ html.js [data-cap-step="6"] .cap-leg {
     left: 50%;
     bottom: auto;
     top: 0;
+    width: min(18rem, 94%);
     transform: translateX(-50%);
   }
   .fit-unused { left: 2%; top: 28%; }
@@ -2801,9 +2805,12 @@ html.js [data-cap-step="6"] .cap-leg {
   .fit-transition-vertical {
     display: block;
     left: 50%;
-    top: 34%;
+    top: 15.5rem;
+    bottom: auto;
     width: 1.7rem;
-    height: 8.5rem;
+    height: calc(100% - 33.8rem);
+    max-width: none;
+    max-height: none;
     transform: translateX(-50%);
   }
   html.js .fit-monolith { transform: translateX(-50%); }
@@ -2829,11 +2836,13 @@ html.js [data-cap-step="6"] .cap-leg {
     transform: translateX(-50%);
   }
   .fit-missing {
-    left: 50%;
-    right: auto;
-    top: 49%;
-    transform: translateX(-50%);
-    white-space: nowrap;
+    left: auto;
+    right: 2%;
+    top: 38%;
+    transform: none;
+    text-align: right;
+    white-space: normal;
+    max-width: 44%;
   }
   .approach-route-list { justify-items: center; }
   .fit-sign { white-space: normal; }
@@ -2869,6 +2878,17 @@ html.js [data-cap-step="6"] .cap-leg {
   html.js .fit-monolith,
   html.js .fit-foundation,
   html.js .fit-layer { transform: none !important; }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  html.js .fit-monolith,
+  html.js .fit-foundation,
+  html.js .fit-layer,
+  .fit-monolith,
+  .fit-foundation,
+  .fit-layer {
+    transform: translateX(-50%) !important;
+  }
 }
 
 .scroll-cue {

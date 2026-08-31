@@ -1476,6 +1476,317 @@ def check_approach_route_icons(css: str, failures: list[str]) -> None:
         fail("Approach route SVGs must set an explicit stroke-width", failures)
 
 
+def _consume_at_block(text: str, start: int) -> int:
+    brace = text.find("{", start)
+    semi = text.find(";", start)
+    if brace < 0 or (semi != -1 and semi < brace):
+        return len(text) if semi < 0 else semi + 1
+    depth = 1
+    i = brace + 1
+    n = len(text)
+    while i < n and depth:
+        if text.startswith("/*", i):
+            end = text.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+            continue
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+        i += 1
+    return i
+
+
+def _fit_css_rules(css: str):
+    """Yield (media, selector, decls, order) for .fit-* rules, in source order."""
+    n = len(css)
+    i = 0
+    media_stack: list[str] = []
+    order = 0
+    while i < n:
+        while i < n and css[i] in " \t\r\n":
+            i += 1
+        if i >= n:
+            break
+        if css.startswith("/*", i):
+            end = css.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+            continue
+        if css[i] == "}":
+            if media_stack:
+                media_stack.pop()
+            i += 1
+            continue
+        if css.startswith("@media", i):
+            brace = css.find("{", i)
+            if brace < 0:
+                break
+            media_stack.append(css[i + 6 : brace].strip())
+            i = brace + 1
+            continue
+        if css[i] == "@":
+            i = _consume_at_block(css, i)
+            continue
+        brace = css.find("{", i)
+        if brace < 0:
+            break
+        selector = css[i:brace].strip()
+        depth = 1
+        j = brace + 1
+        while j < n and depth:
+            if css.startswith("/*", j):
+                end = css.find("*/", j + 2)
+                j = n if end < 0 else end + 2
+                continue
+            if css[j] == "{":
+                depth += 1
+            elif css[j] == "}":
+                depth -= 1
+            j += 1
+        body = css[brace + 1 : j - 1]
+        media = " and ".join(media_stack)
+        if ".fit-" in selector:
+            decls: dict[str, str] = {}
+            for raw in body.split(";"):
+                if ":" in raw:
+                    prop, value = raw.split(":", 1)
+                    decls[prop.strip()] = value.strip()
+            for part in selector.split(","):
+                part = part.strip()
+                if part:
+                    yield media, part, decls, order
+            order += 1
+        i = j
+
+
+def _fit_spec(selector: str) -> tuple[int, int, int]:
+    ids = len(re.findall(r"#[\w-]+", selector))
+    classes = len(re.findall(r"\.[\w-]+", selector))
+    attrs = len(re.findall(r"\[[^\]]+\]", selector))
+    stripped = re.sub(r"#[\w-]+|\.[\w-]+|\[[^\]]+\]|::?[\w-]+(\([^)]*\))?", "", selector)
+    elements = len(re.findall(r"\b[a-zA-Z][\w-]*", stripped))
+    return (ids, classes + attrs, elements)
+
+
+def _fit_media_applies(media: str, width: int, reduced: bool) -> bool:
+    if not media:
+        return True
+    for raw in re.split(r"\band\b", media):
+        part = raw.strip().strip("()")
+        max_w = re.search(r"max-width:\s*(\d+)px", part)
+        if max_w and width > int(max_w.group(1)):
+            return False
+        min_w = re.search(r"min-width:\s*(\d+)px", part)
+        if min_w and width < int(min_w.group(1)):
+            return False
+        if "prefers-reduced-motion: reduce" in part and not reduced:
+            return False
+        if "prefers-reduced-motion: no-preference" in part and reduced:
+            return False
+    return True
+
+
+def _fit_targets(selector: str, cls: str, js: bool, step: str) -> bool:
+    if not re.search(rf"\.{re.escape(cls)}(?![\w-])", selector):
+        return False
+    if "html.js" in selector and not js:
+        return False
+    step_attr = re.search(r'\[data-fit-step(?:=["\']?(\d+)["\']?)?\]', selector)
+    return not (step_attr and step_attr.group(1) and step_attr.group(1) != step)
+
+
+def _fit_used(rules, cls: str, prop: str, width: int, reduced: bool, js: bool = True) -> str | None:
+    best = None
+    best_key = None
+    for media, selector, decls, order in rules:
+        if prop not in decls:
+            continue
+        if not _fit_media_applies(media, width, reduced):
+            continue
+        if not _fit_targets(selector, cls, js, "4"):
+            continue
+        raw = decls[prop]
+        important = raw.endswith("!important")
+        value = raw[:-10].strip() if important else raw
+        key = (important, _fit_spec(selector), order)
+        if best_key is None or key > best_key:
+            best_key = key
+            best = value
+    return best
+
+
+def _css_len(token: str, percent_base: float, rem: float = 16.0) -> float:
+    token = token.strip()
+    if token.startswith("min(") and token.endswith(")"):
+        return min(_css_len(part, percent_base, rem) for part in token[4:-1].split(","))
+    if token.startswith("calc(") and token.endswith(")"):
+        total = 0.0
+        sign = 1.0
+        for part in re.split(r"\s*([+-])\s*", token[5:-1].strip()):
+            if part == "+":
+                sign = 1.0
+            elif part == "-":
+                sign = -1.0
+            elif part.strip():
+                total += sign * _css_len(part.strip(), percent_base, rem)
+                sign = 1.0
+        return total
+    if token.endswith("%"):
+        return percent_base * float(token[:-1]) / 100.0
+    if token.endswith("rem"):
+        return float(token[:-3]) * rem
+    if token.endswith("px"):
+        return float(token[:-2])
+    return float(token)
+
+
+def _fit_svg(html: str, kind: str) -> tuple[str, tuple[float, float, float, float], str]:
+    match = re.search(
+        rf'<svg class="fit-transition fit-transition-{kind}"[^>]*viewBox="([^"]+)"[^>]*>([\s\S]*?)</svg>',
+        html,
+    )
+    if not match:
+        raise ValueError(kind)
+    line = re.search(r'class="fit-link-line" d="([^"]+)"', match.group(2))
+    if not line:
+        raise ValueError(kind)
+    view = tuple(float(part) for part in match.group(1).split())
+    return match.group(2), view, line.group(1)
+
+
+def _axis_ratio(d: str, view: tuple[float, float, float, float], horizontal: bool) -> tuple[float, float]:
+    nums = [float(part) for part in re.findall(r"-?\d+(?:\.\d+)?", d)]
+    origin, span = (view[0], view[2]) if horizontal else (view[1], view[3])
+    start = nums[0] if horizontal else nums[1]
+    end = nums[-1]
+    return (start - origin) / span, (end - origin) / span
+
+
+def _wrap(viewport: int) -> float:
+    return min(1180.0, float(viewport - 48))
+
+
+def check_fit_reduced_motion_narrow(css: str, failures: list[str]) -> None:
+    """Winning transform under max-width 900px AND reduce must keep translateX(-50%)."""
+    rules = list(_fit_css_rules(css))
+    for cls in ("fit-monolith", "fit-foundation", "fit-layer"):
+        for width in (320, 390, 768):
+            used = _fit_used(rules, cls, "transform", width, True, js=True)
+            if not used or "translateX(-50%)" not in used or "scale(" in used or re.search(r"\bnone\b", used):
+                fail(
+                    f"{cls} at {width}px + reduced-motion must resolve to a static "
+                    f"translateX(-50%) after the reduce query, not {used!r}",
+                    failures,
+                )
+            nojs = _fit_used(rules, cls, "transform", width, True, js=False)
+            if not nojs or "translateX(-50%)" not in nojs:
+                fail(f"no-JS {cls} at {width}px + reduced-motion must stay centred, not {nojs!r}", failures)
+        wide = _fit_used(rules, cls, "transform", 1440, True, js=True)
+        if wide != "none":
+            fail(f"wide reduced-motion {cls} must stay static (none), not {wide!r}", failures)
+    scene = _wrap(320)
+    width_decl = _fit_used(rules, "fit-monolith", "width", 320, True, js=True)
+    if not width_decl:
+        fail("narrow Fit monolith is missing a width", failures)
+    elif _css_len(width_decl, scene) > scene + 0.5:
+        fail(
+            f"narrow Fit monolith at 320px is {_css_len(width_decl, scene):.1f}px wide in a {scene:.1f}px scene",
+            failures,
+        )
+
+
+def check_fit_connector_geometry(html: str, css: str, failures: list[str]) -> None:
+    """Connector path + used CSS box must meet the receding source and receiving composition."""
+    rules = list(_fit_css_rules(css))
+    try:
+        wide_markup, wide_view, wide_d = _fit_svg(html, "wide")
+        vert_markup, vert_view, vert_d = _fit_svg(html, "vertical")
+    except ValueError:
+        fail("Fit connector SVGs are missing", failures)
+        return
+    if "H" not in wide_d.upper() or "V" not in vert_d.upper():
+        fail("Fit connectors must stay horizontal when wide and vertical when narrow", failures)
+    if wide_markup.count("<path") < 3 or vert_markup.count("<path") < 3:
+        fail("Fit connectors must keep two-way arrowheads at both ends", failures)
+    if "stroke-width: 3" not in css.split(".fit-transition path", 1)[-1][:180]:
+        fail("Fit connector must keep the restrained 3-unit stroke", failures)
+    x0, x1 = _axis_ratio(wide_d, wide_view, True)
+    y0, y1 = _axis_ratio(vert_d, vert_view, False)
+
+    scene = _wrap(1440)
+    left = _fit_used(rules, "fit-transition", "left", 1440, False)
+    width = _fit_used(rules, "fit-transition", "width", 1440, False)
+    right = _fit_used(rules, "fit-transition", "right", 1440, False)
+    m_left = _fit_used(rules, "fit-monolith", "left", 1440, False)
+    m_width = _fit_used(rules, "fit-monolith", "width", 1440, False)
+    f_right = _fit_used(rules, "fit-foundation", "right", 1440, False)
+    f_width = _fit_used(rules, "fit-foundation", "width", 1440, False)
+    if None in (left, width, m_left, m_width, f_right, f_width):
+        fail("wide Fit connector geometry is incomplete", failures)
+    else:
+        box_left = _css_len(left, scene)
+        box_width = (
+            scene - _css_len(right, scene) - box_left
+            if width == "auto"
+            else _css_len(width, scene)
+        )
+        line_start = box_left + min(x0, x1) * box_width
+        line_end = box_left + max(x0, x1) * box_width
+        mono_w = _css_len(m_width, scene)
+        receded_right = _css_len(m_left, scene) + mono_w / 2 - 0.08 * mono_w + (mono_w * 0.9) / 2
+        foundation_left = scene - _css_len(f_right, scene) - _css_len(f_width, scene)
+        if line_start > receded_right + 1:
+            fail(
+                f"wide Fit connector starts {line_start - receded_right:.1f}px after the receding monolith",
+                failures,
+            )
+        if line_end + 1 < foundation_left:
+            fail(
+                f"wide Fit connector ends {foundation_left - line_end:.1f}px before the foundation",
+                failures,
+            )
+
+    scene_h = 48 * 16
+    top = _fit_used(rules, "fit-transition-vertical", "top", 390, False)
+    height = _fit_used(rules, "fit-transition-vertical", "height", 390, False)
+    bottom = _fit_used(rules, "fit-transition-vertical", "bottom", 390, False)
+    layer_bottom = _fit_used(rules, "fit-layer", "bottom", 390, False)
+    if not top or not layer_bottom:
+        fail("narrow Fit connector geometry is incomplete", failures)
+    else:
+        box_top = _css_len(top, scene_h)
+        if height and height != "auto":
+            box_height = _css_len(height, scene_h)
+        elif bottom and bottom != "auto":
+            box_height = scene_h - box_top - _css_len(bottom, scene_h)
+        else:
+            box_height = 0.0
+            fail("narrow Fit connector needs an explicit vertical span", failures)
+        line_start = box_top + min(y0, y1) * box_height
+        line_end = box_top + max(y0, y1) * box_height
+        layer_h = (0.65 * 2 + 0.82 * 1.6) * 16 + 2 + 5 * 16
+        layer_top = scene_h - _css_len(layer_bottom, scene_h) - layer_h
+        if line_start > 17 * 16 + 1:
+            fail(
+                f"narrow Fit connector starts {line_start - 17 * 16:.1f}px below the monolith",
+                failures,
+            )
+        if line_end + 1 < layer_top:
+            fail(
+                f"narrow Fit connector ends {layer_top - line_end:.1f}px before the bespoke layer",
+                failures,
+            )
+
+    narrow = css.split("@media (max-width: 900px)", 1)[-1].split("@media", 1)[0]
+    missing = narrow.split(".fit-missing {", 1)
+    if len(missing) < 2:
+        fail("narrow Only the missing layer label is missing", failures)
+    else:
+        body = missing[-1].split("}", 1)[0]
+        if "left: 50%" in body and "translateX(-50%)" in body:
+            fail("Only the missing layer must not sit on the narrow connector as a centred break", failures)
+
+
 def check_round9(failures: list[str]) -> None:
     raw = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
@@ -1509,6 +1820,8 @@ def check_round9(failures: list[str]) -> None:
         fail("scroll cue motion must be gated to users who permit animation", failures)
     if ".approach-scatter" not in css or ".approach-spine" not in css or ".approach-branches" not in css:
         fail("Approach field must evolve scatter, spine and branch connections in place", failures)
+    check_fit_reduced_motion_narrow(css, failures)
+    check_fit_connector_geometry(raw, css, failures)
 
 
 def check() -> int:

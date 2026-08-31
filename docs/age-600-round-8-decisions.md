@@ -14,3 +14,5 @@ Append-only log of material implementation choices. Routine edits are not record
 | 2026-08-31 | Fit recedes the industry-software structure and grows a slender two-way amber link, then the foundation and bespoke layer, instead of swapping snapshot cards. |
 | 2026-08-31 | Approach is one persistent field with a caption rail: scatter recedes, the lens becomes the selected core, a check and branches grow, then the three routes appear beneath. |
 | 2026-08-31 | A fixed `Continue scrolling` cue uses scrollBy, hides at `#start`/page bottom, and animates only under `prefers-reduced-motion: no-preference`. |
+| 2026-08-31 | Narrow reduced-motion Fit keeps `translateX(-50%)` via a later combined `max-width: 900px` and `prefers-reduced-motion: reduce` rule, so the unscoped reduce `transform: none !important` cannot un-centre the vertical composition. |
+| 2026-08-31 | Fit connector SVG paths span the viewBox; the wide box runs from the receded monolith to the foundation (`left: calc(4% + 14.8rem); width: calc(55% - 14.8rem)`), and the narrow box is an explicit vertical span from the monolith to the bespoke layer. The missing-layer label sits in the right gutter. |

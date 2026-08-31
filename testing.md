@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 review correction — Fit reduced-motion centring and connector join — 31 August 2026
+
+Narrow reduced-motion Fit keeps `translateX(-50%)` after the unscoped `transform: none !important` reduce query. The two-way amber connector meets the receding monolith and the receiving foundation/bespoke layer in both compositions.
+
+- PASS — `python3 site_check.py` including `check_fit_reduced_motion_narrow` and `check_fit_connector_geometry`. Those assertions fail on `95e4fc9` CSS/HTML (reduce wins with `transform: none`; wide connector ends 76.7px before the foundation; vertical connector ends 81.1px before the bespoke layer) and pass on the corrected tree.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 320/360/390/500/768 reduced-motion Fit centring and 1440/390 connector join. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 continuous Fit/Approach and scroll cue — 31 August 2026
 
 Fit recedes the industry-software structure and grows a two-way amber link. Approach is one evolving field plus caption rail. A `Continue scrolling` cue is fixed at the bottom centre.
