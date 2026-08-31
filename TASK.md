@@ -2,6 +2,10 @@
 
 Updated: 2026-08-31
 
+## AGE-600 mobile connected workflow and Fit refinement
+
+Selected Systems on a phone uses a purpose-built connected map with grouped nodes and labelled trunks. Narrow Fit attaches “Only the missing layer” to the Bespoke Layer and reveals the first stage sooner. Homepage AI-training CTAs share the adaptive enquiry form, Approach routes show enquiry pills, and desktop chapter travel is about 13% shorter. Not approved for push, merge or publication.
+
 ## AGE-600 fluid narrow journeys and adaptive enquiry
 
 Narrow Gap, Capability and Approach travel with the viewport. Approach no longer jumps or leaves a long sand tail. Operator First includes the approved Jobhawk paragraph. The single enquiry form reflects focused-build, workflow-diagnostic and AI team training routes. Not approved for push, merge or publication.

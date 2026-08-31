@@ -1667,6 +1667,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
   .map-wide { display: none; }
   .map-tall { display: block; }
   .map-tall .map-title { font-size: 15px; }
+  .map-tall .map-group { fill: rgba(216, 144, 66, 0.08); stroke: rgba(216, 144, 66, 0.35); }
   .map-tall .map-sub { font-size: 13px; }
   .map-tall .map-group-label { font-size: 13px; }
   .map-tall .map-label { font-size: 13px; }
@@ -1903,7 +1904,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
     text-align: left;
   }
   html.js #capability[data-capability] {
-    min-height: 400vh;
+    min-height: 350vh;
   }
   html.js #capability .capability-sticky {
     position: sticky;
@@ -2018,9 +2019,9 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
 }
 
 /* AGE-600 round 8 staged semantic scenes */
-html.js [data-scene="gap"] { min-height: 300vh; }
+html.js [data-scene="gap"] { min-height: 260vh; }
 html.js [data-scene="fit"] { min-height: 300vh; }
-html.js [data-scene="approach"] { min-height: 240vh; }
+html.js [data-scene="approach"] { min-height: 210vh; }
 html:not(.js) .gap-connection,
 html:not(.js) .fit-bent-path path,
 html:not(.js) .fit-link-line,
@@ -2046,7 +2047,7 @@ html.js [data-scene="approach"] .scene-sticky {
   align-items: flex-start;
   overflow: visible;
 }
-html.js #capability[data-capability] { min-height: 400vh; }
+html.js #capability[data-capability] { min-height: 350vh; }
 
 .capability-journey { display: none; }
 
@@ -2561,7 +2562,7 @@ html.js [data-fit-step="4"] .fit-link-line { stroke-dashoffset: 0; }
   border: 1px solid transparent;
   background: transparent;
 }
-.approach-route > span {
+.approach-route > span[aria-hidden] {
   display: grid;
   place-items: center;
   width: 3.2rem;
@@ -2571,6 +2572,18 @@ html.js [data-fit-step="4"] .fit-link-line { stroke-dashoffset: 0; }
   background: linear-gradient(145deg, #403c37, #1e1f21);
   border: 1px solid rgba(216, 146, 62, 0.54);
   border-radius: 0.45rem;
+}
+.approach-route-action {
+  display: inline-block;
+  margin-top: 0.55rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 .approach-route strong, .approach-route em { display: block; }
 .approach-route em { font-style: normal; margin-top: 0.18rem; }
@@ -2585,6 +2598,9 @@ html.js [data-fit-step="4"] .fit-link-line { stroke-dashoffset: 0; }
 .approach-route:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
+}
+.approach-route:focus-visible .approach-route-action {
+  box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px var(--focus);
 }
 
 html.js [data-approach-step="1"] [data-approach-from="1"],
@@ -2699,6 +2715,7 @@ html.js [data-cap-step="6"] .cap-leg {
 }
 
 @media (min-width: 901px) {
+  html.js [data-scene="fit"] { min-height: 260vh; }
   .approach-journey {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2812,13 +2829,14 @@ html.js [data-cap-step="6"] .cap-leg {
     transform: translateX(-50%);
   }
   .fit-missing {
-    left: auto;
-    right: 2%;
-    top: 38%;
+    left: 7%;
+    right: 7%;
+    top: auto;
+    bottom: 19.1rem;
     transform: none;
-    text-align: right;
-    white-space: normal;
-    max-width: 44%;
+    text-align: center;
+    white-space: nowrap;
+    max-width: none;
   }
   .approach-route-list { justify-items: center; }
   .fit-sign { white-space: normal; }

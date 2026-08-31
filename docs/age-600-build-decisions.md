@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-08-31 — Mobile connected workflow, Fit label and desktop pacing
+
+Narrow Selected Systems uses a purpose-built connection map instead of a stacked desktop fallback. LedgerLink is the labelled central trunk, operations and finance are grouped, and identity/two-way/labour paths are explicit. Narrow Fit keeps sticky travel with a 12% first threshold and places “Only the missing layer” on the Bespoke Layer. Desktop Gap/Fit/Capability/Approach travel shortens by about 13%. AI-team-training CTAs share the adaptive `proof-systems-qualifier` form.
+
 ## 2026-08-31 — Fluid narrow journeys and adaptive enquiry
 
 On 900px and below, Gap, Capability and Approach travel in ordinary document flow. Items reveal once as they enter the viewport; reverse scrolling does not re-hide them. Fit and the opening sequence stay as approved. Desktop Approach travel is 240vh with the route block revealed at 93% so the sand tail is ordinary chapter spacing. Operator First includes the approved Jobhawk paragraph. One `proof-systems-qualifier` form adapts heading/copy and hidden `interest_source` to `focused-build`, `workflow-diagnostic` or `ai-team-training`.

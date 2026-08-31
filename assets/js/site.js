@@ -74,7 +74,11 @@
       var progress = clamp(-rect.top / travel, 0, 1);
       var step = Math.min(steps, 1 + Math.floor(progress * steps));
       if (attr === "data-approach-step") {
-        step = progress >= 0.93 ? steps : Math.min(steps - 1, 1 + Math.floor((progress / 0.93) * (steps - 1)));
+        step = progress >= 0.90 ? steps : Math.min(steps - 1, 1 + Math.floor((progress / 0.90) * (steps - 1)));
+      }
+      if (attr === "data-fit-step" && isNarrow()) {
+        if (progress < 0.12) step = 1;
+        else step = Math.min(steps, 2 + Math.floor(((progress - 0.12) / 0.88) * (steps - 1)));
       }
       root.setAttribute(attr, String(step));
       if (onStep) onStep(step);

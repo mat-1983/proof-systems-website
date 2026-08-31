@@ -1151,8 +1151,8 @@ def check_round6(failures: list[str]) -> None:
         fail("Capability action must be Ask about AI team training", failures)
     if "Math.min(steps, 1 + Math.floor(progress * steps))" not in js:
         fail("Capability desktop steps must use equal travel buckets", failures)
-    if "400vh" not in css:
-        fail("desktop Capability travel must be shorter than 480vh while remaining distinct", failures)
+    if "350vh" not in css:
+        fail("desktop Capability travel must be shorter than 400vh while remaining distinct", failures)
     if "560vh" in css:
         fail("desktop Capability travel must no longer use the longer 560vh interval", failures)
     expected_steps = {
@@ -1264,8 +1264,8 @@ def check_round7(failures: list[str]) -> None:
         fail("homepage should contain the AI Automation sentence", failures)
     if 'data-cap-step="6"' not in raw:
         fail("Capability no-JS default must be stage 6 so actions are present", failures)
-    if "400vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
-        fail("desktop Capability min-height must be 400vh", failures)
+    if "350vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability min-height must be 350vh", failures)
     if "[data-cap-step=\"5\"] .cap-gated" not in css or "[data-cap-step=\"6\"] .cap-gated" not in css:
         fail("stage 5 and stage 6 must both show the five Capability icons", failures)
     if 'String(step) === "6"' not in js:
@@ -1804,6 +1804,10 @@ def check_fit_connector_geometry(html: str, css: str, failures: list[str]) -> No
         body = missing[-1].split("}", 1)[0]
         if "left: 50%" in body and "translateX(-50%)" in body:
             fail("Only the missing layer must not sit on the narrow connector as a centred break", failures)
+        if "top: 38%" in body:
+            fail("Only the missing layer must not float halfway up the narrow connector", failures)
+        if "bottom:" not in body or "top: auto" not in body:
+            fail("narrow Only the missing layer must sit against the Bespoke Layer, not the connector", failures)
 
 
 def check_round9(failures: list[str]) -> None:
@@ -1869,8 +1873,8 @@ def check_round10(failures: list[str]) -> None:
             fail(f"Approach copy missing {phrase!r}", failures)
     if "<em>AI training</em>" in approach:
         fail("Approach Team capability route must read AI team training", failures)
-    if "Ask about team training" in approach:
-        fail("Approach closing routes must be whole-route links, not a nested training CTA", failures)
+    if re.search(r"<a[^>]+href=\"training.html\"[^>]*>[\s\S]*Ask about team training", approach):
+        fail("Approach closing routes must not nest a separate training.html CTA", failures)
     if approach.count('class="approach-connector"') < 3:
         fail("Approach must draw connections between the four modules", failures)
     if "approach-connector-h" not in approach or "approach-connector-v" not in approach:
@@ -1879,16 +1883,16 @@ def check_round10(failures: list[str]) -> None:
         fail("Clear workflow / Focused build must use interest=focused-build", failures)
     if 'href="workflow.html?interest=workflow-diagnostic"' not in approach:
         fail("Needs clarity / Workflow diagnostic must use interest=workflow-diagnostic", failures)
-    if 'href="training.html"' not in approach:
-        fail("Team capability must be a whole-route link to training.html", failures)
+    if 'href="workflow.html?interest=ai-team-training"' not in approach:
+        fail("Team capability must use the adaptive enquiry form with interest=ai-team-training", failures)
     if not re.search(r'<a class="approach-route route-pad" href="workflow.html\?interest=', approach):
         fail("closing Approach workflow routes must be semantic whole-route links", failures)
     if ".approach-route:focus-visible" not in css:
         fail("Approach route links must have a visible keyboard focus treatment", failures)
     if "grid-template-columns: repeat(4, minmax(0, 1fr))" not in css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]:
         fail("desktop Approach must keep all four module positions in one row", failures)
-    if "min-height: 240vh" not in css:
-        fail("desktop Approach travel must be 240vh so completed routes leave only a short tail", failures)
+    if "min-height: 210vh" not in css:
+        fail("desktop Approach travel must be 210vh so completed routes leave only a short tail", failures)
     if "min-height: 360vh" in css:
         fail("desktop Approach travel must no longer use the 360vh empty tail", failures)
     if "220vh" in css:
@@ -1996,15 +2000,15 @@ def check_round11(failures: list[str]) -> None:
         fail("once a mobile journey item has entered it must stay revealed", failures)
     if "data-fluid-narrow" not in js or "isNarrow" not in js:
         fail("sticky discrete steps must be skipped on the narrow breakpoint", failures)
-    if "progress >= 0.93" not in js:
+    if "progress >= 0.90" not in js:
         fail("desktop Approach must reveal the route block late enough to leave only a short tail", failures)
-    leftover_vh = 0.07 * (240 - 100)
+    leftover_vh = 0.10 * (210 - 100)
     if leftover_vh > 15 or leftover_vh < 8:
         fail(f"desktop Approach completed tail is {leftover_vh:.1f}vh, expected about 10-15vh", failures)
     previous = 1
     for index in range(0, 101):
         progress = index / 100
-        current = 5 if progress >= 0.93 else min(4, 1 + int((progress / 0.93) * 4))
+        current = 5 if progress >= 0.90 else min(4, 1 + int((progress / 0.90) * 4))
         if current < previous:
             fail("desktop Approach steps must stay coherent when scrolling forward", failures)
         previous = current
@@ -2035,8 +2039,8 @@ def check_round11(failures: list[str]) -> None:
         fail("generic Discuss a workflow links must not add an interest query", failures)
     if 'href="workflow.html?interest=' in start:
         fail("Start chapter Discuss a workflow must remain generic", failures)
-    if 'href="training.html">Ask about AI team training</a>' not in capability:
-        fail("Capability training action must remain an informational training.html link", failures)
+    if 'href="workflow.html?interest=ai-team-training">Ask about AI team training</a>' not in capability:
+        fail("Capability training action must use the adaptive enquiry form", failures)
     if "focused-build" not in privacy or "workflow-diagnostic" not in privacy or "ai-team-training" not in privacy:
         fail("privacy notice must describe the allow-listed interest sources", failures)
     if "interest_source: focused-build" not in crm or "interest_source: workflow-diagnostic" not in crm:
@@ -2047,6 +2051,145 @@ def check_round11(failures: list[str]) -> None:
         fail("CRM handoff must keep the single general-enquiry route", failures)
     if "html:not(.js) .gap-connection" not in css or "html:not(.js) .approach-connector path" not in css:
         fail("no-JavaScript users must receive drawn Gap and Approach connectors", failures)
+
+
+def _anchor_visible_label(inner: str) -> str:
+    text = re.sub(r"<[^>]+>", " ", inner)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def check_round12(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    training = (ROOT / "training.html").read_text(encoding="utf-8")
+    approach = raw[raw.find('id="approach"'):raw.find('id="about"')]
+    capability = raw[raw.find('id="capability"'):raw.find('id="proof"')]
+    narrow = _narrow_css(css)
+    desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
+    tall_match = re.search(r"<svg[^>]*class=\"[^\"]*map-tall[^\"]*\"[\s\S]*?</svg>", work)
+    tall = tall_match.group(0) if tall_match else ""
+    wide_match = re.search(r"<svg[^>]*class=\"[^\"]*map-wide[^\"]*\"[\s\S]*?</svg>", work)
+    wide = wide_match.group(0) if wide_match else ""
+
+    if not tall:
+        fail("mobile connected workflow composition is missing", failures)
+        return
+    if "viewBox=\"0 0 360 724\"" not in tall:
+        fail("mobile connected workflow must use a compact phone-width viewBox, not a stacked desktop crop", failures)
+    if ">OPERATIONS<" not in tall:
+        fail("mobile connected workflow must group SiteLog, BudgetFlow, Applications Ledger and Probables as operations", failures)
+    if "CENTRAL CONNECTION LAYER" not in tall:
+        fail("mobile connected workflow must name LedgerLink as the central connection layer", failures)
+    if "TWO-WAY" not in tall:
+        fail("mobile connected workflow must label the Accounts Software / LedgerLink two-way connection", failures)
+    if ">IDENTITY<" not in tall:
+        fail("mobile connected workflow must label Central Project Register identity connections", failures)
+    if "FINANCE AND DATA" not in tall:
+        fail("mobile connected workflow must group the finance and data path", failures)
+    desc = re.search(r'<desc id="work-tall-desc">([\s\S]*?)</desc>', tall)
+    desc_text = desc.group(1) if desc else ""
+    for phrase in (
+        "operations group is SiteLog, BudgetFlow, Applications Ledger and Probables",
+        "weekly labour costs",
+        "central connection layer",
+        "shared project-identity source",
+        "two-way connection with LedgerLink",
+        "Verified Inputs feed Checked Local Processing",
+        "Cashflow and Management Accounts",
+        "Amber means project identity and operational connections",
+        "Blue means finance and data paths",
+        "deterministic local processing",
+        "AI does not process company accounting data",
+    ):
+        if phrase.lower() not in desc_text.lower():
+            fail(f"mobile connected workflow description missing {phrase!r}", failures)
+    if 'aria-hidden="true"' not in wide[:180]:
+        fail("hidden desktop connected SVG must not remain exposed to assistive technology", failures)
+    if "html:not(.js) .wrap:has(#connected-workflow:target)" not in css:
+        fail("no-JavaScript #connected-workflow arrival must still select the connected view", failures)
+    if ".system-map > .scene-fallback { display: none; }" not in css.split("@media (min-width: 900px)", 1)[-1].split("@media", 1)[0]:
+        fail("desktop must keep the approved connected visual and hide the SVG fallbacks", failures)
+    if ".map-tall { display: block; }" not in css.split("@media (max-width: 980px)", 1)[-1].split("@media", 1)[0]:
+        fail("narrow connected workflow must present the mobile composition, not the wide desktop graphic", failures)
+    if 'src="../assets/img/age-600/selected-systems-connected-demo.webp"' not in work:
+        fail("approved desktop connected graphic must remain", failures)
+
+    if 'attr === "data-fit-step" && isNarrow()' not in js:
+        fail("narrow Fit must use a dedicated first-stage threshold", failures)
+    if "progress < 0.12" not in js:
+        fail("narrow Fit first reveal must respond before the desktop 25% bucket", failures)
+    if "data-fluid-narrow" in raw[raw.find('id="economics"'):raw.find('id="capability"')]:
+        fail("Fit must remain a sticky scene rather than the ordinary-flow journey", failures)
+    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 300vh", failures)
+    if "min-height: 260vh" not in desktop:
+        fail("desktop Fit travel must shorten at widths above 900px", failures)
+    missing = narrow.split(".fit-missing {", 1)
+    if len(missing) < 2:
+        fail("narrow Only the missing layer label is missing", failures)
+    else:
+        body = missing[-1].split("}", 1)[0]
+        bottom = re.search(r"bottom:\s*([0-9.]+)rem", body)
+        if not bottom:
+            fail("narrow Only the missing layer must be placed with a bottom offset against the Bespoke Layer", failures)
+        else:
+            value = float(bottom.group(1))
+            if value < 18.4 or value > 21.5:
+                fail(
+                    f"narrow Only the missing layer bottom {value}rem is not against the Bespoke Layer",
+                    failures,
+                )
+
+    if "min-height: 260vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("desktop Gap travel must shorten from 300vh", failures)
+    if "min-height: 210vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
+        fail("desktop Approach travel must shorten from 240vh", failures)
+    if "min-height: 350vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability travel must shorten from 400vh", failures)
+    if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
+        fail("narrow Gap ordinary-flow override must remain", failures)
+    if "min-height: 0" not in narrow.split("html.js #capability[data-capability]", 1)[-1][:180]:
+        fail("narrow Capability ordinary-flow override must remain", failures)
+    if "position: static" not in narrow.split('[data-scene="approach"] .scene-sticky', 1)[-1][:220]:
+        fail("narrow Approach ordinary-flow override must remain", failures)
+
+    if "Discuss a focused build" not in approach:
+        fail("Approach focused-build route must expose Discuss a focused build", failures)
+    if "Ask about a workflow diagnostic" not in approach:
+        fail("Approach diagnostic route must expose Ask about a workflow diagnostic", failures)
+    if "Ask about AI team training" not in approach:
+        fail("Approach training route must expose Ask about AI team training", failures)
+    if ".approach-route-action" not in css:
+        fail("Approach enquiry actions must have an explicit button/pill style", failures)
+    if 'href="workflow.html?interest=focused-build"' not in approach:
+        fail("Clear workflow must keep interest=focused-build", failures)
+    if 'href="workflow.html?interest=workflow-diagnostic"' not in approach:
+        fail("Needs clarity must keep interest=workflow-diagnostic", failures)
+    if 'href="training.html">AI Team Training</a>' not in raw:
+        fail("primary navigation AI Team Training must remain the informational training page", failures)
+
+    label = "Ask about AI team training"
+    found = 0
+    for path in PUBLIC_HTML:
+        html = path.read_text(encoding="utf-8")
+        rel = path.relative_to(ROOT).as_posix()
+        for match in re.finditer(r"<a\b([^>]*)>([\s\S]*?)</a>", html):
+            visible = _anchor_visible_label(match.group(2))
+            if label not in visible:
+                continue
+            found += 1
+            href = re.search(r'href="([^"]+)"', match.group(1))
+            target = href.group(1) if href else ""
+            if not re.search(r"(?:^|/)workflow\.html\?interest=ai-team-training$", target):
+                fail(f"{rel}: {label!r} must go to the adaptive form, got {target}", failures)
+    if found < 3:
+        fail(f"expected at least Capability, Approach and training AI-team-training CTAs, found {found}", failures)
+    if "workflow.html?interest=ai-team-training" not in training:
+        fail("training page enquiry CTA must keep the allow-listed AI-team-training context", failures)
+    if "ai-team-training" not in capability or "ai-team-training" not in approach:
+        fail("homepage Capability and Approach training routes must share the adaptive form context", failures)
 
 
 def check() -> int:
@@ -2071,13 +2214,15 @@ def check() -> int:
     check_round9(failures)
     check_round10(failures)
     check_round11(failures)
+    check_round12(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-11 fluid narrow journeys and adaptive enquiry, "
+        "PASS routes, eight stories, round-12 mobile connected workflow and Fit refinement, "
+        "round-11 fluid narrow journeys and adaptive enquiry, "
         "round-10 responsive Approach and Selected Systems, "
         "round-9 continuous Fit and scroll cue, round-8 staged scenes, "
         "round-7 training/work/stories, enquiry form, omitted client chapter, "

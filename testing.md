@@ -2,6 +2,18 @@
 
 Updated: 2026-08-31
 
+## AGE-600 mobile connected workflow, Fit label and desktop pacing — 31 August 2026
+
+Narrow connected workflow is a purpose-built grouped map. Narrow Fit keeps sticky travel with a sooner first reveal and the missing-layer label on the Bespoke Layer. AI-team-training CTAs share the adaptive form. Desktop Gap/Fit/Capability/Approach travel is shorter.
+
+- PASS — `python3 site_check.py` including `check_round12`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1440 plus 390/360/320 inspection of the mobile connection map, Fit label placement, first-stage timing, Approach enquiry pills and shortened desktop travel. Chrome headless in this environment cannot create a unique user-data directory and is blocked from writing Crashpad state.
+
 ## AGE-600 fluid narrow journeys and adaptive enquiry — 31 August 2026
 
 Narrow Gap, Capability and Approach are ordinary vertical journeys. Desktop Approach keeps the four-module composition with a short completed tail. The enquiry form adapts to three allow-listed interests and falls back to generic copy without JavaScript.
