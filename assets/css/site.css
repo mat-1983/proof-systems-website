@@ -2637,6 +2637,7 @@ html.js [data-cap-step="6"] .cap-leg {
     width: min(100%, 30rem);
     height: 38rem;
     margin: 1.3rem auto 0;
+    overflow: hidden;
   }
   .gap-links { transform: rotate(90deg) scaleX(1.47) scaleY(0.72); transform-origin: center; }
   .gap-node {

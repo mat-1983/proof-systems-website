@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 round 8 review correction — Gap narrow overflow — 31 August 2026
+
+Vertical Gap `.gap-scene` clips the rotated `.gap-links` box at max-width 900px. Geometry of the unclipped AABB reproduces the reviewed 379/399/414px document widths at 320/360/390.
+
+- PASS — `python3 site_check.py` including `check_narrow_gap_overflow`. That assertion fails on `400b417` CSS (no scene clip) and passes on the corrected tree.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 320/360/390 scrollWidth measurement in a layout engine. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 round 8 — staged semantic homepage scenes — 31 August 2026
 
 Gap, Fit and Approach are staged HTML/CSS/SVG scenes. Capability uses a vertical node journey on thinner screens and 400vh six-stage travel. Prototype review controls are not shipped.

@@ -1363,6 +1363,66 @@ def check_round8(failures: list[str]) -> None:
     reduced = css.split("@media (prefers-reduced-motion: reduce)")[-1]
     if "[data-scene]" not in reduced or "min-height: 0" not in reduced:
         fail("reduced-motion must present the complete staged scenes", failures)
+    check_narrow_gap_overflow(css, failures)
+
+
+def narrow_gap_unclipped_right_edge(viewport: int) -> float:
+    """Predicted document right edge of the rotated Gap connector if the scene does not clip.
+
+    Vertical Gap uses `rotate(90deg) scaleX(1.47) scaleY(0.72)` on a 38rem-tall
+    `.gap-links` box. CSS transforms apply right-to-left, so the axis-aligned
+    width after rotation is `38rem * 0.72`. Independent review measured 379px,
+    399px and 414px at 320/360/390; this geometry reproduces those figures.
+    """
+    scene_height = 38 * 16
+    wrap = viewport - 32
+    scene_width = min(wrap, 30 * 16)
+    aabb_width = scene_height * 0.72
+    pad = (viewport - scene_width) / 2
+    return pad + scene_width / 2 + aabb_width / 2
+
+
+def check_narrow_gap_overflow(css: str, failures: list[str]) -> None:
+    measured = {320: 379, 360: 399, 390: 414}
+    for viewport, observed in measured.items():
+        predicted = narrow_gap_unclipped_right_edge(viewport)
+        if abs(predicted - observed) > 1.5:
+            fail(
+                f"Gap connector geometry no longer matches the reviewed overflow "
+                f"at {viewport}px (predicted {predicted:.1f}, reviewed {observed})",
+                failures,
+            )
+        if predicted <= viewport:
+            fail(
+                f"narrow Gap connector at {viewport}px would no longer overflow without containment",
+                failures,
+            )
+    for viewport in (500, 768, 1024, 1280, 1440):
+        if narrow_gap_unclipped_right_edge(viewport) > viewport + 1:
+            fail(
+                f"Gap connector geometry now overflows at {viewport}px where review found none",
+                failures,
+            )
+    narrow = css.split("@media (max-width: 900px)", 1)
+    if len(narrow) < 2:
+        fail("narrow Gap composition breakpoint is missing", failures)
+        return
+    block = narrow[-1].split("@media", 1)[0]
+    scene_rule = block.split(".gap-scene {", 1)
+    if len(scene_rule) < 2:
+        fail("narrow Gap scene rule is missing", failures)
+        return
+    body = scene_rule[-1].split("}", 1)[0]
+    if "overflow: hidden" not in body:
+        fail(
+            "narrow .gap-scene must clip the rotated .gap-links box so 320/360/390 "
+            "viewports do not grow a horizontal scrollbar",
+            failures,
+        )
+    if "rotate(90deg)" not in block or "scaleX(1.47)" not in block or "scaleY(0.72)" not in block:
+        fail("narrow Gap must keep the approved rotated connector composition", failures)
+    if "overflow-x: hidden" in body:
+        fail("Gap overflow must be contained on the scene, not by hiding page overflow", failures)
 
 
 def check() -> int:
