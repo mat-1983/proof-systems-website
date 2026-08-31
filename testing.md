@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 round 8 review correction 3 — Approach route icons — 31 August 2026
+
+`.approach-route > span svg` now sets `fill: none` and `stroke: currentColor` so Clear workflow, Needs clarity and Team capability icons are visible on the dark tiles.
+
+- PASS — `python3 site_check.py` including `check_approach_route_icons`. That assertion fails on `06045a2` CSS and passes on the corrected tree.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1024px inspection of the three route icons. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 round 8 review correction 2 — Approach stage wrapper — 31 August 2026
 
 Legacy `.approach-stage` dark-card and descendant span/strong/em rules are scoped to `.approach-stages`. The journey wrapper is transparent so Understand/Choose/Prove/Extend read in ink on the sand section.

@@ -2411,8 +2411,16 @@ html.js [data-fit-step="4"] .fit-bent-path circle { opacity: 1; }
 .approach-proof-node svg,
 .approach-branch-node svg,
 .approach-branch-core svg,
-.approach-lens svg,
-.approach-route span svg { width: 1.15rem; height: 1.15rem; }
+.approach-lens svg { width: 1.15rem; height: 1.15rem; }
+.approach-route > span svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .approach-node-a { left: 3%; top: 45%; }
 .approach-node-b { left: 50%; top: -8%; width: 2rem; height: 2rem; transform: translateX(-50%); }
 .approach-node-c { right: 2%; top: 51%; }

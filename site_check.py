@@ -1459,6 +1459,21 @@ def check_approach_stage_scope(css: str, failures: list[str]) -> None:
         fail("Approach stage titles must use ink so they read on the sand background", failures)
     if ".approach-stages .approach-stage" not in css:
         fail("legacy Approach card styling must remain scoped to .approach-stages", failures)
+    check_approach_route_icons(css, failures)
+
+
+def check_approach_route_icons(css: str, failures: list[str]) -> None:
+    selector = ".approach-route > span svg {"
+    if selector not in css:
+        fail("closing Approach route SVGs need a dedicated visibility rule", failures)
+        return
+    body = css.split(selector, 1)[-1].split("}", 1)[0]
+    if "fill: none" not in body:
+        fail("Approach route SVGs must set fill: none so open paths are not a dark blob", failures)
+    if "stroke: currentColor" not in body:
+        fail("Approach route SVGs must stroke currentColor so icons read on the dark tiles", failures)
+    if "stroke-width:" not in body:
+        fail("Approach route SVGs must set an explicit stroke-width", failures)
 
 
 def check() -> int:

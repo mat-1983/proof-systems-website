@@ -10,3 +10,4 @@ Append-only log of material implementation choices. Routine edits are not record
 | 2026-08-31 | Fit two-way connectors use a 3-unit amber stroke in both compositions; the narrow connecting arrow is vertical. Inline SVG icons replace any Lucide/runtime dependency. |
 | 2026-08-31 | Narrow Gap clips `.gap-scene` (`overflow: hidden`) so the rotated `.gap-links` AABB cannot widen the document at 320/360/390. Nodes and labels stay inside the scene. Page-level overflow-x is not the fix. |
 | 2026-08-31 | Legacy `.approach-stage` card/span/strong/em rules are scoped to `.approach-stages`. `.approach-journey .approach-stage` is a transparent unframed wrapper so numbers/titles read in ink on the sand section. |
+| 2026-08-31 | Closing Approach route SVGs use `fill: none; stroke: currentColor` so the three symbols read as cream lines on the dark tiles. |
