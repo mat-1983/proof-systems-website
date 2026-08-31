@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-08-31 — Responsive Approach modules and Selected Systems destinations
+
+Approach is four independent modules plus a fifth route stage. Desktop keeps the headline and all four module positions in view; mobile accumulates a vertical journey at 220vh. Closing routes are whole-route links to `workflow.html` and `training.html`. Generic Selected Systems actions open the index top; `#finance` and `#connected-workflow` remain contextual. Mobile opening uses the same mark/name/tagline sequence with shorter travel. Approach restores a cream/sand gradient, an active amber glow and a completed blue connector glow.
+
 ## 2026-08-29 — Omit chapter 05
 
 The approved design keeps the Pantera quotation unpublished until exact approval is recorded. The homepage therefore uses chapters 00, 01, 02, 03, 04, 06 and 07, and public HTML contains no client-perspective chapter, quotation or attribution. Publication of that chapter remains blocked.

@@ -20,7 +20,7 @@
 
   function updateOpening() {
     if (!opening) return;
-    if (reduced || window.matchMedia("(max-width: 760px)").matches) {
+    if (reduced) {
       opening.style.setProperty("--opening", "1");
       opening.setAttribute("data-phase", "tagline");
       return;
@@ -182,8 +182,10 @@
       }
     });
     individualInput.addEventListener("change", function () {
-      if (individualInput.checked && location.hash !== "#finance" && location.hash !== "#individual-systems") {
-        history.pushState({}, "", "#individual-systems");
+      if (!individualInput.checked) return;
+      if (location.hash === "#finance") return;
+      if (location.hash === "#connected-workflow" || location.hash === "#connect" || location.hash === "#individual-systems") {
+        history.pushState({}, "", location.pathname + location.search);
       }
     });
   }

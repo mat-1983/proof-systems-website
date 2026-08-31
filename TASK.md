@@ -1,6 +1,10 @@
 # Proof Systems Website Task State
 
-Updated: 2026-08-29
+Updated: 2026-08-31
+
+## AGE-600 responsive Approach and navigation
+
+Four independent Approach modules replace the single field. Mobile opening follows the desktop sequence with shorter travel. Generic Selected Systems destinations open the index top. Not approved for push, merge or publication.
 
 ## AGE-600 continuous Fit/Approach and scroll cue
 

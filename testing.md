@@ -2,6 +2,19 @@
 
 Updated: 2026-08-31
 
+## AGE-600 responsive Approach, mobile opening and Selected Systems destinations — 31 August 2026
+
+Approach is four independent modules with a fifth whole-route stage. Desktop keeps the `04 / APPROACH` headline and all four module positions in view. Mobile accumulates a readable vertical journey at shorter sticky travel. Generic Selected Systems links open the index top. Mobile opening uses the same mark → name → tagline sequence with `125vh` travel.
+
+- PASS — `python3 site_check.py` including `check_round10`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — in-memory `ast.parse` of the four checkers.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1440/1024/768/390/360/320 forward and reverse Approach staging, mobile opening phases, and keyboard focus on the three route links. Chrome headless previously SIGSEGV in this environment.
+
 ## AGE-600 review correction — Fit reduced-motion centring and connector join — 31 August 2026
 
 Narrow reduced-motion Fit keeps `translateX(-50%)` after the unscoped `transform: none !important` reduce query. The two-way amber connector meets the receding monolith and the receiving foundation/bespoke layer in both compositions.

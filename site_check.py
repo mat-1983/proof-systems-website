@@ -67,7 +67,7 @@ HOMEPAGE_REQUIRED = [
     "Needs clarity",
     "Workflow diagnostic",
     "Team capability",
-    "AI training",
+    "AI team training",
     "Mobile-first weekly site record bespoke to business function.",
     "Admin Ready Invoices &amp; Exports",
     "Turn weekly labour costs into visible budget decisions.",
@@ -87,7 +87,6 @@ HOMEPAGE_REQUIRED = [
     "Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software integrated with existing technology, controlled AI automation and training their teams can use.",
     "Operational systems for owner-led SMEs.",
     "Selected Systems",
-    "Ask about team training",
     "Ask about AI team training",
     "https://www.linkedin.com/in/mathew-glendenning-90670649/",
 ]
@@ -870,8 +869,10 @@ def check_round4(failures: list[str]) -> None:
             fail("Capability must use a scroll-revealed graphical workflow", failures)
         if body.count("<li") < 5:
             fail("Capability must expose five sequential stages", failures)
-        if 'href="work/index.html#individual-systems">View selected systems</a>' not in body:
-            fail("Capability View selected systems must target the individual-systems index", failures)
+        if 'href="work/index.html">View selected systems</a>' not in body:
+            fail("Capability View selected systems must open Selected Systems at the page top", failures)
+        if "#individual-systems" in body:
+            fail("Capability View selected systems must not use #individual-systems", failures)
         if 'data-cap-step="6"' not in raw:
             fail("Capability no-JavaScript default must be the complete final workflow", failures)
 
@@ -911,8 +912,10 @@ def check_round4(failures: list[str]) -> None:
         fail("View all selected systems must sit beneath the three-card grid", failures)
     if 'class="button button-systems"' not in proof:
         fail("all-systems action must be a prominent button, not a card-link", failures)
-    if 'href="work/index.html#individual-systems">View all selected systems</a>' not in proof:
-        fail("Proof all-systems button must target the individual-systems index", failures)
+    if 'href="work/index.html">View all selected systems</a>' not in proof:
+        fail("Proof all-systems button must open Selected Systems at the page top", failures)
+    if 'href="work/index.html#individual-systems">View all selected systems</a>' in proof:
+        fail("Proof all-systems button must not use #individual-systems", failures)
     if "View all systems" in proof:
         fail("finance card must not keep a general View all systems link", failures)
     if 'href="work/index.html#finance">View finance workflow</a>' not in proof:
@@ -942,12 +945,15 @@ def check_round4(failures: list[str]) -> None:
             href, label = match.group(1), match.group(2).strip()
             if label not in GENERAL_SYSTEMS_LABELS:
                 continue
-            if "#individual-systems" not in href:
-                fail(f"{rel}: {label!r} must use explicit #individual-systems, got {href}", failures)
+            if "#individual-systems" in href:
+                fail(f"{rel}: {label!r} must open Selected Systems at the page top, got {href}", failures)
             if href.endswith("work/") or href.endswith("../work/"):
-                fail(f"{rel}: {label!r} still uses a directory URL without the individual hash", failures)
+                fail(f"{rel}: {label!r} still uses a directory URL without index.html", failures)
             if "#connected-workflow" in href:
                 fail(f"{rel}: general {label!r} must not open the connected view", failures)
+            target = href.split("#", 1)[0]
+            if target not in {"work/index.html", "../work/index.html", "index.html"}:
+                fail(f"{rel}: {label!r} must use a Selected Systems index path, got {href}", failures)
 
 
 def check_approved_artwork(failures: list[str]) -> None:
@@ -1791,10 +1797,6 @@ def check_round9(failures: list[str]) -> None:
     raw = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
-    if 'class="approach-field"' not in raw or 'class="approach-rail"' not in raw:
-        fail("Approach must use one evolving field with a caption rail, not four standalone cards", failures)
-    if raw.count('class="approach-platform"') != 1:
-        fail("Approach must keep a single persistent platform rather than one card per stage", failures)
     if "fit-link-line" not in raw:
         fail("Fit must grow a continuous two-way connection rather than a snapshot arrow", failures)
     if "translateX(-8%) scale(0.9)" not in css:
@@ -1818,10 +1820,102 @@ def check_round9(failures: list[str]) -> None:
         fail("scroll cue must be a fixed bottom-centre control", failures)
     if "@media (prefers-reduced-motion: no-preference)" not in css or "scroll-cue-nudge" not in css:
         fail("scroll cue motion must be gated to users who permit animation", failures)
-    if ".approach-scatter" not in css or ".approach-spine" not in css or ".approach-branches" not in css:
-        fail("Approach field must evolve scatter, spine and branch connections in place", failures)
     check_fit_reduced_motion_narrow(css, failures)
     check_fit_connector_geometry(raw, css, failures)
+
+
+def check_round10(failures: list[str]) -> None:
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    approach = raw[raw.find('id="approach"'):raw.find('id="about"')]
+
+    if 'class="approach-field"' in raw or 'class="approach-rail"' in raw:
+        fail("Approach must use four independent modules, not one evolving field and caption rail", failures)
+    if raw.count('class="approach-platform"') != 4:
+        fail("Approach must expose four independent visual modules", failures)
+    if ".approach-scatter" in css or ".approach-spine" in css or ".approach-branches" in css:
+        fail("stale Approach field CSS must not remain to override the modular scene", failures)
+    if ".approach-field" in css:
+        fail("stale .approach-field CSS must not remain", failures)
+    for phrase in (
+        "Observe real workflow",
+        "One useful outcome",
+        "Initial build",
+        "Future development",
+        "Start where the need is clearest",
+        "Clear workflow",
+        "Focused build",
+        "Needs clarity",
+        "Workflow diagnostic",
+        "Team capability",
+        "AI team training",
+    ):
+        if phrase not in approach:
+            fail(f"Approach copy missing {phrase!r}", failures)
+    if "<em>AI training</em>" in approach:
+        fail("Approach Team capability route must read AI team training", failures)
+    if "Ask about team training" in approach:
+        fail("Approach closing routes must be whole-route links, not a nested training CTA", failures)
+    if approach.count('class="approach-connector"') < 3:
+        fail("Approach must draw connections between the four modules", failures)
+    if "approach-connector-h" not in approach or "approach-connector-v" not in approach:
+        fail("Approach connectors must have horizontal and vertical orientations", failures)
+    if 'href="workflow.html"' not in approach or approach.count('href="workflow.html"') < 2:
+        fail("Clear workflow and Needs clarity must be whole-route links to workflow.html", failures)
+    if 'href="training.html"' not in approach:
+        fail("Team capability must be a whole-route link to training.html", failures)
+    if "?interest=" in approach:
+        fail("Approach routes must not add query-string routing", failures)
+    if not re.search(r'<a class="approach-route route-pad" href="workflow.html">', approach):
+        fail("closing Approach routes must be semantic whole-route links", failures)
+    if ".approach-route:focus-visible" not in css:
+        fail("Approach route links must have a visible keyboard focus treatment", failures)
+    if "grid-template-columns: repeat(4, minmax(0, 1fr))" not in css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]:
+        fail("desktop Approach must keep all four module positions in one row", failures)
+    if "min-height: 360vh" not in css:
+        fail("desktop Approach travel must remain 360vh", failures)
+    narrow = css.split("@media (max-width: 900px)", 1)[-1]
+    if "min-height: 220vh" not in narrow.split("@media", 1)[0] and "min-height: 220vh" not in narrow:
+        fail("mobile Approach travel must be shorter than desktop 360vh", failures)
+    if "html.js .approach-stage" not in narrow or "display: none" not in narrow.split("html.js .approach-stage", 1)[-1][:120]:
+        fail("mobile Approach must accumulate modules instead of shrinking a desktop composition", failures)
+    if "linear-gradient(180deg, #EDE6D8" not in css.split("#approach.panel-sand", 1)[-1][:220]:
+        fail("Approach section must use a warm cream/sand gradient", failures)
+    if "rgba(216, 144, 66, 0.36)" not in css:
+        fail("active Approach stage must use a restrained amber glow", failures)
+    if "drop-shadow(0 0 0.35rem rgba(67, 167, 255, 0.55))" not in css:
+        fail("completed Approach connections must use a faint electric-blue glow", failures)
+    if re.search(r"(?<!backdrop-)filter:\s*blur\(", css):
+        fail("Approach glow must not use large blur filters on the page", failures)
+
+    if 'max-width: 760px' in js:
+        fail("site.js must not skip the opening sequence on mobile", failures)
+    mobile_css = css.split("@media (max-width: 760px)", 1)[-1].split("@media", 1)[0]
+    if ".opening-name" in mobile_css and "opacity: 1" in mobile_css.split(".opening-name", 1)[-1][:200]:
+        fail("mobile CSS must not jump the opening to the completed name/tagline state", failures)
+    if "min-height: auto" in mobile_css.split(".brand-reveal", 1)[-1][:80]:
+        fail("mobile opening must keep scroll travel rather than collapsing to the completed state", failures)
+    if "min-height: 125vh" not in mobile_css:
+        fail("mobile opening travel must be shorter than desktop 170vh", failures)
+    if ".brand-reveal {\n  min-height: 170vh;" not in css and ".brand-reveal { min-height: 170vh; }" not in css:
+        fail("desktop opening travel must remain 170vh", failures)
+    reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1].split("@media", 1)[0]
+    if ".opening-name" not in reduced or "opacity: 1" not in reduced:
+        fail("reduced-motion must still present the completed opening", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("opening and Approach staging must not hijack scroll", failures)
+    if 'history.pushState({}, "", "#individual-systems")' in js:
+        fail("site.js must not create #individual-systems on load or individual-view selection", failures)
+    if 'href="index.html#individual-systems"' in work:
+        fail("Selected Systems nav on the index must address the page top", failures)
+    if 'href="index.html" aria-current="page">Selected Systems</a>' not in work:
+        fail("Selected Systems index nav must point at index.html without a hash", failures)
+    if 'id="finance"' not in work or 'id="connected-workflow"' not in work:
+        fail("contextual finance and connected-workflow anchors must remain", failures)
+    if 'href="work/index.html#finance">View finance workflow</a>' not in raw:
+        fail("finance-specific Proof action must keep its #finance anchor", failures)
 
 
 def check() -> int:
@@ -1844,15 +1938,17 @@ def check() -> int:
     check_round7(failures)
     check_round8(failures)
     check_round9(failures)
+    check_round10(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-9 continuous Fit/Approach and scroll cue, "
-        "round-8 staged scenes, round-7 training/work/stories, enquiry form, "
-        "omitted client chapter, poster-first teasers and public-copy safety"
+        "PASS routes, eight stories, round-10 responsive Approach and Selected Systems, "
+        "round-9 continuous Fit and scroll cue, round-8 staged scenes, "
+        "round-7 training/work/stories, enquiry form, omitted client chapter, "
+        "poster-first teasers and public-copy safety"
     )
     return 0
 
