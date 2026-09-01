@@ -1904,7 +1904,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
     text-align: left;
   }
   html.js #capability[data-capability] {
-    min-height: 350vh;
+    min-height: 320vh;
   }
   html.js #capability .capability-sticky {
     position: sticky;
@@ -2019,7 +2019,7 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
 }
 
 /* AGE-600 round 8 staged semantic scenes */
-html.js [data-scene="gap"] { min-height: 260vh; }
+html.js [data-scene="gap"] { min-height: 240vh; }
 html.js [data-scene="fit"] { min-height: 300vh; }
 html.js [data-scene="approach"] { min-height: 210vh; }
 html:not(.js) .gap-connection,
@@ -2047,7 +2047,7 @@ html.js [data-scene="approach"] .scene-sticky {
   align-items: flex-start;
   overflow: visible;
 }
-html.js #capability[data-capability] { min-height: 350vh; }
+html.js #capability[data-capability] { min-height: 320vh; }
 
 .capability-journey { display: none; }
 
@@ -2715,7 +2715,7 @@ html.js [data-cap-step="6"] .cap-leg {
 }
 
 @media (min-width: 901px) {
-  html.js [data-scene="fit"] { min-height: 260vh; }
+  html.js [data-scene="fit"] { min-height: 240vh; }
   .approach-journey {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));

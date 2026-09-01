@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-09-01 — Remaining Gap, Fit and Capability scroll delays
+
+Desktop Gap, Fit and Capability sticky travel shortens from 260/260/350vh to 240/240/320vh. Approach remains 210vh. Narrow Fit keeps the 12% first reveal and compresses the remaining three stages into 66% of travel so the vertical arrow and Bespoke Layer begin sooner. Reduced-motion and no-JavaScript still show the complete scenes.
+
 ## 2026-08-31 — Mobile connected workflow, Fit label and desktop pacing
 
 Narrow Selected Systems uses a purpose-built connection map instead of a stacked desktop fallback. LedgerLink is the labelled central trunk, operations and finance are grouped, and identity/two-way/labour paths are explicit. Narrow Fit keeps sticky travel with a 12% first threshold and places “Only the missing layer” on the Bespoke Layer. Desktop Gap/Fit/Capability/Approach travel shortens by about 13%. AI-team-training CTAs share the adaptive `proof-systems-qualifier` form.

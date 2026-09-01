@@ -1070,10 +1070,30 @@ def webp_dimensions(path: pathlib.Path) -> tuple[int, int]:
     raise ValueError(f"unrecognised WebP layout in {path}")
 
 
-def desktop_cap_step(progress: float) -> int:
+def desktop_scene_step(progress: float, steps: int) -> int:
     import math
 
-    return min(6, 1 + math.floor(progress * 6))
+    return min(steps, 1 + math.floor(progress * steps))
+
+
+def desktop_cap_step(progress: float) -> int:
+    return desktop_scene_step(progress, 6)
+
+
+def desktop_approach_step(progress: float, steps: int = 5) -> int:
+    import math
+
+    if progress >= 0.90:
+        return steps
+    return min(steps - 1, 1 + math.floor((progress / 0.90) * (steps - 1)))
+
+
+def narrow_fit_step(progress: float, steps: int = 4) -> int:
+    import math
+
+    if progress < 0.12:
+        return 1
+    return min(steps, 2 + math.floor(((progress - 0.12) / 0.66) * (steps - 1)))
 
 
 def check_round6(failures: list[str]) -> None:
@@ -1151,7 +1171,7 @@ def check_round6(failures: list[str]) -> None:
         fail("Capability action must be Ask about AI team training", failures)
     if "Math.min(steps, 1 + Math.floor(progress * steps))" not in js:
         fail("Capability desktop steps must use equal travel buckets", failures)
-    if "350vh" not in css:
+    if "320vh" not in css:
         fail("desktop Capability travel must be shorter than 400vh while remaining distinct", failures)
     if "560vh" in css:
         fail("desktop Capability travel must no longer use the longer 560vh interval", failures)
@@ -1264,8 +1284,8 @@ def check_round7(failures: list[str]) -> None:
         fail("homepage should contain the AI Automation sentence", failures)
     if 'data-cap-step="6"' not in raw:
         fail("Capability no-JS default must be stage 6 so actions are present", failures)
-    if "350vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
-        fail("desktop Capability min-height must be 350vh", failures)
+    if "320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability min-height must be 320vh", failures)
     if "[data-cap-step=\"5\"] .cap-gated" not in css or "[data-cap-step=\"6\"] .cap-gated" not in css:
         fail("stage 5 and stage 6 must both show the five Capability icons", failures)
     if 'String(step) === "6"' not in js:
@@ -2124,7 +2144,7 @@ def check_round12(failures: list[str]) -> None:
         fail("Fit must remain a sticky scene rather than the ordinary-flow journey", failures)
     if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
         fail("narrow Fit sticky travel must remain 300vh", failures)
-    if "min-height: 260vh" not in desktop:
+    if "min-height: 240vh" not in desktop:
         fail("desktop Fit travel must shorten at widths above 900px", failures)
     missing = narrow.split(".fit-missing {", 1)
     if len(missing) < 2:
@@ -2142,11 +2162,11 @@ def check_round12(failures: list[str]) -> None:
                     failures,
                 )
 
-    if "min-height: 260vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+    if "min-height: 240vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
         fail("desktop Gap travel must shorten from 300vh", failures)
     if "min-height: 210vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
         fail("desktop Approach travel must shorten from 240vh", failures)
-    if "min-height: 350vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+    if "min-height: 320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
         fail("desktop Capability travel must shorten from 400vh", failures)
     if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
         fail("narrow Gap ordinary-flow override must remain", failures)
@@ -2192,6 +2212,91 @@ def check_round12(failures: list[str]) -> None:
         fail("homepage Capability and Approach training routes must share the adaptive form context", failures)
 
 
+def _assert_monotonic(label: str, stepper, start: int, end: int, failures: list[str]) -> None:
+    previous = stepper(start / 100)
+    for index in range(start, end + 1):
+        current = stepper(index / 100)
+        if current < previous:
+            fail(f"{label} must stay coherent when scrolling forward", failures)
+            return
+        previous = current
+    previous = stepper(end / 100)
+    for index in range(end, start - 1, -1):
+        current = stepper(index / 100)
+        if current > previous:
+            fail(f"{label} must stay coherent when scrolling back", failures)
+            return
+        previous = current
+
+
+def check_round13(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
+    narrow = _narrow_css(css)
+
+    if "min-height: 240vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("desktop Gap travel must be 240vh", failures)
+    if "min-height: 260vh" in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("desktop Gap travel must no longer use 260vh", failures)
+    if "min-height: 240vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("desktop Fit travel must be 240vh", failures)
+    if "min-height: 260vh" in desktop:
+        fail("desktop Fit travel must no longer use 260vh", failures)
+    if "min-height: 320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability travel must be 320vh", failures)
+    if "350vh" in css:
+        fail("desktop Capability travel must no longer use 350vh", failures)
+    if "min-height: 210vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
+        fail("desktop Approach travel must remain 210vh", failures)
+    if "progress >= 0.90" not in js:
+        fail("desktop Approach must keep the 90% completed-route threshold", failures)
+
+    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 300vh", failures)
+    if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
+        fail("narrow Gap ordinary-flow override must remain", failures)
+    if "min-height: 0" not in narrow.split("html.js #capability[data-capability]", 1)[-1][:180]:
+        fail("narrow Capability ordinary-flow override must remain", failures)
+    if "position: static" not in narrow.split('[data-scene="approach"] .scene-sticky', 1)[-1][:220]:
+        fail("narrow Approach ordinary-flow override must remain", failures)
+
+    if 'attr === "data-fit-step" && isNarrow()' not in js:
+        fail("narrow Fit must keep its dedicated first-stage threshold", failures)
+    if "progress < 0.12" not in js:
+        fail("narrow Fit first reveal must remain at 12%", failures)
+    if "(progress - 0.12) / 0.66" not in js:
+        fail("narrow Fit remaining stages must use a 66% remaining span so the arrow starts sooner", failures)
+    if "/ 0.88)" in js:
+        fail("narrow Fit must no longer wait through the longer 88% remaining span", failures)
+
+    expected_fit = {
+        0.00: 1,
+        0.11: 1,
+        0.12: 2,
+        0.33: 2,
+        0.34: 3,
+        0.55: 3,
+        0.56: 4,
+        1.00: 4,
+    }
+    for progress, want in expected_fit.items():
+        got = narrow_fit_step(progress)
+        if got != want:
+            fail(f"narrow Fit step at progress {progress} is {got}, expected {want}", failures)
+    if narrow_fit_step(0.40) < 3:
+        fail("narrow Fit arrow/Bespoke progression must begin before the previous 41% hold", failures)
+    if desktop_scene_step(0.24, 4) != 1 or desktop_scene_step(0.25, 4) != 2:
+        fail("desktop Gap/Fit equal buckets must remain four 25% stages", failures)
+    if desktop_approach_step(0.89) != 4 or desktop_approach_step(0.90) != 5:
+        fail("desktop Approach must still reveal routes from 90% progress", failures)
+
+    _assert_monotonic("narrow Fit steps", narrow_fit_step, 0, 100, failures)
+    _assert_monotonic("desktop Gap/Fit steps", lambda progress: desktop_scene_step(progress, 4), 0, 100, failures)
+    _assert_monotonic("desktop Capability steps", desktop_cap_step, 0, 100, failures)
+    _assert_monotonic("desktop Approach steps", desktop_approach_step, 0, 100, failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -2215,13 +2320,15 @@ def check() -> int:
     check_round10(failures)
     check_round11(failures)
     check_round12(failures)
+    check_round13(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-12 mobile connected workflow and Fit refinement, "
+        "PASS routes, eight stories, round-13 remaining scroll pacing, "
+        "round-12 mobile connected workflow and Fit refinement, "
         "round-11 fluid narrow journeys and adaptive enquiry, "
         "round-10 responsive Approach and Selected Systems, "
         "round-9 continuous Fit and scroll cue, round-8 staged scenes, "

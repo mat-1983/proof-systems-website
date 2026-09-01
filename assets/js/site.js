@@ -78,7 +78,7 @@
       }
       if (attr === "data-fit-step" && isNarrow()) {
         if (progress < 0.12) step = 1;
-        else step = Math.min(steps, 2 + Math.floor(((progress - 0.12) / 0.88) * (steps - 1)));
+        else step = Math.min(steps, 2 + Math.floor(((progress - 0.12) / 0.66) * (steps - 1)));
       }
       root.setAttribute(attr, String(step));
       if (onStep) onStep(step);

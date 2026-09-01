@@ -1,6 +1,18 @@
 # Proof Systems Website Testing
 
-Updated: 2026-08-31
+Updated: 2026-09-01
+
+## AGE-600 remaining scroll delays — 1 September 2026
+
+Desktop Gap, Fit and Capability advance after less sticky travel. Narrow Fit keeps the early first reveal and starts the arrow/Bespoke Layer progression sooner. Approach timing is unchanged.
+
+- PASS — `python3 site_check.py` including `check_round13` desktop 240/240/320vh travel, Approach 210vh, narrow Fit 12%/66% stage contract, and forward/reverse monotonic assertions.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1440 desktop Gap/Fit/Capability pacing versus commit `32c22755610c82e96288418aeb4ce6d0172577f0`, or live 390/360/320 Fit first-reveal plus arrow/Bespoke reverse-scroll inspection. Chrome headless in this environment cannot create a unique user-data directory and is blocked from writing Crashpad state.
 
 ## AGE-600 mobile connected workflow, Fit label and desktop pacing — 31 August 2026
 

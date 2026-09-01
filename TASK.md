@@ -1,6 +1,10 @@
 # Proof Systems Website Task State
 
-Updated: 2026-08-31
+Updated: 2026-09-01
+
+## AGE-600 remaining scroll delays
+
+Desktop Gap, Fit and Capability sticky travel is 240vh, 240vh and 320vh. Narrow Fit still reveals unused features at 12% and starts the arrow/Bespoke Layer sequence at 34%. Approach and other mobile staged scenes are unchanged. Not approved for push, merge or publication.
 
 ## AGE-600 mobile connected workflow and Fit refinement
 
