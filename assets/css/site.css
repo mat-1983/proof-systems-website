@@ -638,6 +638,23 @@ footer {
 .footer-brand img { width: min(16rem, 70vw); height: auto; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 0.8rem 1.1rem; }
 
+.footer-legal {
+  flex: 1 0 100%;
+  margin: 0.45rem 0 0;
+  max-width: 100%;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--stone);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.footer-legal a {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .page-main { padding: 3.2rem 0 5rem; }
 .page-main h1 { margin-bottom: 0.8rem; }
 

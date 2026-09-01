@@ -2,6 +2,10 @@
 
 Updated: 2026-09-01
 
+## AGE-600 sole-trader website identity
+
+Public footers, the privacy `Who is responsible` block and the enquiry-form consent identify Mathew Glendenning as the sole trader behind the Proof Systems trading name, with the approved correspondence address and email. Deterministic checks require that wording and reject the old identity and consent copy. Not approved for push, merge or publication.
+
 ## AGE-601 demo film narrative
 
 All eight story films use one visible narrative layer by default: composition-aware burned-in titles and lower-thirds. Optional English descriptions remain in each VTT and native track but are no longer `default`. Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from preserved AGE-600 masters with concise stage callouts. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Not approved for push, merge or publication.

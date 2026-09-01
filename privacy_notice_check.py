@@ -34,6 +34,9 @@ ENQUIRY_PHRASES = [
 ]
 
 REQUIRED_PHRASES = [
+    "The controller is Mathew Glendenning, trading as Proof Systems, a sole trader established in the United Kingdom.",
+    "Correspondence Address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH",
+    "Email: mat@proofsystems.co.uk",
     "Mathew Glendenning, trading as Proof Systems",
     "mat@proofsystems.co.uk",
     "qualify the enquiry",
@@ -84,6 +87,10 @@ REJECTED_PHRASES = [
     "performing a contract with your business",
     "taking steps at your request before a contract, and performing a contract with your business",
     "I have not listed specific countries or transfer mechanisms",
+    "The controller is Mathew Glendenning, trading as Proof Systems, in the United Kingdom",
+    "Contact mat@proofsystems.co.uk for privacy questions, rights requests or complaints",
+    "registered office",
+    "company number",
 ]
 
 PROHIBITED_PATTERNS = [
@@ -103,6 +110,9 @@ PROHIBITED_PATTERNS = [
     (r"WC1", "postal address fragment"),
     (r"\u2014", "em dash"),
     (r"\u2013", "en dash"),
+    (r"\bLtd\.?\b", "Ltd wording"),
+    (r"incorporated", "incorporated-company claim"),
+    (r"mat\\@proofsystems", "backslash before @"),
 ]
 
 EMAIL = "mat@proofsystems.co.uk"
@@ -287,6 +297,41 @@ def check() -> int:
 
     if "consent as a blanket" not in visible_compact:
         fail("must reject consent as a blanket basis", failures)
+
+    who = re.search(r'<section id="who-is-responsible">([\s\S]*?)</section>', raw)
+    if not who:
+        fail("missing Who is responsible section", failures)
+    else:
+        who_visible = re.sub(r"\s+", " ", html_unescape(re.sub(r"<[^>]+>", " ", who.group(1))))
+        if "The controller is Mathew Glendenning, trading as Proof Systems, a sole trader established in the United Kingdom." not in who_visible:
+            fail("Who is responsible missing the approved controller sentence", failures)
+        if "Correspondence Address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH" not in who_visible:
+            fail("Who is responsible missing the approved correspondence address", failures)
+        if "Email: mat@proofsystems.co.uk" not in who_visible:
+            fail("Who is responsible missing the approved email line", failures)
+        if 'href="mailto:mat@proofsystems.co.uk"' not in who.group(1):
+            fail("Who is responsible email must be an accessible mailto link", failures)
+        if r"\@" in who.group(1):
+            fail("Who is responsible must not render a backslash before @", failures)
+
+    footer = re.search(r"<footer\b[\s\S]*?</footer>", raw, flags=re.I)
+    if not footer:
+        fail("privacy notice missing footer", failures)
+    else:
+        footer_visible = re.sub(r"\s+", " ", html_unescape(re.sub(r"<[^>]+>", " ", footer.group(0))))
+        legal = (
+            "Proof Systems is the trading name of Mathew Glendenning, a sole trader. "
+            "Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, "
+            "Wareham Road, Poole, BH16 6FH. Email: mat@proofsystems.co.uk"
+        )
+        if footer_visible.count("© 2026 Proof Systems") != 1:
+            fail("privacy footer must show the copyright once", failures)
+        if footer_visible.count(legal) != 1:
+            fail("privacy footer missing the approved sole-trader disclosure", failures)
+        if 'class="footer-legal"' not in footer.group(0):
+            fail("privacy footer legal disclosure must use footer-legal", failures)
+        if 'href="mailto:mat@proofsystems.co.uk"' not in footer.group(0):
+            fail("privacy footer email must remain an accessible mailto link", failures)
 
     ico_links = [href for href in parser.hrefs if "ico.org.uk" in href]
     if not ico_links:

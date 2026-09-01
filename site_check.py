@@ -169,6 +169,29 @@ FORM_REQUIRED = [
 VISIBLE_FIELDS = {"name", "email", "company", "workflow_help", "contact_consent"}
 REMOVED_FIELDS = {"decision_role", "desired_outcome", "hours_per_week"}
 
+FOOTER_COPYRIGHT = "© 2026 Proof Systems"
+FOOTER_LEGAL = (
+    "Proof Systems is the trading name of Mathew Glendenning, a sole trader. "
+    "Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, "
+    "Wareham Road, Poole, BH16 6FH. Email: mat@proofsystems.co.uk"
+)
+CONSENT_VISIBLE = (
+    "I agree that Mathew Glendenning, trading as Proof Systems, may use these "
+    "details to assess my enquiry and contact me about it. I have read the privacy notice."
+)
+IDENTITY_STALE = [
+    "I agree that Proof Systems may use these details to review this enquiry",
+    "The controller is Mathew Glendenning, trading as Proof Systems, in the United Kingdom",
+    "Contact mat@proofsystems.co.uk for privacy questions, rights requests or complaints",
+]
+IDENTITY_PROHIBITED = [
+    (r"\bLtd\.?\b", "Ltd / incorporated-company wording"),
+    (r"registered office", "registered-office wording"),
+    (r"company number", "company-number claim"),
+    (r"incorporated", "incorporated-company claim"),
+    (r"mat\\@proofsystems", "backslash before @"),
+]
+
 
 class PageParser(html.parser.HTMLParser):
     def __init__(self) -> None:
@@ -384,6 +407,22 @@ def check_form(failures: list[str]) -> None:
         fail("form.js must ignore interest values outside the allow-list", failures)
     if js.find("applyInterest(requested)") > js.find("history.replaceState"):
         fail("visible enquiry context must be applied before the query is removed", failures)
+    compact = visible_text(raw)
+    if "I agree that Proof Systems may use these details to review this enquiry" in compact:
+        fail("workflow.html still uses the old Proof Systems consent wording", failures)
+    consent_label = re.search(r'<label for="consent">([\s\S]*?)</label>', raw)
+    if not consent_label:
+        fail("workflow.html missing consent label", failures)
+    else:
+        label = consent_label.group(1)
+        label_visible = re.sub(r"<[^>]+>", "", label).replace("&nbsp;", " ")
+        label_visible = re.sub(r"\s+", " ", label_visible).strip()
+        if label_visible != CONSENT_VISIBLE:
+            fail(f"workflow.html consent is not the approved sole-trader wording: {label_visible!r}", failures)
+        if 'href="privacy.html"' not in label or ">privacy notice</a>" not in label:
+            fail("consent label must keep an accessible privacy-notice link", failures)
+        if r"\@" in label or "mat\\@" in label:
+            fail("consent label must not render a backslash before @", failures)
 
 
 def check_stories(failures: list[str]) -> None:
@@ -2701,6 +2740,93 @@ def check_narrow_fit_caption_backing(css: str, failures: list[str]) -> None:
             fail(f"desktop {label} must not gain the mobile caption plate", failures)
 
 
+def check_sole_trader_identity(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if ".footer-legal {" not in css:
+        fail("footer legal disclosure class is missing", failures)
+        return
+    legal_rule = css.split(".footer-legal {", 1)[-1].split("}", 1)[0]
+    if "flex: 1 0 100%" not in legal_rule:
+        fail("footer legal disclosure must occupy a full-width row beneath the existing footer", failures)
+    if "overflow-wrap: break-word" not in legal_rule and "overflow-wrap: anywhere" not in legal_rule:
+        fail("footer legal disclosure must wrap long copy instead of overflowing", failures)
+    if "white-space: nowrap" in legal_rule:
+        fail("footer legal disclosure must wrap on narrow viewports", failures)
+    if "max-width: 100%" not in legal_rule:
+        fail("footer legal disclosure must cap at the footer wrap width", failures)
+    size = re.search(r"font-size:\s*([0-9.]+)rem", legal_rule)
+    if not size or float(size.group(1)) < 0.85:
+        fail("footer legal disclosure must stay readable, not tiny text", failures)
+    if "font-size: 10px" in legal_rule or "font-size: 11px" in legal_rule or "font-size: 12px" in legal_rule:
+        fail("footer legal disclosure must not use a tiny pixel size", failures)
+
+    footer_pages = 0
+    for path in PUBLIC_HTML:
+        raw = path.read_text(encoding="utf-8")
+        rel = path.relative_to(ROOT).as_posix()
+        for phrase in IDENTITY_STALE:
+            if phrase in raw:
+                fail(f"{rel} still contains stale identity/consent wording: {phrase}", failures)
+        for pattern, label in IDENTITY_PROHIBITED:
+            if re.search(pattern, raw, re.I):
+                fail(f"{rel} contains prohibited {label}", failures)
+        if r"\@" in raw:
+            fail(f"{rel} renders a backslash before @", failures)
+        if "<footer" not in raw.lower():
+            if FOOTER_LEGAL in visible_text(raw):
+                fail(f"{rel} has no footer but still shows the footer legal disclosure", failures)
+            continue
+        footer_pages += 1
+        footers = re.findall(r"<footer\b[\s\S]*?</footer>", raw, flags=re.I)
+        if len(footers) != 1:
+            fail(f"{rel} expected one footer, got {len(footers)}", failures)
+            continue
+        footer_raw = footers[0]
+        footer_text = visible_text(footer_raw)
+        if footer_text.count(FOOTER_COPYRIGHT) != 1:
+            fail(f"{rel} footer must show {FOOTER_COPYRIGHT!r} once, got {footer_text.count(FOOTER_COPYRIGHT)}", failures)
+        if footer_text.count(FOOTER_LEGAL) != 1:
+            fail(f"{rel} footer missing the approved sole-trader disclosure, or it is duplicated", failures)
+        if visible_text(raw).count(FOOTER_LEGAL) != 1:
+            fail(f"{rel} must show the footer legal disclosure exactly once", failures)
+        legal_markup = re.search(r'<p class="footer-legal">([\s\S]*?)</p>', footer_raw)
+        if not legal_markup:
+            fail(f"{rel} footer legal disclosure must be a footer-legal paragraph", failures)
+        else:
+            block = legal_markup.group(1)
+            if 'href="mailto:mat@proofsystems.co.uk"' not in block:
+                fail(f"{rel} footer email must remain an accessible mailto link", failures)
+            if "mat@proofsystems.co.uk" not in visible_text(block):
+                fail(f"{rel} footer legal email visible text is missing", failures)
+            if r"\@" in block:
+                fail(f"{rel} footer legal email must not render a backslash before @", failures)
+        if rel != "privacy.html":
+            if 'class="footer-brand"' not in footer_raw or 'class="footer-links"' not in footer_raw:
+                fail(f"{rel} must keep the existing footer brand and navigation row", failures)
+            if "LinkedIn" not in footer_raw or "Privacy" not in footer_raw:
+                fail(f"{rel} footer navigation is missing LinkedIn or Privacy", failures)
+
+    if footer_pages < 13:
+        fail(f"expected at least 13 public pages with a footer, found {footer_pages}", failures)
+
+    privacy = (ROOT / "privacy.html").read_text(encoding="utf-8")
+    who = re.search(r'<section id="who-is-responsible">([\s\S]*?)</section>', privacy)
+    if not who:
+        fail("privacy.html missing Who is responsible section", failures)
+    else:
+        block = visible_text(who.group(1))
+        if "The controller is Mathew Glendenning, trading as Proof Systems, a sole trader established in the United Kingdom." not in block:
+            fail("privacy Who is responsible missing the approved controller sentence", failures)
+        if "Correspondence Address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH" not in block:
+            fail("privacy Who is responsible missing the approved correspondence address", failures)
+        if "Email: mat@proofsystems.co.uk" not in block:
+            fail("privacy Who is responsible missing the approved email line", failures)
+        if 'href="mailto:mat@proofsystems.co.uk"' not in who.group(1):
+            fail("privacy Who is responsible email must remain an accessible mailto link", failures)
+        if "for privacy questions, rights requests or complaints" in block:
+            fail("privacy Who is responsible still uses the old contact sentence", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -2726,13 +2852,15 @@ def check() -> int:
     check_round12(failures)
     check_round13(failures)
     check_round14(failures)
+    check_sole_trader_identity(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-14 compact mobile Fit connector, "
+        "PASS routes, eight stories, sole-trader footer and consent identity, "
+        "round-14 compact mobile Fit connector, "
         "round-13 remaining scroll pacing, "
         "round-12 mobile connected workflow and Fit refinement, "
         "round-11 fluid narrow journeys and adaptive enquiry, "

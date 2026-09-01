@@ -2,6 +2,18 @@
 
 Updated: 2026-09-01
 
+## AGE-600 sole-trader website identity — 1 September 2026
+
+Every public page with a footer shows the approved sole-trader disclosure once, beneath the existing footer row. The privacy notice `Who is responsible` block and the enquiry-form consent use the approved Mathew Glendenning / Proof Systems wording. Email and privacy-notice references remain accessible links. Deterministic checks reject the old controller and consent copy and prohibit Ltd, registered-office, company-number and incorporated claims.
+
+- PASS — `python3 site_check.py` including `check_sole_trader_identity` exact footer disclosure on every footered page, approved consent label, privacy identity block, wrap CSS, and stale-wording rejection.
+- PASS — `python3 privacy_notice_check.py` including the approved controller, correspondence address and email lines, footer disclosure, and rejection of the old identity sentence.
+- PASS — `python3 crawl_check.py`.
+- PASS — `python3 proof_media_check.py`.
+- PASS — `git diff --check`.
+- PASS — targeted exact-copy scan of all public HTML files for the footer disclosure, copyright, consent and controller wording.
+- NOT COMPLETE — live 1440 and 390/320 footer wrapping inspection in Chrome. Independent review should resize those widths on every footered page.
+
 ## AGE-601 demo film narrative — 1 September 2026
 
 All eight story pages keep a single visible narrative layer by default. Optional English descriptions remain in each VTT and native track without `default`. Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from preserved AGE-600 masters with composition-specific callouts above the native-control band. Source masters, render tooling and review stills live under `tools/demo-film-narrative/` and are excluded from `tools/prepare_publish.py`. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Posters are unchanged.
