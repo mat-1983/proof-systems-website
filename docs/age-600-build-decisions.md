@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-09-01 — Mobile Fit continuous connector
+
+Narrow Fit keeps sticky 300vh travel and the 12%/66% stage contract. The mobile scene shortens from 48rem to 38rem and the vertical two-way amber connector is an explicit 4.6rem join instead of the previous 14.2rem stretch. Sticky alignment starts from the top so the industry-specific block, connector and Bespoke Layer stay in the same phone viewport. Desktop Fit remains 26rem / 240vh.
+
 ## 2026-09-01 — Remaining Gap, Fit and Capability scroll delays
 
 Desktop Gap, Fit and Capability sticky travel shortens from 260/260/350vh to 240/240/320vh. Approach remains 210vh. Narrow Fit keeps the 12% first reveal and compresses the remaining three stages into 66% of travel so the vertical arrow and Bespoke Layer begin sooner. Reduced-motion and no-JavaScript still show the complete scenes.

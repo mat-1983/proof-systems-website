@@ -2,6 +2,10 @@
 
 Updated: 2026-09-01
 
+## AGE-600 mobile Fit continuous connector
+
+Narrow Fit keeps sticky 300vh travel. The mobile scene is 38rem with a 4.6rem vertical two-way connector from Industry Specific Software to the Bespoke Layer. Dedicated 12%/66% staging is unchanged. Desktop Fit remains 240vh / 26rem. Not approved for push, merge or publication.
+
 ## AGE-600 remaining scroll delays
 
 Desktop Gap, Fit and Capability sticky travel is 240vh, 240vh and 320vh. Narrow Fit still reveals unused features at 12% and starts the arrow/Bespoke Layer sequence at 34%. Approach and other mobile staged scenes are unchanged. Not approved for push, merge or publication.

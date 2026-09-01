@@ -2784,7 +2784,8 @@ html.js [data-cap-step="6"] .cap-leg {
   .gap-callout-3 { left: 51%; top: 52%; }
   .gap-callout-4 { left: 49%; top: 87%; right: auto; }
   .gap-legend { grid-template-columns: 1fr 1fr; }
-  .fit-scene { height: 48rem; margin-top: 1.2rem; }
+  html.js [data-scene="fit"] .scene-sticky { align-items: flex-start; }
+  .fit-scene { height: 38rem; margin-top: 0.8rem; }
   .fit-monolith {
     left: 50%;
     bottom: auto;
@@ -2801,7 +2802,7 @@ html.js [data-cap-step="6"] .cap-leg {
     top: 15.5rem;
     bottom: auto;
     width: 1.7rem;
-    height: calc(100% - 33.8rem);
+    height: 4.6rem;
     max-width: none;
     max-height: none;
     transform: translateX(-50%);

@@ -1785,7 +1785,8 @@ def check_fit_connector_geometry(html: str, css: str, failures: list[str]) -> No
                 failures,
             )
 
-    scene_h = 48 * 16
+    scene_h_decl = _fit_used(rules, "fit-scene", "height", 390, False)
+    scene_h = _css_len(scene_h_decl, 0) if scene_h_decl else 48 * 16
     top = _fit_used(rules, "fit-transition-vertical", "top", 390, False)
     height = _fit_used(rules, "fit-transition-vertical", "height", 390, False)
     bottom = _fit_used(rules, "fit-transition-vertical", "bottom", 390, False)
@@ -2297,6 +2298,144 @@ def check_round13(failures: list[str]) -> None:
     _assert_monotonic("desktop Approach steps", desktop_approach_step, 0, 100, failures)
 
 
+def _phone_wrap(viewport: int) -> float:
+    return float(viewport - 32)
+
+
+def _narrow_fit_connector_box(css: str, viewport: int) -> tuple[float, float, float]:
+    """Return (scene_height, connector_top, connector_height) in px at a phone width."""
+    rules = list(_fit_css_rules(css))
+    scene_decl = _fit_used(rules, "fit-scene", "height", viewport, False)
+    top_decl = _fit_used(rules, "fit-transition-vertical", "top", viewport, False)
+    height_decl = _fit_used(rules, "fit-transition-vertical", "height", viewport, False)
+    bottom_decl = _fit_used(rules, "fit-transition-vertical", "bottom", viewport, False)
+    if not scene_decl or not top_decl:
+        return 0.0, 0.0, 0.0
+    scene_h = _css_len(scene_decl, 0)
+    top = _css_len(top_decl, scene_h)
+    if height_decl and height_decl != "auto":
+        height = _css_len(height_decl, scene_h)
+    elif bottom_decl and bottom_decl != "auto":
+        height = scene_h - top - _css_len(bottom_decl, scene_h)
+    else:
+        height = 0.0
+    return scene_h, top, height
+
+
+def check_round14(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
+    narrow = _narrow_css(css)
+
+    if "min-height: 240vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("desktop Fit travel must remain 240vh", failures)
+    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 300vh", failures)
+    if "height: 26rem; margin-top: 0.5rem" not in css:
+        fail("desktop Fit scene height must remain 26rem", failures)
+    if "align-items: flex-start" not in narrow.split('[data-scene="fit"] .scene-sticky', 1)[-1][:80]:
+        fail("narrow Fit sticky scene must start from the top so the compacted connector stays in view", failures)
+    if "height: 48rem" in narrow:
+        fail("narrow Fit scene must no longer use the 48rem connector stack", failures)
+    if "calc(100% - 33.8rem)" in css:
+        fail("narrow Fit connector must no longer stretch through the previous long vertical span", failures)
+    if "scroll-snap" in css:
+        fail("narrow Fit must not introduce scroll snapping", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("narrow Fit must not intercept wheel scrolling", failures)
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    if "data-fluid-narrow" in raw[raw.find('id="economics"') : raw.find('id="capability"')]:
+        fail("narrow Fit must remain a sticky scene rather than a static mobile fallback", failures)
+
+    if 'attr === "data-fit-step" && isNarrow()' not in js:
+        fail("narrow Fit must keep its dedicated first-stage threshold", failures)
+    if "progress < 0.12" not in js:
+        fail("narrow Fit first reveal must remain at 12%", failures)
+    if "(progress - 0.12) / 0.66" not in js:
+        fail("narrow Fit remaining stages must stay monotonic on the dedicated 66% span", failures)
+
+    previous_connector = (48 - 33.8) * 16
+    for viewport in (390, 360, 320):
+        scene_h, top, height = _narrow_fit_connector_box(css, viewport)
+        if scene_h <= 0 or height <= 0:
+            fail(f"narrow Fit connector geometry is missing at {viewport}px", failures)
+            continue
+        if scene_h > 40 * 16:
+            fail(
+                f"narrow Fit scene at {viewport}px is {scene_h / 16:.1f}rem, expected 40rem or less",
+                failures,
+            )
+        if height > 8 * 16:
+            fail(
+                f"narrow Fit connector at {viewport}px is {height / 16:.1f}rem, expected 8rem or less",
+                failures,
+            )
+        if height >= previous_connector - 1:
+            fail(
+                f"narrow Fit connector at {viewport}px is not shorter than the previous {previous_connector / 16:.1f}rem span",
+                failures,
+            )
+        if height < 2.5 * 16:
+            fail(
+                f"narrow Fit connector at {viewport}px is {height / 16:.1f}rem, too short to join the compositions",
+                failures,
+            )
+        if top > 17 * 16 + 1:
+            fail(
+                f"narrow Fit connector at {viewport}px starts {top - 17 * 16:.1f}px below the monolith",
+                failures,
+            )
+        wrap = _phone_wrap(viewport)
+        composition_widths = {
+            "industry-specific block": re.search(
+                r"\.fit-monolith \{[^}]*width:\s*([^;]+);", narrow
+            ),
+            "foundation": re.search(r"\.fit-foundation \{[^}]*width:\s*([^;]+);", narrow),
+            "Bespoke Layer": re.search(r"\.fit-layer \{[^}]*width:\s*([^;]+);", narrow),
+        }
+        for label, match in composition_widths.items():
+            if not match:
+                fail(f"narrow {label} is missing a width at {viewport}px", failures)
+                continue
+            width = _css_len(match.group(1).strip(), wrap)
+            if width > wrap + 0.5:
+                fail(
+                    f"narrow {label} at {viewport}px is {width:.1f}px wide in a {wrap:.1f}px wrap",
+                    failures,
+                )
+
+    expected_fit = {
+        0.00: 1,
+        0.11: 1,
+        0.12: 2,
+        0.33: 2,
+        0.34: 3,
+        0.55: 3,
+        0.56: 4,
+        1.00: 4,
+    }
+    for progress, want in expected_fit.items():
+        got = narrow_fit_step(progress)
+        if got != want:
+            fail(f"narrow Fit step at progress {progress} is {got}, expected {want}", failures)
+    previous = 0
+    for index in range(0, 101):
+        current = narrow_fit_step(index / 100)
+        if current < previous:
+            fail("narrow Fit dedicated staging must stay monotonic when scrolling forward", failures)
+            break
+        previous = current
+    previous = 5
+    for index in range(100, -1, -1):
+        current = narrow_fit_step(index / 100)
+        if current > previous:
+            fail("narrow Fit dedicated staging must stay monotonic when scrolling back", failures)
+            break
+        previous = current
+    _assert_monotonic("round-14 narrow Fit steps", narrow_fit_step, 0, 100, failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -2321,13 +2460,15 @@ def check() -> int:
     check_round11(failures)
     check_round12(failures)
     check_round13(failures)
+    check_round14(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
         for item in failures:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, round-13 remaining scroll pacing, "
+        "PASS routes, eight stories, round-14 compact mobile Fit connector, "
+        "round-13 remaining scroll pacing, "
         "round-12 mobile connected workflow and Fit refinement, "
         "round-11 fluid narrow journeys and adaptive enquiry, "
         "round-10 responsive Approach and Selected Systems, "
