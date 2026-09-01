@@ -4,9 +4,9 @@ Updated: 2026-09-01
 
 ## AGE-600 mobile Fit continuous connector — 1 September 2026
 
-Narrow Fit keeps sticky travel and the dedicated 12%/66% stage contract. The mobile vertical connector is compacted from 14.2rem to 4.6rem inside a 38rem scene so the industry-specific block, arrow and Bespoke Layer stay in one continuous stack. At 340px and below the scene is 40rem and the foundation labels clear the persistent Continue scrolling control.
+Narrow Fit keeps sticky travel and the dedicated 12%/66% stage contract. The mobile vertical connector is compacted from 14.2rem to 4.6rem inside a 38rem scene so the industry-specific block, arrow and Bespoke Layer stay in one continuous stack. Unused features and Only the missing layer use a tight opaque ink plate. At 340px and below the scene is 40rem and the foundation labels clear the persistent Continue scrolling control.
 
-- PASS — `python3 site_check.py` including `check_round14` compact 38rem/4.6rem connector at 390/360, 40rem/4.6rem at 320, 320px label-to-scroll-cue clearance geometry, Spreadsheets nowrap tile width, desktop 26rem/240vh unchanged, and forward/reverse monotonic narrow Fit staging.
+- PASS — `python3 site_check.py` including `check_round14` compact connector geometry, 320px label-to-cue clearance, Spreadsheets nowrap tile width, opaque `#08090C` caption plates on Unused features and Only the missing layer at 390/360/320, Process bends unchanged, desktop Fit without those plates, and forward/reverse monotonic staging.
 - PASS — `python3 proof_media_check.py`.
 - PASS — `python3 privacy_notice_check.py`.
 - PASS — `python3 crawl_check.py`.

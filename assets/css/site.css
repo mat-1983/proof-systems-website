@@ -2793,7 +2793,14 @@ html.js [data-cap-step="6"] .cap-leg {
     width: min(18rem, 94%);
     transform: translateX(-50%);
   }
-  .fit-unused { left: 2%; top: 28%; }
+  .fit-unused {
+    left: 2%;
+    top: 28%;
+    padding: 0.16rem 0.36rem;
+    background: #08090C;
+    box-shadow: 0 0 0.38rem 0.1rem #08090C;
+    border-radius: 0.16rem;
+  }
   .fit-bends { right: 2%; left: auto; top: 34%; bottom: auto; }
   .fit-transition-wide { display: none; }
   .fit-transition-vertical {
@@ -2830,14 +2837,19 @@ html.js [data-cap-step="6"] .cap-leg {
     transform: translateX(-50%);
   }
   .fit-missing {
-    left: 7%;
-    right: 7%;
+    left: 0;
+    right: 0;
     top: auto;
     bottom: 19.1rem;
+    width: max-content;
+    margin-inline: auto;
     transform: none;
     text-align: center;
     white-space: nowrap;
-    max-width: none;
+    padding: 0.16rem 0.36rem;
+    background: #08090C;
+    box-shadow: 0 0 0.38rem 0.1rem #08090C;
+    border-radius: 0.16rem;
   }
   .approach-route-list { justify-items: center; }
   .fit-sign { white-space: normal; }

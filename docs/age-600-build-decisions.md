@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-09-01 — Mobile Fit caption plates
+
+On viewports 900px and below, Unused features and Only the missing layer use a tight opaque `#08090C` plate and ink halo so the blue bent path and amber connector are masked behind the letters. The missing-layer plate shrink-wraps and stays centred against the Bespoke Layer. Process bends, connector geometry and desktop Fit are unchanged.
+
 ## 2026-09-01 — 320px Fit foundation label clearance
 
 At 340px and below, the compacted Fit stack adds 2rem below the foundation so Accounts, Software and Spreadsheets sit above the persistent Continue scrolling control. Spreadsheets is a single 0.7rem nowrap line. The 4.6rem connector, 360px/390px composition, desktop Fit and staging thresholds are unchanged. The scroll control itself is unchanged.

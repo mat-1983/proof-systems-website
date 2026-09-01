@@ -2580,6 +2580,119 @@ def check_round14(failures: list[str]) -> None:
             break
         previous = current
     _assert_monotonic("round-14 narrow Fit steps", narrow_fit_step, 0, 100, failures)
+    check_narrow_fit_caption_backing(css, failures)
+
+
+def _css_color(token: str | None) -> tuple[int, int, int, float] | None:
+    if not token:
+        return None
+    token = token.strip().split()[0]
+    if token in {"none", "transparent"}:
+        return None
+    if token.startswith("#"):
+        hex_color = token[1:]
+        if len(hex_color) == 3:
+            hex_color = "".join(ch * 2 for ch in hex_color)
+        if len(hex_color) == 8:
+            return (
+                int(hex_color[0:2], 16),
+                int(hex_color[2:4], 16),
+                int(hex_color[4:6], 16),
+                int(hex_color[6:8], 16) / 255.0,
+            )
+        if len(hex_color) == 6:
+            return int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16), 1.0
+        return None
+    rgba = re.match(r"rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)", token)
+    if rgba:
+        return (
+            int(float(rgba.group(1))),
+            int(float(rgba.group(2))),
+            int(float(rgba.group(3))),
+            float(rgba.group(4) or 1.0),
+        )
+    return None
+
+
+def _padding_axes(token: str | None) -> tuple[float, float]:
+    if not token:
+        return 0.0, 0.0
+    parts = [part for part in token.split() if part]
+    if not parts:
+        return 0.0, 0.0
+    if len(parts) == 1:
+        value = _css_len(parts[0], 0)
+        return value, value
+    if len(parts) == 2:
+        return _css_len(parts[0], 0), _css_len(parts[1], 0)
+    if len(parts) == 3:
+        return _css_len(parts[0], 0), _css_len(parts[1], 0)
+    return _css_len(parts[0], 0), _css_len(parts[1], 0)
+
+
+def check_narrow_fit_caption_backing(css: str, failures: list[str]) -> None:
+    """Unused features and Only the missing layer must mask connectors with an opaque ink plate."""
+    rules = list(_fit_css_rules(css))
+    note_z = _fit_used(rules, "fit-note", "z-index", 390, False)
+    connector_z = _fit_used(rules, "fit-transition", "z-index", 390, False)
+    if not note_z or not connector_z or int(note_z) <= int(connector_z):
+        fail(
+            f"Fit captions must paint above the connectors, note z-index {note_z!r} vs connector {connector_z!r}",
+            failures,
+        )
+    for viewport in (390, 360, 320):
+        for cls, label in (("fit-unused", "Unused features"), ("fit-missing", "Only the missing layer")):
+            background = _fit_used(rules, cls, "background-color", viewport, False) or _fit_used(
+                rules, cls, "background", viewport, False
+            )
+            color = _css_color(background)
+            if not color:
+                fail(f"{label} at {viewport}px must have an opaque caption plate, not {background!r}", failures)
+                continue
+            red, green, blue, alpha = color
+            luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255.0
+            if alpha < 0.95:
+                fail(
+                    f"{label} at {viewport}px caption plate alpha {alpha:.2f} would show the connector through the letters",
+                    failures,
+                )
+            if luminance > 0.12:
+                fail(
+                    f"{label} at {viewport}px caption plate luminance {luminance:.3f} is not near-black Fit ink",
+                    failures,
+                )
+            pad_y, pad_x = _padding_axes(_fit_used(rules, cls, "padding", viewport, False))
+            if pad_x < 0.28 * 16 or pad_y < 0.12 * 16:
+                fail(
+                    f"{label} at {viewport}px caption plate padding {pad_x:.1f}x{pad_y:.1f}px is too tight to mask a 3px stroke",
+                    failures,
+                )
+        bends_bg = _fit_used(rules, "fit-bends", "background", viewport, False) or _fit_used(
+            rules, "fit-bends", "background-color", viewport, False
+        )
+        if _css_color(bends_bg):
+            fail("Process bends must keep its existing caption treatment", failures)
+        missing_width = _fit_used(rules, "fit-missing", "width", viewport, False)
+        if missing_width != "max-content":
+            fail(
+                f"Only the missing layer at {viewport}px must shrink-wrap its plate, not {missing_width!r}",
+                failures,
+            )
+        wrap = _phone_wrap(viewport)
+        font_px = _css_len(_fit_used(rules, "fit-note", "font-size", viewport, False) or "0.82rem", 0)
+        _, missing_pad_x = _padding_axes(_fit_used(rules, "fit-missing", "padding", viewport, False))
+        missing_text = font_px * 22 * 0.62 + 21 * font_px * 0.08 + 2 * missing_pad_x
+        if missing_text > wrap + 0.5:
+            fail(
+                f"Only the missing layer plate at {viewport}px needs {missing_text:.1f}px in a {wrap:.1f}px wrap",
+                failures,
+            )
+    for cls, label in (("fit-unused", "Unused features"), ("fit-missing", "Only the missing layer")):
+        wide_bg = _fit_used(rules, cls, "background", 1440, False) or _fit_used(
+            rules, cls, "background-color", 1440, False
+        )
+        if _css_color(wide_bg):
+            fail(f"desktop {label} must not gain the mobile caption plate", failures)
 
 
 def check() -> int:
