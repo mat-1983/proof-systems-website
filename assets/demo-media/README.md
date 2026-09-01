@@ -4,7 +4,69 @@ These silent films show operator-built systems around one synthetic Northstar wo
 
 ## Shared format
 
-Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with no audio track. Every public film has a poster, an English WebVTT timed description and an accessible summary on its story page.
+Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with no audio track. Every public film has a poster, an English WebVTT timed description and an accessible summary on its story page. Story-page players expose that VTT as an optional `English descriptions` captions track. It is not enabled by default, so burned-in titles and browser captions do not appear together during ordinary playback.
+
+## Visible narrative treatment
+
+Inspected start to finish on 1 September 2026. The primary visible narrative is the composition-aware text already in the picture. Optional WebVTT remains available from native player controls. Review frames for every film, including every newly added callout, are in `docs/age-601-film-review/`.
+
+Rebuild the four denser public films from the preserved AGE-600 masters with `python3 assets/demo-media/render_narrative.py render`.
+
+### SiteLog — preserved AGE-600 master
+
+Full-screen chapter cards at the open and at the admin hand-off. Lower-thirds on the tradesperson form, weekly invoice and admin export. Form-filling, weekly summary, project controls and the user-account modal stay clear so controls and the cursor remain visible.
+
+### BudgetFlow — preserved AGE-600 master
+
+Full-screen chapter cards at the open and at the quantity-surveyor hand-off. Lower-thirds on labour allocation. Table allocation, variation and quote modals, payment-report builder and the Sage workbook stay clear.
+
+### Central Project Register — preserved AGE-600 master
+
+Full-screen title card, then the portfolio and project drill-down without extra callouts. The interface already names identity, contract terms and the Applications Ledger hand-off.
+
+### Probables — preserved AGE-600 master
+
+Full-screen title card, then the pipeline and add-probable form without extra callouts. Field labels on the form are the stage narrative; overlaying them would cover the cursor.
+
+### Applications Ledger — re-exported from `source/applications-ledger-demo.mp4`
+
+Existing title card retained. Added compact lower-thirds:
+
+- 4.20–7.40 LIVE CONTRACTS / Status and a route into each ledger
+- 8.20–13.80 CONTRACT LEDGER / Application, certification, payment and retention
+- 108.80–113.80 FINANCE VIEW / Attention queue for cash and retention
+- 119.50–123.80 FORECAST HYGIENE / Missing or stale forecasts
+
+No callout during add-application or valuation modals, the quantity-surveyor dashboard Accept queue, retention year-bucket inspection, or the forecast page itself.
+
+### LedgerLink — re-exported from `source/ledgerlink-demo.mp4`
+
+Existing title card retained. Connection test, Run extraction and evidence drill-down stay clear of overlays because those controls sit in the lower frame. Added raised workbook callouts:
+
+- 47.20–51.50 OVERHEAD ACTUALS / Period transaction listing
+- 69.05–70.80 RETENTION BY PROJECT / Held and released from the same extract
+
+The retention callout ends before the Downloads window opens.
+
+### Cashflow — re-exported from `source/cashflow-demo.mp4`
+
+Existing title card retained. Added:
+
+- 8.20–18.40 COMMERCIAL FINANCE / Short-term and long-term cashflow
+- 27.00–34.00 SHORT-TERM / Funding events and daily cash
+- 38.40–48.00 COST-VALUE / Project schedule feeding the longer view
+
+Workbook callouts sit above the sheet tabs. Dense forecast and facility rows are left uncovered.
+
+### Management Accounts — re-exported from `source/management-accounts-demo.mp4`
+
+Existing title card and the later “One reporting cycle” chapter card retained. Added:
+
+- 6.40–10.80 MONTHLY PACK / Open the reporting workbook
+- 14.60–18.20 PROFIT AND LOSS / Current year, budget and forecast
+- 22.60–33.80 LIVE PROJECTS / Turnover and gross margin by region
+
+No extra callout on the overheads sheet, where expenditure rows and worksheet tabs fill the lower frame.
 
 ## SiteLog
 
@@ -96,6 +158,8 @@ SiteLog and BudgetFlow were recorded and reviewed on 28 August 2026 from the app
 
 The six staged AGE-600 masters were added from the approved local synthetic demonstration suite on 29 August 2026. Public-safety review of sampled frames found only synthetic Northstar labels, local demonstration chrome and Sage-style simulated accounts software. Sage itself is not connected.
 
+On 1 September 2026, Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from those preserved AGE-600 masters with composition-aware stage callouts. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Opening poster frames are unchanged.
+
 Source-file SHA-256 hashes for the earlier SiteLog and BudgetFlow recordings:
 
 - `01-Tradesman Journey.mov`: `afcd4b7941103abf3fda8d869c780cf42355360ece4b58a554ae11be0a2e9b27`
@@ -108,13 +172,20 @@ Final-file SHA-256 hashes:
 
 - `sitelog-demo.mp4`: `f91d00ff10fb5b5159ad8ffe3a2ea277f6d55da0dfe17b9492c6469a32eb0e51`
 - `budgetflow-demo.mp4`: `dda5c8ac812c5dce7a33a0d3ec22296e552087ec38a8626bd79e00a9d485ed62`
-- `ledgerlink-demo.mp4`: `2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02`
+- `ledgerlink-demo.mp4`: `58b88ac057fc0f1fa06e7f8115733c9efd83939d92e040dcebc2b11cdda4afeb`
 - `cpr-demo.mp4`: `ca066cfd62834562bcc000cb501172047600a4356b68613ff13e97aec3f748af`
-- `applications-ledger-demo.mp4`: `e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a`
-- `cashflow-demo.mp4`: `769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f`
+- `applications-ledger-demo.mp4`: `3c4ec8c43e7d71bb416a19be245d9b119434840820985b84291609bdbc5921bb`
+- `cashflow-demo.mp4`: `26bbf1c2cee540a1b60edbd7d22f86e849dcaa3b06c019d2d452dd8e117ed901`
 - `probables-demo.mp4`: `647300de26440d2afa33ae0b64a5e7ccd4a04a0909f72f906c5726a1377dfc63`
-- `management-accounts-demo.mp4`: `38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c`
+- `management-accounts-demo.mp4`: `6ffc9169688be1d4bceb683465e8a773bf8a5b52dae071c2b66cfc0dee34b710`
 - `sitelog-poster.jpg`: `4022b4b2829dc32d004bfdd10c9dc0297fad5a353545832cc6dea5a1cf028a40`
 - `budgetflow-poster.jpg`: `1af478e41bf80428b75aa9fcda6b9c3b469ec997b8189875c863a19e4f513162`
+
+AGE-600 source masters retained in `source/` for the four re-exported films:
+
+- `source/ledgerlink-demo.mp4`: `2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02`
+- `source/applications-ledger-demo.mp4`: `e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a`
+- `source/cashflow-demo.mp4`: `769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f`
+- `source/management-accounts-demo.mp4`: `38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c`
 
 No publication or deployment is authorised by this record.

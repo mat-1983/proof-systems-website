@@ -2,6 +2,24 @@
 
 Updated: 2026-09-01
 
+## AGE-601 demo film narrative — 1 September 2026
+
+All eight story pages keep a single visible narrative layer by default. Optional English descriptions remain in each VTT and native track without `default`. Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from preserved AGE-600 masters with concise lower-thirds. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Posters are unchanged.
+
+- PASS — start-to-finish inspection of all eight films; stage treatment recorded in `assets/demo-media/README.md`.
+- PASS — `ffprobe` on every final MP4: H.264, 1280×720, silent, duration within 0.2s of the register.
+- PASS — every VTT starts with `WEBVTT`, parses, and stays within its film duration.
+- PASS — all eight story pages have a non-default `English descriptions` track and retain `What this film shows`.
+- PASS — review frames in `docs/age-601-film-review/` cover every film and every newly added callout.
+- PASS — `python3 site_check.py` including non-default description tracks.
+- PASS — `python3 proof_media_check.py` including preserved source masters and caption/duration consistency.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py`.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — `git diff --check`.
+- PASS — local loopback HTTP 200 for all eight story pages, posters, VTT files and MP4 sources; served markup has a non-default `English descriptions` track and retains `What this film shows`.
+- NOT COMPLETE — live Chrome 1440 and 390 viewport playback, native control interaction and optional-caption toggling. Playwright's bundled browser is missing; system Chrome headless SIGSEGV'd on Crashpad `settings.dat` permission, matching earlier AGE-600 records. Independent review should watch the eight pages in a real browser and use `docs/age-601-film-review/` for obstruction.
+
 ## AGE-600 mobile Fit continuous connector — 1 September 2026
 
 Narrow Fit keeps sticky travel and the dedicated 12%/66% stage contract. The mobile vertical connector is compacted from 14.2rem to 4.6rem inside a 38rem scene so the industry-specific block, arrow and Bespoke Layer stay in one continuous stack. Unused features and Only the missing layer use a tight opaque ink plate. At 340px and below the scene is 40rem and the foundation labels clear the persistent Continue scrolling control.

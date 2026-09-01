@@ -2,6 +2,10 @@
 
 Updated: 2026-09-01
 
+## AGE-601 demo film narrative
+
+All eight story films use one visible narrative layer by default: composition-aware burned-in titles and lower-thirds. Optional English descriptions remain in each VTT and native track but are no longer `default`. Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from preserved AGE-600 masters with concise stage callouts. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Not approved for push, merge or publication.
+
 ## AGE-600 mobile Fit continuous connector
 
 Narrow Fit keeps sticky 300vh travel. The mobile scene is 38rem with a 4.6rem vertical two-way connector from Industry Specific Software to the Bespoke Layer. Unused features and Only the missing layer sit on a tight opaque ink plate so the blue path and amber connector do not show through the letters. At 340px and below the scene is 40rem and the foundation labels sit above the persistent Continue scrolling control, with Spreadsheets on one line. Dedicated 12%/66% staging is unchanged. Desktop Fit remains 240vh / 26rem. Not approved for push, merge or publication.

@@ -37,8 +37,10 @@ FILMS = [
         "source": "ledgerlink-demo.mp4",
         "poster": "ledgerlink-poster.jpg",
         "captions": "ledgerlink-demo.vtt",
-        "sha256": "2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02",
+        "sha256": "58b88ac057fc0f1fa06e7f8115733c9efd83939d92e040dcebc2b11cdda4afeb",
         "duration": 109.3,
+        "master": "source/ledgerlink-demo.mp4",
+        "master_sha256": "2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02",
     },
     {
         "slug": "cpr",
@@ -53,16 +55,20 @@ FILMS = [
         "source": "applications-ledger-demo.mp4",
         "poster": "applications-ledger-poster.jpg",
         "captions": "applications-ledger-demo.vtt",
-        "sha256": "e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a",
+        "sha256": "3c4ec8c43e7d71bb416a19be245d9b119434840820985b84291609bdbc5921bb",
         "duration": 130.7,
+        "master": "source/applications-ledger-demo.mp4",
+        "master_sha256": "e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a",
     },
     {
         "slug": "cashflow",
         "source": "cashflow-demo.mp4",
         "poster": "cashflow-poster.jpg",
         "captions": "cashflow-demo.vtt",
-        "sha256": "769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f",
+        "sha256": "26bbf1c2cee540a1b60edbd7d22f86e849dcaa3b06c019d2d452dd8e117ed901",
         "duration": 78.7,
+        "master": "source/cashflow-demo.mp4",
+        "master_sha256": "769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f",
     },
     {
         "slug": "probables",
@@ -77,8 +83,10 @@ FILMS = [
         "source": "management-accounts-demo.mp4",
         "poster": "management-accounts-poster.jpg",
         "captions": "management-accounts-demo.vtt",
-        "sha256": "38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c",
+        "sha256": "6ffc9169688be1d4bceb683465e8a773bf8a5b52dae071c2b66cfc0dee34b710",
         "duration": 53.9,
+        "master": "source/management-accounts-demo.mp4",
+        "master_sha256": "38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c",
     },
 ]
 
@@ -146,13 +154,71 @@ def probe(path: pathlib.Path) -> dict[str, str]:
     return data
 
 
-def check_vtt(path: pathlib.Path, failures: list[str]) -> None:
+def has_audio(path: pathlib.Path) -> bool:
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        return False
+    command = [
+        ffprobe,
+        "-v",
+        "error",
+        "-select_streams",
+        "a",
+        "-show_entries",
+        "stream=codec_type",
+        "-of",
+        "csv=p=0",
+        str(path),
+    ]
+    return bool(subprocess.check_output(command, text=True).strip())
+
+
+def parse_vtt_timestamp(token: str) -> float:
+    stamp = token.strip().split()[0]
+    parts = stamp.split(":")
+    if len(parts) == 2:
+        hours = 0
+        minutes, rest = parts
+    elif len(parts) == 3:
+        hours, minutes, rest = parts
+    else:
+        raise ValueError(f"unrecognised VTT timestamp {token!r}")
+    seconds, millis = rest.split(".")
+    return int(hours) * 3600 + int(minutes) * 60 + int(seconds) + int(millis) / 1000
+
+
+def vtt_cue_ends(text: str) -> list[tuple[float, float]]:
+    cues: list[tuple[float, float]] = []
+    for line in text.splitlines():
+        if " --> " not in line:
+            continue
+        start_token, end_token = line.split(" --> ", 1)
+        cues.append((parse_vtt_timestamp(start_token), parse_vtt_timestamp(end_token)))
+    return cues
+
+
+def check_vtt(path: pathlib.Path, duration: float, failures: list[str]) -> None:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("WEBVTT"):
         fail(f"{path.name} is not a WebVTT file", failures)
         return
-    if " --> " not in text:
+    try:
+        cues = vtt_cue_ends(text)
+    except ValueError as exc:
+        fail(f"{path.name}: {exc}", failures)
+        return
+    if not cues:
         fail(f"{path.name} has no timed cues", failures)
+        return
+    previous_end = 0.0
+    for start, end in cues:
+        if start < 0 or end <= start:
+            fail(f"{path.name}: invalid cue {start:.3f} --> {end:.3f}", failures)
+        if start + 0.001 < previous_end:
+            fail(f"{path.name}: cues overlap or run backwards at {start:.3f}", failures)
+        if end - duration > 0.2:
+            fail(f"{path.name}: cue ends at {end:.3f}s beyond duration {duration:.3f}s", failures)
+        previous_end = end
     if path.name == "ledgerlink-demo.vtt" and "connection to accounts software" not in text:
         fail("ledgerlink-demo.vtt must describe the connection to accounts software", failures)
 
@@ -171,6 +237,7 @@ def check() -> int:
             if not exact_case_file(rel):
                 fail(f"missing media file with exact case: {rel}", failures)
         source = ROOT / source_rel
+        duration = film["duration"]
         if source.is_file():
             digest = sha256_file(source)
             if digest != film["sha256"]:
@@ -194,8 +261,18 @@ def check() -> int:
                             f"{film['source']}: duration {duration:.3f}s != {film['duration']}",
                             failures,
                         )
+                if has_audio(source):
+                    fail(f"{film['source']}: public film must remain silent", failures)
             elif not shutil.which("ffprobe"):
                 fail("ffprobe is not available to probe codec, dimensions and duration", failures)
+        if film.get("master"):
+            master_rel = f"assets/demo-media/{film['master']}"
+            if not exact_case_file(master_rel):
+                fail(f"missing preserved source master: {master_rel}", failures)
+            else:
+                master_digest = sha256_file(ROOT / master_rel)
+                if master_digest != film["master_sha256"]:
+                    fail(f"{master_rel} hash mismatch: {master_digest}", failures)
         poster = ROOT / poster_rel
         if poster.is_file() and film["poster"] in PRESERVED_POSTERS:
             digest = sha256_file(poster)
@@ -203,7 +280,11 @@ def check() -> int:
                 fail(f"{poster_rel} preserved poster hash mismatch: {digest}", failures)
         captions = ROOT / caption_rel
         if captions.is_file():
-            check_vtt(captions, failures)
+            check_vtt(captions, duration, failures)
+
+    render_script = MEDIA / "render_narrative.py"
+    if not render_script.is_file():
+        fail("missing assets/demo-media/render_narrative.py", failures)
 
     for teaser in TEASERS:
         rel = f"assets/demo-media/{teaser}"
@@ -231,8 +312,8 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS eight synthetic films, exact master hashes, posters, VTT files "
-        "and short homepage teasers"
+        "PASS eight synthetic films, exact master hashes, preserved sources, "
+        "posters, duration-bounded VTT files and short homepage teasers"
     )
     return 0
 

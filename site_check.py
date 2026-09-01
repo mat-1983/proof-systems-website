@@ -418,12 +418,18 @@ def check_stories(failures: list[str]) -> None:
         tracks = video["tracks"]
         if not tracks or tracks[0].get("kind") != "captions":
             fail(f"{path.name}: missing captions track", failures)
+        if "default" in tracks[0]:
+            fail(f"{path.name}: description track must not be default", failures)
+        if tracks[0].get("label") != "English descriptions":
+            fail(f"{path.name}: description track must be labelled English descriptions", failures)
         if f"../assets/demo-media/{slug}-demo.vtt" not in raw:
             fail(f"{path.name}: missing VTT path", failures)
         if f"../assets/demo-media/{slug}-poster.jpg" not in raw:
             fail(f"{path.name}: missing poster", failures)
         if "What this film shows" not in raw:
             fail(f"{path.name}: missing accessible summary", failures)
+        if "demo-media/source/" in raw:
+            fail(f"{path.name}: must not link preserved source masters", failures)
         if "Back to Selected Systems" not in raw:
             fail(f"{path.name} missing Back to Selected Systems", failures)
         if "Suggested next:" not in raw:
