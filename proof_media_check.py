@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
+import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent
 MEDIA = ROOT / "assets" / "demo-media"
@@ -37,9 +39,9 @@ FILMS = [
         "source": "ledgerlink-demo.mp4",
         "poster": "ledgerlink-poster.jpg",
         "captions": "ledgerlink-demo.vtt",
-        "sha256": "58b88ac057fc0f1fa06e7f8115733c9efd83939d92e040dcebc2b11cdda4afeb",
+        "sha256": "43ab2ade873b68ddde8b95fa528e944014d6de7ab7bffe70ca56eccc7c6089b7",
         "duration": 109.3,
-        "master": "source/ledgerlink-demo.mp4",
+        "master": "tools/demo-film-narrative/source/ledgerlink-demo.mp4",
         "master_sha256": "2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02",
     },
     {
@@ -55,9 +57,9 @@ FILMS = [
         "source": "applications-ledger-demo.mp4",
         "poster": "applications-ledger-poster.jpg",
         "captions": "applications-ledger-demo.vtt",
-        "sha256": "3c4ec8c43e7d71bb416a19be245d9b119434840820985b84291609bdbc5921bb",
+        "sha256": "b6c31c1c92467a7dd6216e82e6d775536005abfedeca35e89fab83af02435848",
         "duration": 130.7,
-        "master": "source/applications-ledger-demo.mp4",
+        "master": "tools/demo-film-narrative/source/applications-ledger-demo.mp4",
         "master_sha256": "e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a",
     },
     {
@@ -65,9 +67,9 @@ FILMS = [
         "source": "cashflow-demo.mp4",
         "poster": "cashflow-poster.jpg",
         "captions": "cashflow-demo.vtt",
-        "sha256": "26bbf1c2cee540a1b60edbd7d22f86e849dcaa3b06c019d2d452dd8e117ed901",
+        "sha256": "d49f68443d16be845e194653c0393dc3b175aa41bd335e77cc4046ae213a7d61",
         "duration": 78.7,
-        "master": "source/cashflow-demo.mp4",
+        "master": "tools/demo-film-narrative/source/cashflow-demo.mp4",
         "master_sha256": "769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f",
     },
     {
@@ -83,9 +85,9 @@ FILMS = [
         "source": "management-accounts-demo.mp4",
         "poster": "management-accounts-poster.jpg",
         "captions": "management-accounts-demo.vtt",
-        "sha256": "6ffc9169688be1d4bceb683465e8a773bf8a5b52dae071c2b66cfc0dee34b710",
+        "sha256": "b68377a7019155b19adec19756534104fed9d8700a1b36ec1b48664bc7db9358",
         "duration": 53.9,
-        "master": "source/management-accounts-demo.mp4",
+        "master": "tools/demo-film-narrative/source/management-accounts-demo.mp4",
         "master_sha256": "38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c",
     },
 ]
@@ -223,6 +225,72 @@ def check_vtt(path: pathlib.Path, duration: float, failures: list[str]) -> None:
         fail("ledgerlink-demo.vtt must describe the connection to accounts software", failures)
 
 
+def load_render_module():
+    path = ROOT / "tools" / "demo-film-narrative" / "render_narrative.py"
+    spec = importlib.util.spec_from_file_location("demo_film_narrative", path)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["demo_film_narrative"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def check_callout_clearance(failures: list[str]) -> None:
+    module = load_render_module()
+    if module is None:
+        fail("unable to load tools/demo-film-narrative/render_narrative.py", failures)
+        return
+    for film in module.FILMS:
+        for cue in film.cues:
+            _box_w, box_h = module.box_size(cue)
+            if cue.y + box_h > module.CONTROL_CLEAR_Y:
+                fail(
+                    f"{film.slug} {cue.kicker} occupies y={cue.y}-{cue.y + box_h}, "
+                    f"enters native-control band y>={module.CONTROL_CLEAR_Y}",
+                    failures,
+                )
+
+
+def check_publish_package(failures: list[str]) -> None:
+    prepare = ROOT / "tools" / "prepare_publish.py"
+    if not prepare.is_file():
+        fail("missing tools/prepare_publish.py", failures)
+        return
+    with tempfile.TemporaryDirectory() as tmp:
+        out = pathlib.Path(tmp) / "publish"
+        try:
+            subprocess.run(
+                [sys.executable, str(prepare), "--out", str(out)],
+                check=True,
+                cwd=ROOT,
+                stdout=subprocess.DEVNULL,
+            )
+        except subprocess.CalledProcessError:
+            fail("tools/prepare_publish.py failed", failures)
+            return
+        media = out / "assets" / "demo-media"
+        for film in FILMS:
+            for name in (film["source"], film["poster"], film["captions"]):
+                if not (media / name).is_file():
+                    fail(f"publish package missing assets/demo-media/{name}", failures)
+        for teaser in TEASERS:
+            if not (media / teaser).is_file():
+                fail(f"publish package missing assets/demo-media/{teaser}", failures)
+        forbidden = [
+            out / "assets" / "demo-media" / "source",
+            out / "assets" / "demo-media" / "render_narrative.py",
+            out / "tools",
+            out / "docs" / "age-601-film-review",
+        ]
+        for path in forbidden:
+            if path.exists():
+                fail(f"publish package must not contain {path.relative_to(out)}", failures)
+        for slug in ("applications-ledger", "ledgerlink", "cashflow", "management-accounts"):
+            if (media / "source" / f"{slug}-demo.mp4").exists():
+                fail(f"publish package contains duplicate source master {slug}", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     if not MEDIA.is_dir():
@@ -266,7 +334,7 @@ def check() -> int:
             elif not shutil.which("ffprobe"):
                 fail("ffprobe is not available to probe codec, dimensions and duration", failures)
         if film.get("master"):
-            master_rel = f"assets/demo-media/{film['master']}"
+            master_rel = film["master"]
             if not exact_case_file(master_rel):
                 fail(f"missing preserved source master: {master_rel}", failures)
             else:
@@ -282,9 +350,16 @@ def check() -> int:
         if captions.is_file():
             check_vtt(captions, duration, failures)
 
-    render_script = MEDIA / "render_narrative.py"
+    render_script = ROOT / "tools" / "demo-film-narrative" / "render_narrative.py"
     if not render_script.is_file():
-        fail("missing assets/demo-media/render_narrative.py", failures)
+        fail("missing tools/demo-film-narrative/render_narrative.py", failures)
+    if (MEDIA / "render_narrative.py").exists():
+        fail("render tooling must not live under assets/demo-media", failures)
+    if (MEDIA / "source").exists():
+        fail("preserved source masters must not live under assets/demo-media", failures)
+    check_callout_clearance(failures)
+
+    check_publish_package(failures)
 
     for teaser in TEASERS:
         rel = f"assets/demo-media/{teaser}"
@@ -312,8 +387,9 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS eight synthetic films, exact master hashes, preserved sources, "
-        "posters, duration-bounded VTT files and short homepage teasers"
+        "PASS eight synthetic films, exact master hashes, preserved sources "
+        "outside the public tree, posters, duration-bounded VTT files, "
+        "short homepage teasers and publish-package exclusions"
     )
     return 0
 

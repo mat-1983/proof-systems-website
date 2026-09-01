@@ -428,7 +428,7 @@ def check_stories(failures: list[str]) -> None:
             fail(f"{path.name}: missing poster", failures)
         if "What this film shows" not in raw:
             fail(f"{path.name}: missing accessible summary", failures)
-        if "demo-media/source/" in raw:
+        if "demo-media/source/" in raw or "tools/demo-film-narrative/" in raw:
             fail(f"{path.name}: must not link preserved source masters", failures)
         if "Back to Selected Systems" not in raw:
             fail(f"{path.name} missing Back to Selected Systems", failures)

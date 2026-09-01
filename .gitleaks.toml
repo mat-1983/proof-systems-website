@@ -1,0 +1,15 @@
+title = "Proof Systems website"
+
+[extend]
+useDefault = true
+
+# gitleaks stdin scans `git diff --cached --binary`. Binary files emit
+# `index <sha>..<sha>` lines, optionally with a mode. The Sourcegraph rule
+# also matches any 40-char hex string, so Git blob SHAs false-positive.
+# This allowlist is only those index lines. Real sgp_ tokens still fail.
+[[allowlists]]
+description = "Git blob SHAs on binary-patch index lines are not Sourcegraph tokens"
+regexTarget = "line"
+regexes = [
+  '''index [0-9a-f]{40}\.\.[0-9a-f]{40}''',
+]

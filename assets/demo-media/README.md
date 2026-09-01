@@ -8,9 +8,13 @@ Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with 
 
 ## Visible narrative treatment
 
-Inspected start to finish on 1 September 2026. The primary visible narrative is the composition-aware text already in the picture. Optional WebVTT remains available from native player controls. Review frames for every film, including every newly added callout, are in `docs/age-601-film-review/`.
+Inspected start to finish on 1 September 2026. The primary visible narrative is the composition-aware text already in the picture. Optional WebVTT remains available from native player controls. Review frames, including every callout with a Chrome-sized control overlay at the story-page desktop and 390px sizes, are in `tools/demo-film-narrative/review/`.
 
-Rebuild the four denser public films from the preserved AGE-600 masters with `python3 assets/demo-media/render_narrative.py render`.
+Rebuild the four denser public films from the preserved AGE-600 masters with `python3 tools/demo-film-narrative/render_narrative.py render`.
+
+## Publication boundary
+
+The public site is the HTML routes, `_redirects`, `favicon.svg`, `work/` and `assets/`. Source masters, the narrative renderer and review-only stills live under `tools/` and are not part of the deploy-ready tree. Build that tree with `python3 tools/prepare_publish.py`. `python3 proof_media_check.py` rebuilds it in a temp directory and asserts that the eight public films, posters and VTT files are present while source masters, render tooling and review evidence are absent. Do not deploy the repository root if that would publish `tools/`.
 
 ### SiteLog — preserved AGE-600 master
 
@@ -28,9 +32,9 @@ Full-screen title card, then the portfolio and project drill-down without extra 
 
 Full-screen title card, then the pipeline and add-probable form without extra callouts. Field labels on the form are the stage narrative; overlaying them would cover the cursor.
 
-### Applications Ledger — re-exported from `source/applications-ledger-demo.mp4`
+### Applications Ledger — re-exported from `tools/demo-film-narrative/source/applications-ledger-demo.mp4`
 
-Existing title card retained. Added compact lower-thirds:
+Existing title card retained. Added compact callouts above the native-control band:
 
 - 4.20–7.40 LIVE CONTRACTS / Status and a route into each ledger
 - 8.20–13.80 CONTRACT LEDGER / Application, certification, payment and retention
@@ -39,16 +43,16 @@ Existing title card retained. Added compact lower-thirds:
 
 No callout during add-application or valuation modals, the quantity-surveyor dashboard Accept queue, retention year-bucket inspection, or the forecast page itself.
 
-### LedgerLink — re-exported from `source/ledgerlink-demo.mp4`
+### LedgerLink — re-exported from `tools/demo-film-narrative/source/ledgerlink-demo.mp4`
 
-Existing title card retained. Connection test, Run extraction and evidence drill-down stay clear of overlays because those controls sit in the lower frame. Added raised workbook callouts:
+Existing title card retained. Connection test, Run extraction and evidence drill-down stay clear of overlays because those controls sit in the lower frame. Added workbook callouts in empty cells, above the native-control band:
 
 - 47.20–51.50 OVERHEAD ACTUALS / Period transaction listing
 - 69.05–70.80 RETENTION BY PROJECT / Held and released from the same extract
 
 The retention callout ends before the Downloads window opens.
 
-### Cashflow — re-exported from `source/cashflow-demo.mp4`
+### Cashflow — re-exported from `tools/demo-film-narrative/source/cashflow-demo.mp4`
 
 Existing title card retained. Added:
 
@@ -56,9 +60,9 @@ Existing title card retained. Added:
 - 27.00–34.00 SHORT-TERM / Funding events and daily cash
 - 38.40–48.00 COST-VALUE / Project schedule feeding the longer view
 
-Workbook callouts sit above the sheet tabs. Dense forecast and facility rows are left uncovered.
+Workbook callouts sit in empty cells above the native-control band. Dense forecast and facility rows are left uncovered.
 
-### Management Accounts — re-exported from `source/management-accounts-demo.mp4`
+### Management Accounts — re-exported from `tools/demo-film-narrative/source/management-accounts-demo.mp4`
 
 Existing title card and the later “One reporting cycle” chapter card retained. Added:
 
@@ -172,20 +176,20 @@ Final-file SHA-256 hashes:
 
 - `sitelog-demo.mp4`: `f91d00ff10fb5b5159ad8ffe3a2ea277f6d55da0dfe17b9492c6469a32eb0e51`
 - `budgetflow-demo.mp4`: `dda5c8ac812c5dce7a33a0d3ec22296e552087ec38a8626bd79e00a9d485ed62`
-- `ledgerlink-demo.mp4`: `58b88ac057fc0f1fa06e7f8115733c9efd83939d92e040dcebc2b11cdda4afeb`
+- `ledgerlink-demo.mp4`: `43ab2ade873b68ddde8b95fa528e944014d6de7ab7bffe70ca56eccc7c6089b7`
 - `cpr-demo.mp4`: `ca066cfd62834562bcc000cb501172047600a4356b68613ff13e97aec3f748af`
-- `applications-ledger-demo.mp4`: `3c4ec8c43e7d71bb416a19be245d9b119434840820985b84291609bdbc5921bb`
-- `cashflow-demo.mp4`: `26bbf1c2cee540a1b60edbd7d22f86e849dcaa3b06c019d2d452dd8e117ed901`
+- `applications-ledger-demo.mp4`: `b6c31c1c92467a7dd6216e82e6d775536005abfedeca35e89fab83af02435848`
+- `cashflow-demo.mp4`: `d49f68443d16be845e194653c0393dc3b175aa41bd335e77cc4046ae213a7d61`
 - `probables-demo.mp4`: `647300de26440d2afa33ae0b64a5e7ccd4a04a0909f72f906c5726a1377dfc63`
-- `management-accounts-demo.mp4`: `6ffc9169688be1d4bceb683465e8a773bf8a5b52dae071c2b66cfc0dee34b710`
+- `management-accounts-demo.mp4`: `b68377a7019155b19adec19756534104fed9d8700a1b36ec1b48664bc7db9358`
 - `sitelog-poster.jpg`: `4022b4b2829dc32d004bfdd10c9dc0297fad5a353545832cc6dea5a1cf028a40`
 - `budgetflow-poster.jpg`: `1af478e41bf80428b75aa9fcda6b9c3b469ec997b8189875c863a19e4f513162`
 
-AGE-600 source masters retained in `source/` for the four re-exported films:
+AGE-600 source masters retained in `tools/demo-film-narrative/source/` for the four re-exported films:
 
-- `source/ledgerlink-demo.mp4`: `2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02`
-- `source/applications-ledger-demo.mp4`: `e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a`
-- `source/cashflow-demo.mp4`: `769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f`
-- `source/management-accounts-demo.mp4`: `38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c`
+- `tools/demo-film-narrative/source/ledgerlink-demo.mp4`: `2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02`
+- `tools/demo-film-narrative/source/applications-ledger-demo.mp4`: `e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a`
+- `tools/demo-film-narrative/source/cashflow-demo.mp4`: `769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f`
+- `tools/demo-film-narrative/source/management-accounts-demo.mp4`: `38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c`
 
 No publication or deployment is authorised by this record.

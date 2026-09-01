@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 """Composite composition-aware stage callouts onto the four denser demo films.
 
-The public masters for Applications Ledger, LedgerLink, Cashflow and
+Public masters for Applications Ledger, LedgerLink, Cashflow and
 Management Accounts are rebuilt from the preserved AGE-600 sources in
 ``source/``. SiteLog, BudgetFlow, CPR and Probables are not re-encoded.
 
-Usage:
-    python3 assets/demo-media/render_narrative.py preview
-    python3 assets/demo-media/render_narrative.py render
-    python3 assets/demo-media/render_narrative.py review
+Callouts sit above the native player-control band. On the story page the
+film is 46rem wide on desktop (828×466 at 18px root) and wrap-width on a
+390px phone (342×192). A 54px native control bar then covers the bottom
+83px (desktop) or 202px (phone) of the 720p master. No callout pixel may
+sit at y>=500.
+
+Usage from the repository root:
+    python3 tools/demo-film-narrative/render_narrative.py preview
+    python3 tools/demo-film-narrative/render_narrative.py render
+    python3 tools/demo-film-narrative/render_narrative.py review
 """
 
 from __future__ import annotations
@@ -24,10 +30,11 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parent.parent
-SOURCE_DIR = ROOT / "source"
-REVIEW_DIR = REPO / "docs" / "age-601-film-review"
+TOOL_ROOT = Path(__file__).resolve().parent
+REPO = TOOL_ROOT.parent.parent
+PUBLIC_MEDIA = REPO / "assets" / "demo-media"
+SOURCE_DIR = TOOL_ROOT / "source"
+REVIEW_DIR = TOOL_ROOT / "review"
 FONT_PATH = Path("/System/Library/Fonts/HelveticaNeue.ttc")
 
 WIDTH = 1280
@@ -36,17 +43,16 @@ FILL = (18, 16, 14, 236)
 BORDER = (216, 144, 66, 255)
 KICKER_COLOUR = (216, 144, 66, 255)
 LINE_COLOUR = (247, 241, 232, 255)
-RADIUS = 16
-PAD_X = 28
-PAD_TOP = 18
-PAD_BOTTOM = 20
-KICKER_SIZE = 13
-LINE_SIZE = 26
-TRACKING = 2.2
-
-STANDARD_Y = 588
-ABOVE_TABS_Y = 546
-LEFT_X = 32
+RADIUS = 14
+PAD_X = 24
+PAD_TOP = 14
+PAD_BOTTOM = 14
+KICKER_SIZE = 12
+LINE_SIZE = 22
+KICKER_LINE_GAP = 8
+TRACKING = 2.0
+# Native controls at 390px cover ~202px of the 720p master. Keep callouts above.
+CONTROL_CLEAR_Y = 500
 
 
 @dataclass(frozen=True)
@@ -55,7 +61,8 @@ class Cue:
     end: float
     kicker: str
     line: str
-    placement: str = "standard"
+    x: int
+    y: int
 
 
 @dataclass(frozen=True)
@@ -68,33 +75,33 @@ FILMS: tuple[Film, ...] = (
     Film(
         "applications-ledger",
         (
-            Cue(4.20, 7.40, "LIVE CONTRACTS", "Status and a route into each ledger"),
-            Cue(8.20, 13.80, "CONTRACT LEDGER", "Application, certification, payment and retention"),
-            Cue(108.80, 113.80, "FINANCE VIEW", "Attention queue for cash and retention"),
-            Cue(119.50, 123.80, "FORECAST HYGIENE", "Missing or stale forecasts"),
+            Cue(4.20, 7.40, "LIVE CONTRACTS", "Status and a route into each ledger", 248, 430),
+            Cue(8.20, 13.80, "CONTRACT LEDGER", "Application, certification, payment and retention", 24, 430),
+            Cue(108.80, 113.80, "FINANCE VIEW", "Attention queue for cash and retention", 248, 380),
+            Cue(119.50, 123.80, "FORECAST HYGIENE", "Missing or stale forecasts", 248, 280),
         ),
     ),
     Film(
         "ledgerlink",
         (
-            Cue(47.20, 51.50, "OVERHEAD ACTUALS", "Period transaction listing", "above_tabs"),
-            Cue(69.05, 70.80, "RETENTION BY PROJECT", "Held and released from the same extract", "above_tabs"),
+            Cue(47.20, 51.50, "OVERHEAD ACTUALS", "Period transaction listing", 900, 370),
+            Cue(69.05, 70.80, "RETENTION BY PROJECT", "Held and released from the same extract", 40, 392),
         ),
     ),
     Film(
         "cashflow",
         (
-            Cue(8.20, 18.40, "COMMERCIAL FINANCE", "Short-term and long-term cashflow"),
-            Cue(27.00, 34.00, "SHORT-TERM", "Funding events and daily cash", "above_tabs"),
-            Cue(38.40, 48.00, "COST-VALUE", "Project schedule feeding the longer view", "above_tabs"),
+            Cue(8.20, 18.40, "COMMERCIAL FINANCE", "Short-term and long-term cashflow", 40, 430),
+            Cue(27.00, 34.00, "SHORT-TERM", "Funding events and daily cash", 40, 400),
+            Cue(38.40, 48.00, "COST-VALUE", "Project schedule feeding the longer view", 40, 128),
         ),
     ),
     Film(
         "management-accounts",
         (
-            Cue(6.40, 10.80, "MONTHLY PACK", "Open the reporting workbook"),
-            Cue(14.60, 18.20, "PROFIT AND LOSS", "Current year, budget and forecast", "above_tabs"),
-            Cue(22.60, 33.80, "LIVE PROJECTS", "Turnover and gross margin by region", "above_tabs"),
+            Cue(6.40, 10.80, "MONTHLY PACK", "Open the reporting workbook", 700, 400),
+            Cue(14.60, 18.20, "PROFIT AND LOSS", "Current year, budget and forecast", 40, 132),
+            Cue(22.60, 33.80, "LIVE PROJECTS", "Turnover and gross margin by region", 40, 400),
         ),
     ),
 )
@@ -138,13 +145,17 @@ def draw_tracked(
             x += tracking
 
 
-def cue_y(placement: str) -> int:
-    if placement == "above_tabs":
-        return ABOVE_TABS_Y
-    if placement == "standard":
-        return STANDARD_Y
-    fail(f"unknown placement {placement}")
-    return STANDARD_Y
+def box_size(cue: Cue) -> tuple[int, int]:
+    probe = ImageDraw.Draw(Image.new("RGBA", (WIDTH, HEIGHT)))
+    kicker_face = font(KICKER_SIZE, 10)
+    line_face = font(LINE_SIZE, 0)
+    inner_w = max(
+        tracked_width(probe, cue.kicker.upper(), kicker_face, TRACKING),
+        probe.textlength(cue.line, font=line_face),
+    )
+    box_w = int(inner_w + PAD_X * 2)
+    box_h = PAD_TOP + KICKER_SIZE + KICKER_LINE_GAP + LINE_SIZE + PAD_BOTTOM
+    return box_w, box_h
 
 
 def render_overlay(cue: Cue) -> Image.Image:
@@ -153,17 +164,17 @@ def render_overlay(cue: Cue) -> Image.Image:
     kicker_face = font(KICKER_SIZE, 10)
     line_face = font(LINE_SIZE, 0)
     kicker = cue.kicker.upper()
-    kicker_w = tracked_width(draw, kicker, kicker_face, TRACKING)
-    line_w = draw.textlength(cue.line, font=line_face)
-    inner_w = max(kicker_w, line_w)
-    box_w = int(inner_w + PAD_X * 2)
-    box_h = PAD_TOP + KICKER_SIZE + 10 + LINE_SIZE + PAD_BOTTOM
-    x = LEFT_X
-    y = cue_y(cue.placement)
-    if x + box_w > WIDTH - 24:
-        fail(f"callout too wide for {cue.kicker}: {box_w}px")
-    if y + box_h > HEIGHT - 20:
-        fail(f"callout too tall for {cue.kicker}")
+    box_w, box_h = box_size(cue)
+    x, y = cue.x, cue.y
+    if x < 16 or y < 16:
+        fail(f"callout too close to the edge for {cue.kicker}")
+    if x + box_w > WIDTH - 16:
+        fail(f"callout too wide for {cue.kicker}: {box_w}px at x={x}")
+    if y + box_h > CONTROL_CLEAR_Y:
+        fail(
+            f"callout for {cue.kicker} occupies y={y}-{y + box_h}, "
+            f"which enters the native-control band (y>={CONTROL_CLEAR_Y})"
+        )
     draw.rounded_rectangle(
         (x, y, x + box_w, y + box_h),
         radius=RADIUS,
@@ -172,7 +183,12 @@ def render_overlay(cue: Cue) -> Image.Image:
         width=1,
     )
     draw_tracked(draw, (x + PAD_X, y + PAD_TOP), kicker, kicker_face, KICKER_COLOUR, TRACKING)
-    draw.text((x + PAD_X, y + PAD_TOP + KICKER_SIZE + 10), cue.line, font=line_face, fill=LINE_COLOUR)
+    draw.text(
+        (x + PAD_X, y + PAD_TOP + KICKER_SIZE + KICKER_LINE_GAP),
+        cue.line,
+        font=line_face,
+        fill=LINE_COLOUR,
+    )
     return image
 
 
@@ -192,20 +208,13 @@ def source_path(slug: str) -> Path:
 
 
 def public_path(slug: str) -> Path:
-    return ROOT / f"{slug}-demo.mp4"
+    return PUBLIC_MEDIA / f"{slug}-demo.mp4"
 
 
 def ffmpeg_bin() -> str:
     binary = shutil.which("ffmpeg")
     if not binary:
         fail("ffmpeg is not available")
-    return binary
-
-
-def ffprobe_bin() -> str:
-    binary = shutil.which("ffprobe")
-    if not binary:
-        fail("ffprobe is not available")
     return binary
 
 
@@ -244,8 +253,7 @@ def preview(films: tuple[Film, ...] = FILMS) -> None:
     REVIEW_DIR.mkdir(parents=True, exist_ok=True)
     for film in films:
         for index, cue in enumerate(film.cues, start=1):
-            name = f"{film.slug}-callout-{index:02d}.jpg"
-            dest = REVIEW_DIR / name
+            dest = REVIEW_DIR / f"{film.slug}-callout-{index:02d}.jpg"
             composite_preview(film.slug, cue, dest)
             print(f"wrote {dest.relative_to(REPO)}")
 
@@ -336,7 +344,6 @@ def review_frames(films: tuple[Film, ...] = FILMS) -> None:
             dest = REVIEW_DIR / f"{film.slug}-callout-{index:02d}.jpg"
             extract_frame(video, (cue.start + cue.end) / 2, dest)
             print(f"wrote {dest.relative_to(REPO)}")
-        # Mid-stage frames without a callout, to show the interface is clear.
         clear_times = {
             "applications-ledger": (28.0, 50.0, 70.0, 90.0, 104.0, 125.0),
             "ledgerlink": (8.0, 16.0, 32.0, 71.0, 90.0),
@@ -347,11 +354,120 @@ def review_frames(films: tuple[Film, ...] = FILMS) -> None:
             dest = REVIEW_DIR / f"{film.slug}-clear-{index:02d}.jpg"
             extract_frame(video, time_s, dest)
             print(f"wrote {dest.relative_to(REPO)}")
+    control_proof(films)
+
+
+# Story-page video sizes: 46rem at 18px root on desktop, wrap-width on a 390px phone.
+DESKTOP_VIDEO = (828, 466)
+PHONE_VIDEO = (342, 192)
+CONTROL_BAR_PX = 48
+
+
+def draw_native_controls(video: Image.Image, current_s: float, duration_s: float) -> Image.Image:
+    """Paint a Chrome-sized native control overlay onto a displayed video frame."""
+    width, height = video.size
+    overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+    bar_top = height - CONTROL_BAR_PX
+    fade = 10
+    for index in range(fade):
+        alpha = int(160 * ((index + 1) / fade))
+        y = bar_top - fade + index
+        draw.line([(0, y), (width, y)], fill=(0, 0, 0, alpha))
+    draw.rectangle((0, bar_top, width, height), fill=(20, 20, 20, 235))
+    margin = 10
+    rail_y = bar_top + 7
+    draw.rounded_rectangle((margin, rail_y, width - margin, rail_y + 4), radius=2, fill=(180, 180, 180, 180))
+    played = margin + int((width - margin * 2) * min(current_s / duration_s, 1.0))
+    draw.rounded_rectangle((margin, rail_y, played, rail_y + 4), radius=2, fill=(255, 255, 255, 255))
+    draw.ellipse((played - 5, rail_y - 3, played + 5, rail_y + 7), fill=(255, 255, 255, 255))
+    icon_y = bar_top + 22
+    # Play triangle
+    draw.polygon([(14, icon_y), (14, icon_y + 16), (28, icon_y + 8)], fill=(255, 255, 255, 255))
+    try:
+        face = font(12 if width > 400 else 10, 0)
+    except SystemExit:
+        face = ImageFont.load_default()
+    current = f"{int(current_s // 60)}:{int(current_s % 60):02d}"
+    duration = f"{int(duration_s // 60)}:{int(duration_s % 60):02d}"
+    draw.text((36, icon_y + 1), f"{current} / {duration}", font=face, fill=(255, 255, 255, 255))
+    # Volume, captions, overflow, fullscreen on the right
+    right = width - 14
+    draw.rectangle((right - 14, icon_y + 2, right - 2, icon_y + 14), outline=(255, 255, 255, 255), width=1)
+    draw.line([(right - 8, icon_y + 2), (right - 8, icon_y - 2)], fill=(255, 255, 255, 255))
+    right -= 28
+    draw.text((right - 18, icon_y), "CC", font=face, fill=(255, 255, 255, 230))
+    right -= 36
+    draw.polygon(
+        [(right - 10, icon_y + 4), (right, icon_y + 8), (right - 10, icon_y + 12)],
+        fill=(255, 255, 255, 230),
+    )
+    draw.polygon(
+        [(right - 16, icon_y + 6), (right - 10, icon_y + 8), (right - 16, icon_y + 10)],
+        fill=(255, 255, 255, 230),
+    )
+    composed = Image.alpha_composite(video.convert("RGBA"), overlay)
+    return composed.convert("RGB")
+
+
+def page_frame(video: Image.Image, viewport: tuple[int, int], title: str) -> Image.Image:
+    """Place the displayed video on a story-page-sized dark canvas."""
+    vw, vh = viewport
+    page = Image.new("RGB", viewport, (10, 11, 13))
+    draw = ImageDraw.Draw(page)
+    try:
+        kicker_face = font(11, 10)
+        title_face = font(28 if vw > 800 else 22, 0)
+        meta_face = font(12, 0)
+    except SystemExit:
+        kicker_face = title_face = meta_face = ImageFont.load_default()
+    pad = 24 if vw > 800 else 24
+    x = (vw - video.size[0]) // 2
+    draw.text((x, 28), "SYNTHETIC DEMONSTRATION", font=kicker_face, fill=(216, 144, 66))
+    draw.text((x, 48), title, font=title_face, fill=(243, 238, 228))
+    draw.text((x, 84), "Synthetic demonstration  ·  native controls open", font=meta_face, fill=(170, 166, 158))
+    page.paste(video, (x, 110))
+    return page
+
+
+def control_proof(films: tuple[Film, ...] = FILMS) -> None:
+    durations = {
+        "applications-ledger": 130.7,
+        "ledgerlink": 109.3,
+        "cashflow": 78.7,
+        "management-accounts": 53.9,
+    }
+    titles = {
+        "applications-ledger": "Applications Ledger",
+        "ledgerlink": "LedgerLink",
+        "cashflow": "Cashflow",
+        "management-accounts": "Management Accounts",
+    }
+    REVIEW_DIR.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        for film in films:
+            video = public_path(film.slug)
+            for index, cue in enumerate(film.cues, start=1):
+                time_s = (cue.start + cue.end) / 2
+                raw = tmp_path / f"{film.slug}-{index}.jpg"
+                extract_frame(video, time_s, raw)
+                master = Image.open(raw).convert("RGB")
+                if master.size != (WIDTH, HEIGHT):
+                    fail(f"{film.slug} review frame {master.size}")
+                for label, size in (("desktop", DESKTOP_VIDEO), ("phone", PHONE_VIDEO)):
+                    scaled = master.resize(size, Image.Resampling.LANCZOS)
+                    controlled = draw_native_controls(scaled, time_s, durations[film.slug])
+                    viewport = (1440, 900) if label == "desktop" else (390, 844)
+                    page = page_frame(controlled, viewport, titles[film.slug])
+                    dest = REVIEW_DIR / f"{film.slug}-callout-{index:02d}-controls-{label}.jpg"
+                    page.save(dest, quality=90, optimize=True)
+                    print(f"wrote {dest.relative_to(REPO)}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("preview", "render", "review"))
+    parser.add_argument("command", choices=("preview", "render", "review", "controls"))
     parser.add_argument("--slug", action="append", dest="slugs", help="Limit to one or more film slugs")
     args = parser.parse_args()
     selected = tuple(film for film in FILMS if not args.slugs or film.slug in args.slugs)
@@ -361,6 +477,8 @@ def main() -> int:
         preview(selected)
     elif args.command == "render":
         render(selected)
+    elif args.command == "controls":
+        control_proof(selected)
     else:
         review_frames(selected)
     return 0
