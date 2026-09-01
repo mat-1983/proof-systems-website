@@ -2973,6 +2973,24 @@ html.js [data-cap-step="6"] .cap-leg {
   }
 }
 
+@media (max-width: 340px) {
+  .fit-scene { height: 40rem; }
+  .fit-foundation {
+    bottom: 2.8rem;
+    gap: 0.35rem;
+    padding-top: 2.8rem;
+    padding-inline: 0.4rem;
+    padding-bottom: 1.55rem;
+  }
+  .fit-base-tile strong {
+    overflow-wrap: normal;
+    white-space: nowrap;
+    font-size: 0.7rem;
+  }
+  .fit-layer { bottom: 12.8rem; }
+  .fit-missing { bottom: 21.1rem; }
+}
+
 .scroll-cue {
   position: fixed;
   left: 50%;

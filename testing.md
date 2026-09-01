@@ -4,17 +4,17 @@ Updated: 2026-09-01
 
 ## AGE-600 mobile Fit continuous connector — 1 September 2026
 
-Narrow Fit keeps sticky travel and the dedicated 12%/66% stage contract. The mobile vertical connector is compacted from 14.2rem to 4.6rem inside a 38rem scene so the industry-specific block, arrow and Bespoke Layer stay in one continuous stack.
+Narrow Fit keeps sticky travel and the dedicated 12%/66% stage contract. The mobile vertical connector is compacted from 14.2rem to 4.6rem inside a 38rem scene so the industry-specific block, arrow and Bespoke Layer stay in one continuous stack. At 340px and below the scene is 40rem and the foundation labels clear the persistent Continue scrolling control.
 
-- PASS — `python3 site_check.py` including `check_round14` compact 38rem/4.6rem connector geometry at 390/360/320, desktop 26rem/240vh unchanged, and forward/reverse monotonic narrow Fit staging.
+- PASS — `python3 site_check.py` including `check_round14` compact 38rem/4.6rem connector at 390/360, 40rem/4.6rem at 320, 320px label-to-scroll-cue clearance geometry, Spreadsheets nowrap tile width, desktop 26rem/240vh unchanged, and forward/reverse monotonic narrow Fit staging.
 - PASS — `python3 proof_media_check.py`.
 - PASS — `python3 privacy_notice_check.py`.
 - PASS — `python3 crawl_check.py`.
 - PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
 - PASS — in-memory `ast.parse` of the four checkers.
 - PASS — `git diff --check`.
-- PASS — CSS-computed connector geometry at 390/360/320: scene 608px (38rem), connector 73.6px (4.6rem) from 15.5rem, overlapping the monolith by 24px and the Bespoke Layer by 10px. Industry-specific, foundation and layer widths stay inside the phone wrap.
-- NOT COMPLETE — live 390×844 / 360 / 320 phone-height scroll of the compacted connector and reverse-scroll Fit staging. Chrome headless in this environment SIGSEGV'd (Crashpad `settings.dat` permission denied).
+- PASS — CSS-computed geometry: 390/360 remain scene 608px, connector 73.6px, foundation bottom 0.8rem. At 320 the scene is 640px, labels sit 69.6px from the scene bottom, 18.4px above the 51.2px Continue scrolling control, and Spreadsheets at 0.7rem needs 78px in an 82.2px tile.
+- NOT COMPLETE — live 320×700 completed-step-4 inspection of foundation labels versus the Continue scrolling control. Chrome headless in this environment SIGSEGV'd (Crashpad `settings.dat` permission denied).
 
 ## AGE-600 remaining scroll delays — 1 September 2026
 

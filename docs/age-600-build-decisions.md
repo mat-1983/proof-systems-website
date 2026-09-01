@@ -2,6 +2,10 @@
 
 Append-only log of material implementation choices. Routine edits are not recorded.
 
+## 2026-09-01 — 320px Fit foundation label clearance
+
+At 340px and below, the compacted Fit stack adds 2rem below the foundation so Accounts, Software and Spreadsheets sit above the persistent Continue scrolling control. Spreadsheets is a single 0.7rem nowrap line. The 4.6rem connector, 360px/390px composition, desktop Fit and staging thresholds are unchanged. The scroll control itself is unchanged.
+
 ## 2026-09-01 — Mobile Fit continuous connector
 
 Narrow Fit keeps sticky 300vh travel and the 12%/66% stage contract. The mobile scene shortens from 48rem to 38rem and the vertical two-way amber connector is an explicit 4.6rem join instead of the previous 14.2rem stretch. Sticky alignment starts from the top so the industry-specific block, connector and Bespoke Layer stay in the same phone viewport. Desktop Fit remains 26rem / 240vh.

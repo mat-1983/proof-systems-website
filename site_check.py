@@ -1661,15 +1661,29 @@ def _css_len(token: str, percent_base: float, rem: float = 16.0) -> float:
     if token.startswith("calc(") and token.endswith(")"):
         total = 0.0
         sign = 1.0
-        for part in re.split(r"\s*([+-])\s*", token[5:-1].strip()):
-            if part == "+":
-                sign = 1.0
-            elif part == "-":
-                sign = -1.0
-            elif part.strip():
-                total += sign * _css_len(part.strip(), percent_base, rem)
-                sign = 1.0
+        buf = ""
+        depth = 0
+        for char in token[5:-1].strip():
+            if char == "(":
+                depth += 1
+                buf += char
+            elif char == ")":
+                depth = max(0, depth - 1)
+                buf += char
+            elif char in "+-" and depth == 0 and buf.strip():
+                total += sign * _css_len(buf.strip(), percent_base, rem)
+                sign = 1.0 if char == "+" else -1.0
+                buf = ""
+            else:
+                buf += char
+        if buf.strip():
+            total += sign * _css_len(buf.strip(), percent_base, rem)
         return total
+    if token.startswith("env(") and token.endswith(")"):
+        inner = token[4:-1]
+        if "," in inner:
+            return _css_len(inner.split(",", 1)[1].strip(), percent_base, rem)
+        return 0.0
     if token.endswith("%"):
         return percent_base * float(token[:-1]) / 100.0
     if token.endswith("rem"):
@@ -2322,6 +2336,63 @@ def _narrow_fit_connector_box(css: str, viewport: int) -> tuple[float, float, fl
     return scene_h, top, height
 
 
+def _css_block(css: str, selector: str) -> str:
+    match = re.search(rf"{re.escape(selector)} \{{([^}}]*)\}}", css)
+    return match.group(1) if match else ""
+
+
+def _block_decl(body: str, prop: str) -> str | None:
+    match = re.search(rf"{re.escape(prop)}:\s*([^;]+);", body)
+    return match.group(1).strip() if match else None
+
+
+def _padding_bottom_px(rules, viewport: int) -> float:
+    explicit = _fit_used(rules, "fit-foundation", "padding-bottom", viewport, False)
+    if explicit:
+        return _css_len(explicit, 0)
+    padding = _fit_used(rules, "fit-foundation", "padding", viewport, False)
+    if not padding:
+        return 0.0
+    parts = padding.split()
+    if len(parts) >= 3:
+        return _css_len(parts[2], 0)
+    return _css_len(parts[0], 0)
+
+
+def _padding_inline_px(rules, viewport: int, wrap: float) -> float:
+    explicit = _fit_used(rules, "fit-foundation", "padding-inline", viewport, False)
+    if explicit:
+        return _css_len(explicit, wrap)
+    padding = _fit_used(rules, "fit-foundation", "padding", viewport, False)
+    if not padding:
+        return 0.0
+    parts = padding.split()
+    if len(parts) == 1:
+        return _css_len(parts[0], wrap)
+    return _css_len(parts[1], wrap)
+
+
+def _scroll_cue_box(css: str) -> tuple[float, float]:
+    """Persistent Continue scrolling control: (offset from viewport bottom, height) in px."""
+    body = _css_block(css, ".scroll-cue")
+    bottom = _block_decl(body, "bottom")
+    height = _block_decl(body, "height")
+    if not bottom or not height:
+        return 0.0, 0.0
+    return _css_len(bottom, 0), _css_len(height, 0)
+
+
+def _foundation_tile_width(rules, viewport: int) -> float:
+    wrap = _phone_wrap(viewport)
+    width_decl = _fit_used(rules, "fit-foundation", "width", viewport, False)
+    gap_decl = _fit_used(rules, "fit-foundation", "gap", viewport, False)
+    if not width_decl:
+        return 0.0
+    inner = _css_len(width_decl, wrap) - 2 * _padding_inline_px(rules, viewport, wrap)
+    gap = _css_len(gap_decl, wrap) if gap_decl else 0.0
+    return (inner - 2 * gap) / 3.0
+
+
 def check_round14(failures: list[str]) -> None:
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
@@ -2404,6 +2475,81 @@ def check_round14(failures: list[str]) -> None:
                     f"narrow {label} at {viewport}px is {width:.1f}px wide in a {wrap:.1f}px wrap",
                     failures,
                 )
+
+    rules = list(_fit_css_rules(css))
+    for viewport in (390, 360):
+        scene_h, _, height = _narrow_fit_connector_box(css, viewport)
+        bottom = _fit_used(rules, "fit-foundation", "bottom", viewport, False)
+        layer_bottom = _fit_used(rules, "fit-layer", "bottom", viewport, False)
+        if abs(scene_h - 38 * 16) > 0.5:
+            fail(
+                f"Fit scene at {viewport}px is {scene_h / 16:.1f}rem, expected to stay 38rem",
+                failures,
+            )
+        if not bottom or abs(_css_len(bottom, scene_h) - 0.8 * 16) > 0.5:
+            fail(f"Fit foundation at {viewport}px must keep bottom 0.8rem, not {bottom}", failures)
+        if not layer_bottom or abs(_css_len(layer_bottom, scene_h) - 10.8 * 16) > 0.5:
+            fail(f"Fit layer at {viewport}px must keep bottom 10.8rem, not {layer_bottom}", failures)
+        if abs(height - 4.6 * 16) > 0.5:
+            fail(f"Fit connector at {viewport}px must stay 4.6rem, not {height / 16:.1f}rem", failures)
+
+    cue_bottom, cue_height = _scroll_cue_box(css)
+    if cue_bottom <= 0 or cue_height <= 0:
+        fail("persistent Continue scrolling control geometry is missing", failures)
+    else:
+        cue_top = cue_bottom + cue_height
+        scene_h, conn_top, height = _narrow_fit_connector_box(css, 320)
+        foundation_bottom_decl = _fit_used(rules, "fit-foundation", "bottom", 320, False)
+        foundation_bottom = _css_len(foundation_bottom_decl, scene_h) if foundation_bottom_decl else 0.0
+        label_from_bottom = foundation_bottom + _padding_bottom_px(rules, 320)
+        clearance = label_from_bottom - cue_top
+        if abs(height - 4.6 * 16) > 0.5:
+            fail(f"320px Fit connector must stay 4.6rem, not {height / 16:.1f}rem", failures)
+        layer_bottom_decl = _fit_used(rules, "fit-layer", "bottom", 320, False)
+        if layer_bottom_decl:
+            layer_h = (0.65 * 2 + 0.82 * 1.6) * 16 + 2 + 5 * 16
+            layer_top = scene_h - _css_len(layer_bottom_decl, scene_h) - layer_h
+            line_end = conn_top + height
+            if line_end + 1 < layer_top:
+                fail(
+                    f"320px Fit connector ends {layer_top - line_end:.1f}px before the Bespoke Layer",
+                    failures,
+                )
+        if label_from_bottom <= 0:
+            fail("320px Fit foundation labels are missing a bottom placement", failures)
+        elif clearance < 0.5 * 16:
+            fail(
+                f"320px Fit labels sit {clearance:.1f}px from the Continue scrolling control "
+                f"(label {label_from_bottom:.1f}px from bottom, cue top {cue_top:.1f}px); "
+                f"need at least 8px clearance",
+                failures,
+            )
+        tile = _foundation_tile_width(rules, 320)
+        font_decl = _fit_used(rules, "fit-base-tile", "font-size", 320, False)
+        white_space = _fit_used(rules, "fit-base-tile", "white-space", 320, False)
+        wrap_mode = _fit_used(rules, "fit-base-tile", "overflow-wrap", 320, False)
+        font_px = _css_len(font_decl, 0) if font_decl else 0.0
+        spreadsheets = font_px * 12 * 0.58
+        if tile <= 0 or font_px <= 0:
+            fail("320px Fit foundation tile/label metrics are missing", failures)
+        else:
+            if white_space != "nowrap":
+                fail(
+                    f"320px Spreadsheets must stay on one line, white-space is {white_space!r}",
+                    failures,
+                )
+            if wrap_mode == "anywhere":
+                fail("320px Spreadsheets must not wrap character-by-character against the bottom edge", failures)
+            if spreadsheets > tile + 0.5:
+                fail(
+                    f"320px Spreadsheets at {font_px:.1f}px needs {spreadsheets:.1f}px, "
+                    f"tile is only {tile:.1f}px",
+                    failures,
+                )
+        wrap = _phone_wrap(320)
+        foundation_width_decl = _fit_used(rules, "fit-foundation", "width", 320, False)
+        if foundation_width_decl and _css_len(foundation_width_decl, wrap) > wrap + 0.5:
+            fail("320px Fit foundation must not overflow the wrap", failures)
 
     expected_fit = {
         0.00: 1,
