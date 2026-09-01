@@ -1875,6 +1875,8 @@ html:not(.js) .wrap:has(#connected-workflow:target) label[for="view-individual"]
 }
 .cap-icon .cap-check { stroke: var(--blue); stroke-width: 2.2; }
 .cap-icon .cap-spark { fill: var(--amber); stroke: none; }
+.cap-icon .cap-gap,
+.cap-rail-node .cap-gap { fill: var(--amber); stroke: none; }
 .cap-icon[data-cap-from="3"] ellipse,
 .cap-icon[data-cap-from="3"] path { stroke: var(--blue); }
 

@@ -705,8 +705,9 @@ def check_round2(failures: list[str]) -> None:
     if licence != "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a":
         fail(f"Inter licence hash mismatch: {licence}", failures)
     training = (ROOT / "training.html").read_text(encoding="utf-8")
-    if "Train your team to use AI on real workflows, not toy examples." not in training:
-        fail("training page missing primary line", failures)
+    h1 = re.search(r"<h1>([^<]*)</h1>", training)
+    if not h1 or h1.group(1) != "Train your team to use AI on real workflows.":
+        fail("training visible H1 must be exactly Train your team to use AI on real workflows.", failures)
     if "Ask about AI team training" not in training:
         fail("training page missing training CTA", failures)
     if "workflow.html?interest=ai-team-training" not in training:
@@ -2038,7 +2039,7 @@ def check_round11(failures: list[str]) -> None:
     start = raw[raw.find('id="start"'):]
     narrow = _narrow_css(css)
 
-    jobhawk = "In 2016, I co-founded Jobhawk, a mobile-first construction recruitment marketplace. We raised £1m+, with the Isle of Man Government as lead investor. That experience sharpened my understanding of product fit, adoption and the operating realities that determine whether technology succeeds."
+    jobhawk = "In 2016, I also co-founded Jobhawk, a mobile-first construction recruitment marketplace. We raised £1m+, with the Isle of Man Government as lead investor. That experience sharpened my understanding of product fit, adoption and the operating realities that determine whether technology succeeds."
     compact_about = visible_text(about)
     if compact_about.count("Jobhawk") != 1:
         fail("Operator First must include the approved Jobhawk paragraph once", failures)
@@ -2740,6 +2741,53 @@ def check_narrow_fit_caption_backing(css: str, failures: list[str]) -> None:
             fail(f"desktop {label} must not gain the mobile caption plate", failures)
 
 
+def check_final_pass(failures: list[str]) -> None:
+    training = (ROOT / "training.html").read_text(encoding="utf-8")
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    about = visible_text(raw[raw.find('id="about"') : raw.find('id="start"')])
+    capability = raw[raw.find('id="capability"') : raw.find('id="proof"')]
+    h1 = re.search(r"<h1>([^<]*)</h1>", training)
+    if not h1 or h1.group(1) != "Train your team to use AI on real workflows.":
+        fail("training visible H1 must be exactly Train your team to use AI on real workflows.", failures)
+    if "In 2016, I also co-founded Jobhawk" not in about:
+        fail("Jobhawk paragraph must begin In 2016, I also co-founded Jobhawk", failures)
+    if "We raised £1m+, with the Isle of Man Government as lead investor." not in about:
+        fail("Jobhawk paragraph must keep the approved funding sentence", failures)
+    first_wide = re.search(
+        r'<g class="cap-icon cap-gated" data-cap-from="1"[^>]*>([\s\S]*?)</g>', capability
+    )
+    rails = re.findall(r'<span class="cap-rail-node">(.*?)</span>', capability)
+    for label, markup in (
+        ("wide", first_wide.group(1) if first_wide else ""),
+        ("narrow", rails[0] if rails else ""),
+    ):
+        if "<circle" not in markup or markup.count("<rect") < 2:
+            fail(f"{label} Capability opening icon must show person, spreadsheet and document artefacts", failures)
+        if "stroke-dasharray" not in markup:
+            fail(f"{label} Capability opening icon must use broken or dotted connections", failures)
+        if 'class="cap-gap"' not in markup:
+            fail(f"{label} Capability opening icon must include the amber gap marker", failures)
+    for snippet in (
+        'class="cap-connector cap-gated" data-cap-from="2" d="M154 148 C 210 70, 260 55, 318 92"',
+        'class="cap-connector cap-gated" data-cap-from="3" d="M372 104 C 430 170, 490 210, 528 172"',
+        'class="cap-connector cap-gated" data-cap-from="4" d="M590 162 C 650 80, 710 48, 752 94"',
+        'class="cap-connector cap-gated" data-cap-from="5" d="M818 104 C 880 170, 940 210, 978 148"',
+        'class="cap-icon cap-gated" data-cap-from="2" transform="translate(294 58)"',
+        'class="cap-icon cap-gated" data-cap-from="3" transform="translate(518 140)"',
+        'class="cap-icon cap-gated" data-cap-from="4" transform="translate(744 60)"',
+        'class="cap-icon cap-gated" data-cap-from="5" transform="translate(968 112)"',
+        '<svg viewBox="0 0 56 56"><circle cx="28" cy="30" r="8"/>',
+        '<svg viewBox="0 0 56 40"><ellipse cx="28" cy="8" rx="20" ry="7"/>',
+        '<svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="10"/>',
+        '<svg viewBox="0 0 56 48"><circle cx="16" cy="12" r="7"/>',
+    ):
+        if snippet not in capability:
+            fail("Capability later connectors or icons must stay unchanged", failures)
+    if ".cap-icon .cap-gap" not in css or ".cap-rail-node .cap-gap" not in css:
+        fail("amber gap marker needs the icon-local cap-gap fill", failures)
+
+
 def check_sole_trader_identity(failures: list[str]) -> None:
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     if ".footer-legal {" not in css:
@@ -2852,6 +2900,7 @@ def check() -> int:
     check_round12(failures)
     check_round13(failures)
     check_round14(failures)
+    check_final_pass(failures)
     check_sole_trader_identity(failures)
     if failures:
         print(f"FAIL {len(failures)} check(s)")
@@ -2860,6 +2909,7 @@ def check() -> int:
         return 1
     print(
         "PASS routes, eight stories, sole-trader footer and consent identity, "
+        "final-pass training H1, fragmented-tools opening icon and Jobhawk also-opening, "
         "round-14 compact mobile Fit connector, "
         "round-13 remaining scroll pacing, "
         "round-12 mobile connected workflow and Fit refinement, "
