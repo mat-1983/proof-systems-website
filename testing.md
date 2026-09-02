@@ -2,6 +2,18 @@
 
 Updated: 2026-09-02
 
+## AGE-609 withdraw Management Accounts demo film — 2 September 2026
+
+Management Accounts stays in the Selected Systems portfolio and the connected workflow. The public player, poster, captions, runtime and film wording were removed from `work/management-accounts.html` and replaced with a written “What the system covers” block that reuses `process-step` and `flow-list`. The Management Accounts card on `work/index.html` now uses the same system-scope treatment; the other seven cards still say Evidence shown. The final public MP4, poster and VTT were moved to `tools/demo-film-narrative/retained-withdrawn/management-accounts/` with hashes recorded and asserted. Direct public paths 404. `tools/prepare_publish.py` excludes those artefacts from the public package.
+
+- PASS — `python3 site_check.py` including `check_age609_withdrawal` for seven film stories, a written Management Accounts page, seven Evidence shown cards, connected-workflow Management Accounts nodes, and no public HTML or deployable asset referring to the withdrawn MP4, JPG or VTT.
+- PASS — `python3 proof_media_check.py` including seven public films, retained withdrawn Management Accounts hashes, original master, editable renderer, and publish-package exclusions.
+- PASS — `python3 privacy_notice_check.py`.
+- PASS — `python3 crawl_check.py` including HTTP 200 for the seven public films and HTTP 404 for the withdrawn Management Accounts media paths.
+- PASS — `node --check` on `assets/js/site.js` and `assets/js/form.js`.
+- PASS — `git diff --check`.
+- NOT COMPLETE — live 1440 desktop and 390 mobile visual inspection of the Management Accounts page and card. Chrome headless in this environment cannot create a unique user-data directory and is blocked from writing Crashpad state.
+
 ## AGE-608 fluid homepage scroll pacing — 2 September 2026
 
 Gap, Fit, Capability and Approach sticky travel is 20–35% shorter, with the largest cut on mobile Fit. Desktop opening is 140vh. Mobile opening stays 125vh so ordinary 150px-equivalent swipes keep connect independently legible. Narrow Gap, Capability and Approach reveal soon after they enter the viewport. Stage math, reverse-scroll monotonic order, artwork, copy, the Continue scrolling cue, reduced-motion and no-JavaScript finals are unchanged.

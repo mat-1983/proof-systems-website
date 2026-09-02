@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Composite composition-aware stage callouts onto the four denser demo films.
 
-Public masters for Applications Ledger, LedgerLink, Cashflow and
-Management Accounts are rebuilt from the preserved AGE-600 sources in
-``source/``. SiteLog, BudgetFlow, CPR and Probables are not re-encoded.
+Public masters for Applications Ledger, LedgerLink and Cashflow are
+rebuilt into ``assets/demo-media/`` from the preserved AGE-600 sources in
+``source/``. The withdrawn Management Accounts rendition is rebuilt into
+``retained-withdrawn/management-accounts/``. SiteLog, BudgetFlow, CPR and
+Probables are not re-encoded.
 
 Callouts sit above the native player-control band. On the story page the
 film is 46rem wide on desktop (828×466 at 18px root) and wrap-width on a
@@ -35,6 +37,8 @@ REPO = TOOL_ROOT.parent.parent
 PUBLIC_MEDIA = REPO / "assets" / "demo-media"
 SOURCE_DIR = TOOL_ROOT / "source"
 REVIEW_DIR = TOOL_ROOT / "review"
+RETAINED_MEDIA = TOOL_ROOT / "retained-withdrawn"
+WITHDRAWN_SLUGS = frozenset({"management-accounts"})
 FONT_PATH = Path("/System/Library/Fonts/HelveticaNeue.ttc")
 
 WIDTH = 1280
@@ -211,6 +215,12 @@ def public_path(slug: str) -> Path:
     return PUBLIC_MEDIA / f"{slug}-demo.mp4"
 
 
+def film_path(slug: str) -> Path:
+    if slug in WITHDRAWN_SLUGS:
+        return RETAINED_MEDIA / slug / f"{slug}-demo.mp4"
+    return public_path(slug)
+
+
 def ffmpeg_bin() -> str:
     binary = shutil.which("ffmpeg")
     if not binary:
@@ -260,7 +270,8 @@ def preview(films: tuple[Film, ...] = FILMS) -> None:
 
 def render_film(film: Film) -> None:
     source = source_path(film.slug)
-    dest = public_path(film.slug)
+    dest = film_path(film.slug)
+    dest.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
         overlay_paths: list[Path] = []
@@ -338,7 +349,7 @@ def review_frames(films: tuple[Film, ...] = FILMS) -> None:
             extract_frame(video, time_s, dest)
             print(f"wrote {dest.relative_to(REPO)}")
     for film in films:
-        video = public_path(film.slug)
+        video = film_path(film.slug)
         extract_frame(video, 0.5, REVIEW_DIR / f"{film.slug}-stage-title.jpg")
         for index, cue in enumerate(film.cues, start=1):
             dest = REVIEW_DIR / f"{film.slug}-callout-{index:02d}.jpg"
@@ -447,7 +458,7 @@ def control_proof(films: tuple[Film, ...] = FILMS) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
         for film in films:
-            video = public_path(film.slug)
+            video = film_path(film.slug)
             for index, cue in enumerate(film.cues, start=1):
                 time_s = (cue.start + cue.end) / 2
                 raw = tmp_path / f"{film.slug}-{index}.jpg"

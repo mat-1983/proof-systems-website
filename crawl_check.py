@@ -58,7 +58,12 @@ FULL_FILMS = {
     "/assets/demo-media/applications-ledger-demo.mp4",
     "/assets/demo-media/cashflow-demo.mp4",
     "/assets/demo-media/probables-demo.mp4",
+}
+
+WITHDRAWN_MEDIA = {
     "/assets/demo-media/management-accounts-demo.mp4",
+    "/assets/demo-media/management-accounts-poster.jpg",
+    "/assets/demo-media/management-accounts-demo.vtt",
 }
 
 
@@ -159,6 +164,30 @@ def check() -> int:
             teasers = {item for item in homepage_assets if item.endswith("-teaser.mp4")}
             if len(teasers) != 3:
                 fail(f"homepage should declare 3 teaser clips, found {sorted(teasers)}", failures)
+            for path in WITHDRAWN_MEDIA:
+                status, _, _ = fetch(base, path)
+                if status != 404:
+                    fail(f"withdrawn media {path} returned {status}, expected 404", failures)
+            ma_status, ma_body, _ = fetch(base, "/work/management-accounts.html")
+            if ma_status != 200:
+                fail(f"/work/management-accounts.html returned {ma_status}", failures)
+            else:
+                markup = ma_body.decode("utf-8", errors="replace")
+                for name in (
+                    "management-accounts-demo.mp4",
+                    "management-accounts-poster.jpg",
+                    "management-accounts-demo.vtt",
+                ):
+                    if name in markup:
+                        fail(f"Management Accounts page still refers to {name}", failures)
+                if "<video" in markup.lower():
+                    fail("Management Accounts page still contains a video element", failures)
+                if "What the system covers" not in markup:
+                    fail("Management Accounts page missing written system-scope block", failures)
+            for film_path in FULL_FILMS:
+                status, _, _ = fetch(base, film_path)
+                if status != 200:
+                    fail(f"public film {film_path} returned {status}", failures)
         finally:
             httpd.shutdown()
             httpd.server_close()
@@ -168,7 +197,10 @@ def check() -> int:
         for item in failures:
             print(f" - {item}")
         return 1
-    print("PASS HTTP crawl of public routes, local assets and poster-first homepage media")
+    print(
+        "PASS HTTP crawl of public routes, seven public films, "
+        "withdrawn Management Accounts media absent, and poster-first homepage media"
+    )
     return 0
 
 

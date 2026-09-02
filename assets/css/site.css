@@ -662,6 +662,8 @@ footer {
 .story-grid h2 { font-size: 1.5rem; max-width: none; margin: 1.4rem 0 0.5rem; }
 .flow-list { padding-left: 1.2rem; }
 .flow-list li { margin: 0.45rem 0; }
+.story-grid .process-step { margin: 0.2rem 0 0; }
+.story-grid .process-step .flow-list { margin: 0.7rem 0 0; }
 
 .story-nav {
   display: grid;

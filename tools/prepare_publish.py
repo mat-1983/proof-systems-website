@@ -41,6 +41,9 @@ ROOT_DIRS = (
 EXCLUDED_UNDER_ASSETS = (
     Path("assets/demo-media/source"),
     Path("assets/demo-media/render_narrative.py"),
+    Path("assets/demo-media/management-accounts-demo.mp4"),
+    Path("assets/demo-media/management-accounts-poster.jpg"),
+    Path("assets/demo-media/management-accounts-demo.vtt"),
 )
 
 

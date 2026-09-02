@@ -14,6 +14,7 @@ import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent
 MEDIA = ROOT / "assets" / "demo-media"
+RETAINED_MA = ROOT / "tools" / "demo-film-narrative" / "retained-withdrawn" / "management-accounts"
 
 FILMS = [
     {
@@ -80,17 +81,26 @@ FILMS = [
         "sha256": "647300de26440d2afa33ae0b64a5e7ccd4a04a0909f72f906c5726a1377dfc63",
         "duration": 58.1,
     },
-    {
-        "slug": "management-accounts",
-        "source": "management-accounts-demo.mp4",
-        "poster": "management-accounts-poster.jpg",
-        "captions": "management-accounts-demo.vtt",
-        "sha256": "b68377a7019155b19adec19756534104fed9d8700a1b36ec1b48664bc7db9358",
-        "duration": 53.9,
-        "master": "tools/demo-film-narrative/source/management-accounts-demo.mp4",
-        "master_sha256": "38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c",
-    },
 ]
+
+WITHDRAWN_FILM = {
+    "slug": "management-accounts",
+    "rendition": "tools/demo-film-narrative/retained-withdrawn/management-accounts/management-accounts-demo.mp4",
+    "poster": "tools/demo-film-narrative/retained-withdrawn/management-accounts/management-accounts-poster.jpg",
+    "captions": "tools/demo-film-narrative/retained-withdrawn/management-accounts/management-accounts-demo.vtt",
+    "sha256": "b68377a7019155b19adec19756534104fed9d8700a1b36ec1b48664bc7db9358",
+    "poster_sha256": "bae45cb9a52aa13abab48247e5e982eb0e0a66351a18c473708366b2dcbfe515",
+    "captions_sha256": "b0f1147706bf82fcbcb9cbab3aeeb4490c42512c975446bb1346c0e6bfcb16ee",
+    "duration": 53.9,
+    "master": "tools/demo-film-narrative/source/management-accounts-demo.mp4",
+    "master_sha256": "38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c",
+}
+
+WITHDRAWN_PUBLIC_NAMES = (
+    "management-accounts-demo.mp4",
+    "management-accounts-poster.jpg",
+    "management-accounts-demo.vtt",
+)
 
 PRESERVED_POSTERS = {
     "sitelog-poster.jpg": "4022b4b2829dc32d004bfdd10c9dc0297fad5a353545832cc6dea5a1cf028a40",
@@ -289,6 +299,81 @@ def check_publish_package(failures: list[str]) -> None:
         for slug in ("applications-ledger", "ledgerlink", "cashflow", "management-accounts"):
             if (media / "source" / f"{slug}-demo.mp4").exists():
                 fail(f"publish package contains duplicate source master {slug}", failures)
+        for name in WITHDRAWN_PUBLIC_NAMES:
+            matches = list(out.rglob(name))
+            if matches:
+                fail(
+                    f"publish package contains withdrawn Management Accounts artefact "
+                    f"{matches[0].relative_to(out)}",
+                    failures,
+                )
+
+
+def check_withdrawn_management_accounts(failures: list[str]) -> None:
+    for name in WITHDRAWN_PUBLIC_NAMES:
+        public = MEDIA / name
+        if public.exists():
+            fail(f"withdrawn Management Accounts artefact remains public: {public.relative_to(ROOT)}", failures)
+        matches = list(MEDIA.rglob(name))
+        if matches:
+            fail(
+                f"assets/demo-media still contains withdrawn {matches[0].relative_to(ROOT)}",
+                failures,
+            )
+    if not RETAINED_MA.is_dir():
+        fail("missing retained withdrawn Management Accounts directory", failures)
+        return
+    for key, expected in (
+        ("rendition", WITHDRAWN_FILM["sha256"]),
+        ("poster", WITHDRAWN_FILM["poster_sha256"]),
+        ("captions", WITHDRAWN_FILM["captions_sha256"]),
+        ("master", WITHDRAWN_FILM["master_sha256"]),
+    ):
+        rel = WITHDRAWN_FILM[key]
+        if not exact_case_file(rel):
+            fail(f"missing retained Management Accounts {key}: {rel}", failures)
+            continue
+        digest = sha256_file(ROOT / rel)
+        if digest != expected:
+            fail(f"{rel} hash mismatch: {digest}", failures)
+    rendition = ROOT / WITHDRAWN_FILM["rendition"]
+    duration = WITHDRAWN_FILM["duration"]
+    if rendition.is_file():
+        info = probe(rendition)
+        if info:
+            if info.get("codec_name") != "h264":
+                fail(f"{rendition.name}: expected h264, got {info.get('codec_name')}", failures)
+            if info.get("width") != "1280" or info.get("height") != "720":
+                fail(
+                    f"{rendition.name}: expected 1280x720, got {info.get('width')}x{info.get('height')}",
+                    failures,
+                )
+            try:
+                duration = float(info["duration"])
+            except (KeyError, ValueError):
+                fail(f"{rendition.name}: duration missing from probe", failures)
+            else:
+                if abs(duration - WITHDRAWN_FILM["duration"]) > 0.2:
+                    fail(
+                        f"{rendition.name}: duration {duration:.3f}s != {WITHDRAWN_FILM['duration']}",
+                        failures,
+                    )
+            if has_audio(rendition):
+                fail(f"{rendition.name}: retained film must remain silent", failures)
+        elif not shutil.which("ffprobe"):
+            fail("ffprobe is not available to probe codec, dimensions and duration", failures)
+    captions = ROOT / WITHDRAWN_FILM["captions"]
+    if captions.is_file():
+        check_vtt(captions, duration, failures)
+    renderer = ROOT / "tools" / "demo-film-narrative" / "render_narrative.py"
+    if not renderer.is_file():
+        fail("Management Accounts renderer must remain editable", failures)
+    else:
+        text = renderer.read_text(encoding="utf-8")
+        if "management-accounts" not in text:
+            fail("renderer must keep the Management Accounts film definition", failures)
+        if "retained-withdrawn" not in text:
+            fail("renderer must write Management Accounts into the retained withdrawn area", failures)
 
 
 def check() -> int:
@@ -358,6 +443,7 @@ def check() -> int:
     if (MEDIA / "source").exists():
         fail("preserved source masters must not live under assets/demo-media", failures)
     check_callout_clearance(failures)
+    check_withdrawn_management_accounts(failures)
 
     check_publish_package(failures)
 
@@ -387,9 +473,10 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS eight synthetic films, exact master hashes, preserved sources "
+        "PASS seven public synthetic films, exact master hashes, preserved sources "
         "outside the public tree, posters, duration-bounded VTT files, "
-        "short homepage teasers and publish-package exclusions"
+        "short homepage teasers, retained withdrawn Management Accounts "
+        "final rendition and publish-package exclusions"
     )
     return 0
 

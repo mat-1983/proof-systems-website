@@ -6,7 +6,7 @@ Updated: 2026-08-29
 
 `AGE-600` is implemented locally in this worktree and is not live. The reviewed founding-cohort site remains on production until Mat separately approves merge, preview and deployment.
 
-The local site is a credibility-led operational-systems journey with canonical brand, Selected Systems, eight synthetic story films, AI Team Training, a five-field enquiry form, and updated privacy and operating guidance. Chapter 05 and the pending Pantera quotation are omitted.
+The local site is a credibility-led operational-systems journey with canonical brand, Selected Systems, seven synthetic story films plus a written Management Accounts scope page, AI Team Training, a five-field enquiry form, and updated privacy and operating guidance. Chapter 05 and the pending Pantera quotation are omitted.
 
 ## Source of truth
 

@@ -4,17 +4,17 @@ These silent films show operator-built systems around one synthetic Northstar wo
 
 ## Shared format
 
-Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with no audio track. Every public film has a poster, an English WebVTT timed description and an accessible summary on its story page. Story-page players expose that VTT as an optional `English descriptions` captions track. It is not enabled by default, so burned-in titles and browser captions do not appear together during ordinary playback.
+Unless noted, each master is H.264 MP4, 1280 × 720, approximately 30 fps, with no audio track. Every public film has a poster, an English WebVTT timed description and an accessible summary on its story page. Story-page players expose that VTT as an optional `English descriptions` captions track. It is not enabled by default, so burned-in titles and browser captions do not appear together during ordinary playback. Management Accounts remains a Selected System and is described in writing. Its demonstration film is not a public asset.
 
 ## Visible narrative treatment
 
 Inspected start to finish on 1 September 2026. The primary visible narrative is the composition-aware text already in the picture. Optional WebVTT remains available from native player controls. Review frames, including every callout with a Chrome-sized control overlay at the story-page desktop and 390px sizes, are in `tools/demo-film-narrative/review/`.
 
-Rebuild the four denser public films from the preserved AGE-600 masters with `python3 tools/demo-film-narrative/render_narrative.py render`.
+Rebuild Applications Ledger, LedgerLink and Cashflow into `assets/demo-media/` from the preserved AGE-600 masters with `python3 tools/demo-film-narrative/render_narrative.py render`. The same command writes the withdrawn Management Accounts rendition into the retained area under `tools/`, not into this public media directory.
 
 ## Publication boundary
 
-The public site is the HTML routes, `_redirects`, `favicon.svg`, `work/` and `assets/`. Source masters, the narrative renderer and review-only stills live under `tools/` and are not part of the deploy-ready tree. Build that tree with `python3 tools/prepare_publish.py`. `python3 proof_media_check.py` rebuilds it in a temp directory and asserts that the eight public films, posters and VTT files are present while source masters, render tooling and review evidence are absent. Do not deploy the repository root if that would publish `tools/`.
+The public site is the HTML routes, `_redirects`, `favicon.svg`, `work/` and `assets/`. Source masters, the narrative renderer, review-only stills and the withdrawn Management Accounts final rendition live under `tools/` and are not part of the deploy-ready tree. Build that tree with `python3 tools/prepare_publish.py`. `python3 proof_media_check.py` rebuilds it in a temp directory and asserts that the seven public films, posters and VTT files are present while source masters, render tooling, review evidence and the withdrawn Management Accounts artefacts are absent. Do not deploy the repository root if that would publish `tools/`.
 
 ### SiteLog — preserved AGE-600 master
 
@@ -62,15 +62,9 @@ Existing title card retained. Added:
 
 Workbook callouts sit in empty cells above the native-control band. Dense forecast and facility rows are left uncovered.
 
-### Management Accounts — re-exported from `tools/demo-film-narrative/source/management-accounts-demo.mp4`
+### Management Accounts — withdrawn from the public tree
 
-Existing title card and the later “One reporting cycle” chapter card retained. Added:
-
-- 6.40–10.80 MONTHLY PACK / Open the reporting workbook
-- 14.60–18.20 PROFIT AND LOSS / Current year, budget and forecast
-- 22.60–33.80 LIVE PROJECTS / Turnover and gross margin by region
-
-No extra callout on the overheads sheet, where expenditure rows and worksheet tabs fill the lower frame.
+The final public rendition, poster and captions were moved into the retained withdrawn area under `tools/demo-film-narrative/`. The original AGE-600 master remains under `tools/demo-film-narrative/source/`. The renderer stays editable and writes this slug to that retained area, not to `assets/demo-media/`. The Selected Systems page and connected-workflow diagrams still include Management Accounts as a system. Filename-level hashes are recorded in the retained README and asserted by `proof_media_check.py`.
 
 ## SiteLog
 
@@ -137,12 +131,7 @@ No extra callout on the overheads sheet, where expenditure rows and worksheet ta
 
 ## Management Accounts
 
-`management-accounts-demo.mp4` shows a structured monthly reporting workbook with comparative views and supporting schedules.
-
-- Runtime: 53.9 seconds
-- Poster: `management-accounts-poster.jpg`
-- Timed description: `management-accounts-demo.vtt`
-- Accessible summary: A monthly reporting workbook is opened on the profit and loss schedule, then on live project turnover and gross margin, then on supporting overhead schedules that stay in the same pack.
+Management Accounts remains one of the eight Selected Systems. Its public story page describes system scope in writing. The withdrawn final film artefacts, original master and renderer are retained under `tools/demo-film-narrative/` and are not public website assets.
 
 ## Homepage teasers
 
@@ -162,7 +151,7 @@ SiteLog and BudgetFlow were recorded and reviewed on 28 August 2026 from the app
 
 The six staged AGE-600 masters were added from the approved local synthetic demonstration suite on 29 August 2026. Public-safety review of sampled frames found only synthetic Northstar labels, local demonstration chrome and Sage-style simulated accounts software. Sage itself is not connected.
 
-On 1 September 2026, Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from those preserved AGE-600 masters with composition-aware stage callouts. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Opening poster frames are unchanged.
+On 1 September 2026, Applications Ledger, LedgerLink, Cashflow and Management Accounts were re-exported from those preserved AGE-600 masters with composition-aware stage callouts. SiteLog, BudgetFlow, CPR and Probables were not re-encoded. Opening poster frames are unchanged. On 2 September 2026 the Management Accounts public film was withdrawn from this directory.
 
 Source-file SHA-256 hashes for the earlier SiteLog and BudgetFlow recordings:
 
@@ -181,15 +170,15 @@ Final-file SHA-256 hashes:
 - `applications-ledger-demo.mp4`: `b6c31c1c92467a7dd6216e82e6d775536005abfedeca35e89fab83af02435848`
 - `cashflow-demo.mp4`: `d49f68443d16be845e194653c0393dc3b175aa41bd335e77cc4046ae213a7d61`
 - `probables-demo.mp4`: `647300de26440d2afa33ae0b64a5e7ccd4a04a0909f72f906c5726a1377dfc63`
-- `management-accounts-demo.mp4`: `b68377a7019155b19adec19756534104fed9d8700a1b36ec1b48664bc7db9358`
 - `sitelog-poster.jpg`: `4022b4b2829dc32d004bfdd10c9dc0297fad5a353545832cc6dea5a1cf028a40`
 - `budgetflow-poster.jpg`: `1af478e41bf80428b75aa9fcda6b9c3b469ec997b8189875c863a19e4f513162`
 
-AGE-600 source masters retained in `tools/demo-film-narrative/source/` for the four re-exported films:
+AGE-600 source masters retained in `tools/demo-film-narrative/source/` for the three remaining re-exported public films:
 
 - `tools/demo-film-narrative/source/ledgerlink-demo.mp4`: `2123f74adf316d22b0efbaff6c7cfced227ba0c0850c58be572cb1c760c3db02`
 - `tools/demo-film-narrative/source/applications-ledger-demo.mp4`: `e63d2c36dca58e3f5b234e3c9ff9e8819d129edbd05c72bcecb2317a8035598a`
 - `tools/demo-film-narrative/source/cashflow-demo.mp4`: `769e9b44cf7c97ec565c52938c1b194e14eed97e49d65bcdb8c34fedf11c109f`
-- `tools/demo-film-narrative/source/management-accounts-demo.mp4`: `38bbe17c361e4252ed288f0df095236394cb9b4402b6c74941bd19ba1c67df9c`
+
+The withdrawn Management Accounts final rendition, poster, captions and original master hashes are recorded under `tools/demo-film-narrative/retained-withdrawn/` and asserted by `proof_media_check.py`.
 
 No publication or deployment is authorised by this record.

@@ -25,7 +25,7 @@ The homepage uses an SVG workflow diagram plus poster-first synthetic film tease
 | `assets/demo-media/applications-ledger-demo.mp4` and `applications-ledger-poster.jpg` | Applications Ledger story film | Staged AGE-600 synthetic master | Public-safe synthetic media; hash verified; publication still requires Mat's separate approval |
 | `assets/demo-media/cashflow-demo.mp4` and `cashflow-poster.jpg` | Cashflow story film | Staged AGE-600 synthetic master | Public-safe synthetic media; hash verified; publication still requires Mat's separate approval |
 | `assets/demo-media/probables-demo.mp4` and `probables-poster.jpg` | Probables story film | Staged AGE-600 synthetic master | Public-safe synthetic media; hash verified; publication still requires Mat's separate approval |
-| `assets/demo-media/management-accounts-demo.mp4` and `management-accounts-poster.jpg` | Management Accounts story film | Staged AGE-600 synthetic master | Public-safe synthetic media; hash verified; publication still requires Mat's separate approval |
+| `tools/demo-film-narrative/retained-withdrawn/management-accounts/` | Withdrawn Management Accounts final film, poster and captions | Last public AGE-601 rendition plus AGE-600 master under `source/` | Not a public website asset; retained outside the publish package |
 | `assets/demo-media/*-teaser.mp4` | Homepage muted loops only | 5-second derivatives of the SiteLog, BudgetFlow and LedgerLink masters | Not a substitute for the story films |
 
 Detailed source hashes, timed descriptions and accessible summaries are recorded in `assets/demo-media/README.md`.

@@ -24,7 +24,14 @@ STORY_SLUGS = [
     "management-accounts",
 ]
 
-FULL_FILMS = [f"assets/demo-media/{slug}-demo.mp4" for slug in STORY_SLUGS]
+FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
+WRITTEN_STORY_SLUGS = ["management-accounts"]
+FULL_FILMS = [f"assets/demo-media/{slug}-demo.mp4" for slug in FILM_STORY_SLUGS]
+WITHDRAWN_MEDIA_NAMES = (
+    "management-accounts-demo.mp4",
+    "management-accounts-poster.jpg",
+    "management-accounts-demo.vtt",
+)
 TEASERS = [
     "assets/demo-media/sitelog-teaser.mp4",
     "assets/demo-media/budgetflow-teaser.mp4",
@@ -425,6 +432,62 @@ def check_form(failures: list[str]) -> None:
             fail("consent label must not render a backslash before @", failures)
 
 
+def check_film_story(path: pathlib.Path, slug: str, raw: str, parser: PageParser, failures: list[str]) -> None:
+    if len(parser.videos) != 1:
+        fail(f"{path.name} expected one film, got {len(parser.videos)}", failures)
+        return
+    video = parser.videos[0]
+    attrs = video["attrs"]
+    if "controls" not in attrs:
+        fail(f"{path.name}: film missing controls", failures)
+    if "autoplay" in attrs or "loop" in attrs:
+        fail(f"{path.name}: film must not autoplay or loop", failures)
+    if attrs.get("preload") not in {"none", "metadata"}:
+        fail(f"{path.name}: unexpected preload {attrs.get('preload')!r}", failures)
+    sources = video["sources"]
+    expected_src = f"../assets/demo-media/{slug}-demo.mp4"
+    if not sources or sources[0].get("src") != expected_src:
+        fail(f"{path.name}: unexpected source {sources}", failures)
+    tracks = video["tracks"]
+    if not tracks or tracks[0].get("kind") != "captions":
+        fail(f"{path.name}: missing captions track", failures)
+    if "default" in tracks[0]:
+        fail(f"{path.name}: description track must not be default", failures)
+    if tracks[0].get("label") != "English descriptions":
+        fail(f"{path.name}: description track must be labelled English descriptions", failures)
+    if f"../assets/demo-media/{slug}-demo.vtt" not in raw:
+        fail(f"{path.name}: missing VTT path", failures)
+    if f"../assets/demo-media/{slug}-poster.jpg" not in raw:
+        fail(f"{path.name}: missing poster", failures)
+    if "What this film shows" not in raw:
+        fail(f"{path.name}: missing accessible summary", failures)
+
+
+def check_written_story(path: pathlib.Path, raw: str, parser: PageParser, failures: list[str]) -> None:
+    if parser.videos:
+        fail(f"{path.name} must not keep a public film player, got {len(parser.videos)}", failures)
+    if "What the system covers" not in raw:
+        fail(f"{path.name} missing written system-scope block", failures)
+    if "The demonstration" in raw or "What this film shows" in raw:
+        fail(f"{path.name} still describes a film", failures)
+    if re.search(r"\bfilm\b", raw, flags=re.I):
+        fail(f"{path.name} still contains film wording", failures)
+    if "53.9" in raw or "seconds" in raw.lower():
+        fail(f"{path.name} still shows a film runtime", failures)
+    for name in WITHDRAWN_MEDIA_NAMES:
+        if name in raw:
+            fail(f"{path.name} still refers to withdrawn media {name}", failures)
+    for phrase in ("video unavailable", "coming soon", "not available"):
+        if phrase in raw.lower():
+            fail(f"{path.name} must not explain a missing film: {phrase}", failures)
+    if "<video" in raw.lower() or 'class="film"' in raw:
+        fail(f"{path.name} must not keep a film placeholder", failures)
+    if "The problem" not in raw or "Who uses it" not in raw or "The flow" not in raw:
+        fail(f"{path.name} must keep problem, audience and flow", failures)
+    if "Design choices" not in raw or "Related systems" not in raw:
+        fail(f"{path.name} must keep design choices and related systems", failures)
+
+
 def check_stories(failures: list[str]) -> None:
     work_index = (ROOT / "work/index.html").read_text(encoding="utf-8")
     for slug in STORY_SLUGS:
@@ -439,40 +502,16 @@ def check_stories(failures: list[str]) -> None:
             fail(f"{path.name} missing Synthetic demonstration label", failures)
         if "Discuss a workflow" not in raw:
             fail(f"{path.name} missing enquiry action", failures)
-        if len(parser.videos) != 1:
-            fail(f"{path.name} expected one film, got {len(parser.videos)}", failures)
-            continue
-        video = parser.videos[0]
-        attrs = video["attrs"]
-        if "controls" not in attrs:
-            fail(f"{path.name}: film missing controls", failures)
-        if "autoplay" in attrs or "loop" in attrs:
-            fail(f"{path.name}: film must not autoplay or loop", failures)
-        if attrs.get("preload") not in {"none", "metadata"}:
-            fail(f"{path.name}: unexpected preload {attrs.get('preload')!r}", failures)
-        sources = video["sources"]
-        expected_src = f"../assets/demo-media/{slug}-demo.mp4"
-        if not sources or sources[0].get("src") != expected_src:
-            fail(f"{path.name}: unexpected source {sources}", failures)
-        tracks = video["tracks"]
-        if not tracks or tracks[0].get("kind") != "captions":
-            fail(f"{path.name}: missing captions track", failures)
-        if "default" in tracks[0]:
-            fail(f"{path.name}: description track must not be default", failures)
-        if tracks[0].get("label") != "English descriptions":
-            fail(f"{path.name}: description track must be labelled English descriptions", failures)
-        if f"../assets/demo-media/{slug}-demo.vtt" not in raw:
-            fail(f"{path.name}: missing VTT path", failures)
-        if f"../assets/demo-media/{slug}-poster.jpg" not in raw:
-            fail(f"{path.name}: missing poster", failures)
-        if "What this film shows" not in raw:
-            fail(f"{path.name}: missing accessible summary", failures)
         if "demo-media/source/" in raw or "tools/demo-film-narrative/" in raw:
             fail(f"{path.name}: must not link preserved source masters", failures)
         if "Back to Selected Systems" not in raw:
             fail(f"{path.name} missing Back to Selected Systems", failures)
         if "Suggested next:" not in raw:
             fail(f"{path.name} missing suggested next route", failures)
+        if slug in WRITTEN_STORY_SLUGS:
+            check_written_story(path, raw, parser, failures)
+        else:
+            check_film_story(path, slug, raw, parser, failures)
         if slug == "ledgerlink":
             if "connection to accounts software" not in raw:
                 fail("LedgerLink story missing 'connection to accounts software'", failures)
@@ -1425,8 +1464,10 @@ def check_round7(failures: list[str]) -> None:
         fail("Selected Systems must keep the page-level synthetic Northstar explanation", failures)
     if work.count('class="card-label">Outcome</p>') != 8:
         fail("each Selected Systems card must show Outcome as its own label", failures)
-    if work.count('class="card-label">Evidence shown</p>') != 8:
-        fail("each Selected Systems card must show Evidence shown as its own label", failures)
+    if work.count('class="card-label">Evidence shown</p>') != 7:
+        fail("the seven filmed Selected Systems cards must keep Evidence shown as its own label", failures)
+    if work.count('class="card-label">What the system covers</p>') != 1:
+        fail("the Management Accounts card must use What the system covers as its own label", failures)
     if "<strong>Outcome." in work or "<strong>Evidence shown." in work:
         fail("Selected Systems cards must not keep Outcome/Evidence as inline strong prefixes", failures)
     sitelog = (ROOT / "work/sitelog.html").read_text(encoding="utf-8")
@@ -2954,6 +2995,65 @@ def check_sole_trader_identity(failures: list[str]) -> None:
             fail("privacy Who is responsible still uses the old contact sentence", failures)
 
 
+def check_age609_withdrawal(failures: list[str]) -> None:
+    public_roots = [ROOT / "assets", ROOT / "work"]
+    public_files = list(ROOT.glob("*.html")) + list(ROOT.glob("_redirects"))
+    for base in public_roots:
+        public_files.extend(path for path in base.rglob("*") if path.is_file())
+    for path in public_files:
+        if path.suffix.lower() in {".mp4", ".jpg", ".jpeg", ".vtt", ".webp", ".png", ".svg", ".woff2"}:
+            if path.name in WITHDRAWN_MEDIA_NAMES:
+                fail(f"public tree still contains withdrawn media file {path.relative_to(ROOT)}", failures)
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for name in WITHDRAWN_MEDIA_NAMES:
+            if name in text:
+                fail(f"{path.relative_to(ROOT)} refers to withdrawn media {name}", failures)
+    media = ROOT / "assets" / "demo-media"
+    for name in WITHDRAWN_MEDIA_NAMES:
+        if (media / name).exists():
+            fail(f"assets/demo-media still has {name}", failures)
+    work = (ROOT / "work/index.html").read_text(encoding="utf-8")
+    cards = re.findall(r"<article class=\"card\"[\s\S]*?</article>", work)
+    if len(cards) != 8:
+        fail(f"Selected Systems must keep eight cards, found {len(cards)}", failures)
+        return
+    evidence_cards = [card for card in cards if ">Evidence shown<" in card]
+    if len(evidence_cards) != 7:
+        fail(f"exactly seven cards must keep Evidence shown, found {len(evidence_cards)}", failures)
+    ma_cards = [card for card in cards if "<h2>Management Accounts</h2>" in card]
+    if len(ma_cards) != 1:
+        fail("Selected Systems missing the Management Accounts card", failures)
+        return
+    ma_card = ma_cards[0]
+    if ">Evidence shown<" in ma_card:
+        fail("Management Accounts card must not keep the film-oriented Evidence shown label", failures)
+    if ">What the system covers<" not in ma_card:
+        fail("Management Accounts card missing the system-scope label", failures)
+    if "Explore Management Accounts" not in ma_card:
+        fail("Management Accounts card missing its explore action", failures)
+    for other in cards:
+        if other is ma_card:
+            continue
+        if ">Evidence shown<" not in other:
+            fail("a non-Management Accounts card lost Evidence shown", failures)
+    if 'data-to="management-accounts"' not in work:
+        fail("connected workflow must keep the Management Accounts destination", failures)
+    if "MANAGEMENT ACCOUNTS" not in work:
+        fail("connected workflow must keep the Management Accounts node", failures)
+    story = (ROOT / "work/management-accounts.html").read_text(encoding="utf-8")
+    if "What the system covers" not in story:
+        fail("Management Accounts page missing the written system-scope block", failures)
+    if "class=\"process-step\"" not in story:
+        fail("Management Accounts written block must reuse the existing process-step treatment", failures)
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    if ".story-grid .process-step" not in css:
+        fail("story pages must keep the process-step spacing used by the written scope block", failures)
+
+
 def check_age608(failures: list[str]) -> None:
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
@@ -3234,6 +3334,7 @@ def check() -> int:
     check_round13(failures)
     check_round14(failures)
     check_age608(failures)
+    check_age609_withdrawal(failures)
     check_final_pass(failures)
     check_sole_trader_identity(failures)
     if failures:
@@ -3242,7 +3343,8 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS routes, eight stories, sole-trader footer and consent identity, "
+        "PASS routes, eight stories with Management Accounts written-scope withdrawal, "
+        "sole-trader footer and consent identity, "
         "final-pass training H1, fragmented-tools opening icon and Jobhawk also-opening, "
         "AGE-608 shorter sticky travel and earlier narrow reveals, "
         "round-14 compact mobile Fit connector, "

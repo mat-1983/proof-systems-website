@@ -2,6 +2,10 @@
 
 Updated: 2026-09-02
 
+## AGE-609 withdraw Management Accounts demo film
+
+Management Accounts remains one of the eight Selected Systems and stays in the connected workflow. Its public story page and card now describe system scope in writing. The final public film, poster and captions were moved to `tools/demo-film-narrative/retained-withdrawn/management-accounts/`. The original master remains under `tools/demo-film-narrative/source/` and the renderer stays editable. The public package has seven films. Not approved for push, merge or publication.
+
 ## AGE-608 fluid homepage scroll pacing
 
 Sticky homepage sequences use shorter travel so ordinary wheel or touch input advances the next narrative item. Desktop opening/Gap/Fit/Capability/Approach min-heights are 140/200/200/250/180vh. Mobile opening stays 125vh so a 150px-equivalent swipe at 390×844 shows connect, then name, then tagline. Narrow Fit is 230vh with the 12%/66% stage contract kept. Narrow Gap, Capability and Approach still travel in ordinary flow and reveal at a 0.08 threshold with a -2% bottom root margin. Artwork, wording, links, forms, media, colour, layout composition, the Continue scrolling cue, reduced-motion and no-JavaScript final states are unchanged. Not approved for push, merge or publication.
@@ -76,7 +80,7 @@ The previous founding-cohort proposition has been removed from public routes and
 
 - One homepage proposition: operational systems for owner-led SMEs.
 - Eight-chapter design with chapter 05 omitted until separate testimonial approval.
-- Selected Systems index and eight story routes with synthetic demonstration films.
+- Selected Systems index and eight story routes; seven synthetic demonstration films plus a written Management Accounts scope block.
 - Short enquiry form reusing `proof-systems-qualifier` with five visible fields.
 - Shared CSS and JavaScript, SVG workflow motion, poster-first teasers.
 - Privacy, CRM handoff and lead-response guidance updated for general enquiries.
