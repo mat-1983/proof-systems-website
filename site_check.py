@@ -1158,7 +1158,7 @@ AGE608_PREV = {
 }
 AGE608_NOW = {
     "opening_desktop": 140,
-    "opening_narrow": 105,
+    "opening_narrow": 125,
     "gap": 200,
     "fit_desktop": 200,
     "fit_narrow": 230,
@@ -1177,6 +1177,40 @@ def opening_travel_px(min_height_vh: float, viewport_h: int) -> float:
 
 def travel_reduction(previous: float, current: float) -> float:
     return (previous - current) / previous
+
+
+def opening_phase(progress: float) -> str:
+    if progress >= 0.72:
+        return "tagline"
+    if progress >= 0.45:
+        return "name"
+    if progress >= 0.18:
+        return "connect"
+    return "mark"
+
+
+def opening_progress_at(scroll_px: float, min_height_vh: float, viewport_h: int) -> float:
+    travel = opening_travel_px(min_height_vh, viewport_h)
+    return max(0.0, min(scroll_px / travel, 1.0))
+
+
+def opening_swipe_phases(
+    min_height_vh: float, viewport_h: int, swipe_px: float = 150, reverse: bool = False
+) -> list[str]:
+    travel = opening_travel_px(min_height_vh, viewport_h)
+    phases: list[str] = []
+    scroll = travel if reverse else 0.0
+    step = -swipe_px if reverse else swipe_px
+    while True:
+        phase = opening_phase(opening_progress_at(scroll, min_height_vh, viewport_h))
+        if not phases or phases[-1] != phase:
+            phases.append(phase)
+        if reverse and scroll <= 0:
+            break
+        if not reverse and scroll >= travel:
+            break
+        scroll += step
+    return phases
 
 
 def check_round6(failures: list[str]) -> None:
@@ -2033,7 +2067,7 @@ def check_round10(failures: list[str]) -> None:
         fail("mobile CSS must not jump the opening to the completed name/tagline state", failures)
     if "min-height: auto" in mobile_css.split(".brand-reveal", 1)[-1][:80]:
         fail("mobile opening must keep scroll travel rather than collapsing to the completed state", failures)
-    if "min-height: 105vh" not in mobile_css:
+    if "min-height: 125vh" not in mobile_css:
         fail("mobile opening travel must be shorter than desktop 140vh", failures)
     if ".brand-reveal {\n  min-height: 140vh;" not in css and ".brand-reveal { min-height: 140vh; }" not in css:
         fail("desktop opening travel must remain 140vh", failures)
@@ -2943,11 +2977,12 @@ def check_age608(failures: list[str]) -> None:
     if f'min-height: {AGE608_NOW["opening_desktop"]}vh' not in css.split(".brand-reveal {", 1)[-1][:80]:
         fail("AGE-608 desktop opening travel must be 140vh", failures)
     if f'min-height: {AGE608_NOW["opening_narrow"]}vh' not in mobile_css:
-        fail("AGE-608 mobile opening travel must be 105vh", failures)
+        fail("AGE-608 mobile opening travel must remain 125vh so connect stays independently legible", failures)
+    if "min-height: 105vh" in mobile_css:
+        fail("AGE-608 must not keep the 105vh mobile opening that skipped the connect phase", failures)
 
     for stale in (
         "min-height: 170vh",
-        "min-height: 125vh",
         "min-height: 240vh",
         "min-height: 300vh",
         "min-height: 320vh",
@@ -3017,28 +3052,71 @@ def check_age608(failures: list[str]) -> None:
         if per_reveal >= previous / stages:
             fail(f"AGE-608 {label} per-reveal distance must be shorter than before", failures)
 
-    opening_cuts = {
-        "desktop opening": (
-            opening_travel_px(AGE608_PREV["opening_desktop"], AGE608_WIDE_H),
-            opening_travel_px(AGE608_NOW["opening_desktop"], AGE608_WIDE_H),
-        ),
-        "mobile opening": (
-            opening_travel_px(AGE608_PREV["opening_narrow"], AGE608_PHONE_H),
-            opening_travel_px(AGE608_NOW["opening_narrow"], AGE608_PHONE_H),
-        ),
-    }
-    for label, (previous, current) in opening_cuts.items():
-        cut = travel_reduction(previous, current)
-        reductions[label] = cut
-        if cut < 0.20 or cut > 0.35:
-            fail(
-                f"AGE-608 {label} travel {current:.0f}px is {cut:.1%} shorter than {previous:.0f}px, "
-                "expected 20-35%",
-                failures,
-            )
+    desktop_opening_prev = opening_travel_px(AGE608_PREV["opening_desktop"], AGE608_WIDE_H)
+    desktop_opening_now = opening_travel_px(AGE608_NOW["opening_desktop"], AGE608_WIDE_H)
+    desktop_opening_cut = travel_reduction(desktop_opening_prev, desktop_opening_now)
+    reductions["desktop opening"] = desktop_opening_cut
+    if desktop_opening_cut < 0.20 or desktop_opening_cut > 0.35:
+        fail(
+            f"AGE-608 desktop opening travel {desktop_opening_now:.0f}px is {desktop_opening_cut:.1%} "
+            f"shorter than {desktop_opening_prev:.0f}px, expected 20-35%",
+            failures,
+        )
 
     if reductions["narrow Fit"] < max(value for key, value in reductions.items() if key != "narrow Fit"):
         fail("AGE-608 must cut mobile Fit travel more than the other staged sequences", failures)
+
+    if "progress >= 0.72" not in js or "progress >= 0.45" not in js or "progress >= 0.18" not in js:
+        fail("AGE-608 opening must keep the mark/connect/name/tagline progress thresholds", failures)
+    if opening_phase(0.17) != "mark" or opening_phase(0.18) != "connect":
+        fail("AGE-608 opening connect phase must begin at 18% progress", failures)
+    if opening_phase(0.44) != "connect" or opening_phase(0.45) != "name":
+        fail("AGE-608 opening name phase must begin at 45% progress", failures)
+    if opening_phase(0.71) != "name" or opening_phase(0.72) != "tagline":
+        fail("AGE-608 opening tagline phase must begin at 72% progress", failures)
+
+    mobile_vh = AGE608_NOW["opening_narrow"]
+    skipped_vh = 105
+    wanted = ["mark", "connect", "name", "tagline"]
+    for width, height in ((390, 844), (360, 800), (320, 700)):
+        phases = opening_swipe_phases(mobile_vh, height, 150)
+        if phases != wanted:
+            fail(
+                f"AGE-608 mobile opening at {width}x{height} 150px swipes are {phases}, expected {wanted}",
+                failures,
+            )
+        reverse_phases = opening_swipe_phases(mobile_vh, height, 150, reverse=True)
+        if reverse_phases != list(reversed(wanted)):
+            fail(
+                f"AGE-608 mobile opening at {width}x{height} reverse 150px swipes are {reverse_phases}, "
+                f"expected {list(reversed(wanted))}",
+                failures,
+            )
+
+    # Independent review: at 390x844, 105vh let a 150px swipe from the last mark frame skip connect.
+    last_mark_scroll = opening_travel_px(mobile_vh, 844) * 0.17
+    after_swipe = opening_phase(opening_progress_at(last_mark_scroll + 150, mobile_vh, 844))
+    if after_swipe != "connect":
+        fail(
+            f"AGE-608 mobile opening at 390x844: a 150px swipe from mark must show connect, got {after_swipe}",
+            failures,
+        )
+    skipped_after = opening_phase(
+        opening_progress_at(opening_travel_px(skipped_vh, 844) * 0.17 + 150, skipped_vh, 844)
+    )
+    if skipped_after == "connect":
+        fail("AGE-608 105vh regression fixture no longer skips connect at 390x844", failures)
+
+    connect_span = (0.45 - 0.18) * opening_travel_px(mobile_vh, 844)
+    if connect_span < 150:
+        fail(
+            f"AGE-608 mobile opening connect span is {connect_span:.0f}px at 390x844, "
+            "need at least 150px so a swipe cannot skip it",
+            failures,
+        )
+    skipped_span = (0.45 - 0.18) * opening_travel_px(skipped_vh, 844)
+    if skipped_span >= 150:
+        fail("AGE-608 105vh regression fixture connect span is no longer below 150px", failures)
 
     prev_hold = 0.12 * scene_travel["narrow Fit"][0]
     now_hold = 0.12 * scene_travel["narrow Fit"][1]

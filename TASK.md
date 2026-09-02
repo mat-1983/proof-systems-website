@@ -4,7 +4,7 @@ Updated: 2026-09-02
 
 ## AGE-608 fluid homepage scroll pacing
 
-Sticky homepage sequences use shorter travel so ordinary wheel or touch input advances the next narrative item. Desktop opening/Gap/Fit/Capability/Approach min-heights are 140/200/200/250/180vh. Narrow Fit is 230vh with the 12%/66% stage contract kept. Narrow Gap, Capability and Approach still travel in ordinary flow and reveal at a 0.08 threshold with a -2% bottom root margin. Artwork, wording, links, forms, media, colour, layout composition, the Continue scrolling cue, reduced-motion and no-JavaScript final states are unchanged. Not approved for push, merge or publication.
+Sticky homepage sequences use shorter travel so ordinary wheel or touch input advances the next narrative item. Desktop opening/Gap/Fit/Capability/Approach min-heights are 140/200/200/250/180vh. Mobile opening stays 125vh so a 150px-equivalent swipe at 390×844 shows connect, then name, then tagline. Narrow Fit is 230vh with the 12%/66% stage contract kept. Narrow Gap, Capability and Approach still travel in ordinary flow and reveal at a 0.08 threshold with a -2% bottom root margin. Artwork, wording, links, forms, media, colour, layout composition, the Continue scrolling cue, reduced-motion and no-JavaScript final states are unchanged. Not approved for push, merge or publication.
 
 ## AGE-600 sole-trader website identity
 

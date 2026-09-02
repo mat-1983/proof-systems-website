@@ -4,13 +4,15 @@ Updated: 2026-09-02
 
 ## AGE-608 fluid homepage scroll pacing — 2 September 2026
 
-Opening, Gap, Fit, Capability and Approach sticky travel is 20–35% shorter, with the largest cut on mobile Fit. Narrow Gap, Capability and Approach reveal soon after they enter the viewport. Stage math, reverse-scroll monotonic order, artwork, copy, the Continue scrolling cue, reduced-motion and no-JavaScript finals are unchanged.
+Gap, Fit, Capability and Approach sticky travel is 20–35% shorter, with the largest cut on mobile Fit. Desktop opening is 140vh. Mobile opening stays 125vh so ordinary 150px-equivalent swipes keep connect independently legible. Narrow Gap, Capability and Approach reveal soon after they enter the viewport. Stage math, reverse-scroll monotonic order, artwork, copy, the Continue scrolling cue, reduced-motion and no-JavaScript finals are unchanged.
+
+Review correction: 105vh mobile opening at 390×844 skipped connect (mark 0.000 → mark 0.146 → name 0.485 → tagline 0.824). Restored 125vh. At 390×844, 150px steps are mark 0.000, connect 0.254, name 0.508, tagline 0.762.
 
 At the current wide evidence viewport (1,125 px inner height):
 
 | Sequence | Before | After | Per reveal | Reduction |
 | --- | ---: | ---: | ---: | ---: |
-| Opening | 1,294 px | 956 px | mark → connect → name → tagline | 26.1% |
+| Opening (desktop) | 1,294 px | 956 px | mark → connect → name → tagline | 26.1% |
 | 01 / Gap | 1,575 px | 1,125 px | 394 px → 281 px | 28.6% |
 | 01B / Fit | 1,575 px | 1,125 px | 394 px → 281 px | 28.6% |
 | 02 / Capability | 2,475 px | 1,688 px | 412 px → 281 px | 31.8% |
@@ -18,7 +20,7 @@ At the current wide evidence viewport (1,125 px inner height):
 
 At the representative phone evidence viewport (1,055 px inner height), 01B / Fit sticky travel is 2,110 px → 1,372 px (−35.0%). The opening hold is 253 px → 165 px and later intervals are 464 px → 302 px. At 390×844 / 360×800 / 320×700 the same 35% Fit cut is 1,688→1,097 px, 1,600→1,040 px and 1,400→910 px.
 
-- PASS — `python3 site_check.py` including `check_age608` shorter 140/200/200/250/180vh desktop travel, 230vh narrow Fit, 0.08 / -2% narrow reveals, 12%/66% Fit contract, and forward/reverse monotonic assertions.
+- PASS — `python3 site_check.py` including `check_age608` shorter 140/200/200/250/180vh desktop travel, 125vh mobile opening with mark/connect/name/tagline 150px swipe progression at 390/360/320, 230vh narrow Fit, 0.08 / -2% narrow reveals, 12%/66% Fit contract, and forward/reverse monotonic assertions.
 - PASS — `python3 proof_media_check.py`.
 - PASS — `python3 privacy_notice_check.py`.
 - PASS — `python3 crawl_check.py`.
