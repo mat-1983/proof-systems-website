@@ -153,7 +153,7 @@
           reveal(entry.target);
           if (observer) observer.unobserve(entry.target);
         });
-      }, { threshold: 0.22, rootMargin: "0px 0px -8% 0px" });
+      }, { threshold: 0.08, rootMargin: "0px 0px -2% 0px" });
       items.forEach(function (el) {
         if (el.classList.contains("is-arrived")) return;
         observer.observe(el);

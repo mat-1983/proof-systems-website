@@ -1142,6 +1142,43 @@ def narrow_fit_step(progress: float, steps: int = 4) -> int:
     return min(steps, 2 + math.floor(((progress - 0.12) / 0.66) * (steps - 1)))
 
 
+# AGE-608 sticky travel. Viewport heights match the current evidence:
+# 1,575 px Gap/Fit travel at 240vh implies 1,125 px wide inner height;
+# 2,110 px narrow Fit travel at 300vh implies 1,055 px phone inner height.
+AGE608_WIDE_H = 1125
+AGE608_PHONE_H = 1055
+AGE608_PREV = {
+    "opening_desktop": 170,
+    "opening_narrow": 125,
+    "gap": 240,
+    "fit_desktop": 240,
+    "fit_narrow": 300,
+    "capability": 320,
+    "approach": 210,
+}
+AGE608_NOW = {
+    "opening_desktop": 140,
+    "opening_narrow": 105,
+    "gap": 200,
+    "fit_desktop": 200,
+    "fit_narrow": 230,
+    "capability": 250,
+    "approach": 180,
+}
+
+
+def sticky_travel_px(min_height_vh: float, viewport_h: int) -> float:
+    return (min_height_vh - 100) / 100.0 * viewport_h
+
+
+def opening_travel_px(min_height_vh: float, viewport_h: int) -> float:
+    return max(min_height_vh / 100.0 * viewport_h - viewport_h * 0.55, 1.0)
+
+
+def travel_reduction(previous: float, current: float) -> float:
+    return (previous - current) / previous
+
+
 def check_round6(failures: list[str]) -> None:
     raw = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
@@ -1217,10 +1254,12 @@ def check_round6(failures: list[str]) -> None:
         fail("Capability action must be Ask about AI team training", failures)
     if "Math.min(steps, 1 + Math.floor(progress * steps))" not in js:
         fail("Capability desktop steps must use equal travel buckets", failures)
-    if "320vh" not in css:
+    if "250vh" not in css:
         fail("desktop Capability travel must be shorter than 400vh while remaining distinct", failures)
     if "560vh" in css:
         fail("desktop Capability travel must no longer use the longer 560vh interval", failures)
+    if "320vh" in css:
+        fail("desktop Capability travel must no longer use the 320vh interval", failures)
     expected_steps = {
         0.00: 1,
         0.16: 1,
@@ -1330,8 +1369,8 @@ def check_round7(failures: list[str]) -> None:
         fail("homepage should contain the AI Automation sentence", failures)
     if 'data-cap-step="6"' not in raw:
         fail("Capability no-JS default must be stage 6 so actions are present", failures)
-    if "320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
-        fail("desktop Capability min-height must be 320vh", failures)
+    if "250vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability min-height must be 250vh", failures)
     if "[data-cap-step=\"5\"] .cap-gated" not in css or "[data-cap-step=\"6\"] .cap-gated" not in css:
         fail("stage 5 and stage 6 must both show the five Capability icons", failures)
     if 'String(step) === "6"' not in js:
@@ -1433,7 +1472,7 @@ def check_round8(failures: list[str]) -> None:
         fail("site.js must stage Gap, Fit, Approach and Capability from natural scroll", failures)
     if "preventDefault" in js and "wheel" in js:
         fail("scene staging must not hijack scroll", failures)
-    if "300vh" not in css:
+    if "230vh" not in css:
         fail("Gap/Fit travel must be short staged sticky heights", failures)
     if ".fit-transition" not in css or "stroke-width: 3" not in css.split(".fit-transition path", 1)[-1][:180]:
         fail("Fit connector must use a 3-unit amber stroke", failures)
@@ -1972,8 +2011,8 @@ def check_round10(failures: list[str]) -> None:
         fail("Approach route links must have a visible keyboard focus treatment", failures)
     if "grid-template-columns: repeat(4, minmax(0, 1fr))" not in css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]:
         fail("desktop Approach must keep all four module positions in one row", failures)
-    if "min-height: 210vh" not in css:
-        fail("desktop Approach travel must be 210vh so completed routes leave only a short tail", failures)
+    if "min-height: 180vh" not in css:
+        fail("desktop Approach travel must be 180vh so completed routes leave only a short tail", failures)
     if "min-height: 360vh" in css:
         fail("desktop Approach travel must no longer use the 360vh empty tail", failures)
     if "220vh" in css:
@@ -1994,10 +2033,10 @@ def check_round10(failures: list[str]) -> None:
         fail("mobile CSS must not jump the opening to the completed name/tagline state", failures)
     if "min-height: auto" in mobile_css.split(".brand-reveal", 1)[-1][:80]:
         fail("mobile opening must keep scroll travel rather than collapsing to the completed state", failures)
-    if "min-height: 125vh" not in mobile_css:
-        fail("mobile opening travel must be shorter than desktop 170vh", failures)
-    if ".brand-reveal {\n  min-height: 170vh;" not in css and ".brand-reveal { min-height: 170vh; }" not in css:
-        fail("desktop opening travel must remain 170vh", failures)
+    if "min-height: 105vh" not in mobile_css:
+        fail("mobile opening travel must be shorter than desktop 140vh", failures)
+    if ".brand-reveal {\n  min-height: 140vh;" not in css and ".brand-reveal { min-height: 140vh; }" not in css:
+        fail("desktop opening travel must remain 140vh", failures)
     reduced = css.split("@media (prefers-reduced-motion: reduce)", 1)[-1].split("@media", 1)[0]
     if ".opening-name" not in reduced or "opacity: 1" not in reduced:
         fail("reduced-motion must still present the completed opening", failures)
@@ -2058,7 +2097,7 @@ def check_round11(failures: list[str]) -> None:
         fail("Fit must keep the approved sticky composition and must not use the fluid-narrow journey", failures)
     if "data-opening" not in raw or 'class="opening-mark"' not in raw:
         fail("opening logo sequence must remain", failures)
-    if "min-height: 300vh" not in css or 'data-scene="fit"' not in fit:
+    if "min-height: 230vh" not in css or 'data-scene="fit"' not in fit:
         fail("Fit desktop/narrow sticky travel must remain", failures)
 
     if "position: static" not in narrow.split('[data-scene="gap"] .scene-sticky', 1)[-1][:220]:
@@ -2083,9 +2122,9 @@ def check_round11(failures: list[str]) -> None:
         fail("sticky discrete steps must be skipped on the narrow breakpoint", failures)
     if "progress >= 0.90" not in js:
         fail("desktop Approach must reveal the route block late enough to leave only a short tail", failures)
-    leftover_vh = 0.10 * (210 - 100)
+    leftover_vh = 0.10 * (AGE608_NOW["approach"] - 100)
     if leftover_vh > 15 or leftover_vh < 8:
-        fail(f"desktop Approach completed tail is {leftover_vh:.1f}vh, expected about 10-15vh", failures)
+        fail(f"desktop Approach completed tail is {leftover_vh:.1f}vh, expected about 8-15vh", failures)
     previous = 1
     for index in range(0, 101):
         progress = index / 100
@@ -2093,8 +2132,8 @@ def check_round11(failures: list[str]) -> None:
         if current < previous:
             fail("desktop Approach steps must stay coherent when scrolling forward", failures)
         previous = current
-    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("Fit must keep 300vh sticky travel", failures)
+    if "230vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("Fit must keep 230vh sticky travel", failures)
 
     if 'id="enquiry-marker"' not in workflow or 'id="enquiry-heading"' not in workflow or 'id="enquiry-intro"' not in workflow:
         fail("enquiry page must expose marker, heading and intro for adaptive context", failures)
@@ -2203,9 +2242,9 @@ def check_round12(failures: list[str]) -> None:
         fail("narrow Fit first reveal must respond before the desktop 25% bucket", failures)
     if "data-fluid-narrow" in raw[raw.find('id="economics"'):raw.find('id="capability"')]:
         fail("Fit must remain a sticky scene rather than the ordinary-flow journey", failures)
-    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("narrow Fit sticky travel must remain 300vh", failures)
-    if "min-height: 240vh" not in desktop:
+    if "230vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 230vh", failures)
+    if "min-height: 200vh" not in desktop:
         fail("desktop Fit travel must shorten at widths above 900px", failures)
     missing = narrow.split(".fit-missing {", 1)
     if len(missing) < 2:
@@ -2223,11 +2262,11 @@ def check_round12(failures: list[str]) -> None:
                     failures,
                 )
 
-    if "min-height: 240vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+    if "min-height: 200vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
         fail("desktop Gap travel must shorten from 300vh", failures)
-    if "min-height: 210vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
+    if "min-height: 180vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
         fail("desktop Approach travel must shorten from 240vh", failures)
-    if "min-height: 320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+    if "min-height: 250vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
         fail("desktop Capability travel must shorten from 400vh", failures)
     if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
         fail("narrow Gap ordinary-flow override must remain", failures)
@@ -2296,25 +2335,31 @@ def check_round13(failures: list[str]) -> None:
     desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
     narrow = _narrow_css(css)
 
-    if "min-height: 240vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
-        fail("desktop Gap travel must be 240vh", failures)
+    if "min-height: 200vh" not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("desktop Gap travel must be 200vh", failures)
     if "min-height: 260vh" in css.split('[data-scene="gap"]', 1)[-1][:80]:
         fail("desktop Gap travel must no longer use 260vh", failures)
-    if "min-height: 240vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("desktop Fit travel must be 240vh", failures)
+    if "min-height: 240vh" in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("desktop Gap travel must no longer use 240vh", failures)
+    if "min-height: 200vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("desktop Fit travel must be 200vh", failures)
     if "min-height: 260vh" in desktop:
         fail("desktop Fit travel must no longer use 260vh", failures)
-    if "min-height: 320vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
-        fail("desktop Capability travel must be 320vh", failures)
+    if "min-height: 240vh" in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("desktop Fit travel must no longer use 240vh", failures)
+    if "min-height: 250vh" not in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability travel must be 250vh", failures)
     if "350vh" in css:
         fail("desktop Capability travel must no longer use 350vh", failures)
-    if "min-height: 210vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
-        fail("desktop Approach travel must remain 210vh", failures)
+    if "320vh" in css.split("html.js #capability[data-capability]", 1)[-1][:80]:
+        fail("desktop Capability travel must no longer use 320vh", failures)
+    if "min-height: 180vh" not in css.split('[data-scene="approach"]', 1)[-1][:80]:
+        fail("desktop Approach travel must remain 180vh", failures)
     if "progress >= 0.90" not in js:
         fail("desktop Approach must keep the 90% completed-route threshold", failures)
 
-    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("narrow Fit sticky travel must remain 300vh", failures)
+    if "230vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 230vh", failures)
     if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
         fail("narrow Gap ordinary-flow override must remain", failures)
     if "min-height: 0" not in narrow.split("html.js #capability[data-capability]", 1)[-1][:180]:
@@ -2445,10 +2490,10 @@ def check_round14(failures: list[str]) -> None:
     desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
     narrow = _narrow_css(css)
 
-    if "min-height: 240vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("desktop Fit travel must remain 240vh", failures)
-    if "300vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
-        fail("narrow Fit sticky travel must remain 300vh", failures)
+    if "min-height: 200vh" not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("desktop Fit travel must remain 200vh", failures)
+    if "230vh" not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("narrow Fit sticky travel must remain 230vh", failures)
     if "height: 26rem; margin-top: 0.5rem" not in css:
         fail("desktop Fit scene height must remain 26rem", failures)
     if "align-items: flex-start" not in narrow.split('[data-scene="fit"] .scene-sticky', 1)[-1][:80]:
@@ -2875,6 +2920,216 @@ def check_sole_trader_identity(failures: list[str]) -> None:
             fail("privacy Who is responsible still uses the old contact sentence", failures)
 
 
+def check_age608(failures: list[str]) -> None:
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
+    raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    desktop = css.split("@media (min-width: 901px)", 1)[-1].split("@media", 1)[0]
+    narrow = _narrow_css(css)
+    mobile_css = css.split("@media (max-width: 760px)", 1)[-1].split("@media", 1)[0]
+
+    if f'min-height: {AGE608_NOW["gap"]}vh' not in css.split('[data-scene="gap"]', 1)[-1][:80]:
+        fail("AGE-608 desktop Gap travel must be 200vh", failures)
+    if f'min-height: {AGE608_NOW["fit_desktop"]}vh' not in desktop.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("AGE-608 desktop Fit travel must be 200vh", failures)
+    if f'{AGE608_NOW["fit_narrow"]}vh' not in css.split('[data-scene="fit"]', 1)[-1][:80]:
+        fail("AGE-608 narrow Fit travel must be 230vh", failures)
+    if f'min-height: {AGE608_NOW["capability"]}vh' not in css.split(
+        "html.js #capability[data-capability]", 1
+    )[-1][:80]:
+        fail("AGE-608 desktop Capability travel must be 250vh", failures)
+    if f'min-height: {AGE608_NOW["approach"]}vh' not in css.split('[data-scene="approach"]', 1)[-1][:80]:
+        fail("AGE-608 desktop Approach travel must be 180vh", failures)
+    if f'min-height: {AGE608_NOW["opening_desktop"]}vh' not in css.split(".brand-reveal {", 1)[-1][:80]:
+        fail("AGE-608 desktop opening travel must be 140vh", failures)
+    if f'min-height: {AGE608_NOW["opening_narrow"]}vh' not in mobile_css:
+        fail("AGE-608 mobile opening travel must be 105vh", failures)
+
+    for stale in (
+        "min-height: 170vh",
+        "min-height: 125vh",
+        "min-height: 240vh",
+        "min-height: 300vh",
+        "min-height: 320vh",
+        "min-height: 210vh",
+    ):
+        if stale in css:
+            fail(f"AGE-608 must not keep the previous {stale} travel", failures)
+
+    if "threshold: 0.22" in js:
+        fail("AGE-608 narrow fluid journeys must not wait for a 0.22 intersection threshold", failures)
+    if "0px 0px -8% 0px" in js:
+        fail("AGE-608 narrow fluid journeys must not keep the previous -8% bottom root margin", failures)
+    if "threshold: 0.08" not in js:
+        fail("AGE-608 narrow fluid journeys must reveal after a small portion enters the viewport", failures)
+    if 'rootMargin: "0px 0px -2% 0px"' not in js:
+        fail("AGE-608 narrow fluid journeys must use a shallow bottom root margin", failures)
+
+    scene_travel = {
+        "desktop Gap": (
+            sticky_travel_px(AGE608_PREV["gap"], AGE608_WIDE_H),
+            sticky_travel_px(AGE608_NOW["gap"], AGE608_WIDE_H),
+            4,
+            (0.20, 0.35),
+        ),
+        "desktop Fit": (
+            sticky_travel_px(AGE608_PREV["fit_desktop"], AGE608_WIDE_H),
+            sticky_travel_px(AGE608_NOW["fit_desktop"], AGE608_WIDE_H),
+            4,
+            (0.20, 0.35),
+        ),
+        "desktop Capability": (
+            sticky_travel_px(AGE608_PREV["capability"], AGE608_WIDE_H),
+            sticky_travel_px(AGE608_NOW["capability"], AGE608_WIDE_H),
+            6,
+            (0.20, 0.35),
+        ),
+        "desktop Approach": (
+            sticky_travel_px(AGE608_PREV["approach"], AGE608_WIDE_H),
+            sticky_travel_px(AGE608_NOW["approach"], AGE608_WIDE_H),
+            5,
+            (0.20, 0.35),
+        ),
+        "narrow Fit": (
+            sticky_travel_px(AGE608_PREV["fit_narrow"], AGE608_PHONE_H),
+            sticky_travel_px(AGE608_NOW["fit_narrow"], AGE608_PHONE_H),
+            4,
+            (0.30, 0.38),
+        ),
+    }
+    reductions: dict[str, float] = {}
+    for label, (previous, current, stages, band) in scene_travel.items():
+        cut = travel_reduction(previous, current)
+        reductions[label] = cut
+        low, high = band
+        if cut < low or cut > high:
+            fail(
+                f"AGE-608 {label} travel {current:.0f}px is {cut:.1%} shorter than {previous:.0f}px, "
+                f"expected {low:.0%}-{high:.0%}",
+                failures,
+            )
+        per_reveal = current / stages
+        if per_reveal < 175:
+            fail(
+                f"AGE-608 {label} {per_reveal:.0f}px per reveal is short enough that stages can flash past",
+                failures,
+            )
+        if per_reveal >= previous / stages:
+            fail(f"AGE-608 {label} per-reveal distance must be shorter than before", failures)
+
+    opening_cuts = {
+        "desktop opening": (
+            opening_travel_px(AGE608_PREV["opening_desktop"], AGE608_WIDE_H),
+            opening_travel_px(AGE608_NOW["opening_desktop"], AGE608_WIDE_H),
+        ),
+        "mobile opening": (
+            opening_travel_px(AGE608_PREV["opening_narrow"], AGE608_PHONE_H),
+            opening_travel_px(AGE608_NOW["opening_narrow"], AGE608_PHONE_H),
+        ),
+    }
+    for label, (previous, current) in opening_cuts.items():
+        cut = travel_reduction(previous, current)
+        reductions[label] = cut
+        if cut < 0.20 or cut > 0.35:
+            fail(
+                f"AGE-608 {label} travel {current:.0f}px is {cut:.1%} shorter than {previous:.0f}px, "
+                "expected 20-35%",
+                failures,
+            )
+
+    if reductions["narrow Fit"] < max(value for key, value in reductions.items() if key != "narrow Fit"):
+        fail("AGE-608 must cut mobile Fit travel more than the other staged sequences", failures)
+
+    prev_hold = 0.12 * scene_travel["narrow Fit"][0]
+    now_hold = 0.12 * scene_travel["narrow Fit"][1]
+    prev_later = (0.66 / 3) * scene_travel["narrow Fit"][0]
+    now_later = (0.66 / 3) * scene_travel["narrow Fit"][1]
+    if now_hold >= prev_hold or now_later >= prev_later:
+        fail("AGE-608 narrow Fit opening hold and later intervals must both shorten", failures)
+    if abs(prev_hold - 253) > 1 or abs(prev_later - 464) > 1:
+        fail(
+            f"AGE-608 previous narrow Fit hold/interval baseline drifted "
+            f"({prev_hold:.0f}px / {prev_later:.0f}px)",
+            failures,
+        )
+
+    for width, height in ((390, 844), (360, 800), (320, 700)):
+        previous = sticky_travel_px(AGE608_PREV["fit_narrow"], height)
+        current = sticky_travel_px(AGE608_NOW["fit_narrow"], height)
+        cut = travel_reduction(previous, current)
+        if cut < 0.30:
+            fail(
+                f"AGE-608 Fit at {width}x{height} travel {current:.0f}px is only {cut:.1%} shorter",
+                failures,
+            )
+        later = (0.66 / 3) * current
+        if later >= 400:
+            fail(
+                f"AGE-608 Fit at {width}x{height} later interval {later:.0f}px still feels stuck",
+                failures,
+            )
+
+    leftover_vh = 0.10 * (AGE608_NOW["approach"] - 100)
+    if leftover_vh < 8 or leftover_vh > 15:
+        fail(
+            f"AGE-608 Approach completed-route tail is {leftover_vh:.1f}vh, expected about 8-15vh",
+            failures,
+        )
+
+    if 'attr === "data-fit-step" && isNarrow()' not in js:
+        fail("AGE-608 must keep the dedicated narrow Fit first-stage threshold", failures)
+    if "progress < 0.12" not in js or "(progress - 0.12) / 0.66" not in js:
+        fail("AGE-608 must keep the 12%/66% narrow Fit stage contract", failures)
+    if "Math.min(steps, 1 + Math.floor(progress * steps))" not in js:
+        fail("AGE-608 desktop Gap/Fit/Capability must keep equal travel buckets", failures)
+    if "progress >= 0.90" not in js:
+        fail("AGE-608 desktop Approach must keep the 90% completed-route threshold", failures)
+    if desktop_scene_step(0.24, 4) != 1 or desktop_scene_step(0.25, 4) != 2:
+        fail("AGE-608 desktop Gap/Fit must remain four independent 25% stages", failures)
+    if desktop_cap_step(0.83) != 5 or desktop_cap_step(0.84) != 6:
+        fail("AGE-608 desktop Capability must remain six independent stages", failures)
+    if desktop_approach_step(0.89) != 4 or desktop_approach_step(0.90) != 5:
+        fail("AGE-608 desktop Approach must still reveal routes from 90% progress", failures)
+    if narrow_fit_step(0.11) != 1 or narrow_fit_step(0.12) != 2:
+        fail("AGE-608 narrow Fit first reveal must remain at 12%", failures)
+    if narrow_fit_step(0.33) != 2 or narrow_fit_step(0.34) != 3:
+        fail("AGE-608 narrow Fit arrow/Bespoke progression must still start at 34%", failures)
+    _assert_monotonic("AGE-608 desktop Gap/Fit steps", lambda progress: desktop_scene_step(progress, 4), 0, 100, failures)
+    _assert_monotonic("AGE-608 desktop Capability steps", desktop_cap_step, 0, 100, failures)
+    _assert_monotonic("AGE-608 desktop Approach steps", desktop_approach_step, 0, 100, failures)
+    _assert_monotonic("AGE-608 narrow Fit steps", narrow_fit_step, 0, 100, failures)
+
+    if "data-fluid-narrow" not in raw[raw.find('id="gap"') : raw.find('id="economics"')]:
+        fail("AGE-608 narrow Gap must remain an ordinary-flow journey", failures)
+    if "data-fluid-narrow" not in raw[raw.find('id="capability"') : raw.find('id="proof"')]:
+        fail("AGE-608 narrow Capability must remain an ordinary-flow journey", failures)
+    if "data-fluid-narrow" not in raw[raw.find('id="approach"') : raw.find('id="about"')]:
+        fail("AGE-608 narrow Approach must remain an ordinary-flow journey", failures)
+    if "data-fluid-narrow" in raw[raw.find('id="economics"') : raw.find('id="capability"')]:
+        fail("AGE-608 Fit must remain sticky on narrow screens", failures)
+    if "min-height: 0" not in narrow.split('html.js [data-scene="gap"]', 1)[-1][:180]:
+        fail("AGE-608 narrow Gap must not keep a sticky travel bucket", failures)
+    if "min-height: 0" not in narrow.split("html.js #capability[data-capability]", 1)[-1][:180]:
+        fail("AGE-608 narrow Capability must not keep a sticky travel bucket", failures)
+    if "position: static" not in narrow.split('[data-scene="approach"] .scene-sticky', 1)[-1][:220]:
+        fail("AGE-608 narrow Approach must travel in ordinary document flow", failures)
+    if "min-height: 0" in narrow.split('[data-scene="fit"]', 1)[-1][:180]:
+        fail("AGE-608 narrow Fit must not collapse its sticky travel", failures)
+    if "scroll-snap" in css:
+        fail("AGE-608 must not introduce scroll snapping", failures)
+    if "preventDefault" in js and "wheel" in js:
+        fail("AGE-608 must not hijack wheel scrolling", failures)
+    reduced = css.split("@media (prefers-reduced-motion: reduce)")[-1]
+    if "[data-scene]" not in reduced or "min-height: 0" not in reduced:
+        fail("AGE-608 reduced-motion must still present the complete staged scenes", failures)
+    if 'data-gap-step="4"' not in raw or 'data-fit-step="4"' not in raw or 'data-approach-step="5"' not in raw:
+        fail("AGE-608 no-JS defaults must remain the complete final scenes", failures)
+    if 'data-cap-step="6"' not in raw:
+        fail("AGE-608 no-JS Capability default must remain stage 6", failures)
+    if "unobserve" not in js:
+        fail("AGE-608 once a mobile journey item has entered it must stay revealed", failures)
+
+
 def check() -> int:
     failures: list[str] = []
     check_routes(failures)
@@ -2900,6 +3155,7 @@ def check() -> int:
     check_round12(failures)
     check_round13(failures)
     check_round14(failures)
+    check_age608(failures)
     check_final_pass(failures)
     check_sole_trader_identity(failures)
     if failures:
@@ -2910,6 +3166,7 @@ def check() -> int:
     print(
         "PASS routes, eight stories, sole-trader footer and consent identity, "
         "final-pass training H1, fragmented-tools opening icon and Jobhawk also-opening, "
+        "AGE-608 shorter sticky travel and earlier narrow reveals, "
         "round-14 compact mobile Fit connector, "
         "round-13 remaining scroll pacing, "
         "round-12 mobile connected workflow and Fit refinement, "
