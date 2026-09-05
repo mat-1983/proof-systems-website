@@ -4,11 +4,12 @@ Recorded: 5 September 2026.
 
 ## Current state
 
-Mat reviewed V2 on mobile and reported that it works great, then requested bouncing scroll cues and longer autoplay demos. Those changes are complete locally. The independent final verdict is **Approved** for application commit `3673c30cb43d051d126e62b154a3482760e6cc08`, with no outstanding findings for this increment.
+Mat accepted V2 on mobile, including the bouncing scroll cues and longer autoplay demos, then authorised GitHub alignment and redundant local worktree removal. The independent final verdict is **Approved** for the full cumulative V2 from `044cf52228bd8adc8b4e66d902baaf2f2a7bd106` through `9943c69ed36b21bd623e7d14706ed5b0775c08d9`, with no outstanding findings. The last application change is `3673c30cb43d051d126e62b154a3482760e6cc08`; later changes are delivery documentation.
 
 Browser access was restored after the earlier locked-Mac limitation. Root completed rendered checks of the changed homepage scenes and playback at desktop, phone portrait and short landscape sizes. Physical iOS/Android automation is not claimed. The unchanged inner-page and form contracts passed the automated checks; their full interactive acceptance was not repeated in this increment.
 
-- Branch: `codex/website-v2`
+- Canonical branch: `main`
+- Completed integration branch: `codex/website-v2`, fast-forwarded into `main` and removed after its clean worktree became redundant.
 - Original V1 base and fallback: `044cf52228bd8adc8b4e66d902baaf2f2a7bd106`
 - Refinement baseline: `e6359f60b07116f6a8bf7cf91a1257a9a94b85ea`
 - Refinement implementation: `5ab57bbb028dbfacff8f16092282a27f108a05f7`
@@ -71,14 +72,20 @@ Normal reload and fresh-tab checks verified the revised shared asset URLs and an
 
 No remaining rendered defect was found in this increment. Physical-device toolbar behaviour, a complete fresh inner-page click-through and interactive form/caption controls were not re-tested here. No form was submitted. Earlier delivery and review history remains in Git.
 
-## Local previews and boundary
+## Netlify package and close-out
 
-V2: `http://127.0.0.1:8988/`
+The deploy-ready folder was produced and presented to Mat before Git alignment or clean-up:
 
-V1 fallback: `http://127.0.0.1:8986/`
+`~/Downloads/Proof-Systems-Netlify-V2-2026-09-05`
 
-Mobile preview on the same Wi-Fi: `http://192.168.0.18:8988/index.html`. The existing LAN server serves a public allow-list copy, refreshed with this increment. HTTP checks confirmed all four cues, revisioned assets and the three updated teaser files; documentation, tooling and source-master paths return 404. The Mac must remain awake.
+It contains 60 files (56.1 MB), with `index.html` and `_redirects` at its root. The exact package passed an HTTP crawl of the public routes, assets, seven full films and three teasers. Every file was compared with the approved source. Git metadata, delivery documentation, testing tools, source masters and withdrawn media are excluded. Site, privacy, media, JavaScript syntax and scroll checks also passed. Mat's next action is to upload this folder to the intended Netlify project manually.
 
-The V1 checkout remains clean on `main` at `044cf52`; local annotated tag `website-v1-fallback-2026-09-05` resolves to that same commit. The existing V2 worktree is separate. No merge to main, push, deployment, publication, external message, Brain write or live form submission occurred. No new Linear issue or project placement was inferred from this task.
+The canonical website checkout is now `60_products/proofsystems-website` on `main`. The clean `proofsystems-website-v2` worktree and its fully integrated local branch were removed. The V1 source is preserved by the annotated tag `website-v1-fallback-2026-09-05`, resolving to `044cf52228bd8adc8b4e66d902baaf2f2a7bd106`. GitHub synchronisation includes `main` and that fallback tag. The dated Netlify folder remains independent of worktree clean-up.
 
-The publish allow-list excludes `docs/` and testing tools. This record is not public website content. Earlier implementation and review history remains in Git.
+V2 local preview: `http://127.0.0.1:8988/`, now served from the canonical checkout. Mobile preview on the same Wi-Fi: `http://192.168.0.18:8988/index.html`, served from the checked public allow-list copy. The Mac must remain awake. The obsolete V1 and design-study preview servers were stopped; V1 can be recovered from its tag.
+
+Before pushing, the live Netlify project's Continuous deployment settings showed **Current repository: Not linked**. This session did not deploy, upload to Netlify, change hosting settings, submit a form, send an external message or write to Open Brain. GitHub integration and clean-up were authorised by Mat's close-out request. The related historical Linear website issues remain completed; no new V2 issue or project placement was inferred.
+
+Simple Gate: PASS. One canonical repository and one ready-to-upload public folder provide the handover; the V1 tag supplies recovery without another working checkout.
+
+This record is excluded from the public website package. Earlier implementation and review history remains in Git.
