@@ -7,7 +7,8 @@ Recorded: 5 September 2026.
 - Branch: `codex/website-v2`
 - Base: `044cf52228bd8adc8b4e66d902baaf2f2a7bd106`
 - Initial implementation commit: `c3c1060456e31d09be7e7def0e4c25fe704e8bd6`
-- Correction commit: the commit containing this record; use `git rev-parse codex/website-v2` for the exact cumulative head and compare it with the delivery receipt.
+- Independently reviewed implementation head: `a27b6e57950bae5fc1cdc1fddc2fc02705243035`.
+- Independent review: **Approved**. All four P2 findings were corrected; no material findings remain. This final record update changes documentation only.
 - Requested implementation runtime: `gpt-5.6-sol`, high reasoning. Resolved runtime metadata was not independently exposed to the implementation lane.
 - Simple Gate: PASS
 
@@ -27,7 +28,11 @@ Passed locally:
 - `git diff --check`
 - pre-commit secret scan
 
-Root browser UAT passed the 1440px animated story and contrast corrections, the 768px and phone static record trail, 320px opening forwards and backwards, mobile menu anchor closing, and 390px local enquiry validation without submission or URL data. The independent review boundary corrections for no-JavaScript navigation, short-height desktop layout, reduced motion, dark-surface contrast and retained identity/media checks are pending cumulative re-review at the time of this record.
+Root browser UAT passed the 1440px animated story and contrast corrections, the 768px and phone static record trail, 320px opening forwards and backwards, mobile menu anchor closing, and 390px local enquiry validation without submission or URL data. The retained SiteLog film played locally with native controls and no playback error; its phone layout remained usable.
+
+Final boundary verification passed: opaque, readable no-JavaScript navigation over cream sections; a complete opening at 1280×600; ordinary-flow short-window storytelling with all four fragments at opacity 1, no blur and no scaling; and corrected light/dark text and action contrast. No-script rendering stripped scripts in an external loopback fixture. Reduced-motion rendering used a simulated media preference in that fixture, rather than changing the operating-system setting. The fixtures are outside the repository and are not part of the public package.
+
+The independent reviewer reran public gates, executable forward/reverse opening and motion-mode checks, and mutation checks for identity, readable footers, exact film/caption associations, caption defaults, redirects and the short-window CSS cascade. Review approval applies to the local branch; merge and publication remain separate decisions.
 
 ## Local review
 
