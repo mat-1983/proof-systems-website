@@ -348,6 +348,11 @@ html:not(.motion-ready) .v2-connected-record,
 html.story-static .v2-connected-record { margin-top: 2.2rem; border-color: var(--v2-amber); }
 html:not(.motion-ready) .v2-context-note,
 html.story-static .v2-context-note { position: relative; inset: auto; margin: .6rem 0 0; opacity: 1; }
+html.story-static .v2-work-story .v2-fragment {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}
 
 .v2-response { position: relative; z-index: 2; overflow: hidden; padding: clamp(8rem, 13vw, 13rem) 0; background: var(--v2-cream); color: #1c1f1f; }
 .v2-response::after { content: ""; position: absolute; right: -10%; bottom: -35%; width: 48vw; aspect-ratio: 1; border: 1px solid rgba(216,144,66,.18); border-radius: 50%; }

@@ -285,6 +285,14 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("no-JavaScript workflow must expose the readable vertical record trail", failures)
     if "html.story-static .v2-work-story" not in css:
         fail("short desktop windows must use the same unclipped static story composition", failures)
+    static_fragments = re.search(r"html\.story-static \.v2-work-story \.v2-fragment\s*\{([^}]*)\}", css)
+    if not static_fragments:
+        fail("short desktop static story is missing an explicit fragment cascade override", failures)
+    else:
+        static_body = static_fragments.group(1)
+        for contract in ("opacity: 1 !important", "filter: none !important", "transform: none !important"):
+            if contract not in static_body:
+                fail(f"short desktop static fragments can still be dimmed by the final-step cascade: {contract}", failures)
     if "@media (max-height: 700px) and (min-width: 901px)" not in css or ".v2-opening-sticky { min-height: 0; }" not in css:
         fail("short desktop windows must receive a viewport-height-safe opening", failures)
     if ".home-v2 .site-nav { position: fixed; background: rgba(11, 14, 16, 0.94); }" not in css:
