@@ -266,35 +266,33 @@ def check_homepage_v2(failures: list[str]) -> None:
 
     if "data-work-story" not in raw or 'data-story-step="4"' not in raw:
         fail("workflow story must have a complete no-JavaScript default", failures)
-    for detail in (
-        "R-2041", "Order change", "Due 16 September", "Due 18 September",
-        "Revised date approved", "Requirement", "Owner", "Status",
-        "Approval and history attached",
-    ):
+    for detail in ("Customer request", "Source", "Owner", "Next action", "History", "Customer email attached", "Request and approval attached"):
         if detail not in text:
             fail(f"connected-record illustration missing {detail}", failures)
+    for stale in ("R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
+        if stale in raw + js + css:
+            fail(f"retired date/static story contract remains: {stale}", failures)
+    for phrase in ("The software layer that connects your business.", "enterprise resource planning", "cost or complexity", "AI-assisted development", "operational data"):
+        if phrase not in text:
+            fail(f"software layer proposition missing {phrase}", failures)
+    for title in ("Understand the work", "Try a working demo", "Refine it together", "Prove it in use"):
+        if title not in text:
+            fail(f"practical starting point missing {title}", failures)
+    for kind in ("story", "connection", "process"):
+        if f'data-scroll-track="{kind}"' not in raw:
+            fail(f"missing native scroll track: {kind}", failures)
+    if len(re.findall(r'data-stage-panel="[0-3]"', raw)) != 8:
+        fail("workflow and process need all four readable narrative panels", failures)
     if text.find("Evidence from construction operations") < text.find("Keep the software that works"):
         fail("construction evidence must follow the general software-fit narrative", failures)
-    if "@media (prefers-reduced-motion: reduce)" not in css or ".v2-opening { min-height: 100vh; }" not in css:
-        fail("reduced motion must expose the complete opening without scroll travel", failures)
-    if ".v2-work-story { min-height: 0; padding: 8rem 0; }" not in css:
-        fail("reduced motion must expose the complete workflow in ordinary flow", failures)
-    if '(max-width: 900px), (max-height: 760px)' not in js or "storyStaticQuery.matches" not in js:
-        fail("tablet and phone workflow stories must use the readable static composition", failures)
-    if "html:not(.motion-ready) .v2-flow" not in css:
-        fail("no-JavaScript workflow must expose the readable vertical record trail", failures)
-    if "html.story-static .v2-work-story" not in css:
-        fail("short desktop windows must use the same unclipped static story composition", failures)
-    static_fragments = re.search(r"html\.story-static \.v2-work-story \.v2-fragment\s*\{([^}]*)\}", css)
-    if not static_fragments:
-        fail("short desktop static story is missing an explicit fragment cascade override", failures)
-    else:
-        static_body = static_fragments.group(1)
-        for contract in ("opacity: 1 !important", "filter: none !important", "transform: none !important"):
-            if contract not in static_body:
-                fail(f"short desktop static fragments can still be dimmed by the final-step cascade: {contract}", failures)
-    if "@media (max-height: 700px) and (min-width: 901px)" not in css or ".v2-opening-sticky { min-height: 0; }" not in css:
-        fail("short desktop windows must receive a viewport-height-safe opening", failures)
+    for contract in ("html:not(.motion-ready) .scroll-track", "html:not(.motion-ready) [data-stage-panel]", "@media (prefers-reduced-motion: reduce)"):
+        if contract not in css:
+            fail(f"complete no-JavaScript/reduced-motion content missing: {contract}", failures)
+    for contract in ("trackProgress(track)", "readTravel", "panel.parentElement.offsetHeight", "measureWires(track)", "window.visualViewport", "100svh"):
+        if contract not in js:
+            fail(f"responsive native-scroll implementation missing {contract}", failures)
+    if 'type="range"' in raw or "cp-playback" in raw:
+        fail("demonstration scrubber controls must not ship on the homepage", failures)
     if ".home-v2 .site-nav { position: fixed; background: rgba(11, 14, 16, 0.94); }" not in css:
         fail("no-JavaScript navigation must keep an opaque readable fallback", failures)
     if "html.motion-ready .home-v2 .site-nav:not(.is-compact) { background: transparent; }" not in css:
@@ -306,8 +304,6 @@ def check_homepage_v2(failures: list[str]) -> None:
     ):
         if contrast_ratio(foreground, background) < 4.5:
             fail(f"{label} contrast is below 4.5:1", failures)
-    if ".v2-approach-list strong" not in css or "color: #1b1d1c" not in css:
-        fail("approach step titles need an explicit dark colour on sand", failures)
     if ".home-v2 .v2-all-systems { color: #1c1f1f" not in css:
         fail("Selected Systems ghost action needs explicit dark text on cream", failures)
     if contrast_ratio("#1c1f1f", "#f0ece2") < 4.5:
@@ -407,7 +403,7 @@ def check_stories_and_media(failures: list[str]) -> None:
             fail(f"public tree still exposes withdrawn media {name}", failures)
 
     work = (ROOT / "work" / "index.html").read_text(encoding="utf-8")
-    cards = re.findall(r'<article class="card"[\s\S]*?</article>', work)
+    cards = re.findall(r'<article class="evidence-row"[\s\S]*?</article>', work)
     if len(cards) != 8:
         fail(f"Selected Systems must keep eight entries, found {len(cards)}", failures)
     if len([card for card in cards if ">Evidence shown<" in card]) != 7:

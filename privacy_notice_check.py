@@ -298,7 +298,7 @@ def check() -> int:
     if "consent as a blanket" not in visible_compact:
         fail("must reject consent as a blanket basis", failures)
 
-    who = re.search(r'<section id="who-is-responsible">([\s\S]*?)</section>', raw)
+    who = re.search(r'<section id="who-is-responsible"(?:\s[^>]*)?>([\s\S]*?)</section>', raw)
     if not who:
         fail("missing Who is responsible section", failures)
     else:

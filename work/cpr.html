@@ -19,15 +19,16 @@
   <link rel="stylesheet" href="../assets/css/site.css">
 
 </head>
-<body class="page-inner">
+<body class="page-inner page-evidence">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
     <a class="brand" href="../index.html"><img src="../assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="../work/index.html" aria-current="page">Selected Systems</a>
-      <a href="../training.html">AI Team Training</a>
+      <a href="../index.html#fit">The problem</a>
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#proof">Experience</a>
       <a href="../index.html#about">About</a>
     </nav>
     <a class="nav-cta" href="../workflow.html">Discuss a workflow</a>
@@ -36,29 +37,14 @@
 </header>
 <main id="main" class="page-main">
   <div class="wrap story-grid">
+<div class="evidence-hero"><a class="evidence-breadcrumb" href="index.html">Selected systems / Central Project Register</a>
     <p class="kicker">Project master</p>
-    <h1>Central Project Register</h1>
-    <p class="lede">Hold shared project identity and status in one place.</p>
+    <h1>Hold shared project identity and status in one place.</h1>
+
     <p class="proof-label">Synthetic demonstration</p>
     <p class="meta-audience">Commercial leaders · 18.6 seconds</p>
-    <section>
-      <h2>The problem</h2>
-      <p>Project identity, contract values and payment terms often sit in several lists.&nbsp; Without one governed view, later systems have to guess which project they are talking about.</p>
-    </section>
-    <section>
-      <h2>How it is used</h2>
-      <p>Every bespoke system draws on one trusted source of project information. Scheduled updates from the accounts software keep the shared project data current and consistent across the connected systems.</p>
-    </section>
-    <section>
-      <h2>The flow</h2>
-      <ol class="flow-list">
-          <li>The portfolio shows live, completed and pipeline projects with identity and value.</li>
-          <li>A project is opened to review codes, customer, contract value and payment terms.</li>
-          <li>Retention, valuation cadence and related references stay on the same record.</li>
-          <li>A hand-off opens the matching ledger for applications, certificates and payments.</li>
-      </ol>
-    </section>
-    <section>
+</div>
+    <section class="evidence-media">
       <h2>The demonstration</h2>
       <div class="film">
         <video controls playsinline preload="none" poster="../assets/demo-media/cpr-poster.jpg" width="1280" height="720" aria-label="Central Project Register synthetic demonstration">
@@ -72,14 +58,32 @@
         <p>A portfolio of live, completed and pipeline projects is shown with identity and contract value.&nbsp; Opening a live project reveals codes, contract terms and a hand-off into Applications Ledger.</p>
       </details>
     </section>
-    <section>
-      <h2>Design choices</h2>
+    <section class="evidence-section" data-reveal>
+      <h2>The problem</h2><div class="evidence-section-body">
+      <p>Project identity, contract values and payment terms often sit in several lists.&nbsp; Without one governed view, later systems have to guess which project they are talking about.</p>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>How it is used</h2><div class="evidence-section-body">
+      <p>Every bespoke system draws on one trusted source of project information. Scheduled updates from the accounts software keep the shared project data current and consistent across the connected systems.</p>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>The flow</h2><div class="evidence-section-body">
+      <ol class="flow-list">
+          <li>The portfolio shows live, completed and pipeline projects with identity and value.</li>
+          <li>A project is opened to review codes, customer, contract value and payment terms.</li>
+          <li>Retention, valuation cadence and related references stay on the same record.</li>
+          <li>A hand-off opens the matching ledger for applications, certificates and payments.</li>
+      </ol>
+    </div></section>
+
+    <section class="evidence-section" data-reveal>
+      <h2>Design choices</h2><div class="evidence-section-body">
       <p>Central Project Register is the source of truth for project identity and status used across the connected systems.&nbsp; The real service is a database and API; the interface shown here was created for the synthetic demonstration so the underlying project data could be inspected visually.</p>
-    </section>
-    <section>
-      <h2>Related systems</h2>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>Related systems</h2><div class="evidence-section-body">
       <p>Applications, certificates and payments are recorded in Applications Ledger against the identity held here.</p>
-    </section>
+    </div></section>
     <nav class="story-nav" aria-label="Story navigation">
       <a class="card-link" href="index.html">Back to Selected Systems</a>
       <a class="card-link" href="applications-ledger.html">Suggested next: Applications Ledger</a>

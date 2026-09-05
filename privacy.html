@@ -14,14 +14,22 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/site.css">
 </head>
-<body class="page-inner">
+<body class="page-inner page-privacy">
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html"><img src="assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
-      <a class="nav-cta" href="workflow.html">Discuss a workflow</a>
-    </div>
-  </header>
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><img src="assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
+    <input id="nav-open" class="nav-open" type="checkbox">
+    <nav id="nav-links" class="nav-links" aria-label="Primary">
+      <a href="index.html#fit">The problem</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#proof">Experience</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <a class="nav-cta" href="workflow.html" aria-current="page">Discuss a workflow</a>
+    <label class="nav-toggle" for="nav-open" aria-controls="nav-links" aria-expanded="false"><span>Menu</span></label>
+  </div>
+</header>
   <main id="main" class="doc-main">
     <h1>Privacy notice</h1>
     <p class="notice">This notice covers general workflow enquiries, direct enquiries and paid B2B client work.&nbsp; Last updated 29 August 2026.</p>
@@ -41,19 +49,19 @@
       </ol>
     </nav>
 
-    <section id="who-is-responsible">
+    <section id="who-is-responsible" data-reveal>
       <h2>Who is responsible</h2>
       <p>The controller is Mathew Glendenning, trading as Proof Systems, a sole trader established in the United Kingdom.</p>
       <p>Correspondence Address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH</p>
       <p>Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
     </section>
 
-    <section id="general-enquiries">
+    <section id="general-enquiries" data-reveal>
       <h2>General workflow enquiries</h2>
       <p>The enquiry form collects your name, business email, company, a general description of the work or workflow you would like to improve, and your consent to contact.&nbsp; It is used only to review the enquiry and respond about it.&nbsp; Please do not submit customer names, passwords, confidential documents, detailed financial data, special-category information or other sensitive personal data.</p>
     </section>
 
-    <section id="paid-work">
+    <section id="paid-work" data-reveal>
       <h2>Paid B2B enquiries and client work</h2>
       <p>If you enquire about paid work, or become a client, I may also keep the information needed to qualify the enquiry, prepare a quote or contract, deliver the work, provide support, handle a complaint and keep required business, legal and tax records.</p>
       <p>That typically includes:</p>
@@ -68,7 +76,7 @@
       <p>I am the controller of the personal information I keep to run that business relationship.&nbsp; If an engagement later involves processing other people’s personal data on your instructions, that would be agreed separately and is not the default.</p>
     </section>
 
-    <section id="lawful-bases">
+    <section id="lawful-bases" data-reveal>
       <h2>Why the information is used</h2>
       <p>I use personal information only for the purpose I collected it, or a closely related purpose you would reasonably expect.</p>
       <ul>
@@ -82,13 +90,13 @@
       <p>Website contact consent is not permission to record a conversation, produce a transcript, put your material into an AI service or reuse evidence publicly.</p>
     </section>
 
-    <section id="defaults">
+    <section id="defaults" data-reveal>
       <h2>What is not collected by default</h2>
       <p>Ordinary engagements do not involve special-category data, criminal-offence data, significant automated decisions about you, or standing access to your systems.&nbsp; Please do not send that kind of information unless we have agreed a specific, controlled arrangement.</p>
       <p>Where system access is needed, it is granted to named people, time-bounded and reauthorised rather than left standing.</p>
     </section>
 
-    <section id="how-handled">
+    <section id="how-handled" data-reveal>
       <h2>How it is handled</h2>
       <p>Enquiries are processed through Netlify Forms and may be delivered to Proof Systems by email using Google Workspace.&nbsp; Access is limited to Mathew Glendenning and the service providers needed to receive, store and administer the relevant record.&nbsp; Information is not sold or used for unrelated marketing.</p>
       <p>If you reach the form from a specific public route, a hidden interest source of focused-build, workflow-diagnostic or ai-team-training may be recorded so I know which public offer to discuss.&nbsp; Any other value is ignored.&nbsp; It is not a visible field, it is not placed in the browser URL after the page loads, and it does not change the general-enquiry route.</p>
@@ -98,7 +106,7 @@
       <p>This website does not use advertising or analytics cookies, and I have not added tracking scripts.&nbsp; The hosting or form service may set a strictly technical cookie needed to operate the site.&nbsp; I have not published a full cookie list because I do not have a verified provider list to quote.</p>
     </section>
 
-    <section id="retention">
+    <section id="retention" data-reveal>
       <h2>How long it is kept</h2>
       <p>I keep information only while a stated purpose continues, then review it and delete it when that purpose ends, unless a hold or another continuing purpose applies.&nbsp; Deletion is controlled and approval-gated.&nbsp; I do not promise automatic deletion.</p>
       <ul>
@@ -110,14 +118,14 @@
       </ul>
     </section>
 
-    <section id="your-rights">
+    <section id="your-rights" data-reveal>
       <h2>Your rights</h2>
       <p>UK data-protection law gives you rights in the personal information I hold.&nbsp; You can usually ask for a copy, ask me to correct inaccurate information, object to some uses, ask me to restrict how I use it, or ask for it to be deleted.&nbsp; Where I use consent, you can withdraw that consent.&nbsp; Where the law allows, you can also ask for information you provided to be passed to you or another organisation in a reusable form.</p>
       <p>These rights can depend on the circumstances and on the lawful basis I am using.&nbsp; There is not an absolute right to deletion where I still need the record for a contract, a legal duty, a complaint, a claim or another continuing purpose.</p>
       <p>Email <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a> to make a request.&nbsp; You do not need legal language.&nbsp; I may need to check your identity in a proportionate way before responding.</p>
     </section>
 
-    <section id="complaints">
+    <section id="complaints" data-reveal>
       <h2>Complaints</h2>
       <p>If you are unhappy with how I have used your information, email <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>.&nbsp; I will acknowledge the complaint and look into it.&nbsp; I aim to acknowledge it within 30 days and to tell you the outcome without undue delay.</p>
       <p>You also have the right to complain to the UK Information Commissioner’s Office.&nbsp; Use the official ICO complaints page: <a href="https://ico.org.uk/make-a-complaint/">https://ico.org.uk/make-a-complaint/</a>.</p>
@@ -126,12 +134,17 @@
     <p><a href="workflow.html">Return to the enquiry</a> · <a href="index.html">Return home</a></p>
   </main>
   <footer>
-    <div class="footer-inner">
-      <span>Questions? <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></span>
-      <span><a href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">LinkedIn</a></span>
+  <div class="footer-inner">
+    <a class="footer-brand" href="index.html"><img src="assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
+      <a href="privacy.html">Privacy</a>
       <span>© 2026 Proof Systems</span>
-      <p class="footer-legal">Proof Systems is the trading name of Mathew Glendenning, a sole trader. Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH. Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
     </div>
-  </footer>
+    <p class="footer-legal">Proof Systems is the trading name of Mathew Glendenning, a sole trader. Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH. Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
+  </div>
+</footer>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>

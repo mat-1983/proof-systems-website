@@ -19,15 +19,16 @@
   <link rel="stylesheet" href="../assets/css/site.css">
 
 </head>
-<body class="page-inner">
+<body class="page-inner page-evidence">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
     <a class="brand" href="../index.html"><img src="../assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="../work/index.html" aria-current="page">Selected Systems</a>
-      <a href="../training.html">AI Team Training</a>
+      <a href="../index.html#fit">The problem</a>
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#proof">Experience</a>
       <a href="../index.html#about">About</a>
     </nav>
     <a class="nav-cta" href="../workflow.html">Discuss a workflow</a>
@@ -36,29 +37,14 @@
 </header>
 <main id="main" class="page-main">
   <div class="wrap story-grid">
+<div class="evidence-hero"><a class="evidence-breadcrumb" href="index.html">Selected systems / Cashflow</a>
     <p class="kicker">Short and long-term views</p>
-    <h1>Cashflow</h1>
-    <p class="lede">Build short- and long-term cashflow views from connected source data.</p>
+    <h1>Build short- and long-term cashflow views from connected source data.</h1>
+
     <p class="proof-label">Synthetic demonstration</p>
     <p class="meta-audience">Finance and leadership teams · 1 minute 18.7 seconds</p>
-    <section>
-      <h2>The problem</h2>
-      <p>Cash views are often rebuilt manually in Excel from applications, bank files and project schedules that do not share a source. Producing accurate extracts from live systems was time-consuming and prone to error.</p>
-    </section>
-    <section>
-      <h2>Who uses it</h2>
-      <p>Finance and leadership teams need a near-term cash position and a longer view that can be traced back to connected source data.</p>
-    </section>
-    <section>
-      <h2>The flow</h2>
-      <ol class="flow-list">
-          <li>LedgerLink connects to accounts software and creates a controlled extraction.</li>
-          <li>Deterministic local scripts combine the extract with verified inputs from relevant live systems.</li>
-          <li>The short-term workbook shows daily inflows, outflows and closing position.</li>
-          <li>The long-term forecast sets out receipts, payments, facility position and checks.</li>
-      </ol>
-    </section>
-    <section>
+</div>
+    <section class="evidence-media">
       <h2>The demonstration</h2>
       <div class="film">
         <video controls playsinline preload="none" poster="../assets/demo-media/cashflow-poster.jpg" width="1280" height="720" aria-label="Cashflow synthetic demonstration">
@@ -72,14 +58,32 @@
         <p>The commercial finance console opens short-term and long-term cashflow.&nbsp; A daily workbook, a project cost-value schedule and a longer forecast with facility checks are reviewed in turn.</p>
       </details>
     </section>
-    <section>
-      <h2>Design choices</h2>
+    <section class="evidence-section" data-reveal>
+      <h2>The problem</h2><div class="evidence-section-body">
+      <p>Cash views are often rebuilt manually in Excel from applications, bank files and project schedules that do not share a source. Producing accurate extracts from live systems was time-consuming and prone to error.</p>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>Who uses it</h2><div class="evidence-section-body">
+      <p>Finance and leadership teams need a near-term cash position and a longer view that can be traced back to connected source data.</p>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>The flow</h2><div class="evidence-section-body">
+      <ol class="flow-list">
+          <li>LedgerLink connects to accounts software and creates a controlled extraction.</li>
+          <li>Deterministic local scripts combine the extract with verified inputs from relevant live systems.</li>
+          <li>The short-term workbook shows daily inflows, outflows and closing position.</li>
+          <li>The long-term forecast sets out receipts, payments, facility position and checks.</li>
+      </ol>
+    </div></section>
+
+    <section class="evidence-section" data-reveal>
+      <h2>Design choices</h2><div class="evidence-section-body">
       <p>Short-term and long-term views stay in the same family of workbooks.&nbsp; AI does not process the company accounting data.&nbsp; The views are accurate, repeatable and checkable rather than inferred.</p>
-    </section>
-    <section>
-      <h2>Related systems</h2>
+    </div></section>
+    <section class="evidence-section" data-reveal>
+      <h2>Related systems</h2><div class="evidence-section-body">
       <p>Accounts extracts come from LedgerLink.&nbsp; Application movement can come from Applications Ledger where that live system is in use.</p>
-    </section>
+    </div></section>
     <nav class="story-nav" aria-label="Story navigation">
       <a class="card-link" href="index.html">Back to Selected Systems</a>
       <a class="card-link" href="management-accounts.html">Suggested next: Management Accounts</a>

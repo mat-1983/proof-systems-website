@@ -53,3 +53,19 @@ The public package allow-list in `tools/prepare_publish.py` excludes `docs/`; th
 ## Boundary
 
 The original V1 checkout remains clean on `main` at the base commit. The annotated local fallback tag `website-v1-fallback-2026-09-05` resolves to the same commit. No merge, push, deploy, publish or live form submission was performed.
+
+## Approved refinement implementation — 5 September 2026
+
+Refinement base: `e6359f60b07116f6a8bf7cf91a1257a9a94b85ea`, same `codex/website-v2` branch. See `website-v2-refinement-brief.md` for the authorised direction. Codex agent implementation was explicitly authorised for this refinement; runtime model metadata was not independently exposed by the tools.
+
+The opening retains the exact B mark geometry, node movement and words. Stable small-viewport units now drive its travel. The workflow uses a simple customer request, source, owner, next action and attached approval/history. A new connection scene draws routes from ERP and everyday tools into the Proof Systems software layer, followed by connected source, ownership and history. Four native-scroll process cards replace the previous starting-point list, with a moving-light background and persistent stage indicator. Services use editorial rows and a shared layered working record.
+
+All eight evidence pages retain their original substantive copy and media but lead with outcomes and show the film (or Management Accounts written evidence) immediately after the hero. The collection uses eight editorial rows plus a linked, text-readable connected workflow. Enquiry, training and privacy share the same navigation, type and spacing. Form fields, consent, logic, legal text, routes, hashes, seven film/caption/poster associations and accounting-data controls remain intact.
+
+Normal mobile and short-screen layouts use the same reversible scroll mechanism as desktop. A card taller than the available area has a reading phase during its hold: its heading enters first, then its bottom travels into view before the next card arrives. The stage indicator remains in place. This is driven by native page scrolling, with no nested scroller, gesture interception or negative sticky top. Reduced Motion and no-JavaScript modes instead show all panels in ordinary document flow. Changing to Reduced Motion also stops and hides any previously started decorative teaser video.
+
+Implementation verification includes the repository site, privacy, media and HTTP crawl gates, JavaScript syntax and diff checks. `node tools/scroll_scene_check.cjs` executes the production scroll functions against six controlled viewport/card geometries and verifies forward/reverse states, readable top/bottom holds, stable toolbar travel and Reduced Motion final geometry. It is a maths regression test, not a browser layout or physical touch test.
+
+Browser UAT and final independent review remain separate pending checks at this implementation handoff. The Mac was locked during implementation, so no new browser or physical iOS/Android device verification is claimed here. No form was submitted; no merge, push, deployment or publication was performed.
+
+Simple Gate: PASS

@@ -2,12 +2,18 @@
   document.documentElement.classList.add("js");
 
   var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var storyStaticQuery = window.matchMedia("(max-width: 900px), (max-height: 760px)");
   var nav = document.querySelector(".site-nav");
   var hero = document.querySelector("[data-hero]");
   var opening = document.querySelector("[data-v2-opening]");
   var story = document.querySelector("[data-work-story]");
+  var tracks = Array.prototype.slice.call(document.querySelectorAll("[data-scroll-track]"));
   var frame = 0;
+  var needsMeasure = true;
+  // Small viewport units keep narrative travel stable as mobile browser chrome moves.
+  var viewportProbe = document.createElement("div");
+  viewportProbe.style.cssText = "position:fixed;height:100svh;width:0;visibility:hidden;pointer-events:none";
+  viewportProbe.setAttribute("aria-hidden", "true");
+  document.body.appendChild(viewportProbe);
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -23,7 +29,8 @@
 
   function progressThrough(element) {
     var rect = element.getBoundingClientRect();
-    var travel = Math.max(element.offsetHeight - window.innerHeight, 1);
+    var sticky = element.querySelector(".v2-opening-sticky");
+    var travel = Math.max(element.offsetHeight - (sticky ? sticky.offsetHeight : window.innerHeight), 1);
     return clamp(-rect.top / travel, 0, 1);
   }
 
@@ -92,31 +99,129 @@
     cue.style.opacity = String(1 - ease(phase(0.72, 0.92, progress)));
   }
 
-  function renderStory() {
-    if (!story) return;
-    var progress = reducedQuery.matches || storyStaticQuery.matches ? 1 : progressThrough(story);
-    var step = progress < 0.22 ? 1 : progress < 0.48 ? 2 : progress < 0.74 ? 3 : 4;
-    var thread = story.querySelector(".v2-thread-live");
-    var token = story.querySelector(".v2-work-token");
-    var stops = [[15, 21], [37, 45], [59, 33], [84, 75]];
-    var scaled = progress * (stops.length - 1);
-    var index = Math.min(stops.length - 2, Math.floor(scaled));
-    var local = ease(scaled - index);
-    var left = stops[index][0] + (stops[index + 1][0] - stops[index][0]) * local;
-    var top = stops[index][1] + (stops[index + 1][1] - stops[index][1]) * local;
+  function measureTracks() {
+    needsMeasure = false;
+    var navHeight = nav ? nav.offsetHeight : 0;
+    var stableHeight = viewportProbe.offsetHeight || window.innerHeight;
+    tracks.forEach(function (track) {
+      var stage = track.querySelector(".scroll-stage");
+      var panels = track.querySelectorAll("[data-stage-panel]");
+      var tallest = 0;
+      panels.forEach(function (panel) { tallest = Math.max(tallest, panel.offsetHeight); });
+      track.style.setProperty("--panels-height", tallest + "px");
+      var inner = stage.querySelector(".wrap");
+      var styles = getComputedStyle(stage);
+      var naturalHeight = inner.offsetHeight + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
+      var stageHeight = Math.max(160, stableHeight - navHeight);
+      if (panels.length) {
+        // Reserve space for the persistent indicator and disclosure. Oversized cards
+        // read from top to bottom during their native-scroll hold, without a nested scroller.
+        var panelSpace = Math.max(80, stageHeight - (naturalHeight - tallest));
+        track.style.setProperty("--panels-height", Math.min(tallest, panelSpace) + "px");
+      }
+      track.style.setProperty("--stage-height", stageHeight + "px");
+      track.style.setProperty("--stage-top", navHeight + "px");
+      track.style.setProperty("--scroll-travel", Math.max(600, stableHeight * (panels.length ? 4.5 : 2.5), panels.length ? tallest * 5 : naturalHeight * 2.5) + "px");
+      track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
+      if (track.dataset.scrollTrack === "connection") measureWires(track);
+    });
+  }
 
-    story.setAttribute("data-story-step", String(step));
-    if (thread) thread.style.strokeDashoffset = String(1 - progress);
-    if (token) {
-      token.style.left = left + "%";
-      token.style.top = top + "%";
+  function measureWires(track) {
+    var board = track.querySelector(".connection-board");
+    var boardRect = board.getBoundingClientRect();
+    function box(selector) {
+      var rect = board.querySelector(selector).getBoundingClientRect();
+      return { x: rect.left - boardRect.left, y: rect.top - boardRect.top, w: rect.width, h: rect.height };
     }
+    var left = box(".connection-source:first-child");
+    var right = box(".connection-source:last-child");
+    var layer = box(".connection-layer");
+    var outcome = box(".connection-outcome");
+    // Use layout offsets: the layer's scroll transform must not change its route endpoint.
+    var layerElement = board.querySelector(".connection-layer");
+    layer.x = layerElement.offsetLeft; layer.y = layerElement.offsetTop;
+    var outcomeElement = board.querySelector(".connection-outcome");
+    outcome.x = outcomeElement.offsetLeft; outcome.y = outcomeElement.offsetTop;
+    var horizontal = left.x + left.w < layer.x;
+    function path(from, to) {
+      var x1 = horizontal ? from.x + from.w : from.x + from.w / 2;
+      var y1 = horizontal ? from.y + from.h / 2 : from.y + from.h;
+      var x2 = horizontal ? to.x : to.x + to.w / 2;
+      var y2 = horizontal ? to.y + to.h / 2 : to.y;
+      return horizontal ? "M" + x1 + " " + y1 + " C" + ((x1+x2)/2) + " " + y1 + " " + ((x1+x2)/2) + " " + y2 + " " + x2 + " " + y2 :
+        "M" + x1 + " " + y1 + " C" + x1 + " " + ((y1+y2)/2) + " " + x2 + " " + ((y1+y2)/2) + " " + x2 + " " + y2;
+    }
+    board.querySelector('[data-wire="left"]').setAttribute("d", path(left, layer));
+    board.querySelector('[data-wire="right"]').setAttribute("d", path(right, layer));
+    board.querySelector('[data-wire="out"]').setAttribute("d", path(layer, outcome));
+  }
+
+  function trackProgress(track) {
+    var stage = track.querySelector(".scroll-stage");
+    var travel = Math.max(track.offsetHeight - stage.offsetHeight, 1);
+    var top = parseFloat(getComputedStyle(stage).top) || 0;
+    return clamp((top - track.getBoundingClientRect().top) / travel, 0, 1);
+  }
+
+  function renderTracks() {
+    tracks.forEach(function (track) {
+      var progress = reducedQuery.matches ? 1 : trackProgress(track);
+      track.setAttribute("data-progress", progress.toFixed(4));
+      var panels = track.querySelectorAll("[data-stage-panel]");
+      var selected = Math.min(3, Math.floor(progress * 4));
+      track.setAttribute("data-active-stage", String(selected + 1));
+      if (track.dataset.scrollTrack === "story" && story) story.setAttribute("data-story-step", String(selected + 1));
+      panels.forEach(function (panel, index) {
+        var position = progress * 4 - index;
+        var enter = index === 0 ? 1 : ease(phase(-0.12, 0.12, position));
+        var leave = index === panels.length - 1 ? 0 : ease(phase(0.88, 1.12, position));
+        var opacity = enter * (1 - leave);
+        var distance = track.dataset.scrollTrack === "process" ? 110 : 38;
+        panel.style.opacity = String(opacity);
+        var overflow = Math.max(0, panel.offsetHeight - panel.parentElement.offsetHeight);
+        var readTravel = overflow * ease(phase(0.20, 0.70, position));
+        panel.style.transform = "translateY(" + ((1-enter-leave) * distance - readTravel) + "px)";
+        panel.classList.toggle("is-current", opacity > 0.001);
+        // These panels contain narrative only; hidden content cannot create invisible focus stops.
+      });
+      track.querySelectorAll("[data-stage-indicator]").forEach(function (item, index) {
+        item.classList.toggle("is-current", index === selected);
+      });
+      var thread = track.querySelector(".story-thread i");
+      if (thread) thread.style.transform = "scaleX(" + progress + ")";
+      var light = track.querySelector(".process-light");
+      if (light) light.style.transform = "translate(" + (25 - progress*50) + "%," + (-10 + progress*20) + "%)";
+      if (track.dataset.scrollTrack === "connection") {
+        var board = track.querySelector(".connection-board");
+        var stage = track.querySelector(".scroll-stage");
+        var stageStyles = getComputedStyle(stage);
+        var boardOverflow = Math.max(0, board.offsetHeight + parseFloat(stageStyles.paddingTop) + parseFloat(stageStyles.paddingBottom) - stage.offsetHeight);
+        board.style.transform = "translateY(" + (-boardOverflow * ease(phase(0.16, 0.90, progress))) + "px)";
+        var flow = ease(phase(0.08, 0.57, progress));
+        track.querySelectorAll(".connection-wire").forEach(function (wire) {
+          var amount = wire.dataset.wire === "out" ? ease(phase(0.63, 0.83, progress)) : flow;
+          wire.style.strokeDashoffset = String(1 - amount);
+          wire.style.opacity = amount > 0 ? "1" : "0";
+        });
+        var arrive = ease(phase(0.43, 0.66, progress));
+        var finish = ease(phase(0.74, 0.93, progress));
+        var layer = track.querySelector(".connection-layer");
+        var outcome = track.querySelector(".connection-outcome");
+        layer.style.opacity = String(arrive);
+        layer.style.transform = "translateY(" + ((1-arrive)*24) + "px)";
+        outcome.style.opacity = String(finish);
+        outcome.style.transform = "translateY(" + ((1-finish)*15) + "px)";
+        track.querySelector(".connection-caption").textContent = progress < 0.38 ? "The work finds a way around the software." : progress < 0.78 ? "Connect the gaps around the systems you have." : "The software follows the work.";
+      }
+    });
   }
 
   function render() {
     frame = 0;
+    if (needsMeasure) measureTracks();
     renderOpening();
-    renderStory();
+    renderTracks();
   }
 
   function requestRender() {
@@ -124,22 +229,27 @@
     frame = window.requestAnimationFrame(render);
   }
 
+  function requestMeasure() { needsMeasure = true; requestRender(); }
+
   function syncMotionMode() {
-    var animate = !reducedQuery.matches;
-    document.documentElement.classList.toggle("motion-ready", animate);
-    document.documentElement.classList.toggle("story-static", storyStaticQuery.matches);
-    if (opening) opening.setAttribute("data-opening-progress", animate ? "0" : "1");
-    if (story) story.setAttribute("data-story-step", "4");
+    document.documentElement.classList.toggle("motion-ready", !reducedQuery.matches);
+    if (reducedQuery.matches) {
+      document.documentElement.classList.remove("reveal-ready");
+      document.querySelectorAll("[data-teaser-src] video").forEach(function (video) {
+        video.pause();
+        video.hidden = true;
+      });
+    }
+    needsMeasure = true;
     render();
   }
 
-  if (opening || story) {
-    window.addEventListener("scroll", requestRender, { passive: true });
-    window.addEventListener("resize", requestRender);
-    if (typeof reducedQuery.addEventListener === "function") reducedQuery.addEventListener("change", syncMotionMode);
-    if (typeof storyStaticQuery.addEventListener === "function") storyStaticQuery.addEventListener("change", syncMotionMode);
-    syncMotionMode();
-  }
+  window.addEventListener("scroll", requestRender, { passive: true });
+  window.addEventListener("resize", requestMeasure);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", requestMeasure);
+  if (typeof reducedQuery.addEventListener === "function") reducedQuery.addEventListener("change", syncMotionMode);
+  syncMotionMode();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestMeasure);
 
   if (nav && hero && "IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
@@ -165,6 +275,7 @@
     syncNav();
   }
 
+  if (!reducedQuery.matches && "IntersectionObserver" in window) document.documentElement.classList.add("reveal-ready");
   document.querySelectorAll("[data-reveal]").forEach(function (element) {
     if (reducedQuery.matches || !("IntersectionObserver" in window)) {
       element.classList.add("is-visible");
@@ -174,12 +285,12 @@
       if (!entries[0].isIntersecting) return;
       element.classList.add("is-visible");
       observer.disconnect();
-    }, { threshold: 0.12 }).observe(element);
+    }, { threshold: 0.01 }).observe(element);
   });
 
   function loadTeaser(element) {
     var src = element.getAttribute("data-teaser-src");
-    if (!src || element.querySelector("video")) return;
+    if (reducedQuery.matches || !src || element.querySelector("video")) return;
     var video = document.createElement("video");
     var source = document.createElement("source");
     video.muted = true;
@@ -195,6 +306,7 @@
     video.appendChild(source);
     element.appendChild(video);
     video.addEventListener("canplay", function () {
+      if (reducedQuery.matches) return;
       var result = video.play();
       if (result && typeof result.catch === "function") result.catch(function () {});
     }, { once: true });
