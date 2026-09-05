@@ -10,6 +10,7 @@ SiteLog, BudgetFlow and LedgerLink homepage teasers now use continuous 30-second
 
 - PASS — source-level cue contract in `node tools/scroll_scene_check.cjs`: four decorative SVG cues, reserved sticky-stage space, Reduced Motion/no-JavaScript hiding, existing six-viewport panel geometry, readable holds and reverse-scroll restoration.
 - PASS — sampled frames from all three rendered teaser windows show the documented continuous task sequences and readable synthetic UI at 960 × 540.
+- PASS — shared CSS and JavaScript references use revision `scroll-cues-teasers-20260905` on every public page so a normal reload cannot pair the new homepage with the earlier cue renderer. The new renderer also null-checks the former `.v2-scroll-cue` selector for the opposite mixed-version case.
 - NOT COMPLETE — rendered browser inspection at desktop, short landscape and mobile widths, including scene hand-offs, final-stage persistence, safe-area clearance and autoplay behaviour. Root owns this browser UAT.
 
 ## AGE-609 withdraw Management Accounts demo film — 2 September 2026

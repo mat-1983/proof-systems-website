@@ -35,6 +35,8 @@ The opening, workflow story, connecting-layer scene and practical-starting-point
 
 The three poster-first homepage teasers now show 30 seconds of continuous demonstration footage rather than 5 seconds. They remain lazy-loaded, muted, looping and `playsinline`; the full films, posters and VTT files are unchanged. Exact source intervals and encoding settings are recorded in `assets/demo-media/README.md`.
 
+All public pages request the changed shared stylesheet and script with revision `scroll-cues-teasers-20260905`. This prevents a normal reload from combining the new cue markup with the former cached renderer. The current renderer also null-checks the former cue selector so it remains safe when paired with an earlier cached homepage during rollout.
+
 All eight evidence stories, the collection, enquiry, training and privacy pages share the new navigation, type and spacing. Stories lead with outcomes and show their media immediately after the hero; Management Accounts remains written evidence. The collection uses editorial rows and a linked, text-readable connected workflow. Original substantive story copy, seven film/poster/caption associations, synthetic disclosures, accounting-data controls, form contract, legal text, public routes, hashes and redirects remain intact.
 
 ## Verified

@@ -20,6 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
+SHARED_ASSET_VERSION = "scroll-cues-teasers-20260905"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -185,6 +186,9 @@ def check_html_and_links(failures: list[str]) -> None:
         failures.extend(f"{rel}: {error}" for error in parser.errors)
         if 'lang="en-GB"' not in raw:
             fail(f"{rel}: missing British English language declaration", failures)
+        for asset in ("assets/css/site.css", "assets/js/site.js"):
+            if asset in raw and f"{asset}?v={SHARED_ASSET_VERSION}" not in raw:
+                fail(f"{rel}: {asset} must use shared revision {SHARED_ASSET_VERSION}", failures)
         for kind, value in parser.refs:
             parsed = urllib.parse.urlparse(value)
             if parsed.scheme in {"http", "https", "mailto", "data"} or value.startswith("#"):
