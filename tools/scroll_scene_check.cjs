@@ -31,8 +31,10 @@ function fixture(kind, viewport, panelHeight) {
     querySelectorAll(selector){return selector === '[data-stage-panel]' ? panels : selector === '[data-stage-indicator]' ? indicators : [];}
   };
   const context = {tracks:[track], reducedQuery:{matches:false}, story:{setAttribute(){}},nav:{offsetHeight:72},viewportProbe:{offsetHeight:viewport},window:{innerHeight:viewport}, needsMeasure:true,
-    getComputedStyle(){return {paddingTop:'16',paddingBottom:'16',top:'72'};},measureWires(){throw new Error('Unexpected wire measure');}};
+    // Bottom padding includes the rendered cue reserve (16px base + 48px cue).
+    getComputedStyle(){return {paddingTop:'16',paddingBottom:'64',top:'72'};},measureWires(){throw new Error('Unexpected wire measure');}};
   vm.createContext(context); vm.runInContext(functions,context); context.measureTracks();
+  assert.equal(parseFloat(variables['--panels-height']), Math.min(panelHeight,Math.max(80,viewport-72-170)), 'Cue space reduces the panel viewport and feeds the reading phase');
   return {context, panels, variables, track, parent, setProgress(value){progress=value;context.renderTracks();}};
 }
 for (const kind of ['story','process']) {
@@ -75,4 +77,13 @@ for (const panel of narrativePanels) {
   assert(!/aria-hidden="true"|\bhidden(?:[\s=>])|\binert(?:[\s=>])/.test(panel[0]), 'Narration is not hidden from assistive technology');
   assert(!/<(?:a|button|input|select|textarea|summary)\b|\btabindex\s*=/.test(panel[0]), 'Invisible narrative panels cannot contain keyboard-focus stops');
 }
-console.log('PASS production scroll maths: six viewport/card geometries, all stages, heading/bottom holds, reverse motion, toolbar stability, reduced-motion geometry and complete accessible narration');
+const cues = [...html.matchAll(/<span class="scene-scroll-cue" data-scene-scroll-cue aria-hidden="true">([^]*?)<\/span>/g)];
+assert.equal(cues.length, 4, 'Opening and all three sticky tracks have one decorative scroll cue');
+for (const cue of cues) {
+  assert(/<svg\b/.test(cue[1]) && !/<(?:a|button)\b/.test(cue[0]), 'Cues are code-native decoration, not controls');
+}
+const stageCuePadding = css.match(/\.motion-ready \.scroll-stage\s*\{([^}]+)\}/);
+assert(stageCuePadding && /padding-bottom\s*:\s*calc\([^;]*--scene-cue-space/.test(stageCuePadding[1]), 'Sticky layout reserves measured space below content for its cue');
+assert(/@media \(prefers-reduced-motion: reduce\)[^]*?\.scene-scroll-cue\s*\{\s*display:\s*none !important/.test(css), 'Reduced Motion hides the animated cue');
+assert(/\.scene-scroll-cue\s*\{[^}]*display:\s*none/.test(css) && /\.motion-ready \.scene-scroll-cue\s*\{\s*display:\s*block/.test(css), 'No-JS flow has no stray cue');
+console.log('PASS production scroll maths: six viewport/card geometries, all stages, heading/bottom holds, reverse motion, toolbar stability, reduced-motion geometry, complete accessible narration and four non-interactive reserved-space scroll cues');

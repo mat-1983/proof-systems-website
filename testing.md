@@ -1,6 +1,16 @@
 # Proof Systems Website Testing
 
-Updated: 2026-09-02
+Updated: 2026-09-05
+
+## V2 scroll cues and longer evidence previews — 5 September 2026
+
+The dynamic opening, workflow story, connecting-layer scene and practical-starting-point scene each show one small amber-and-cream down arrow while motion enhancement is active. It is decorative, leaves native scrolling untouched and remains through the final stage. Sticky-stage padding reserves the arrow and safe-area footprint; tall cards retain their top-to-bottom reading phase. Reduced Motion and no-JavaScript flow hide every cue.
+
+SiteLog, BudgetFlow and LedgerLink homepage teasers now use continuous 30-second windows from their unchanged approved films. The poster-first, viewport-lazy, muted, looping and `playsinline` behaviour is unchanged. Versioned teaser URLs prevent the previous 5-second files being reused from cache. Exact intervals and FFmpeg settings are recorded in `assets/demo-media/README.md`.
+
+- PASS — source-level cue contract in `node tools/scroll_scene_check.cjs`: four decorative SVG cues, reserved sticky-stage space, Reduced Motion/no-JavaScript hiding, existing six-viewport panel geometry, readable holds and reverse-scroll restoration.
+- PASS — sampled frames from all three rendered teaser windows show the documented continuous task sequences and readable synthetic UI at 960 × 540.
+- NOT COMPLETE — rendered browser inspection at desktop, short landscape and mobile widths, including scene hand-offs, final-stage persistence, safe-area clearance and autoplay behaviour. Root owns this browser UAT.
 
 ## AGE-609 withdraw Management Accounts demo film — 2 September 2026
 

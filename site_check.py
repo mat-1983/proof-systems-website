@@ -19,6 +19,7 @@ STORY_SLUGS = [
 ]
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
+TEASER_VERSION = "20260905"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -322,7 +323,7 @@ def check_homepage_v2(failures: list[str]) -> None:
     if parser.videos:
         fail("homepage must stay poster-first; teaser videos are injected only when eligible", failures)
     for slug in TEASERS:
-        teaser = f'assets/demo-media/{slug}-teaser.mp4'
+        teaser = f'assets/demo-media/{slug}-teaser.mp4?v={TEASER_VERSION}'
         poster = f'assets/demo-media/{slug}-poster.jpg'
         if f'data-teaser-src="{teaser}"' not in raw or f'data-poster="{poster}"' not in raw:
             fail(f"homepage missing poster-first {slug} teaser", failures)

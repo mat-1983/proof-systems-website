@@ -112,6 +112,8 @@ TEASERS = [
     "budgetflow-teaser.mp4",
     "ledgerlink-teaser.mp4",
 ]
+TEASER_DURATION_RANGE = (28.0, 32.0)
+TEASER_SIZE_RANGE = (100_000, 2_000_000)
 
 
 def fail(message: str, failures: list[str]) -> None:
@@ -164,6 +166,54 @@ def probe(path: pathlib.Path) -> dict[str, str]:
             key, value = line.split("=", 1)
             data[key] = value
     return data
+
+
+def has_audio_stream(path: pathlib.Path) -> bool:
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        return False
+    output = subprocess.check_output(
+        [
+            ffprobe,
+            "-v",
+            "error",
+            "-select_streams",
+            "a:0",
+            "-show_entries",
+            "stream=index",
+            "-of",
+            "csv=p=0",
+            str(path),
+        ],
+        text=True,
+    )
+    return bool(output.strip())
+
+
+def is_faststart(path: pathlib.Path) -> bool:
+    """Return whether the top-level MP4 moov atom precedes media data."""
+    atoms: list[bytes] = []
+    with path.open("rb") as handle:
+        while len(atoms) < 12:
+            header = handle.read(8)
+            if len(header) != 8:
+                break
+            size = int.from_bytes(header[:4], "big")
+            atom = header[4:]
+            atoms.append(atom)
+            header_size = 8
+            if size == 1:
+                extended = handle.read(8)
+                if len(extended) != 8:
+                    break
+                size = int.from_bytes(extended, "big")
+                header_size = 16
+            if size == 0:
+                break
+            if size < header_size:
+                return False
+            handle.seek(size - header_size, 1)
+    return b"moov" in atoms and b"mdat" in atoms and atoms.index(b"moov") < atoms.index(b"mdat")
 
 
 def has_audio(path: pathlib.Path) -> bool:
@@ -461,11 +511,25 @@ def check() -> int:
             except (KeyError, ValueError):
                 fail(f"{teaser}: duration missing", failures)
             else:
-                if duration > 6.5:
-                    fail(f"{teaser}: teaser too long ({duration:.3f}s)", failures)
+                if not TEASER_DURATION_RANGE[0] <= duration <= TEASER_DURATION_RANGE[1]:
+                    fail(
+                        f"{teaser}: duration {duration:.3f}s outside "
+                        f"{TEASER_DURATION_RANGE[0]:.0f}-{TEASER_DURATION_RANGE[1]:.0f}s",
+                        failures,
+                    )
+            if info.get("width") != "960" or info.get("height") != "540":
+                fail(f"{teaser}: expected 960x540", failures)
+            if has_audio_stream(ROOT / rel):
+                fail(f"{teaser}: teaser must be silent", failures)
+        if not is_faststart(ROOT / rel):
+            fail(f"{teaser}: moov atom must precede media data for fast start", failures)
         size = (ROOT / rel).stat().st_size
-        if size > 400_000:
-            fail(f"{teaser}: teaser larger than 400KB ({size})", failures)
+        if not TEASER_SIZE_RANGE[0] <= size <= TEASER_SIZE_RANGE[1]:
+            fail(
+                f"{teaser}: size {size} outside "
+                f"{TEASER_SIZE_RANGE[0]}-{TEASER_SIZE_RANGE[1]} bytes",
+                failures,
+            )
 
     if failures:
         print(f"FAIL {len(failures)} check(s)")
@@ -475,7 +539,7 @@ def check() -> int:
     print(
         "PASS seven public synthetic films, exact master hashes, preserved sources "
         "outside the public tree, posters, duration-bounded VTT files, "
-        "short homepage teasers, retained withdrawn Management Accounts "
+        "30-second homepage teasers, retained withdrawn Management Accounts "
         "final rendition and publish-package exclusions"
     )
     return 0

@@ -135,7 +135,15 @@ Management Accounts remains one of the eight Selected Systems. Its public story 
 
 ## Homepage teasers
 
-`sitelog-teaser.mp4`, `budgetflow-teaser.mp4` and `ledgerlink-teaser.mp4` are 5-second, 960 × 540 muted clips derived from the masters. They exist only so the homepage can lazy-load a short loop when visible and motion is allowed. They are not substitutes for the story-page films.
+`sitelog-teaser.mp4`, `budgetflow-teaser.mp4` and `ledgerlink-teaser.mp4` are 30-second, 960 × 540 muted clips derived from the public demonstration films. They exist only so the homepage can lazy-load a meaningful continuous preview when visible and motion is allowed. They are not substitutes for the story-page films. The homepage uses the query version `v=20260905` so refreshed local and published packages do not reuse the former 5-second files from browser cache.
+
+| Teaser | Source interval | What the interval shows |
+| --- | --- | --- |
+| SiteLog | `sitelog-demo.mp4`, 00:08.000–00:38.000 | Project and work entry progressing into the updated weekly summary. |
+| BudgetFlow | `budgetflow-demo.mp4`, 00:08.500–00:38.500 | Unallocated labour cost review, allocation and the available budget table. |
+| LedgerLink | `ledgerlink-demo.mp4`, 00:10.000–00:40.000 | Connection verification, queued datasets, extraction and evidence/drill-down results. |
+
+Each clip is encoded from its existing public film with FFmpeg: video stream only, `scale=960:540:flags=lanczos`, H.264 `libx264`, `preset=slow`, `crf=24`, `maxrate=500k`, `bufsize=1000k`, High Profile level 3.1, `yuv420p`, no audio, and `+faststart`. The media check requires H.264 960 × 540, 28–32 seconds and 100,000–2,000,000 bytes while retaining the separate exact-hash contracts for full films, preserved masters and posters.
 
 ## Relationship
 

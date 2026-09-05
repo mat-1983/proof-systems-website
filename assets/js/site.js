@@ -58,7 +58,6 @@
     var nodes = opening.querySelectorAll(".v2-mark-node");
     var name = opening.querySelector(".v2-opening-name");
     var lines = opening.querySelectorAll(".v2-opening-copy h1 span");
-    var cue = opening.querySelector(".v2-scroll-cue");
     var progress = reducedQuery.matches ? 1 : progressThrough(opening);
     var settle = ease(phase(0, 0.36, progress));
     var depth = 1 - settle;
@@ -96,7 +95,6 @@
       line.style.opacity = String(reveal);
       line.style.transform = "translateY(" + ((1 - reveal) * 28) + "px)";
     });
-    cue.style.opacity = String(1 - ease(phase(0.72, 0.92, progress)));
   }
 
   function measureTracks() {

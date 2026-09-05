@@ -31,6 +31,10 @@ A Practical Starting Point now has a dark moving-light background and four proce
 
 Normal mobile and short screens retain the reversible scroll sequences. Cards taller than the available area have a reading phase: the heading enters first, then the bottom travels into view before the next card. Indicators stay in place. No nested scroller, gesture interception or negative sticky top is used. Reduced Motion and no-JavaScript modes show the complete narrative in ordinary document flow; screen readers retain all narrative stages in normal-motion mode too. Switching to Reduced Motion stops and hides previously started decorative teaser videos.
 
+The opening, workflow story, connecting-layer scene and practical-starting-point scene each carry the same small amber-and-cream down arrow while their dynamic stage is visible. The cue is decorative and does not alter native scrolling. Sticky-stage bottom padding reserves its footprint, including mobile safe-area space, so it cannot cover the disclosure, indicator or a tall card's reading phase. Reduced Motion and no-JavaScript ordinary flow hide it.
+
+The three poster-first homepage teasers now show 30 seconds of continuous demonstration footage rather than 5 seconds. They remain lazy-loaded, muted, looping and `playsinline`; the full films, posters and VTT files are unchanged. Exact source intervals and encoding settings are recorded in `assets/demo-media/README.md`.
+
 All eight evidence stories, the collection, enquiry, training and privacy pages share the new navigation, type and spacing. Stories lead with outcomes and show their media immediately after the hero; Management Accounts remains written evidence. The collection uses editorial rows and a linked, text-readable connected workflow. Original substantive story copy, seven film/poster/caption associations, synthetic disclosures, accounting-data controls, form contract, legal text, public routes, hashes and redirects remain intact.
 
 ## Verified
