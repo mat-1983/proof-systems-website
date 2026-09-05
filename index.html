@@ -3,524 +3,150 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Proof Systems | Operational systems for owner-led SMEs</title>
-  <meta name="description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
+  <title>Proof Systems | Software that fits the work</title>
+  <meta name="description" content="Operational systems that connect the work your existing software leaves between spreadsheets, email and separate files.">
   <link rel="canonical" href="https://proofsystems.co.uk/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Proof Systems">
-  <meta property="og:title" content="Proof Systems | Operational systems for owner-led SMEs">
-  <meta property="og:description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
+  <meta property="og:title" content="Proof Systems | Software that fits the work">
+  <meta property="og:description" content="Keep the software that works. Connect the work that falls between it.">
   <meta property="og:url" content="https://proofsystems.co.uk/">
   <meta property="og:image" content="https://proofsystems.co.uk/assets/img/social.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Proof Systems | Operational systems for owner-led SMEs">
-  <meta name="twitter:description" content="Practical software, controlled AI automation and AI team training built around how an owner-led SME really works.">
+  <meta name="twitter:title" content="Proof Systems | Software that fits the work">
+  <meta name="twitter:description" content="Keep the software that works. Connect the work that falls between it.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/site.css">
   <script>document.documentElement.classList.add("js");</script>
 </head>
-<body>
+<body class="home-v2">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html"><img src="assets/brand/icon-light.svg" alt="Proof Systems" width="36" height="36"></a>
+    <a class="brand" href="index.html" aria-label="Proof Systems home"><img src="assets/brand/icon-light.svg" alt="" width="36" height="36"></a>
     <input id="nav-open" class="nav-open" type="checkbox">
     <nav id="nav-links" class="nav-links" aria-label="Primary">
-      <a href="work/index.html">Selected Systems</a>
-      <a href="training.html">AI Team Training</a>
-      <a href="index.html#about">About</a>
+      <a href="#fit">The problem</a>
+      <a href="#how">How it works</a>
+      <a href="#proof">Experience</a>
+      <a href="#about">About</a>
     </nav>
     <a class="nav-cta" href="workflow.html">Discuss a workflow</a>
     <label class="nav-toggle" for="nav-open" aria-controls="nav-links" aria-expanded="false"><span>Menu</span></label>
   </div>
 </header>
 <main id="main">
-  <section class="brand-reveal" data-hero data-opening data-phase="tagline">
-    <div class="opening-sticky">
-      <div class="opening-scene wrap">
-        <div class="opening-mark-wrap">
-          <svg class="opening-mark" viewBox="0 0 400 400" role="img" aria-labelledby="opening-mark-title">
-            <title id="opening-mark-title">Proof Systems node mark</title>
-            <polygon class="opening-hex" points="200,28 352,114 352,286 200,372 48,286 48,114"/>
-            <path class="opening-connect" d="M108 200 L168 268 L304 132"/>
-            <path class="opening-connect opening-connect-soft" d="M148 132 L168 268 M252 228 L168 268"/>
-            <circle class="opening-node" cx="108" cy="200" r="16"/>
-            <circle class="opening-node" cx="168" cy="268" r="20"/>
-            <circle class="opening-node" cx="304" cy="132" r="16"/>
-            <circle class="opening-node-soft" cx="148" cy="132" r="9"/>
-            <circle class="opening-node-soft" cx="252" cy="228" r="9"/>
+  <section class="v2-opening" data-hero data-v2-opening data-opening-progress="1">
+    <div class="v2-opening-sticky">
+      <div class="v2-opening-atmosphere" aria-hidden="true"></div>
+      <div class="v2-opening-grid wrap">
+        <div class="v2-opening-mark-wrap">
+          <svg class="v2-opening-mark" viewBox="0 0 400 400" role="img" aria-labelledby="v2-mark-title">
+            <title id="v2-mark-title">Proof Systems connected node mark</title>
+            <polygon class="v2-mark-ghost" points="200,28 352,114 352,286 200,372 48,286 48,114"/>
+            <polygon class="v2-mark-outline" pathLength="1" points="200,28 352,114 352,286 200,372 48,286 48,114"/>
+            <path class="v2-mark-branch v2-mark-branch-one" pathLength="1" d="M148 132 L168 268"/>
+            <path class="v2-mark-branch v2-mark-branch-two" pathLength="1" d="M252 228 L168 268"/>
+            <path class="v2-mark-main" pathLength="1" d="M108 200 L168 268 L304 132"/>
+            <circle class="v2-mark-node" data-node="0" cx="108" cy="200" r="16"/>
+            <circle class="v2-mark-node v2-mark-node-centre" data-node="1" cx="168" cy="268" r="20"/>
+            <circle class="v2-mark-node" data-node="2" cx="304" cy="132" r="16"/>
+            <circle class="v2-mark-node v2-mark-node-soft" data-node="3" cx="148" cy="132" r="9"/>
+            <circle class="v2-mark-node v2-mark-node-soft" data-node="4" cx="252" cy="228" r="9"/>
           </svg>
         </div>
-        <p class="opening-name">Proof Systems</p>
-        <h1 class="opening-tagline">Systems built around how your business really works.</h1>
+        <div class="v2-opening-copy">
+          <p class="v2-opening-name">Proof Systems</p>
+          <h1><span>Systems built around</span><span>how your business</span><span>really works.</span></h1>
+        </div>
+      </div>
+      <p class="v2-scroll-cue" aria-hidden="true"><span></span>Scroll to connect</p>
+    </div>
+  </section>
+
+  <section class="v2-problem" id="fit">
+    <span class="anchor-target" id="proposition" aria-hidden="true"></span><span class="anchor-target" id="gap" aria-hidden="true"></span>
+    <div class="wrap v2-problem-grid">
+      <div><p class="v2-eyebrow">Software should follow the work</p><h2>When software doesn’t fit,<span> the work finds a way around it.</span></h2></div>
+      <div class="v2-problem-copy">
+        <p>Sometimes the process is reshaped to suit the software. Sometimes the awkward parts move into spreadsheets, email and separate files.</p>
+        <p>The team keeps the work moving. The information gets left behind: copied entry, detached approvals, competing versions and reports that arrive behind the work.</p>
+        <p class="v2-emphasis">The problem is the break in connected information and accountability between the tools.</p>
       </div>
     </div>
   </section>
 
-  <section class="chapter-hero" id="proposition">
-    <div class="wrap">
-      <h2 class="proposition-lead">Operational systems for owner-led SMEs.</h2>
-      <p class="proposition-support">Helping owner-led businesses replace fragile spreadsheets, disconnected tools and repetitive work with practical software integrated with existing technology, controlled AI automation and training their teams can use.</p>
-      <div class="actions">
-        <a class="button" href="workflow.html">Discuss a workflow</a>
-        <a class="button button-ghost" href="work/index.html">See selected systems</a>
+  <section class="v2-work-story" id="how" data-work-story data-story-step="4">
+    <span class="anchor-target" id="economics" aria-hidden="true"></span><span class="anchor-target" id="capability" aria-hidden="true"></span>
+    <div class="v2-story-sticky"><div class="wrap v2-story-layout">
+      <div class="v2-story-copy">
+        <p class="v2-eyebrow">Follow one piece of work</p>
+        <h2>One request, moving through four hand-offs.</h2>
+        <ol class="v2-story-steps">
+          <li data-story-copy="1"><span>01</span><div><strong>The request arrives</strong><p>Its source and requirement are clear while they are together.</p></div></li>
+          <li data-story-copy="2"><span>02</span><div><strong>The records diverge</strong><p>Delivery moves on while approval and accounts follow their own copies.</p></div></li>
+          <li data-story-copy="3"><span>03</span><div><strong>The approval detaches</strong><p>Ownership, status and history now have to be reconstructed.</p></div></li>
+          <li data-story-copy="4"><span>04</span><div><strong>The record stays connected</strong><p>Source, requirement, owner, status, approval and history travel with the work.</p></div></li>
+        </ol>
       </div>
-    </div>
-      <figure class="stack-figure" data-chapter-reveal data-reveal>
-        <div class="wrap">
-        <div class="stack-explain">
-          <p>Keep the useful tools. Add a bespoke layer that connects accounts or ERP software, spreadsheets and operational workflows.</p>
-          <p class="stack-shared">Proof Systems builds around what already works.</p>
+      <div class="v2-flow" role="img" aria-label="Illustrative workflow showing order change R-2041 splitting into records with conflicting dates and a separate approval before becoming one connected record with source, requirement, owner, status, approval and history.">
+        <p class="v2-demo-label">Illustrative workflow · no client data</p>
+        <svg class="v2-flow-thread" viewBox="0 0 720 560" preserveAspectRatio="none" aria-hidden="true"><path class="v2-thread-muted" d="M86 94 C170 94 150 246 258 246 S350 118 430 170 S500 438 630 438"/><path class="v2-thread-live" pathLength="1" d="M86 94 C170 94 150 246 258 246 S350 118 430 170 S500 438 630 438"/></svg>
+        <div class="v2-work-token" aria-hidden="true"><span>R-2041</span></div>
+        <div class="v2-fragment v2-fragment-request"><span>Customer email</span><strong>Order change</strong><small>Deliver by 18 September</small></div>
+        <div class="v2-fragment v2-fragment-delivery"><span>Delivery plan</span><strong>Due 16 September</strong><small>Owner · Alex · old date</small></div>
+        <div class="v2-fragment v2-fragment-sheet"><span>Order tracker</span><strong>Due 18 September</strong><small>Status · awaiting approval</small></div>
+        <div class="v2-fragment v2-fragment-approval"><span>Approval email</span><strong>Revised date approved</strong><small>Detached from the tracker</small></div>
+        <div class="v2-connected-record">
+          <div class="v2-record-head"><span>Connected record</span><strong>R-2041</strong></div><div class="v2-record-title">Order change · delivery date</div>
+          <dl><div><dt>Source</dt><dd>Customer email</dd></div><div><dt>Requirement</dt><dd>Deliver by 18 September</dd></div><div><dt>Owner</dt><dd>Alex Morgan</dd></div><div><dt>Status</dt><dd><i></i>Approved</dd></div></dl>
+          <div class="v2-record-history"><span></span><span></span><span></span><small>Approval and history attached</small></div>
         </div>
-        </div>
-        <div class="approved-scene approved-scene-up">
-          <img class="approved-visual" src="assets/img/age-600/homepage-stack-no-erp.webp" width="1672" height="941" alt="Bespoke systems layer connecting separate accounts software, spreadsheets and operational tools." loading="lazy" decoding="async">
-        </div>
-      </figure>
+        <p class="v2-context-note">Same reference. Same history. One accountable owner.</p>
+      </div>
+    </div></div>
   </section>
 
-  <section class="chapter panel-cream" id="gap" data-scene="gap" data-scene-steps="4" data-gap-step="4" data-fluid-narrow>
-    <div class="scene-sticky">
-    <div class="wrap">
-      <p class="marker">01 / THE GAP</p>
-      <h2>Important work often sits between people, spreadsheets and software.</h2>
-      <p>The software is there.&nbsp; The flow between it is not.</p>
-      <div class="gap-scene" role="img" aria-label="A staged workflow from Inbox through Spreadsheet, Software and Approval to a late Report, with re-entered, dependent, waiting-hidden and too-late friction.">
-        <svg class="gap-links" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="gap-line" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#d89042"/><stop offset="1" stop-color="#f1b35d"/>
-            </linearGradient>
-          </defs>
-          <path class="gap-connection gap-c1" d="M106 253 C175 253 196 178 262 178"/>
-          <path class="gap-connection gap-c2" d="M318 178 C382 178 398 288 466 288"/>
-          <path class="gap-connection gap-c3" d="M522 288 C585 288 608 166 672 166"/>
-          <path class="gap-connection gap-c4" d="M728 166 C794 166 814 250 882 250"/>
-          <circle class="gap-pulse gap-p1" cx="184" cy="219" r="6"/>
-          <circle class="gap-pulse gap-p2" cx="394" cy="239" r="6"/>
-          <circle class="gap-pulse gap-p3" cx="604" cy="217" r="6"/>
-          <circle class="gap-pulse gap-p4" cx="806" cy="211" r="6"/>
-        </svg>
-        <div class="gap-node gap-node-1" data-gap-from="1">
-          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
-          <strong>Inbox</strong>
-        </div>
-        <div class="gap-node gap-node-2" data-gap-from="1">
-          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div>
-          <strong>Spreadsheet</strong>
-        </div>
-        <div class="gap-node gap-node-3" data-gap-from="2">
-          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div>
-          <strong>Software</strong>
-        </div>
-        <div class="gap-node gap-node-4" data-gap-from="3">
-          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14v4H5z"/><path d="M8 11v6M16 11v6"/><path d="M7 17h10"/><path d="M9 4h6l1 3H8z"/></svg></div>
-          <strong>Approval</strong>
-        </div>
-        <div class="gap-node gap-node-5" data-gap-from="4">
-          <div class="gap-block" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h2v5H8zM12 16h2v2h-2zM16 11h2v7h-2z"/></svg></div>
-          <strong>Report</strong>
-        </div>
-        <span class="gap-callout gap-callout-1" data-gap-from="1">Re-entered</span>
-        <span class="gap-callout gap-callout-2" data-gap-from="2">Dependent</span>
-        <span class="gap-callout gap-callout-3" data-gap-from="3">Waiting · hidden</span>
-        <span class="gap-callout gap-callout-4" data-gap-from="4">Too late</span>
-      </div>
-      <ol class="gap-key">
-        <li>Inbox</li>
-        <li>Spreadsheet</li>
-        <li>Software</li>
-        <li>Approval</li>
-        <li>Report</li>
-      </ol>
-      <div class="gap-legend" aria-hidden="true">
-        <span data-gap-from="1">Re-entered</span>
-        <span data-gap-from="2">Dependent</span>
-        <span data-gap-from="3">Hidden</span>
-        <span data-gap-from="4">Late</span>
-      </div>
-    </div>
-    </div>
-  </section>
+  <section class="v2-response"><div class="wrap">
+    <p class="v2-eyebrow">The missing layer</p><h2>Keep the software that works. <span>Connect the work that falls between it.</span></h2>
+    <div class="v2-response-line" aria-hidden="true"><i></i><b></b><i></i><b></b><i></i></div>
+    <div class="v2-response-copy"><p>I trace how the work really moves: where information begins, who owns the next action, what must be checked and what evidence needs to survive.</p><p>Then I build the smallest shared layer that keeps its information, owner and history attached.</p></div>
+  </div></section>
 
-  <section class="chapter panel-ink" id="economics" data-scene="fit" data-scene-steps="4" data-fit-step="4">
-    <div class="scene-sticky">
-    <div class="wrap">
-      <p class="marker">01B / FIT</p>
-      <h2>Buy the foundation.&nbsp; Build only what makes <span class="accent">the business yours.</span></h2>
-      <p>Use established software where it fits.&nbsp; Add a focused bespoke layer where it does not.</p>
-      <div class="fit-scene" role="img" aria-label="Industry-specific software with unused features and process bends, then a two-way connection to a precise bespoke layer over accounts, software and spreadsheets.">
-        <div class="fit-monolith" data-fit-from="1">
-          <div class="fit-sign">Industry Specific Software</div>
-          <div class="fit-grid" aria-hidden="true">
-            <span class="fit-cube fit-cube-a"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/><path d="M21 20c-.4-2.4-2-4-4-4"/></svg></span>
-            <span class="fit-cube fit-cube-b"></span>
-            <span class="fit-cube fit-cube-c"><svg viewBox="0 0 24 24"><path d="M6 20V10M12 20V4M18 20v-8"/></svg></span>
-            <span class="fit-cube fit-cube-d"></span>
-            <span class="fit-cube fit-cube-e"><svg viewBox="0 0 24 24"><path d="M3 7h6v6H3zM15 7h6v6h-6zM9 15h6v6H9z"/></svg></span>
-            <span class="fit-cube fit-cube-f"></span>
-            <span class="fit-cube fit-cube-g"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M15 14h1M8 18h8"/></svg></span>
-            <span class="fit-cube fit-cube-h"></span>
-            <span class="fit-cube fit-cube-i"></span>
-            <span class="fit-cube fit-cube-j"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></span>
-            <span class="fit-cube fit-cube-k"></span>
-            <span class="fit-cube fit-cube-l"></span>
-          </div>
-          <svg class="fit-bent-path" viewBox="0 0 330 250" aria-hidden="true">
-            <path d="M10 220 H76 V172 H130 V204 H184 V104 H238 V142 H318"/>
-            <circle cx="76" cy="172" r="5"/><circle cx="184" cy="104" r="5"/><circle cx="238" cy="142" r="5"/>
-          </svg>
-        </div>
-        <span class="fit-note fit-unused" data-fit-from="2">Unused features</span>
-        <span class="fit-note fit-bends" data-fit-from="2">Process bends</span>
-        <svg class="fit-transition fit-transition-wide" viewBox="0 0 200 28" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
-          <path class="fit-link-line" d="M0 14 H200"/>
-          <path d="M8 8 L0 14 L8 20"/>
-          <path d="M192 8 L200 14 L192 20"/>
-        </svg>
-        <svg class="fit-transition fit-transition-vertical" viewBox="0 0 28 200" preserveAspectRatio="none" aria-hidden="true" data-fit-from="3">
-          <path class="fit-link-line" d="M14 0 V200"/>
-          <path d="M8 8 L14 0 L20 8"/>
-          <path d="M8 192 L14 200 L20 192"/>
-        </svg>
-        <div class="fit-foundation" data-fit-from="3">
-          <div class="fit-base-tile">
-            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M6 21V8l6-4 6 4v13M10 21v-6h4v6"/></svg></div>
-            <strong>Accounts</strong>
-          </div>
-          <div class="fit-base-tile">
-            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><circle cx="12" cy="10" r="2"/></svg></div>
-            <strong>Software</strong>
-          </div>
-          <div class="fit-base-tile">
-            <div class="fit-base-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div>
-            <strong>Spreadsheets</strong>
-          </div>
-        </div>
-        <div class="fit-layer" data-fit-from="4">
-          <span>Bespoke layer</span>
-          <svg viewBox="0 0 500 88" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M84 0 V88 M250 0 V88 M416 0 V88"/>
-            <circle cx="84" cy="88" r="5"/><circle cx="250" cy="88" r="5"/><circle cx="416" cy="88" r="5"/>
-          </svg>
-        </div>
-        <span class="fit-note fit-missing" data-fit-from="4">Only the missing layer</span>
-      </div>
-      <p class="fit-close" data-fit-from="4">Bespoke fixes the manual work that off-the-shelf software leaves behind.</p>
-    </div>
-    </div>
-  </section>
+  <section class="v2-approach" id="approach"><div class="wrap v2-approach-layout">
+    <div class="v2-approach-lead"><p class="v2-eyebrow">A practical starting point</p><h2>Start with one workflow. Prove the useful change.</h2><p>No replacement programme is assumed. The first job is to find the smallest change that makes the work more reliable and easier to run.</p><a class="v2-text-link" href="workflow.html?interest=workflow-diagnostic">Discuss where the work breaks <span>↗</span></a></div>
+    <ol class="v2-approach-list"><li><span>01</span><div><strong>Trace the real work</strong><p>People, tools, decisions, exceptions and hand-offs.</p></div></li><li><span>02</span><div><strong>Choose one useful outcome</strong><p>A focused system or connection with a clear owner.</p></div></li><li><span>03</span><div><strong>Build, test and extend carefully</strong><p>Future work earns its place through evidence from use.</p></div></li></ol>
+  </div></section>
 
-  <section class="chapter" id="capability" data-capability data-cap-step="6" data-fluid-narrow>
-    <div class="capability-sticky">
-    <div class="wrap">
-      <p class="marker">02 / CAPABILITY</p>
-      <h2>Fix the workflow first. Then make it intelligent.</h2>
-      <div class="capability-board" aria-hidden="true">
-        <svg class="capability-svg" viewBox="0 0 1120 260" role="img">
-          <defs>
-            <linearGradient id="cap-line" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#d89042"/><stop offset="1" stop-color="#43A7FF"/>
-            </linearGradient>
-          </defs>
-          <path class="cap-connector cap-gated" data-cap-from="2" d="M154 148 C 210 70, 260 55, 318 92"/>
-          <path class="cap-connector cap-gated" data-cap-from="3" d="M372 104 C 430 170, 490 210, 528 172"/>
-          <path class="cap-connector cap-gated" data-cap-from="4" d="M590 162 C 650 80, 710 48, 752 94"/>
-          <path class="cap-connector cap-gated" data-cap-from="5" d="M818 104 C 880 170, 940 210, 978 148"/>
-          <g class="cap-icon cap-gated" data-cap-from="1" transform="translate(72 118)">
-            <circle cx="10" cy="10" r="6"/>
-            <path d="M1 36c1.3-11 5-15 9-15s7.7 4 9 15"/>
-            <path class="cap-break" d="M21 18h7" stroke-dasharray="2 2.2"/>
-            <path class="cap-gap" d="M24.5 8.2l3.8 6.4h-7.6z"/>
-            <rect x="30" y="5" width="22" height="22" rx="2"/>
-            <path d="M30 12h22M37.5 5v22M45 5v22M30 17h22"/>
-            <path class="cap-break" d="M53 18h7" stroke-dasharray="2 2.2"/>
-            <rect x="62" y="3" width="20" height="28" rx="2"/>
-            <path d="M62 10h20M66 14h12M66 18h12M66 22h8"/>
-          </g>
-          <g class="cap-icon cap-gated" data-cap-from="2" transform="translate(294 58)">
-            <circle cx="28" cy="30" r="10"/>
-            <circle cx="6" cy="8" r="7"/>
-            <circle cx="50" cy="10" r="7"/>
-            <circle cx="48" cy="50" r="7"/>
-            <path d="M12 13 L21 24M44 16 L34 24M44 44 L35 36"/>
-          </g>
-          <g class="cap-icon cap-gated" data-cap-from="3" transform="translate(518 140)">
-            <ellipse cx="28" cy="10" rx="22" ry="8"/>
-            <path d="M6 10 v20 c0 8 44 8 44 0 V10"/>
-            <ellipse cx="28" cy="20" rx="22" ry="8"/>
-            <ellipse cx="28" cy="30" rx="22" ry="8"/>
-          </g>
-          <g class="cap-icon cap-gated" data-cap-from="4" transform="translate(744 60)">
-            <circle cx="28" cy="28" r="12"/>
-            <path d="M28 6 v8M28 42 v8M6 28 h8M42 28 h8M12 12 l6 6M38 12 l-6 6M12 44 l6-6M38 44 l-6-6"/>
-            <path class="cap-check" d="M21 29 l5 5 10-12"/>
-          </g>
-          <g class="cap-icon cap-gated" data-cap-from="5" transform="translate(968 112)">
-            <circle cx="16" cy="14" r="8"/>
-            <path d="M3 44c2-12 8-16 13-16s11 4 13 16"/>
-            <circle cx="38" cy="16" r="7"/>
-            <path d="M26 44c2-10 7-14 12-14s10 4 12 14"/>
-            <path class="cap-spark" d="M54 6 l2 6 6 2 -6 2 -2 6 -2-6 -6-2 6-2 z"/>
-          </g>
-        </svg>
-      </div>
-      <ol class="capability-stages">
-        <li class="cap-stage" data-cap="1">
-          <h3>Disconnected work</h3>
-          <p>People, spreadsheets and offline documents hold different parts of the process.</p>
-        </li>
-        <li class="cap-stage" data-cap="2">
-          <h3>Connected system</h3>
-          <p>A fitted operational system connects the work, people and controls.</p>
-        </li>
-        <li class="cap-stage" data-cap="3">
-          <h3>Reliable data</h3>
-          <p>The working process creates a connected, usable flow of structured data.</p>
-        </li>
-        <li class="cap-stage" data-cap="4">
-          <h3>Controlled automation</h3>
-          <p>AI Automation comes after the workflow works. Repetitive tasks can then be automated safely.</p>
-        </li>
-        <li class="cap-stage" data-cap="5">
-          <h3>Capable team</h3>
-          <p>Role-specific training helps people apply AI safely and usefully to the work they already do.</p>
-        </li>
-      </ol>
-      <div class="capability-journey" aria-hidden="true">
-        <article class="cap-leg cap-leg-a" data-cap-from="1">
-          <div class="cap-rail">
-            <span class="cap-rail-node"><svg viewBox="0 0 56 36"><circle cx="7" cy="9" r="5"/><path d="M1 28c1-8 3.8-11 6-11s5 3 6 11"/><path class="cap-break" d="M14 16h5" stroke-dasharray="1.6 1.8"/><path class="cap-gap" d="M16.5 6.5l2.8 4.8h-5.6z"/><rect x="20" y="6" width="15" height="16" rx="2"/><path d="M20 11h15M25 6v16M30 6v16M20 16h15"/><path class="cap-break" d="M36 16h4" stroke-dasharray="1.6 1.8"/><rect x="41" y="4" width="14" height="20" rx="2"/><path d="M41 9h14M44 13h8M44 17h8M44 21h5"/></svg></span>
-            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="2"><path d="M24 0 C24 54 44 54 44 108"/></svg>
-          </div>
-          <div class="cap-leg-copy">
-            <h3>Disconnected work</h3>
-            <p>People, spreadsheets and offline documents hold different parts of the process.</p>
-          </div>
-        </article>
-        <article class="cap-leg cap-leg-b" data-cap-from="2">
-          <div class="cap-rail">
-            <span class="cap-rail-node"><svg viewBox="0 0 56 56"><circle cx="28" cy="30" r="8"/><circle cx="8" cy="10" r="6"/><circle cx="48" cy="12" r="6"/><circle cx="46" cy="48" r="6"/><path d="M13 14 L22 24M43 17 L34 25M42 43 L35 36"/></svg></span>
-            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="3"><path d="M44 0 C44 54 24 54 24 108"/></svg>
-          </div>
-          <div class="cap-leg-copy">
-            <h3>Connected system</h3>
-            <p>A fitted operational system connects the work, people and controls.</p>
-          </div>
-        </article>
-        <article class="cap-leg cap-leg-a" data-cap-from="3">
-          <div class="cap-rail">
-            <span class="cap-rail-node"><svg viewBox="0 0 56 40"><ellipse cx="28" cy="8" rx="20" ry="7"/><path d="M8 8 v16 c0 7 40 7 40 0 V8"/><ellipse cx="28" cy="18" rx="20" ry="7"/><ellipse cx="28" cy="28" rx="20" ry="7"/></svg></span>
-            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="4"><path d="M24 0 C24 54 44 54 44 108"/></svg>
-          </div>
-          <div class="cap-leg-copy">
-            <h3>Reliable data</h3>
-            <p>The working process creates a connected, usable flow of structured data.</p>
-          </div>
-        </article>
-        <article class="cap-leg cap-leg-b" data-cap-from="4">
-          <div class="cap-rail">
-            <span class="cap-rail-node"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="10"/><path d="M28 8 v8M28 40 v8M8 28 h8M40 28 h8"/><path class="cap-check" d="M21 29 l5 5 10-12"/></svg></span>
-            <svg class="cap-rail-link" viewBox="0 0 68 108" preserveAspectRatio="none" data-cap-from="5"><path d="M44 0 C44 54 24 54 24 108"/></svg>
-          </div>
-          <div class="cap-leg-copy">
-            <h3>Controlled automation</h3>
-            <p>AI Automation comes after the workflow works. Repetitive tasks can then be automated safely.</p>
-          </div>
-        </article>
-        <article class="cap-leg cap-leg-a cap-leg-last" data-cap-from="5">
-          <div class="cap-rail">
-            <span class="cap-rail-node"><svg viewBox="0 0 56 48"><circle cx="16" cy="12" r="7"/><path d="M3 40c2-11 8-15 13-15s11 4 13 15"/><circle cx="38" cy="14" r="6"/><path d="M26 40c2-9 7-13 12-13s10 4 12 13"/><path class="cap-spark" d="M50 4 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5-4 -4-1.5 4-1.5 z"/></svg></span>
-            <span class="cap-rail-tail" data-cap-from="6"></span>
-          </div>
-          <div class="cap-leg-copy">
-            <h3>Capable team</h3>
-            <p>Role-specific training helps people apply AI safely and usefully to the work they already do.</p>
-          </div>
-        </article>
-      </div>
-      <div class="capability-actions">
-        <a class="button button-amber" href="workflow.html">Discuss a workflow</a>
-        <a class="button button-amber-ghost" href="work/index.html">View selected systems</a>
-        <a class="button button-amber-ghost" href="workflow.html?interest=ai-team-training">Ask about AI team training</a>
-      </div>
-    </div>
-    </div>
-  </section>
+  <section class="v2-support"><div class="wrap v2-support-grid">
+    <div class="v2-support-title"><p class="v2-eyebrow">What I help with</p><h2>Operational systems first.</h2></div>
+    <div class="v2-support-main"><span>Where the gaps are costly</span><h3>Connected operational systems</h3><p>Focused software, integrations and working records built around the way the business needs to operate.</p></div>
+    <div class="v2-support-secondary"><div><span>When reliable work is ready to scale</span><h3>Selective AI and automation</h3><p>Used when the workflow and controls are ready for it.</p></div><div><span>When people need confidence</span><h3>AI team training</h3><p>Practical, role-specific help for teams applying AI to real work.</p><a href="training.html">Explore training</a></div></div>
+  </div></section>
 
-  <section class="chapter panel-cream" id="proof">
-    <div class="wrap">
-      <p class="marker">03 / PROOF</p>
-      <h2>Demo videos: bespoke systems built to solve painful workflows.</h2>
-      <div class="proof-grid">
-        <article class="card">
-          <p class="kicker">Frontline capture</p>
-          <p class="proof-line">Mobile-first weekly site record bespoke to business function.</p>
-          <p class="proof-line">Admin Ready Invoices &amp; Exports</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg">
-            <img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog weekly records on a phone-sized screen, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
-          <p class="card-action"><a class="button button-amber" href="work/sitelog.html">View SiteLog</a></p>
-        </article>
-        <article class="card">
-          <p class="kicker">Project control</p>
-          <h3>Turn weekly labour costs into visible budget decisions.</h3>
-          <p class="proof-line">Weekly labour allocation</p>
-          <p class="proof-line">Budget Control</p>
-          <p class="proof-line">Accounts Software Exports</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg">
-            <img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow allocation table for weekly labour costs, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
-          <p class="card-action"><a class="button button-amber" href="work/budgetflow.html">View BudgetFlow</a></p>
-        </article>
-        <article class="card">
-          <p class="kicker">Finance and reporting</p>
-          <p class="proof-line">Data extracts directly from accounts systems ready for integration to bespoke systems</p>
-          <div class="media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg">
-            <img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink connection to accounts software, labelled as a synthetic demonstration." width="1280" height="720" loading="lazy" decoding="async">
-          </div>
-          <p class="card-action"><a class="button button-amber" href="work/index.html#finance">View finance workflow</a></p>
-        </article>
-      </div>
-      <p class="proof-all">
-        <a class="button button-systems" href="work/index.html">View all selected systems</a>
-      </p>
-    </div>
-  </section>
+  <section class="v2-proof" id="proof"><div class="wrap">
+    <div class="v2-proof-head"><div><p class="v2-eyebrow">Evidence from construction operations</p><h2>Systems built close to the work.</h2></div><p>These examples draw on construction experience across site capture, commercial control and finance. They use synthetic data and are not external client case studies.</p></div>
+    <div class="v2-proof-list">
+      <article class="v2-proof-item"><div class="v2-proof-number">01</div><div><p class="v2-proof-kicker">Reliable field evidence</p><h3>SiteLog</h3><p>Weekly site records stay attached to the project and become payment-ready outputs.</p><a href="work/sitelog.html">View SiteLog</a></div><div class="v2-proof-media media-teaser" data-teaser-src="assets/demo-media/sitelog-teaser.mp4" data-poster="assets/demo-media/sitelog-poster.jpg"><img src="assets/demo-media/sitelog-poster.jpg" alt="SiteLog shown with synthetic demonstration data." width="1280" height="720" loading="lazy" decoding="async"></div></article>
+      <article class="v2-proof-item"><div class="v2-proof-number">02</div><div><p class="v2-proof-kicker">Controlled approval</p><h3>BudgetFlow</h3><p>Labour costs, budgets, variations and payment exports share one controlled route.</p><a href="work/budgetflow.html">View BudgetFlow</a></div><div class="v2-proof-media media-teaser" data-teaser-src="assets/demo-media/budgetflow-teaser.mp4" data-poster="assets/demo-media/budgetflow-poster.jpg"><img src="assets/demo-media/budgetflow-poster.jpg" alt="BudgetFlow shown with synthetic demonstration data." width="1280" height="720" loading="lazy" decoding="async"></div></article>
+      <article class="v2-proof-item"><div class="v2-proof-number">03</div><div><p class="v2-proof-kicker">Reliable hand-off</p><h3>LedgerLink</h3><p>Accounts data is extracted through a checked route and prepared for connected reporting.</p><a href="work/ledgerlink.html">View LedgerLink</a></div><div class="v2-proof-media media-teaser" data-teaser-src="assets/demo-media/ledgerlink-teaser.mp4" data-poster="assets/demo-media/ledgerlink-poster.jpg"><img src="assets/demo-media/ledgerlink-poster.jpg" alt="LedgerLink shown with synthetic demonstration data." width="1280" height="720" loading="lazy" decoding="async"></div></article>
+    </div><a class="button button-ghost v2-all-systems" href="work/index.html">Explore all selected systems</a>
+  </div></section>
 
-  <section class="chapter panel-sand" id="approach" data-scene="approach" data-scene-steps="5" data-approach-step="5" data-fluid-narrow>
-    <div class="scene-sticky">
-    <div class="wrap">
-      <p class="marker">04 / APPROACH</p>
-      <h2>Start with one useful outcome.&nbsp; Prove it.&nbsp; Extend only when it earns the next step.</h2>
-      <div class="approach-journey" aria-label="A four-stage journey from understanding the real workflow to evidence-led extension">
-        <article class="approach-stage" data-approach-from="1">
-          <div class="approach-meta"><span class="approach-number">01</span><h3>Understand</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-understand" aria-hidden="true">
-              <svg class="approach-visual-links" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M28 57 H82 V27 H132 V63 H189 V33 H232"/></svg>
-              <span class="approach-mini approach-node-a"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg></span>
-              <span class="approach-mini approach-node-b"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/><circle cx="17" cy="9" r="2"/></svg></span>
-              <span class="approach-mini approach-node-c"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></span>
-              <span class="approach-lens"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
-            </div>
-            <strong>Observe real workflow</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="2">
-            <path class="approach-connector-v" d="M40 0 V66"/><path class="approach-connector-v" d="M29 56 L40 72 51 56"/>
-            <path class="approach-connector-h" d="M0 41 H66"/><path class="approach-connector-h" d="M56 30 L72 41 56 52"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="2">
-          <div class="approach-meta"><span class="approach-number">02</span><h3>Choose</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-choose" aria-hidden="true">
-              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
-              <span class="approach-choice approach-choice-selected"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span>
-              <span class="approach-choice"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18"/></svg></span>
-              <svg class="approach-choice-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M57 42 H105 M203 42 H155"/></svg>
-            </div>
-            <strong>One useful outcome</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="3">
-            <path class="approach-connector-v" d="M40 0 V66"/><path class="approach-connector-v" d="M29 56 L40 72 51 56"/>
-            <path class="approach-connector-h" d="M0 41 H66"/><path class="approach-connector-h" d="M56 30 L72 41 56 52"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="3">
-          <div class="approach-meta"><span class="approach-number">03</span><h3>Prove</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-prove" aria-hidden="true">
-              <svg class="approach-proof-line" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M42 42 H218"/></svg>
-              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-              <span class="approach-proof-node"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/></svg></span>
-              <span class="approach-proof-node approach-proof-checked"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg></span>
-            </div>
-            <strong>Initial build</strong>
-          </div>
-          <svg class="approach-connector" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="4">
-            <path class="approach-connector-v" d="M40 0 V66"/><path class="approach-connector-v" d="M29 56 L40 72 51 56"/>
-            <path class="approach-connector-h" d="M0 41 H66"/><path class="approach-connector-h" d="M56 30 L72 41 56 52"/>
-          </svg>
-        </article>
-        <article class="approach-stage" data-approach-from="4">
-          <div class="approach-meta"><span class="approach-number">04</span><h3>Extend</h3></div>
-          <div class="approach-platform">
-            <div class="approach-visual approach-extend" aria-hidden="true">
-              <svg class="approach-branch-lines" viewBox="0 0 260 84" preserveAspectRatio="none"><path d="M130 42 H54 M130 42 H206"/></svg>
-              <span class="approach-branch-core"><svg viewBox="0 0 24 24"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9M12 12v3"/></svg></span>
-              <span class="approach-branch-node approach-branch-left"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
-              <span class="approach-branch-node approach-branch-right"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
-            </div>
-            <strong>Future development</strong>
-          </div>
-          <svg class="approach-connector approach-connector-final" viewBox="0 0 80 82" preserveAspectRatio="none" aria-hidden="true" data-approach-from="5">
-            <path class="approach-connector-v" d="M40 0 V66"/><path class="approach-connector-v" d="M29 56 L40 72 51 56"/>
-          </svg>
-        </article>
-        <div class="approach-routes" data-approach-from="5" aria-label="Three ways to begin">
-          <p class="approach-banner">Start where the need is clearest</p>
-          <div class="approach-route-list">
-            <a class="approach-route route-pad" href="workflow.html?interest=focused-build">
-              <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M12 9H8M12 14h6"/></svg></span>
-              <p><strong>Clear workflow</strong><em>Focused build</em></p>
-              <span class="approach-route-action">Discuss a focused build</span>
-            </a>
-            <a class="approach-route route-pad" href="workflow.html?interest=workflow-diagnostic">
-              <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
-              <p><strong>Needs clarity</strong><em>Workflow diagnostic</em></p>
-              <span class="approach-route-action">Ask about a workflow diagnostic</span>
-            </a>
-            <a class="approach-route route-pad" href="workflow.html?interest=ai-team-training">
-              <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1-4 3-6 6-6s5 2 6 6"/></svg></span>
-              <p><strong>Team capability</strong><em>AI team training</em></p>
-              <span class="approach-route-action">Ask about AI team training</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </section>
+  <section class="v2-about" id="about"><div class="wrap v2-about-layout">
+    <div><p class="v2-eyebrow">Operator first</p><h2>I started with the operation, not the technology.</h2></div>
+    <div class="v2-about-copy"><p>I’m Mat Glendenning. My experience combines operational leadership, systems design and hands-on delivery. Across sixteen years inside an operating construction business, including time as its managing director, I built and improved systems used by finance, commercial and operational teams.</p><p>In 2016, I also co-founded Jobhawk, a mobile-first construction recruitment marketplace. We raised £1m+, with the Isle of Man Government as lead investor. That experience sharpened my understanding of product fit, adoption and the operating realities that determine whether technology succeeds.</p><p>Proof Systems applies that operator’s view to owner-led businesses. I begin with the work, the people responsible for it and the evidence they need.</p><a class="v2-text-link" href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">View Mat’s LinkedIn <span>↗</span></a></div>
+  </div></section>
 
-  <section class="chapter" id="about">
-    <div class="wrap">
-      <p class="marker">05 / OPERATOR FIRST</p>
-      <h2>I started with the operation, not the technology.</h2>
-      <p>I’m Mat Glendenning.&nbsp; My experience combines operational leadership, systems design and hands-on delivery.&nbsp; Across sixteen years inside an operating construction business, including time as its managing director, I built and improved the systems used by finance, commercial and operational teams.</p>
-      <p>In 2016, I also co-founded Jobhawk, a mobile-first construction recruitment marketplace.&nbsp; We raised £1m+, with the Isle of Man Government as lead investor.&nbsp; That experience sharpened my understanding of product fit, adoption and the operating realities that determine whether technology succeeds.</p>
-      <p>Proof Systems applies that operator’s view to owner-led SMEs.&nbsp; I begin with the work, the people responsible for it and the evidence they need.&nbsp; Software and AI are useful when they make that operation more reliable, visible or easier to run.</p>
-      <p><a href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">LinkedIn</a></p>
-    </div>
-  </section>
-
-  <section class="chapter" id="start">
-    <div class="wrap">
-      <p class="marker">06 / START</p>
-      <h2>What important work should be easier to run?</h2>
-      <p class="lede">Tell me about one recurring workflow.&nbsp; Keep the first description general and do not send confidential documents or sensitive personal information.&nbsp; I will review it personally and suggest a sensible next conversation.</p>
-      <div class="actions">
-        <a class="button" href="workflow.html">Discuss a workflow</a>
-        <a class="button button-ghost" href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
-      </div>
-    </div>
-  </section>
+  <section class="v2-start" id="start"><div class="wrap v2-start-inner">
+    <p class="v2-eyebrow">Start with the work</p><h2>What important work should be easier to run?</h2><p>Tell me about one recurring workflow. Keep the first description general and do not send confidential documents or sensitive personal information. I will review it personally.</p><div class="actions"><a class="button" href="workflow.html">Discuss a workflow</a><a class="button button-ghost" href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></div>
+  </div></section>
 </main>
-<footer>
-  <div class="footer-inner">
-    <a class="footer-brand" href="index.html"><img src="assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
-      <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a>
-      <a href="privacy.html">Privacy</a>
-      <span>© 2026 Proof Systems</span>
-    </div>
-    <p class="footer-legal">Proof Systems is the trading name of Mathew Glendenning, a sole trader. Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH. Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
-  </div>
-</footer>
-<button type="button" class="scroll-cue" hidden aria-label="Continue scrolling">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-</button>
+<footer><div class="footer-inner">
+  <a class="footer-brand" href="index.html"><img src="assets/brand/logo-light.svg" alt="Proof Systems" width="320" height="91"></a>
+  <div class="footer-links"><a href="https://www.linkedin.com/in/mathew-glendenning-90670649/" rel="noopener noreferrer" target="_blank">LinkedIn</a><a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a><a href="privacy.html">Privacy</a><span>© 2026 Proof Systems</span></div>
+  <p class="footer-legal">Proof Systems is the trading name of Mathew Glendenning, a sole trader. Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH. Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
+</div></footer>
 <script src="assets/js/site.js" defer></script>
 </body>
 </html>
