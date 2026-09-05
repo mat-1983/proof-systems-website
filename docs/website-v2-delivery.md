@@ -4,15 +4,18 @@ Recorded: 5 September 2026.
 
 ## Current state
 
-Implementation is complete locally. Final acceptance is **Blocked** solely on rendered browser UAT: the Mac is locked and the CUA tool cannot unlock it automatically. Mat was asked to unlock it; no new desktop rendering, phone viewport, physical iOS/Android, touch or media/form interaction verification is claimed for this refinement.
+Mat reviewed V2 on mobile and reported that it works great, then requested bouncing scroll cues and longer autoplay demos. Those changes are complete locally. The independent final verdict is **Approved** for application commit `3673c30cb43d051d126e62b154a3482760e6cc08`, with no outstanding findings for this increment.
 
-The independent reviewer found no outstanding source issues at application commit `e374fc7fb0d6eb7e405fdb754e8683db2dac884c`. Code and controlled-geometry checks passed. These do not substitute for visual acceptance. The earlier V2 delivery's browser checks covered an older implementation, including a static mobile story, and do not establish acceptance of this refinement.
+Browser access was restored after the earlier locked-Mac limitation. Root completed rendered checks of the changed homepage scenes and playback at desktop, phone portrait and short landscape sizes. Physical iOS/Android automation is not claimed. The unchanged inner-page and form contracts passed the automated checks; their full interactive acceptance was not repeated in this increment.
 
 - Branch: `codex/website-v2`
 - Original V1 base and fallback: `044cf52228bd8adc8b4e66d902baaf2f2a7bd106`
 - Refinement baseline: `e6359f60b07116f6a8bf7cf91a1257a9a94b85ea`
 - Refinement implementation: `5ab57bbb028dbfacff8f16092282a27f108a05f7`
-- Final application correction: `e374fc7fb0d6eb7e405fdb754e8683db2dac884c`
+- Prior refinement accessibility correction: `e374fc7fb0d6eb7e405fdb754e8683db2dac884c`
+- Arrow/teaser increment baseline: `2ce6b336dfd0fd7e6e3263ca286a40ab6cb42d35`
+- Final approved application commit: `3673c30cb43d051d126e62b154a3482760e6cc08`
+- Arrow/teaser implementation agent: `/root/v2_scroll_cues_teasers`, assigned Sol / high.
 - Implementation agent: `/root/v2_refinement_build`, assigned Astra / high.
 - Read-only contract audit: `/root/v2_contract_audit`, assigned Sol / high.
 - Independent reviewer: `/root/v2_refinement_review`, assigned Astra / high.
@@ -54,27 +57,27 @@ Builder, root and independent checks passed as applicable on the final applicati
 
 The production scroll test executes the actual scene functions with six controlled viewport/card geometries. Independent VM checks cover 24 synthetic panel geometries, forward/reverse states, readable top/bottom holds, indicators, toolbar travel stability and connection sequencing. These are executable maths checks, not rendered layout or physical-device tests.
 
-Independent comparisons confirm the exact opening SVG geometry, opening words and `renderOpening` function are preserved. Form JavaScript and redirects remain byte-identical. Normalised privacy main text is unchanged. Root's story comparison found only the previous outcome paragraphs promoted to H1, with the other explanatory paragraphs retained.
+Independent comparisons confirm the opening SVG geometry and words are preserved. The opening renderer now safely handles the former cue being absent; its scroll behaviour is retained. Form JavaScript and redirects remain byte-identical. Normalised privacy main text is unchanged. Root's story comparison found only the previous outcome paragraphs promoted to H1, with the other explanatory paragraphs retained.
 
 Review corrections included the enquiry styling selector and removal of `visibility:hidden` from inactive narrative panels so screen-reader users can read every stage. There are no outstanding source findings.
 
-## Remaining acceptance work
+## Rendered verification and limits
 
-Once browser access is available, use the existing local V2 server to verify:
+Root checked native forward and reverse scrolling in the opening, workflow story, forming software connection and all four practical-starting-point stages. The arrow stays visible through each final hold. At 390 × 844, 320 × 480 and 844 × 390 viewport sizes, the tested content clears the arrow and has no horizontal overflow. Tall cards retain a readable top and bottom phase; the short landscape connection copy retains correct sentence spacing.
 
-1. Desktop, tablet, phone portrait and short/landscape layouts, including headings, clipping, horizontal overflow and visible stage indicators.
-2. Opening, request story, forming connection, four process cards and shared inner-page reveals, scrolling forwards and backwards.
-3. Taller-card reading phases, orientation changes and browser toolbar expansion/collapse. Distinguish viewport simulation from physical iOS/Android testing.
-4. All eight system stories and onward links, connected-view hashes, navigation, keyboard focus, media controls/captions and local form validation without submitting.
-5. Reduced Motion and no-JavaScript rendering, plus ordinary phone scrolling smoothness where device access exists.
+At 1440 × 900, all three actual teaser videos autoplayed muted with 30-second durations, and playback was observed beyond the old five-second limit. Fresh 390 × 844 rendering also confirmed inline playback beyond five seconds. Midpoint frames contain useful demonstration content. Independent media comparisons confirmed faithful excerpts and unchanged full-film, poster and caption files.
 
-Return any defects to the implementation agent on the same cumulative branch and obtain a fresh independent verdict after corrections. Do not mark the visual/mobile acceptance complete from the VM checks alone.
+Normal reload and fresh-tab checks verified the revised shared asset URLs and an empty current console. Explicit browser fixtures for Reduced Motion and no JavaScript showed all process cards in readable ordinary flow, with decorative cues hidden and no teaser autoplay. These fixtures simulate those conditions; they are not claims of physical device or operating-system preference testing.
+
+No remaining rendered defect was found in this increment. Physical-device toolbar behaviour, a complete fresh inner-page click-through and interactive form/caption controls were not re-tested here. No form was submitted. Earlier delivery and review history remains in Git.
 
 ## Local previews and boundary
 
 V2: `http://127.0.0.1:8988/`
 
 V1 fallback: `http://127.0.0.1:8986/`
+
+Mobile preview on the same Wi-Fi: `http://192.168.0.18:8988/index.html`. The existing LAN server serves a public allow-list copy, refreshed with this increment. HTTP checks confirmed all four cues, revisioned assets and the three updated teaser files; documentation, tooling and source-master paths return 404. The Mac must remain awake.
 
 The V1 checkout remains clean on `main` at `044cf52`; local annotated tag `website-v1-fallback-2026-09-05` resolves to that same commit. The existing V2 worktree is separate. No merge to main, push, deployment, publication, external message, Brain write or live form submission occurred. No new Linear issue or project placement was inferred from this task.
 
