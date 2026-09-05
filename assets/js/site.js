@@ -2,7 +2,7 @@
   document.documentElement.classList.add("js");
 
   var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var storyStaticQuery = window.matchMedia("(max-width: 900px)");
+  var storyStaticQuery = window.matchMedia("(max-width: 900px), (max-height: 760px)");
   var nav = document.querySelector(".site-nav");
   var hero = document.querySelector("[data-hero]");
   var opening = document.querySelector("[data-v2-opening]");
@@ -127,6 +127,7 @@
   function syncMotionMode() {
     var animate = !reducedQuery.matches;
     document.documentElement.classList.toggle("motion-ready", animate);
+    document.documentElement.classList.toggle("story-static", storyStaticQuery.matches);
     if (opening) opening.setAttribute("data-opening-progress", animate ? "0" : "1");
     if (story) story.setAttribute("data-story-step", "4");
     render();
@@ -136,7 +137,7 @@
     window.addEventListener("scroll", requestRender, { passive: true });
     window.addEventListener("resize", requestRender);
     if (typeof reducedQuery.addEventListener === "function") reducedQuery.addEventListener("change", syncMotionMode);
-    if (typeof storyStaticQuery.addEventListener === "function") storyStaticQuery.addEventListener("change", requestRender);
+    if (typeof storyStaticQuery.addEventListener === "function") storyStaticQuery.addEventListener("change", syncMotionMode);
     syncMotionMode();
   }
 

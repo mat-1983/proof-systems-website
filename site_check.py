@@ -127,6 +127,46 @@ def visible_text(raw: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def identity_errors(raw: str, label: str) -> list[str]:
+    """Return public identity failures for one page; also used by mutation fixtures."""
+    errors: list[str] = []
+    text = visible_text(raw)
+    disclosure = "Proof Systems is the trading name of Mathew Glendenning, a sole trader."
+    if text.count(disclosure) != 1:
+        errors.append(f"{label}: sole-trader disclosure count is {text.count(disclosure)}, expected 1")
+    footer = re.search(r"<footer[\s\S]*?</footer>", raw, flags=re.I)
+    if not footer:
+        errors.append(f"{label}: missing footer")
+        return errors
+    legal = re.search(r'<p class="footer-legal">([\s\S]*?)</p>', footer.group(0), flags=re.I)
+    if not legal:
+        errors.append(f"{label}: missing footer legal block")
+    else:
+        legal_text = visible_text(legal.group(1))
+        if FOOTER_LEGAL not in legal_text:
+            errors.append(f"{label}: incomplete sole-trader footer identity")
+        if 'href="mailto:mat@proofsystems.co.uk"' not in legal.group(1):
+            errors.append(f"{label}: legal email is not a clickable mailto")
+    for pattern, description in (
+        (r"\bLtd\.?\b", "Ltd wording"),
+        (r"registered office", "registered-office wording"),
+        (r"company number", "company-number claim"),
+        (r"\bincorporated\b", "incorporated-company claim"),
+    ):
+        if re.search(pattern, text, flags=re.I):
+            errors.append(f"{label}: prohibited identity claim: {description}")
+    return errors
+
+
+def contrast_ratio(foreground: str, background: str) -> float:
+    def luminance(value: str) -> float:
+        channels = [int(value[index:index + 2], 16) / 255 for index in (0, 2, 4)]
+        linear = [channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4 for channel in channels]
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+    first, second = luminance(foreground.lstrip("#")), luminance(background.lstrip("#"))
+    return (max(first, second) + 0.05) / (min(first, second) + 0.05)
+
+
 def parse(path: pathlib.Path) -> tuple[str, PageParser]:
     raw = path.read_text(encoding="utf-8")
     parser = PageParser()
@@ -239,10 +279,31 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("reduced motion must expose the complete opening without scroll travel", failures)
     if ".v2-work-story { min-height: 0; padding: 8rem 0; }" not in css:
         fail("reduced motion must expose the complete workflow in ordinary flow", failures)
-    if '(max-width: 900px)' not in js or "storyStaticQuery.matches" not in js:
+    if '(max-width: 900px), (max-height: 760px)' not in js or "storyStaticQuery.matches" not in js:
         fail("tablet and phone workflow stories must use the readable static composition", failures)
     if "html:not(.motion-ready) .v2-flow" not in css:
         fail("no-JavaScript workflow must expose the readable vertical record trail", failures)
+    if "html.story-static .v2-work-story" not in css:
+        fail("short desktop windows must use the same unclipped static story composition", failures)
+    if "@media (max-height: 700px) and (min-width: 901px)" not in css or ".v2-opening-sticky { min-height: 0; }" not in css:
+        fail("short desktop windows must receive a viewport-height-safe opening", failures)
+    if ".home-v2 .site-nav { position: fixed; background: rgba(11, 14, 16, 0.94); }" not in css:
+        fail("no-JavaScript navigation must keep an opaque readable fallback", failures)
+    if "html.motion-ready .home-v2 .site-nav:not(.is-compact) { background: transparent; }" not in css:
+        fail("transparent opening navigation must be limited to successful enhancement", failures)
+    for foreground, background, label in (
+        ("#d9a061", "#0b0e10", "dark-opening eyebrow"),
+        ("#d9a061", "#111518", "dark-story eyebrow"),
+        ("#70451f", "#d9c5a4", "sand-section eyebrow"),
+    ):
+        if contrast_ratio(foreground, background) < 4.5:
+            fail(f"{label} contrast is below 4.5:1", failures)
+    if ".v2-approach-list strong" not in css or "color: #1b1d1c" not in css:
+        fail("approach step titles need an explicit dark colour on sand", failures)
+    if ".home-v2 .v2-all-systems { color: #1c1f1f" not in css:
+        fail("Selected Systems ghost action needs explicit dark text on cream", failures)
+    if contrast_ratio("#1c1f1f", "#f0ece2") < 4.5:
+        fail("Selected Systems ghost action contrast is below 4.5:1", failures)
 
     for anchor in ("fit", "how", "proof", "about", "approach", "start", "proposition", "gap", "economics", "capability"):
         if anchor not in parser.ids:
@@ -319,8 +380,15 @@ def check_stories_and_media(failures: list[str]) -> None:
         if "What this film shows" not in raw or "Synthetic demonstration" not in raw:
             fail(f"{path.name}: missing film context or synthetic status", failures)
         tracks = video["tracks"]
-        if not tracks or tracks[0].get("kind") != "captions" or tracks[0].get("label") != "English descriptions":
+        sources = video["sources"]
+        if len(sources) != 1 or sources[0].get("src") != source or sources[0].get("type") != "video/mp4":
+            fail(f"{path.name}: film source is not exactly associated with its story", failures)
+        if len(tracks) != 1 or tracks[0].get("src") != captions:
+            fail(f"{path.name}: captions are not exactly associated with their film", failures)
+        elif tracks[0].get("kind") != "captions" or tracks[0].get("label") != "English descriptions" or tracks[0].get("srclang") != "en":
             fail(f"{path.name}: missing labelled English description track", failures)
+        elif "default" in tracks[0]:
+            fail(f"{path.name}: silent-film description track must not be forced by default", failures)
 
     ma = ROOT / "work" / "management-accounts.html"
     raw, parser = parse(ma)
@@ -345,29 +413,56 @@ def check_public_safety_and_identity(failures: list[str]) -> None:
     for phrase in PUBLIC_REJECTED:
         if phrase in joined:
             fail(f"public HTML contains prohibited or stale phrase: {phrase}", failures)
-    for pattern, label in (
-        (r"\bLtd\.?\b", "Ltd wording"),
-        (r"registered office", "registered-office wording"),
-        (r"company number", "company-number claim"),
-    ):
-        if re.search(pattern, joined, flags=re.I):
-            fail(f"public HTML contains prohibited identity claim: {label}", failures)
-
     footer_pages = [ROOT / "index.html", ROOT / "workflow.html", ROOT / "privacy.html", ROOT / "training.html", ROOT / "work" / "index.html"]
     footer_pages.extend(ROOT / "work" / f"{slug}.html" for slug in STORY_SLUGS)
     for path in footer_pages:
-        text = visible_text(path.read_text(encoding="utf-8"))
+        raw = path.read_text(encoding="utf-8")
+        text = visible_text(raw)
         if FOOTER_COPYRIGHT not in text:
             fail(f"{path.relative_to(ROOT)} missing copyright identity", failures)
-        if FOOTER_LEGAL not in text:
-            fail(f"{path.relative_to(ROOT)} missing sole-trader identity", failures)
+        failures.extend(identity_errors(raw, str(path.relative_to(ROOT))))
+
+    # Focused mutation fixtures prove that retained identity safeguards fail closed.
+    home_raw = (ROOT / "index.html").read_text(encoding="utf-8")
+    incorporated = identity_errors(home_raw + "<p>Proof Systems is incorporated.</p>", "fixture-incorporated")
+    if not any("incorporated-company claim" in error for error in incorporated):
+        fail("identity checker mutation did not reject an incorporated-company claim", failures)
+    unlinked = home_raw.replace(
+        '<a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>',
+        "mat@proofsystems.co.uk</p>",
+        1,
+    )
+    if not any("not a clickable mailto" in error for error in identity_errors(unlinked, "fixture-unlinked")):
+        fail("identity checker mutation did not reject an unlinked legal email", failures)
+    duplicate = home_raw.replace("</footer>", f'<p>{FOOTER_LEGAL}</p></footer>', 1)
+    if not any("disclosure count" in error for error in identity_errors(duplicate, "fixture-duplicate")):
+        fail("identity checker mutation did not reject a duplicated disclosure", failures)
+
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    footer_rule = re.search(r"\.footer-legal\s*\{([^}]*)\}", css)
+    if not footer_rule:
+        fail("shared stylesheet missing footer legal treatment", failures)
+    else:
+        body = footer_rule.group(1)
+        size = re.search(r"font-size:\s*([\d.]+)rem", body)
+        if not size or float(size.group(1)) < 0.875:
+            fail("footer legal text must remain at least 0.875rem", failures)
+        for contract in ("overflow-wrap: break-word", "white-space: normal", "line-height: 1.55"):
+            if contract not in body:
+                fail(f"footer legal treatment missing readable wrapping contract: {contract}", failures)
 
 
 def check_redirects_and_shared_shell(failures: list[str]) -> None:
     redirects = (ROOT / "_redirects").read_text(encoding="utf-8")
-    for route in ("/checkout", "/video-series"):
-        if route not in redirects:
-            fail(f"_redirects missing public route {route}", failures)
+    entries = [tuple(line.split()) for line in redirects.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    expected = {
+        ("/checkout", "/workflow.html", "301"),
+        ("/checkout.html", "/workflow.html", "301"),
+        ("/video-series", "/index.html", "301"),
+        ("/video-series.html", "/index.html", "301"),
+    }
+    if set(entries) != expected:
+        fail(f"_redirects entries {set(entries)} != approved destinations/statuses {expected}", failures)
     for path in [ROOT / "workflow.html", ROOT / "privacy.html", ROOT / "training.html", ROOT / "work" / "index.html"]:
         raw = path.read_text(encoding="utf-8")
         if "assets/css/site.css" not in raw and "../assets/css/site.css" not in raw:
