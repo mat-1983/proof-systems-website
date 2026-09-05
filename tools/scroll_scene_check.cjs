@@ -62,4 +62,17 @@ for (const kind of ['story','process']) {
   }
 }
 assert(!source.includes('storyStaticQuery') && !source.includes('story-static'));
-console.log('PASS production scroll maths: six viewport/card geometries, all stages, heading/bottom holds, reverse motion, toolbar stability and reduced-motion geometry');
+// Visual scroll stages must not remove the complete narrative from virtual-cursor reading.
+const css = fs.readFileSync(require('node:path').join(__dirname, '../assets/css/site.css'), 'utf8');
+const html = fs.readFileSync(require('node:path').join(__dirname, '../index.html'), 'utf8');
+const panelRule = css.match(/\.motion-ready \[data-stage-panel\]\s*\{([^}]+)\}/);
+assert(panelRule, 'Enhanced stage rule is present');
+assert(!/visibility\s*:\s*hidden|display\s*:\s*none/.test(panelRule[1]), 'All narrative stages remain available to screen readers');
+assert(/pointer-events\s*:\s*none/.test(panelRule[1]), 'Invisible panels do not intercept pointer input');
+const narrativePanels = [...html.matchAll(/<article[^>]*data-stage-panel="[0-3]"[^]*?<\/article>/g)];
+assert.equal(narrativePanels.length, 8);
+for (const panel of narrativePanels) {
+  assert(!/aria-hidden="true"|\bhidden(?:[\s=>])|\binert(?:[\s=>])/.test(panel[0]), 'Narration is not hidden from assistive technology');
+  assert(!/<(?:a|button|input|select|textarea|summary)\b|\btabindex\s*=/.test(panel[0]), 'Invisible narrative panels cannot contain keyboard-focus stops');
+}
+console.log('PASS production scroll maths: six viewport/card geometries, all stages, heading/bottom holds, reverse motion, toolbar stability, reduced-motion geometry and complete accessible narration');

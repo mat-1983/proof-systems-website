@@ -3473,8 +3473,8 @@ html { scroll-behavior: auto; }
 .motion-ready .scroll-stage { position: sticky; top: var(--stage-top, var(--nav-h)); height: var(--stage-height, auto); display: grid; align-items: center; }
 .motion-ready .scroll-stage > .wrap { min-width: 0; }
 .motion-ready .stage-panels { position: relative; height: var(--panels-height, 420px); display: block; }
-.motion-ready [data-stage-panel] { position: absolute; inset: 0; height: max-content; visibility: hidden; opacity: 0; will-change: transform, opacity; }
-.motion-ready [data-stage-panel].is-current { visibility: visible; }
+.motion-ready [data-stage-panel] { position: absolute; inset: 0; height: max-content; opacity: 0; pointer-events: none; will-change: transform, opacity; }
+.motion-ready [data-stage-panel].is-current { pointer-events: auto; }
 .connection-board { position: relative; min-height: 500px; max-width: 1000px; display: grid; grid-template-rows: auto 95px auto 66px auto auto; }
 .connection-sources { display: grid; grid-template-columns: 1fr 1fr; gap: 18%; grid-row: 1; position: relative; z-index: 2; }
 .connection-source { border: 1px solid #526970; background: #1a2a32; padding: 1.4rem 1.7rem; }

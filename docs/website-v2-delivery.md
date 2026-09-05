@@ -69,3 +69,5 @@ Implementation verification includes the repository site, privacy, media and HTT
 Browser UAT and final independent review remain separate pending checks at this implementation handoff. The Mac was locked during implementation, so no new browser or physical iOS/Android device verification is claimed here. No form was submitted; no merge, push, deployment or publication was performed.
 
 Simple Gate: PASS
+
+Independent review correction: normal-motion visual panels now use opacity alone rather than `visibility: hidden`, so screen-reader virtual-cursor reading retains the complete workflow and process narrative. Inactive panels ignore pointer input and contain no focusable controls. The scroll regression gate verifies these accessibility contracts. Browser verification remains pending.
