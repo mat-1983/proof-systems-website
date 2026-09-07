@@ -102,7 +102,7 @@
   }
 
   function clearTrackLayout(track) {
-    ["--panels-height", "--stage-height", "--stage-top", "--scroll-travel", "--flow-progress", "--flow-depth"].forEach(function (property) {
+    ["--panels-height", "--stage-height", "--stage-top", "--scroll-travel", "--flow-progress", "--flow-depth", "--depth-x", "--depth-y", "--route-progress"].forEach(function (property) {
       track.style.removeProperty(property);
     });
     track.removeAttribute("data-overflow");
@@ -135,15 +135,20 @@
       var styles = getComputedStyle(stage);
       var naturalHeight = inner.offsetHeight + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
       var stageHeight = Math.max(160, stableHeight - navHeight);
+      var panelOverflow = 0;
       if (panels.length) {
         // Reserve space for the persistent indicator and disclosure. Oversized cards
         // read from top to bottom during their native-scroll hold, without a nested scroller.
         var panelSpace = Math.max(80, stageHeight - (naturalHeight - tallest));
         track.style.setProperty("--panels-height", Math.min(tallest, panelSpace) + "px");
+        panelOverflow = Math.max(0, tallest - panelSpace);
       }
       track.style.setProperty("--stage-height", stageHeight + "px");
       track.style.setProperty("--stage-top", navHeight + "px");
-      track.style.setProperty("--scroll-travel", Math.max(600, stableHeight * (panels.length ? 3 : 1.4), panels.length ? tallest * 4 : naturalHeight * 1.5) + "px");
+      // Normal cards get a bounded reading journey, regardless of monitor height.
+      // Only genuine overflow earns extra travel: at least one scroll pixel per panned pixel.
+      var panelTravel = Math.max(clamp(stableHeight * 0.42, 300, 420), panelOverflow / 0.42 + 140);
+      track.style.setProperty("--scroll-travel", (panels.length ? panelTravel * panels.length : Math.max(600, stableHeight * 1.4, naturalHeight * 1.5)) + "px");
       track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
       if (track.dataset.scrollTrack === "connection") measureWires(track);
     });
@@ -212,6 +217,19 @@
     return selected;
   }
 
+  function renderDepth(track, progress) {
+    if (reducedQuery.matches || track.dataset.scrollTrack === "connection") return;
+    var depthProgress = progress;
+    if (flowQuery.matches) {
+      var height = viewportProbe.offsetHeight || window.innerHeight;
+      // The backdrop starts responding when the scene enters, before its reading line arrives.
+      depthProgress = clamp((height - track.getBoundingClientRect().top) / (track.offsetHeight + height), 0, 1);
+    }
+    track.style.setProperty("--depth-x", (-140 + depthProgress * 280).toFixed(2) + "px");
+    track.style.setProperty("--depth-y", (180 - depthProgress * 360).toFixed(2) + "px");
+    track.style.setProperty("--route-progress", depthProgress.toFixed(4));
+  }
+
   function renderTracks() {
     tracks.forEach(function (track) {
       var progress = reducedQuery.matches ? 1 : trackProgress(track);
@@ -223,6 +241,7 @@
         track.style.setProperty("--flow-progress", progress.toFixed(4));
         track.style.setProperty("--flow-depth", ((progress - 0.5) * 32).toFixed(2) + "px");
       }
+      renderDepth(track, progress);
       track.setAttribute("data-active-stage", String(selected + 1));
       if (track.dataset.scrollTrack === "story" && story) story.setAttribute("data-story-step", String(selected + 1));
       panels.forEach(function (panel, index) {
@@ -231,13 +250,17 @@
           return;
         }
         var position = progress * 4 - index;
-        var enter = index === 0 ? 1 : ease(phase(-0.12, 0.12, position));
-        var leave = index === panels.length - 1 ? 0 : ease(phase(0.88, 1.12, position));
-        var opacity = enter * (1 - leave);
+        var overflow = Math.max(0, panel.offsetHeight - panel.parentElement.offsetHeight);
+        var enter = index === 0 ? 1 : ease(phase(-0.02, 0.22, position));
+        var leave = index === panels.length - 1 ? 0 : ease(phase(overflow ? 0.74 : 0.72, 0.98, position));
+        // Complete the outgoing fade before the next copy appears. Moving cards can
+        // cross the same space, but their text never forms a double exposure.
+        var appear = index === 0 ? 1 : ease(phase(-0.02, 0.10, position));
+        var disappear = index === panels.length - 1 ? 0 : ease(phase(0.86, 0.98, position));
+        var opacity = appear * (1 - disappear);
         var distance = track.dataset.scrollTrack === "process" ? 110 : 38;
         panel.style.opacity = String(opacity);
-        var overflow = Math.max(0, panel.offsetHeight - panel.parentElement.offsetHeight);
-        var readTravel = overflow * ease(phase(0.20, 0.70, position));
+        var readTravel = overflow * ease(phase(0.28, 0.70, position));
         panel.style.transform = "translateY(" + ((1-enter-leave) * distance - readTravel) + "px)";
         panel.classList.toggle("is-current", opacity > 0.001);
         // These panels contain narrative only; hidden content cannot create invisible focus stops.

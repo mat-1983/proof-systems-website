@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/js/site.js'), 'utf8');
-const names = ['clamp', 'phase', 'ease', 'progressThrough', 'setPath', 'renderOpening', 'clearTrackLayout', 'measureTracks', 'trackProgress', 'visibleStage', 'renderTracks', 'syncMotionMode'];
+const names = ['clamp', 'phase', 'ease', 'progressThrough', 'setPath', 'renderOpening', 'clearTrackLayout', 'measureTracks', 'trackProgress', 'visibleStage', 'renderDepth', 'renderTracks', 'syncMotionMode'];
 const functions = names.map(name => {
   const match = source.match(new RegExp('^  function ' + name + '\\([^]*?(?=^  function |^  if \\(|^  window\\.)', 'm'));
   assert(match, 'Production function missing: ' + name);
@@ -75,22 +75,25 @@ function fixture(kind, viewport, heights, flow=false) {
   };
 }
 for(const kind of ['story','process']) {
-  for(const [height,natural] of [[900,470],[1024,580],[844,420],[600,450],[500,440],[480,490],[390,270]]) {
+  for(const [height,natural] of [[900,470],[1024,580],[1146,470],[1600,470],[844,420],[600,450],[500,440],[480,490],[390,270]]) {
     const f=fixture(kind,height,natural);
     assert.equal(parseFloat(f.variables['--stage-height']),height-72,'Desktop stage fits beneath navigation');
     assert.equal(parseFloat(f.variables['--panels-height']),Math.min(natural,Math.max(80,height-72-170)),'Cue/indicator space is included in overflow reading');
-    assert(parseFloat(f.variables['--scroll-travel']) < Math.max(height*4.5,natural*5),'Desktop journey is shorter than the former runway');
+    const overflow=Math.max(0,natural-f.parent.offsetHeight);
+    const perCardTravel=parseFloat(f.variables['--scroll-travel'])/4;
+    if(!overflow) assert(perCardTravel<=420,'Normal desktop travel is capped independently of monitor height');
+    else assert(perCardTravel*.42>=overflow,'Overflow reading retains at least one scroll pixel per panned pixel');
     const snapshots=[];
     for(let i=0;i<4;i++) {
-      f.setProgress((i+.18)/4);
+      f.setProgress((i+.24)/4);
       assert.equal(f.panels[i].style.opacity,'1');
       assert.equal(f.panels[i].style.transform,'translateY(0px)','Incoming heading remains readable');
-      f.setProgress((i+.76)/4);
+      f.setProgress((i+.71)/4);
       assert.equal(f.panels[i].style.transform,`translateY(${-Math.max(0,natural-f.parent.offsetHeight)}px)`,'Full panel bottom is exposed before exit');
       snapshots.push(f.panels.map(p=>({...p.style})));
     }
     for(let i=3;i>=0;i--) {
-      f.setProgress((i+.76)/4);
+      f.setProgress((i+.71)/4);
       assert.deepEqual(f.panels.map(p=>({...p.style})),snapshots[i],'Reverse scroll restores desktop state');
     }
     const travel=f.variables['--scroll-travel'];
@@ -108,6 +111,7 @@ for(const kind of ['story','process']) {
       if(reduced) {
         assert.equal(f.track.attrs['data-progress'],'1.0000');
         assert.equal(f.variables['--flow-depth'],undefined,'Reduced Motion clears moving decoration');
+        for(const key of ['--depth-x','--depth-y','--route-progress']) assert.equal(f.variables[key],undefined,'Reduced Motion clears brand artwork motion and route state');
       }
     }
     f.setMode(false);
@@ -116,6 +120,39 @@ for(const kind of ['story','process']) {
     f.setMode(false,true);
     for(const panel of f.panels) assert.equal(panel.style.opacity,undefined,'Desktop Reduced Motion restores complete flow after active staging');
   }
+  // Measure the fully stationary interval in the actual production transition, in scroll pixels.
+  for(const viewport of [900,1146,1600]) {
+    const pacing=fixture(kind,viewport,470);
+    const step=parseFloat(pacing.variables['--scroll-travel'])/4;
+    let stationary=0;
+    for(let pixel=0;pixel<=step;pixel++) {
+      pacing.setProgress((1+pixel/step)/4);
+      if(pacing.panels[1].style.opacity==='1' && pacing.panels[1].style.transform==='translateY(0px)') stationary++;
+    }
+    assert(stationary<=211,'Normal middle-card stationary interval is at most210px plus sampling tolerance');
+    assert(stationary>=180,'Shorter pacing retains a usable reading interval');
+    let faintHandover=0;
+    for(let pixel=0;pixel<=step;pixel++) {
+      pacing.setProgress((.5+pixel/step)/4);
+      const visible=pacing.panels.filter(panel=>Number(panel.style.opacity)>.001);
+      assert(visible.length<=1,'Desktop handover never superimposes outgoing and incoming copy');
+      if(pacing.panels.every(panel=>Number(panel.style.opacity)<.2)) faintHandover++;
+    }
+    assert(faintHandover<=32,'Clean handover has no prolonged empty interval');
+  }
+  const depth=fixture(kind,844,[330,350,330,360],true);
+  depth.scrollTo(0);
+  const initial={x:parseFloat(depth.variables['--depth-x']),y:parseFloat(depth.variables['--depth-y']),route:Number(depth.variables['--route-progress'])};
+  depth.scrollTo(380);
+  assert(parseFloat(depth.variables['--depth-x'])-initial.x>40,'One ordinary swipe produces clearly visible diagonal artwork movement');
+  assert(initial.y-parseFloat(depth.variables['--depth-y'])>50,'Backdrop movement is materially stronger than the previous32px total');
+  assert(initial.y-parseFloat(depth.variables['--depth-y'])<380,'Pinned decoration travels more slowly than native foreground');
+  assert(Number(depth.variables['--route-progress'])>initial.route,'Amber route progresses with real scrolling');
+  depth.scrollTo(0);
+  assert.equal(parseFloat(depth.variables['--depth-x']),initial.x,'Reverse scrolling restores artwork exactly');
+  assert.equal(parseFloat(depth.variables['--depth-y']),initial.y);
+  depth.setMode(false,true);
+  for(const key of ['--depth-x','--depth-y','--route-progress']) assert.equal(depth.variables[key],undefined);
   // Unequal cards deliberately prevent synthetic quartiles from matching the real reading position.
   const f=fixture(kind,844,[220,800,250,350],true);
   const readingOffset=(844-72)*.38;
@@ -201,4 +238,11 @@ for(const cue of cues) assert(/<svg\b/.test(cue[1]) && !/<(?:a|button)\b/.test(c
 assert(/\.scroll-track \.stage-indicator, \.scroll-track \.scene-scroll-cue, \.scroll-track \.story-thread \{ display: none;/.test(css),'Former sticky cues are absent from phone flow');
 assert(/@media \(prefers-reduced-motion: reduce\)[^]*?\.scene-scroll-cue\s*\{\s*display:\s*none !important/.test(css));
 assert(/\.scene-scroll-cue\s*\{[^}]*display:\s*none/.test(css),'No-JS shows no stray scroll cue');
-console.log('PASS production scene geometry: desktop heading/bottom holds and reverse progression; phone natural flow, unequal-height visible stages, no counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');
+const backdrops=[...html.matchAll(/<div class="scene-depth scene-depth--(?:story|process)" aria-hidden="true">([^]*?)<\/svg>/g)];
+assert.equal(backdrops.length,2,'Both targeted scenes have their own accessible-safe code-native backdrop');
+for(const backdrop of backdrops) assert(/focusable="false"/.test(backdrop[1]) && !/<(?:a|button)\b/.test(backdrop[1]));
+assert(/\.scene-depth \{[^}]*pointer-events: none/.test(css),'Decorative art cannot intercept gestures');
+assert(/\.scene-depth-window \{[^}]*overflow: clip/.test(css),'Oversized art clips inside its own window');
+assert(!/\.scene-depth[^}]*animation:/.test(css),'Brand depth has no autonomous animation');
+assert(/\.story-panel \{ padding: 1.1rem .5rem .4rem; border: 0; background: transparent;/.test(css),'Phone story avoids nested outer boxes');
+console.log('PASS production scene geometry: capped desktop travel and 210px maximum middle-card hold; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; phone natural flow, unequal-height visible stages, no counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');

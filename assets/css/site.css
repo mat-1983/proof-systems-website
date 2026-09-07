@@ -3790,8 +3790,8 @@ html:not(.js) .wrap:has(#connect:target) .work-individual { display: none; }
     background: #526970;
   }
   .scroll-track .stage-panels::after { background: #d7ad78; transform: scaleY(var(--flow-progress, 1)); transform-origin: top; }
-  .story-panel { padding: 1.1rem .85rem .4rem; border: 1px solid #4d626a; background: linear-gradient(130deg, #213139ed, #142229f5); }
-  .story-panel.is-current, .process-card.is-current { border-color: #a09072; }
+  .story-panel { padding: 1.1rem .5rem .4rem; border: 0; background: transparent; }
+  .process-card.is-current { border-color: #bc946466; }
   .home-v2 .story-panel h3 { font-size: clamp(1.65rem, 7.5vw, 1.95rem); }
   .story-explanation p { font-size: .96rem; line-height: 1.55; }
   .story-illustration { padding: .6rem .25rem .9rem; }
@@ -3818,3 +3818,54 @@ html:not(.js) .wrap:has(#connect:target) .work-individual { display: none; }
 }
 /* JavaScript measures curved wires; the static diagram keeps a simple visible spine. */
 html:not(.js) .connection-board::before { content: ""; position: absolute; top: 15%; bottom: 18%; left: 50%; width: 1px; background: #d7ad78; }
+
+/* Branded depth lives behind the narrative. Its own window clips the oversized art;
+   neither the mobile track nor its cards clip or counter-translate the content. */
+[data-scroll-track="story"] .scroll-stage, [data-scroll-track="process"] .scroll-stage { isolation: isolate; }
+[data-scroll-track="story"] .scroll-stage > .wrap, [data-scroll-track="process"] .scroll-stage > .wrap { position: relative; z-index: 2; }
+.scene-depth { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.scene-depth-window { position: relative; width: 100%; height: 100%; overflow: clip; }
+.scene-depth-window::before {
+  content: ""; position: absolute; inset: -10%;
+  background: radial-gradient(ellipse at 72% 42%, #c77d3438, transparent 58%);
+  transform: translate(var(--depth-x, 0px), var(--depth-y, 0px));
+}
+.scene-depth svg {
+  position: absolute; left: 50%; top: 50%; width: max(900px, 95vw); max-width: none; height: auto; overflow: visible;
+  transform: translate(calc(-50% + var(--depth-x, 0px)), calc(-50% + var(--depth-y, 0px)));
+  fill: none; stroke: #bf8b52; stroke-width: 1.15; stroke-linejoin: round;
+}
+.scene-depth-outline { stroke-width: .7; opacity: .48; }
+.scene-depth-route { opacity: .5; }
+.scene-depth-nodes { fill: #1d292c; stroke: #d6a36b; stroke-width: 1.4; filter: drop-shadow(0 0 5px #db873c66); }
+.scene-depth--process .scene-depth-route { stroke-width: 2; opacity: .62; }
+.scene-depth-highlight { stroke: #efb765; stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--route-progress, 1)); filter: drop-shadow(0 0 4px #d7894370); }
+.scene-depth--story svg { width: max(800px, 83vw); }
+.scene-depth--story .scene-depth-window::before { background: radial-gradient(ellipse at 24% 60%, #cf8d3633, transparent 60%); }
+[data-scroll-track="story"] .story-explanation { text-shadow: 0 2px 14px #0a1115; }
+[data-scroll-track="story"] .work-record { border-color: #89918a99; box-shadow: 0 24px 44px #030b10aa, 0 1px 0 #ebbe8930 inset; }
+[data-scroll-track="story"] .connected-record { border-color: #dbac73; }
+[data-scroll-track="process"] .process-light { display: none; }
+[data-scroll-track="process"] .process-card {
+  background: linear-gradient(140deg, #33403aee, #172e38e6 58%, #162a33ed);
+  border-color: #a28d7255; border-top-color: #d8ac7899;
+  box-shadow: 0 28px 52px #030c11aa, 0 1px 0 #f6d2a52b inset, 12px 0 38px #d5903710;
+}
+@media (max-width: 760px), (max-width: 1024px) and (max-height: 550px) {
+  .scene-depth-window { position: sticky; top: var(--nav-h); height: calc(100svh - var(--nav-h)); }
+  .scene-depth svg { width: 800px; }
+  .scene-depth--story svg { width: 690px; }
+  .scene-depth--process .scene-depth-window::before { background: radial-gradient(ellipse at 70% 40%, #e199414f, transparent 65%); }
+  .scroll-track[data-scroll-track="story"]::before, .scroll-track[data-scroll-track="process"]::before { background: none; }
+  .scroll-track[data-scroll-track="story"] .stage-panels { gap: 1.6rem; }
+  .scroll-track[data-scroll-track="story"] .stage-panels::before, .scroll-track[data-scroll-track="story"] .stage-panels::after { display: none; }
+  [data-scroll-track="story"] .story-explanation { padding: .3rem 0; background: linear-gradient(90deg, #11191df2, #11191d99 72%, transparent); }
+  [data-scroll-track="process"] .stage-panels { padding-left: 14px; padding-right: 6px; gap: 1.5rem; }
+  [data-scroll-track="process"] .stage-panels::before, [data-scroll-track="process"] .stage-panels::after { left: 0; }
+  [data-scroll-track="process"] .process-card { background: linear-gradient(140deg, #33403aeb, #142b35db 58%, #162a33eb); }
+}
+html:not(.motion-ready) .scene-depth-window { position: relative; height: 100%; }
+html:not(.motion-ready) .scene-depth svg, html:not(.motion-ready) .scene-depth-window::before { transform: translate(-50%, -50%); }
+html:not(.motion-ready) .scene-depth-window::before { transform: none; }
+
+[data-scroll-track="story"] .stage-indicator, [data-scroll-track="process"] .stage-indicator { background: linear-gradient(90deg, #101d24ed, #101d24b3); }

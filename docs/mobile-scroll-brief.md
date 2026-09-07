@@ -49,3 +49,18 @@ Root rendered verification:
 A separate allow-listed public package passed an HTTP crawl and byte comparison against the reviewed source. Review URLs: `http://127.0.0.1:8989/index.html` on this Mac and `http://192.168.0.18:8989/index.html` from a phone on the same Wi-Fi while the Mac remains awake. The existing V2 preview and dated Netlify upload folder remain unchanged.
 
 Simple Gate: PASS. Next action: Mat reviews the native phone experience, especially whether a first-time visitor continues without explanation. Physical visitor validation remains a human acceptance step. No merge, push, deployment, form submission or memory write occurred.
+
+## Approved visual and pacing refinement
+
+Mat accepted the functional phone flow and requested stronger depth and clearer movement on 7 September. Continue on this branch from `ccf5c511886e511d23bd3270f3b441fc00f22ef1`, using the same Codex builder and independent reviewer. The scope is Follow One Piece of Work and A Practical Starting Point; preserve the opening and software connection scene.
+
+- Practical Starting Point: place an oversized, cropped outline of the existing five-node mark behind the cards, with unmistakable diagonal movement tied to scrolling and stronger amber light catching nodes. Give foreground cards convincing shadows and edge highlights while keeping the text quiet and readable.
+- Follow One Piece of Work: use related large nodes and connecting routes behind the records, with an amber highlight progressing along the route. Relate both scenes through the brand without repeating an identical watermark.
+- Phone cards must continue to move exactly with native scrolling. Use a slower decorative background for depth and soften repetitive outer borders, particularly the nested story card framing. Do not restore phone pinning, artificial runway or content counter-translation.
+- Desktop: shorten the actual stationary interval as well as the overall track. Cap normal reading travel so taller monitors do not create longer pauses. Retain sufficient travel for genuinely overflowing content on short desktop screens; transitions and reverse scrolling must remain smooth and readable.
+- Motion must visibly respond to real scrolling, with no autonomous logo animation, excessive bloom, scroll interception, added dependency or raster replacement of the brand geometry. Keep complete ordinary-flow Reduced Motion and no-JavaScript fallbacks.
+- Preserve all narrative, media, forms, privacy and routes. Bump the shared asset version consistently. Extend meaningful geometry tests for bounded desktop travel and visible decorative progress, including mode cleanup.
+
+Simple Gate: PASS. Intended user: a prospective business owner on phone or desktop. Required outcome: an obviously responsive, premium narrative that remains effortless to read. Smallest useful change: improve the two existing scene backdrops, foreground treatment and pacing without adding a new interaction.
+
+Root will render the actual reported 1493 × 1146 desktop size, normal desktop and compact phone views, check native foreground versus background movement, and review contrast, overflow, forward/reverse scrolling and fallback behaviour. The independent reviewer will assess the cumulative application change against `1891e21`. Refresh the existing allow-listed phone preview only after validation. Main, the previous Netlify package and public deployment remain unchanged.
