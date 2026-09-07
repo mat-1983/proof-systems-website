@@ -2,6 +2,7 @@
   document.documentElement.classList.add("js");
 
   var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var flowQuery = window.matchMedia("(max-width: 760px), (max-width: 1024px) and (max-height: 550px)");
   var nav = document.querySelector(".site-nav");
   var hero = document.querySelector("[data-hero]");
   var opening = document.querySelector("[data-v2-opening]");
@@ -62,7 +63,7 @@
     var progress = reducedQuery.matches ? 1 : progressThrough(opening);
     var settle = ease(phase(0, 0.36, progress));
     var depth = 1 - settle;
-    var assemble = ease(phase(0.03, 0.40, progress));
+    var assemble = ease(phase(0, 0.40, progress));
     var lift = ease(phase(0.31, 0.60, progress));
     var offsets = [[-16, 7], [0, 16], [17, -8], [-8, -15], [13, 14]];
     var originals = [[108, 200], [168, 268], [304, 132], [148, 132], [252, 228]];
@@ -75,7 +76,7 @@
     svg.style.transform = "perspective(850px) rotateX(" + (depth * 9) + "deg) rotateY(" + (-depth * 7) + "deg)";
     main.style.strokeDashoffset = String(1 - assemble);
     branches.forEach(function (branch, index) {
-      branch.style.strokeDashoffset = String(1 - ease(phase(0.02 + index * 0.02, 0.30 + index * 0.02, progress)));
+      branch.style.strokeDashoffset = String(1 - ease(phase(0, 0.30 + index * 0.02, progress)));
     });
     outline.style.strokeDashoffset = String(1 - ease(phase(0.15, 0.44, progress)));
     outline.style.opacity = String(0.25 + 0.75 * settle);
@@ -88,11 +89,11 @@
       node.style.filter = index > 2 ? "blur(" + (depth * 0.5) + "px)" : "none";
     });
 
-    var nameReveal = ease(phase(0.40, 0.59, progress));
+    var nameReveal = ease(phase(0.24, 0.55, progress));
     name.style.opacity = String(nameReveal);
     name.style.transform = "translateY(" + ((1 - nameReveal) * 34) + "px)";
     lines.forEach(function (line, index) {
-      var reveal = ease(phase(0.52 + index * 0.075, 0.68 + index * 0.075, progress));
+      var reveal = ease(phase(0.44 + index * 0.10, 0.76 + index * 0.10, progress));
       line.style.opacity = String(reveal);
       line.style.transform = "translateY(" + ((1 - reveal) * 28) + "px)";
     });
@@ -100,11 +101,31 @@
     if (legacyCue) legacyCue.style.opacity = String(1 - ease(phase(0.72, 0.92, progress)));
   }
 
+  function clearTrackLayout(track) {
+    ["--panels-height", "--stage-height", "--stage-top", "--scroll-travel", "--flow-progress", "--flow-depth"].forEach(function (property) {
+      track.style.removeProperty(property);
+    });
+    track.removeAttribute("data-overflow");
+    track.querySelectorAll("[data-stage-panel], .connection-board, .connection-layer, .connection-outcome, .story-thread i, .process-light").forEach(function (element) {
+      element.style.removeProperty("transform");
+      element.style.removeProperty("opacity");
+    });
+    track.querySelectorAll(".connection-wire").forEach(function (wire) {
+      wire.style.removeProperty("stroke-dashoffset");
+      wire.style.removeProperty("opacity");
+    });
+  }
+
   function measureTracks() {
     needsMeasure = false;
     var navHeight = nav ? nav.offsetHeight : 0;
     var stableHeight = viewportProbe.offsetHeight || window.innerHeight;
     tracks.forEach(function (track) {
+      clearTrackLayout(track);
+      if (flowQuery.matches || reducedQuery.matches) {
+        if (track.dataset.scrollTrack === "connection") measureWires(track);
+        return;
+      }
       var stage = track.querySelector(".scroll-stage");
       var panels = track.querySelectorAll("[data-stage-panel]");
       var tallest = 0;
@@ -122,7 +143,7 @@
       }
       track.style.setProperty("--stage-height", stageHeight + "px");
       track.style.setProperty("--stage-top", navHeight + "px");
-      track.style.setProperty("--scroll-travel", Math.max(600, stableHeight * (panels.length ? 4.5 : 2.5), panels.length ? tallest * 5 : naturalHeight * 2.5) + "px");
+      track.style.setProperty("--scroll-travel", Math.max(600, stableHeight * (panels.length ? 3 : 1.4), panels.length ? tallest * 4 : naturalHeight * 1.5) + "px");
       track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
       if (track.dataset.scrollTrack === "connection") measureWires(track);
     });
@@ -159,10 +180,36 @@
   }
 
   function trackProgress(track) {
+    if (flowQuery.matches) {
+      var viewportHeight = viewportProbe.offsetHeight || window.innerHeight;
+      var navHeight = nav ? nav.offsetHeight : 0;
+      if (track.dataset.scrollTrack === "connection") {
+        var board = track.querySelector(".connection-board");
+        // Finish drawing on arrival, before any of the diagram leaves the reading area.
+        return clamp((viewportHeight - board.getBoundingClientRect().top) / Math.min(board.offsetHeight, viewportHeight - navHeight), 0, 1);
+      }
+      var panels = track.querySelector(".stage-panels");
+      var readingLine = navHeight + (viewportHeight - navHeight) * 0.38;
+      return clamp((readingLine - panels.getBoundingClientRect().top) / panels.offsetHeight, 0, 1);
+    }
     var stage = track.querySelector(".scroll-stage");
     var travel = Math.max(track.offsetHeight - stage.offsetHeight, 1);
     var top = parseFloat(getComputedStyle(stage).top) || 0;
     return clamp((top - track.getBoundingClientRect().top) / travel, 0, 1);
+  }
+
+  function visibleStage(panels) {
+    var navHeight = nav ? nav.offsetHeight : 0;
+    var viewportHeight = viewportProbe.offsetHeight || window.innerHeight;
+    var readingLine = navHeight + (viewportHeight - navHeight) * 0.38;
+    var selected = 0;
+    var nearest = Infinity;
+    panels.forEach(function (panel, index) {
+      var rect = panel.getBoundingClientRect();
+      var distance = Math.max(rect.top - readingLine, readingLine - rect.bottom, 0);
+      if (distance < nearest) { nearest = distance; selected = index; }
+    });
+    return selected;
   }
 
   function renderTracks() {
@@ -170,10 +217,19 @@
       var progress = reducedQuery.matches ? 1 : trackProgress(track);
       track.setAttribute("data-progress", progress.toFixed(4));
       var panels = track.querySelectorAll("[data-stage-panel]");
-      var selected = Math.min(3, Math.floor(progress * 4));
+      var ordinaryFlow = flowQuery.matches || reducedQuery.matches;
+      var selected = ordinaryFlow && panels.length ? visibleStage(panels) : Math.min(3, Math.floor(progress * 4));
+      if (flowQuery.matches && !reducedQuery.matches) {
+        track.style.setProperty("--flow-progress", progress.toFixed(4));
+        track.style.setProperty("--flow-depth", ((progress - 0.5) * 32).toFixed(2) + "px");
+      }
       track.setAttribute("data-active-stage", String(selected + 1));
       if (track.dataset.scrollTrack === "story" && story) story.setAttribute("data-story-step", String(selected + 1));
       panels.forEach(function (panel, index) {
+        if (ordinaryFlow) {
+          panel.classList.toggle("is-current", index === selected);
+          return;
+        }
         var position = progress * 4 - index;
         var enter = index === 0 ? 1 : ease(phase(-0.12, 0.12, position));
         var leave = index === panels.length - 1 ? 0 : ease(phase(0.88, 1.12, position));
@@ -190,18 +246,18 @@
         item.classList.toggle("is-current", index === selected);
       });
       var thread = track.querySelector(".story-thread i");
-      if (thread) thread.style.transform = "scaleX(" + progress + ")";
+      if (thread && !ordinaryFlow) thread.style.transform = "scaleX(" + progress + ")";
       var light = track.querySelector(".process-light");
-      if (light) light.style.transform = "translate(" + (25 - progress*50) + "%," + (-10 + progress*20) + "%)";
+      if (light && !ordinaryFlow) light.style.transform = "translate(" + (25 - progress*50) + "%," + (-10 + progress*20) + "%)";
       if (track.dataset.scrollTrack === "connection") {
         var board = track.querySelector(".connection-board");
         var stage = track.querySelector(".scroll-stage");
         var stageStyles = getComputedStyle(stage);
         var boardOverflow = Math.max(0, board.offsetHeight + parseFloat(stageStyles.paddingTop) + parseFloat(stageStyles.paddingBottom) - stage.offsetHeight);
-        board.style.transform = "translateY(" + (-boardOverflow * ease(phase(0.16, 0.90, progress))) + "px)";
-        var flow = ease(phase(0.08, 0.57, progress));
+        if (!ordinaryFlow) board.style.transform = "translateY(" + (-boardOverflow * ease(phase(0.16, 0.90, progress))) + "px)";
+        var flow = ease(phase(0, ordinaryFlow ? 0.50 : 0.57, progress));
         track.querySelectorAll(".connection-wire").forEach(function (wire) {
-          var amount = wire.dataset.wire === "out" ? ease(phase(0.63, 0.83, progress)) : flow;
+          var amount = wire.dataset.wire === "out" ? ease(phase(ordinaryFlow ? 0.40 : 0.63, ordinaryFlow ? 0.80 : 0.83, progress)) : flow;
           wire.style.strokeDashoffset = String(1 - amount);
           wire.style.opacity = amount > 0 ? "1" : "0";
         });
@@ -209,11 +265,13 @@
         var finish = ease(phase(0.74, 0.93, progress));
         var layer = track.querySelector(".connection-layer");
         var outcome = track.querySelector(".connection-outcome");
-        layer.style.opacity = String(arrive);
-        layer.style.transform = "translateY(" + ((1-arrive)*24) + "px)";
-        outcome.style.opacity = String(finish);
-        outcome.style.transform = "translateY(" + ((1-finish)*15) + "px)";
-        track.querySelector(".connection-caption").textContent = progress < 0.38 ? "The work finds a way around the software." : progress < 0.78 ? "Connect the gaps around the systems you have." : "The software follows the work.";
+        if (!ordinaryFlow) {
+          layer.style.opacity = String(arrive);
+          layer.style.transform = "translateY(" + ((1-arrive)*24) + "px)";
+          outcome.style.opacity = String(finish);
+          outcome.style.transform = "translateY(" + ((1-finish)*15) + "px)";
+        }
+        track.querySelector(".connection-caption").textContent = ordinaryFlow ? "The software follows the work." : progress < 0.38 ? "The work finds a way around the software." : progress < 0.78 ? "Connect the gaps around the systems you have." : "The software follows the work.";
       }
     });
   }
@@ -234,6 +292,7 @@
 
   function syncMotionMode() {
     document.documentElement.classList.toggle("motion-ready", !reducedQuery.matches);
+    document.documentElement.classList.toggle("flow-scenes", flowQuery.matches);
     if (reducedQuery.matches) {
       document.documentElement.classList.remove("reveal-ready");
       document.querySelectorAll("[data-teaser-src] video").forEach(function (video) {
@@ -248,6 +307,7 @@
   window.addEventListener("scroll", requestRender, { passive: true });
   window.addEventListener("resize", requestMeasure);
   if (window.visualViewport) window.visualViewport.addEventListener("resize", requestMeasure);
+  if (typeof flowQuery.addEventListener === "function") flowQuery.addEventListener("change", syncMotionMode);
   if (typeof reducedQuery.addEventListener === "function") reducedQuery.addEventListener("change", syncMotionMode);
   syncMotionMode();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestMeasure);
