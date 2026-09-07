@@ -3842,7 +3842,12 @@ html:not(.js) .connection-board::before { content: ""; position: absolute; top: 
 .scene-depth-highlight { stroke: #efb765; stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--route-progress, 1)); filter: drop-shadow(0 0 4px #d7894370); }
 .scene-depth--story svg { width: max(800px, 83vw); }
 .scene-depth--story .scene-depth-window::before { background: radial-gradient(ellipse at 24% 60%, #cf8d3633, transparent 60%); }
-[data-scroll-track="story"] .story-explanation { text-shadow: 0 2px 14px #0a1115; }
+[data-scroll-track="story"] .story-explanation { position: relative; isolation: isolate; text-shadow: 0 2px 14px #0a1115; }
+[data-scroll-track="story"] .story-explanation::before {
+  content: ""; position: absolute; inset: -1.5rem -.6rem; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at 40% 50%, #11191d 32%, #11191df5 55%, #11191d99 76%, transparent 100%);
+  filter: blur(12px);
+}
 [data-scroll-track="story"] .work-record { border-color: #89918a99; box-shadow: 0 24px 44px #030b10aa, 0 1px 0 #ebbe8930 inset; }
 [data-scroll-track="story"] .connected-record { border-color: #dbac73; }
 [data-scroll-track="process"] .process-light { display: none; }
@@ -3859,7 +3864,7 @@ html:not(.js) .connection-board::before { content: ""; position: absolute; top: 
   .scroll-track[data-scroll-track="story"]::before, .scroll-track[data-scroll-track="process"]::before { background: none; }
   .scroll-track[data-scroll-track="story"] .stage-panels { gap: 1.6rem; }
   .scroll-track[data-scroll-track="story"] .stage-panels::before, .scroll-track[data-scroll-track="story"] .stage-panels::after { display: none; }
-  [data-scroll-track="story"] .story-explanation { padding: .3rem 0; background: linear-gradient(90deg, #11191df2, #11191d99 72%, transparent); }
+  [data-scroll-track="story"] .story-explanation { padding: .3rem 0; }
   [data-scroll-track="process"] .stage-panels { padding-left: 14px; padding-right: 6px; gap: 1.5rem; }
   [data-scroll-track="process"] .stage-panels::before, [data-scroll-track="process"] .stage-panels::after { left: 0; }
   [data-scroll-track="process"] .process-card { background: linear-gradient(140deg, #33403aeb, #142b35db 58%, #162a33eb); }
