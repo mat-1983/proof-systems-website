@@ -64,3 +64,26 @@ Mat accepted the functional phone flow and requested stronger depth and clearer 
 Simple Gate: PASS. Intended user: a prospective business owner on phone or desktop. Required outcome: an obviously responsive, premium narrative that remains effortless to read. Smallest useful change: improve the two existing scene backdrops, foreground treatment and pacing without adding a new interaction.
 
 Root will render the actual reported 1493 × 1146 desktop size, normal desktop and compact phone views, check native foreground versus background movement, and review contrast, overflow, forward/reverse scrolling and fallback behaviour. The independent reviewer will assess the cumulative application change against `1891e21`. Refresh the existing allow-listed phone preview only after validation. Main, the previous Netlify package and public deployment remain unchanged.
+
+## Visual refinement review receipt
+
+Final application head: `6f7bbf3a3293850d8914c592a3b58c987947f0b2`, following the main refinement at `cc9bd75a5bca93a8979ba9446165f82e93119d01`. Independent cumulative verdict against `1891e21`: **Approved**, no actionable findings. Implementation and independent review used the same separate Astra / high agents, under Mat's explicit Codex-agent instruction.
+
+Both scenes now have large, scroll-linked SVG backgrounds: the existing five-node mark behind process cards, and a distinct branching route behind the workflow records. Mobile story outer framing is removed; foreground surfaces, amber lighting and local feathered text protection establish depth. Desktop normal travel is bounded at 1,680px, with a maximum 210px fully stationary middle-card interval. Genuine overflow retains its separate reading allowance. Card handovers use sequential fades, preventing double-exposed copy.
+
+All required site, privacy, media, crawl, JavaScript syntax, production geometry and cumulative diff gates passed. The final CSS contrast correction was independently checked with the relevant gates; unrelated media and form contracts are unchanged. Tests sample desktop card states across the travel, including taller monitors, one visible panel during handover, bounded low-opacity transition distance, overflow reading, reversible decorative progress and mode cleanup.
+
+Root CUA rendered verification:
+
+- At 390 × 844, a native 380px scroll moved the first process card from 417.52px to 37.52px. A subsequent 304px scroll moved the card another 304px while the background moved 46.12px vertically and 35.87px horizontally. Reverse scrolling restored the exact previous state. All eight cards remained in ordinary flow, with no horizontal overflow.
+- At 320 × 480, all four process outcomes were reachable without clipping; the longer story's two records and final fields remained readable. At 844 × 390, process cards were 204px tall, with full outcomes and the following card visible through native scrolling.
+- At the reported 1493 × 1146 desktop size, story and process travel each reduced from 3,438px to 1,680px. Full cards and the large moving mark were clearly visible. The transition at progress 0.2626 was rechecked after correction: outgoing opacity 0, incoming opacity 0.626554, all others 0; no overlapping copy.
+- At 1440 × 900, story travel was 1,512px. The route remained clearly visible while the final feathered scrim protected the heading where a node crossed behind it. Final 390px rendering also confirmed the former rectangular text background was removed.
+- At 1280 × 320, the longer story card retained a 149px reading pan within a 122px visible area. At progress 0.3776, its complete heading occupied 149–178px and its explanation 184–224px; at 0.4291 the final record fields were visible. Reverse scrolling returned to the exact prior reading state. Switching the active scene into phone landscape cleared desktop geometry and transforms.
+- Explicit Reduced Motion and no-JavaScript fixtures at 390 × 844 retained all eight panels at opacity 1, in ordinary flow, with no transforms or autoplay. Decorative windows were static. These are browser simulations, not physical-device or operating-system preference tests. No browser warning or error was found in the final QA tab.
+
+The existing same-Wi-Fi preview was refreshed from an allow-listed 60-file, 56.1MB public package. Every public file matches the reviewed source byte for byte; an HTTP crawl checked 55 routes/assets. Private tooling, documentation, source masters and withdrawn media return 404. Shared asset version: `brand-depth-contrast-20260907`.
+
+Review on this Mac: `http://127.0.0.1:8989/index.html`. Phone: `http://192.168.0.18:8989/index.html`, on the same Wi-Fi while this Mac remains awake. Canonical main remains clean at `1891e21`; the dated Netlify V2 folder remains unchanged. No merge, push, deployment, external tracking update, form submission or Brain write occurred.
+
+Simple Gate: PASS. Next action: Mat reviews the refined appearance and pacing on his phone. Physical touch-device acceptance remains with Mat.
