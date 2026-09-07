@@ -29,3 +29,23 @@ Simple Gate: PASS. Use: scrolling needs no instruction. Explain: swipe to read, 
 Run site, privacy, media, crawl, JavaScript syntax and scroll geometry tests; cumulative diff hygiene. Add/adjust behavioural checks for no mobile artificial scroll runway, no hidden narrative, correct breakpoint switching and no content-countertranslation. Root performs CUA rendering/native scroll tests at 390×844, 320×480, 844×390, 768×1024 and 1440×900, including forward/reverse, short-screen reading, breakpoint changes and visible scroll response. Distinguish viewport simulations from physical touch-device testing.
 
 Commit the coherent local implementation and return exact commit, changed behaviour, tests and limitations. Independent reviewer must return Approved / Changes requested / Blocked on the cumulative change from the base. Return corrections to the same builder/worktree. If a real dependency blocks completion, record it without weakening the outcome.
+
+## Review receipt
+
+Implementation: `562d00dc7d2c898664a6d3bbda1b93e46c453acc`. Independent cumulative verdict: **Approved**, with no actionable findings. Builder and independent reviewer were each assigned Astra / high; Mat explicitly authorised Codex agents instead of Grok.
+
+Independent site, privacy, media, HTTP crawl, both JavaScript syntax checks, executable scroll geometry and cumulative diff checks passed. Public markup changes only update shared asset versions; narrative, media, form, privacy and route contracts remain intact.
+
+Root rendered verification:
+
+- At 390 × 844, the process scene reduced from 4,575px to 1,427px. A native 380px scroll moved the first card from top 417.92px to 37.92px, exactly following input. All story and process cards remain readable, with the following card visible where space permits. Reverse scrolling returns to the same positions.
+- At 320 × 480, the opening completes over 192px of travel, with all words visible and the final line ending at 376.8px. Longer cards are read in ordinary flow; the complete second record and final process outcome can be reached without clipping or a fixed hold.
+- At 844 × 390, a native 195px scroll moves the card 195px. The four process cards occupy a 910px track. The mobile software diagram travels with the document while connections draw and reverse. At 320 × 480 its result is readable before it exits.
+- At 1440 × 900 and 768 × 1024, the shorter desktop sequences retain readable cards, stage indicators and clear cues. Switching an active desktop stage to phone width clears former scene heights and transforms; returning to tablet reinstates the desktop layout.
+- An additional 1280 × 320 desktop check covers the overflow reading phase. A 271px story card has a 122px visible area; its record top, complete heading and explanation, then final record fields can all be read across the retained 149px pan. Reverse scrolling is stable.
+- Reduced Motion and no-JavaScript browser fixtures at 390 × 844 show all eight cards at full opacity in ordinary flow, with cues hidden and no teaser autoplay. These are explicit simulations, not operating-system preference or physical touch-device tests. Executable tests additionally cover preference changes after motion has begun.
+- No horizontal overflow or current browser console warning/error was found in the tested views.
+
+A separate allow-listed public package passed an HTTP crawl and byte comparison against the reviewed source. Review URLs: `http://127.0.0.1:8989/index.html` on this Mac and `http://192.168.0.18:8989/index.html` from a phone on the same Wi-Fi while the Mac remains awake. The existing V2 preview and dated Netlify upload folder remain unchanged.
+
+Simple Gate: PASS. Next action: Mat reviews the native phone experience, especially whether a first-time visitor continues without explanation. Physical visitor validation remains a human acceptance step. No merge, push, deployment, form submission or memory write occurred.
