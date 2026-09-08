@@ -166,3 +166,15 @@ The following story is “Where the work loses its flow”: re-enter, work aroun
 The opening’s 54svh animation travel, process travel at 140% of its earlier baseline, phone connection staging/title relocation, prominent desktop title/laptop fit, single explanatory row/AI economics, all evidence integration facts and media/form/legal contracts remain intact. Shared CSS/JS revision: `clear-offer-route-20260908`.
 
 Builder gates pass: site, privacy, exact films/masters/posters/captions/teasers, HTTP crawl, both JavaScript syntax, production scene geometry and current/cumulative diff checks. Tests replace fictional-order requirements with the single-map/copy/adjacent-highlight/physical-break contracts and cover map overflow fallback. Root browser validation and independent cumulative review follow on the committed candidate. No merge, push, deployment, form submission or external record write.
+
+### Clearer-offer review delivery
+
+Application head `f05d60ac53eb72cac6db323a1ab456925ddd4fc8` received independent cumulative **Approved** against canonical `1891e21`, with no actionable findings. All independent gates passed. Root's rendered review found and returned one diagram contrast/spacing defect to the builder; the corrected label and note use readable light text and intentional spacing.
+
+At 1440 × 900, desktop stages 01 → 02 → 04 → 02 retain the same 368.56px-high map bounds while the relevant two nodes and interrupted link are highlighted. The 1280 × 720 laptop scene fits with readable type. At 390 × 664, one 315.8px-high map precedes four compact native-flow explanations; a 150px scroll moves the map and explanations exactly 150px while the branded background moves. Narrow layouts through 320 × 480 remain readable without horizontal page overflow. A 1280 × 480 desktop correctly falls back to flow rather than clipping the map.
+
+At 375 × 667, the connection section remains staged and a 120px scroll changes progress from .5737 to .8307 and finishes the remaining wire. Resizing to 1280 × 720 restores the single introduction inside the scene, the 72.96px connection heading and all eligible desktop modes. No-JavaScript and Reduced Motion server fixtures retain all narration and diagrams; these are controlled simulations. The selected-systems navigation returns correctly to the new “What I do” section. Physical phone feel and commercial wording remain Mat's review decision.
+
+The existing phone preview now serves the reviewed `clear-offer-route-20260908` build: 60 public files match source byte-for-byte, 55 HTTP paths pass, and private docs, Git metadata, tooling, source masters and withdrawn film paths return 404. Current review: `http://127.0.0.1:8989/index.html` on this Mac and `http://192.168.0.18:8989/index.html` on the same Wi-Fi while the Mac is awake. The preserved pre-thread V1 comparison remains available on port 8991. Canonical main remains clean at `1891e21`; the dated Netlify folder is unchanged. No merge, push, deployment, form submission or external write occurred.
+
+Simple Gate: PASS. Next action: Mat compares the clearer offer and information journey on desktop and phone.

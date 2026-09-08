@@ -1,12 +1,18 @@
 # Proof Systems Website Testing
 
-Updated: 2026-09-05
+Updated: 2026-09-08
 
 ## Clearer offer and shared information-route map — 8 September 2026
 
 From `3e6449b`, the early `fit` slot becomes a plain-language bespoke software offer and native labelled diagram. The next story replaces fictional customer-order records with four common manual information gaps. Its five-node map persists beside desktop copy; mobile uses one complete map followed by small decorative fragments and native-flow explanations. Map overflow on short desktop screens falls back to flow. Existing opening/process travel, connection sizing/relocation and every media/form contract remain intact. Navigation now labels the unchanged `fit` destination “What I do”.
 
 PASS — site/copy/route contracts, privacy, exact media/master hashes, HTTP crawl, both JavaScript syntax, production geometry and cumulative diff checks. New checks require exactly one map, four complete problem stages, physical interrupted links and stage-specific adjacent-node highlighting; they reject old fictional records and prototype controls. Geometry exercises full-map fit and native-flow fallback. Root owns browser rendering and the independent reviewer owns the cumulative verdict; physical visitor acceptance is separate. Shared revision: `clear-offer-route-20260908`.
+
+Final review: **Approved** at application head `f05d60ac53eb72cac6db323a1ab456925ddd4fc8`, cumulatively against `1891e21`, with no actionable findings. Root rendered the new offer and persistent map at 1440 × 900 and 1280 × 720, mobile flow at 390 × 664 and 375 × 667, and short-screen fallbacks down to 320 × 480. A discovered dark-on-dark diagram label/note inheritance issue was corrected and visually rechecked. Forward/reverse desktop stages preserve map bounds and highlight the corresponding adjacent nodes. On mobile, a 150px user scroll moves the map and explanations exactly 150px. All four stages remain unresolved problems.
+
+Responsive restoration retains a single map and connection introduction; desktop-only fragments are hidden, the original large connection heading returns, and eligible mobile connection lines visibly draw. A 1280 × 480 viewport uses readable flow. Explicit server fixtures for no JavaScript (1280 × 720 and 320 × 480) and Reduced Motion (390 × 664) expose complete narration without horizontal page overflow. These are controlled browser/fixture checks, not physical-device or operating-system preference acceptance. Cross-page “What I do” navigation returns to the offer, and browser error/warning logs were empty.
+
+The same-Wi-Fi review copy was refreshed from 60 allow-listed public files and verified byte-for-byte against this head. All 55 HTTP routes/assets passed; five private/withdrawn path probes returned 404. The prior V1 comparison still responds. Canonical main and the dated Netlify folder were preserved. No merge, push, deployment, form submission, external record update or Brain write. Simple Gate: PASS.
 
 ## Phone connection visibility and readable pacing — 8 September 2026
 
