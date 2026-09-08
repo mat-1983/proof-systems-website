@@ -3861,7 +3861,7 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
 .v2-connection { padding-top: clamp(3rem, 6vw, 6rem); }
 .connection-scene { width: 100%; }
 .connection-intro { padding-top: 0; padding-bottom: 1.3rem; }
-.home-v2 .connection-intro h2 { font-size: clamp(2rem, 3.8vw, 3.6rem); max-width: 900px; margin-bottom: .8rem; }
+.home-v2 .connection-intro h2 { font-size: clamp(2rem, 3.8vw, 3.6rem); max-width: 900px; margin-bottom: .8rem; text-wrap: balance; }
 .connection-intro > p:not(.v2-eyebrow) { max-width: 900px; font-size: 1rem; margin-bottom: 0; }
 .connection-board { min-height: 0; grid-template-rows: auto 56px auto 42px auto auto; }
 .home-v2 .connection-source h3 { font-size: clamp(1.3rem, 2.3vw, 2.1rem); line-height: 1.13; }
