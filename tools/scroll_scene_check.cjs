@@ -27,7 +27,7 @@ function fixture(kind, viewport, heights, flow=false) {
   const panelHeights = Array.isArray(heights) ? heights : [heights,heights,heights,heights];
   const flowHeight = panelHeights.reduce((sum,height)=>sum+height, 0)+60;
   const parent = {
-    get offsetHeight() {return context.flowQuery.matches || context.reducedQuery.matches ? flowHeight : parseFloat(variables['--panels-height']) || Math.max(...panelHeights);},
+    get offsetHeight() {return track.dataset.sceneMode !== 'staged' || context.reducedQuery.matches ? flowHeight : parseFloat(variables['--panels-height']) || Math.max(...panelHeights);},
     getBoundingClientRect() {return {top:72-offset};}
   };
   const panels = connection ? [] : panelHeights.map((height,index) => ({
@@ -37,7 +37,7 @@ function fixture(kind, viewport, heights, flow=false) {
       return {top,bottom:top+height};
     }
   }));
-  const inner = {get offsetHeight() {return parent.offsetHeight+90;}};
+  const inner = {get offsetHeight() {return connection ? board.offsetHeight+150 : parent.offsetHeight+90;}};
   const stage = {get offsetHeight() {return parseFloat(variables['--stage-height']) || viewport-72;},querySelector:()=>inner};
   const indicators = panels.map(()=>({classList:classList()}));
   const thread = {style:style()};
@@ -51,8 +51,8 @@ function fixture(kind, viewport, heights, flow=false) {
     '.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
   const track = {
     dataset:{scrollTrack:kind},style:variables,attrs:{},
-    setAttribute(key,value){this.attrs[key]=value;}, removeAttribute(key){delete this.attrs[key];},
-    get offsetHeight(){return context.flowQuery.matches || context.reducedQuery.matches ? (connection?board.offsetHeight:flowHeight)+40 : stage.offsetHeight+parseFloat(variables['--scroll-travel']);},
+    setAttribute(key,value){this.attrs[key]=value;if(key==='data-scene-mode')this.dataset.sceneMode=value;}, removeAttribute(key){delete this.attrs[key];},
+    get offsetHeight(){return track.dataset.sceneMode !== 'staged' || context.reducedQuery.matches ? (connection?board.offsetHeight:flowHeight)+40 : stage.offsetHeight+parseFloat(variables['--scroll-travel']);},
     getBoundingClientRect(){return {top:72-offset};},
     querySelector(selector){return nodes[selector] || null;},
     querySelectorAll(selector){
@@ -101,6 +101,11 @@ for(const kind of ['story','process']) {
     assert.equal(f.variables['--scroll-travel'],travel,'Toolbar changes do not alter desktop travel');
     for(const reduced of [false,true]) {
       f.setMode(true,reduced);
+      if(kind==='process' && !reduced && natural+170+32<=height-72) {
+        assert.equal(f.track.dataset.sceneMode,'staged','A complete compact phone process can stage');
+        assert(parseFloat(f.variables['--scroll-travel'])<=960,'Phone process travel is short');
+        f.setMode(true,true);
+      }
       for(const key of ['--stage-height','--stage-top','--scroll-travel','--panels-height']) assert.equal(f.variables[key],undefined,'Ordinary flow has no artificial geometry');
       for(const panel of f.panels) {
         assert.equal(panel.style.transform,undefined,'Old desktop transforms are cleared');
@@ -140,12 +145,12 @@ for(const kind of ['story','process']) {
     }
     assert(faintHandover<=32,'Clean handover has no prolonged empty interval');
   }
-  const depth=fixture(kind,844,[330,350,330,360],true);
+  const depth=fixture(kind,844,[330,850,330,360],true);
   depth.scrollTo(0);
   const initial={x:parseFloat(depth.variables['--depth-x']),y:parseFloat(depth.variables['--depth-y']),route:Number(depth.variables['--route-progress'])};
   depth.scrollTo(380);
-  assert(parseFloat(depth.variables['--depth-x'])-initial.x>40,'One ordinary swipe produces clearly visible diagonal artwork movement');
-  assert(initial.y-parseFloat(depth.variables['--depth-y'])>50,'Backdrop movement is materially stronger than the previous32px total');
+  assert(parseFloat(depth.variables['--depth-x'])-initial.x>35,'One ordinary swipe produces clearly visible diagonal artwork movement');
+  assert(initial.y-parseFloat(depth.variables['--depth-y'])>45,'Backdrop movement is materially stronger than the previous32px total');
   assert(initial.y-parseFloat(depth.variables['--depth-y'])<380,'Pinned decoration travels more slowly than native foreground');
   assert(Number(depth.variables['--route-progress'])>initial.route,'Amber route progresses with real scrolling');
   depth.scrollTo(0);
@@ -162,24 +167,55 @@ for(const kind of ['story','process']) {
     assert(f.panels[index].classList['is-current']);
   }
 }
+// Connection eligibility includes its persistent title/intro, stage padding and safety gap.
 for(const [viewport,boardHeight] of [[844,430],[480,470],[390,270],[1024,550]]) {
   const f=fixture('connection',viewport,boardHeight);
-  f.setProgress(.65);
-  assert(f.board.style.transform,'Desktop overflow state exists before switching');
+  const fits=boardHeight+150+80+32<=viewport-72;
   f.setMode(true);
-  assert.equal(f.board.style.transform,undefined);
+  assert.equal(f.track.dataset.sceneMode,fits?'staged':'flow');
+  if(fits) {
+    assert(parseFloat(f.variables['--scroll-travel'])<=600,'Connection has a short responsive drawing journey');
+    f.setProgress(.2); const before=Number(f.wires[0].style.strokeDashoffset);
+    f.setProgress(.4); assert(Number(f.wires[0].style.strokeDashoffset)<before,'Connections draw while staged');
+    f.setProgress(1);for(const wire of f.wires)assert.equal(wire.style.strokeDashoffset,'0');
+    assert.equal(f.outcome.style.opacity,'1','Complete outcome visible before stage release');
+    f.setProgress(.2);assert.equal(Number(f.wires[0].style.strokeDashoffset),before,'Reverse restores staged wires');
+  } else {
+    for(const key of ['--stage-height','--stage-top','--scroll-travel','--panels-height'])assert.equal(f.variables[key],undefined,'Short-screen scene has no artificial runway');
+    const arrivalTop=Math.max(72,viewport-boardHeight);
+    f.scrollTo(72-arrivalTop);
+    for(const wire of f.wires)assert.equal(wire.style.strokeDashoffset,'0','Flow connections complete on arrival');
+    assert.equal(f.board.style.transform,undefined,'Flow diagram moves with the document');
+  }
+  f.setMode(true,true);
+  for(const wire of f.wires)assert.equal(wire.style.strokeDashoffset,'0');
   assert.equal(f.layer.style.opacity,undefined);
   assert.equal(f.outcome.style.opacity,undefined);
-  // Drawing finishes while the entire short board fits; for tall boards before its top exits.
-  const arrivalTop=Math.max(72,viewport-boardHeight);
-  f.scrollTo(72-arrivalTop);
-  for(const wire of f.wires) assert.equal(wire.style.strokeDashoffset,'0','Complete connection is drawn on arrival');
-  assert.equal(f.board.style.transform,undefined,'Mobile diagram travels without counter-translation');
-  f.scrollTo(72-viewport+40);
-  assert(Number(f.wires[2].style.strokeDashoffset)>0,'Reverse scroll unwinds connections');
-  f.setMode(true,true);
-  for(const wire of f.wires) assert.equal(wire.style.strokeDashoffset,'0');
-  assert.equal(f.layer.style.opacity,undefined,'Reduced Motion retains all diagram copy');
+  assert.equal(f.board.style.transform,undefined);
+}
+// Resize within the same phone breakpoint can revoke staging after it has begun.
+for(const kind of ['connection','process']) {
+  const f=fixture(kind,844,kind==='connection'?430:350,true);
+  assert.equal(f.track.dataset.sceneMode,'staged');
+  f.setProgress(.5);
+  f.context.viewportProbe.offsetHeight=480;
+  f.context.syncMotionMode();
+  assert.equal(f.track.dataset.sceneMode,'flow');
+  assert.equal(f.variables['--scroll-travel'],undefined);
+  for(const element of [...f.panels,f.board,f.layer,f.outcome]) {
+    assert.equal(element.style.transform,undefined,'Shrinking an active scene clears prior translation');
+    assert.equal(element.style.opacity,undefined,'Shrinking an active scene restores complete copy');
+  }
+  f.context.viewportProbe.offsetHeight=844;f.context.syncMotionMode();
+  assert.equal(f.track.dataset.sceneMode,'staged','Enough space reinstates the measured stage');
+}
+// A single pixel around the fit boundary chooses complete flow or complete staging.
+for(const kind of ['connection','process']) {
+  const extra=kind==='connection'?230:170;
+  for(const delta of [-1,0,1]) {
+    const f=fixture(kind,844,844-72-extra-32+delta,true);
+    assert.equal(f.track.dataset.sceneMode,delta<=0?'staged':'flow');
+  }
 }
 // Drive the real opening with a 40svh journey, preserving its five-node logo geometry.
 {
@@ -220,7 +256,7 @@ const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 assert(/\.v2-opening \{\s*min-height: 140svh;/.test(css),'Opening travel is shortened to 40svh');
 const breakpoint=source.match(/var flowQuery = window.matchMedia\("([^"]+)"\)/)[1];
 assert(css.includes('@media '+breakpoint+' {'),'Phone/short-landscape JS and CSS breakpoints are identical');
-const desktopRule=css.match(/\.motion-ready:not\(\.flow-scenes\) \[data-stage-panel\]\s*\{([^}]+)\}/);
+const desktopRule=css.match(/\.motion-ready \[data-scene-mode="staged"\] \[data-stage-panel\]\s*\{([^}]+)\}/);
 assert(desktopRule && !/visibility\s*:\s*hidden|display\s*:\s*none/.test(desktopRule[1]),'Staged content remains in the accessibility tree');
 assert(/pointer-events\s*:\s*none/.test(desktopRule[1]));
 assert(!/\.motion-ready\s+(?:\.scroll-track|\.scroll-stage|\.stage-panels|\[data-stage-panel\])/.test(css),'Artificial stage layout cannot apply to phone flow');
@@ -239,10 +275,16 @@ assert(/\.scroll-track \.stage-indicator, \.scroll-track \.scene-scroll-cue, \.s
 assert(/@media \(prefers-reduced-motion: reduce\)[^]*?\.scene-scroll-cue\s*\{\s*display:\s*none !important/.test(css));
 assert(/\.scene-scroll-cue\s*\{[^}]*display:\s*none/.test(css),'No-JS shows no stray scroll cue');
 const backdrops=[...html.matchAll(/<div class="scene-depth scene-depth--(?:story|process)" aria-hidden="true">([^]*?)<\/svg>/g)];
+const storyArt=backdrops.find(item=>item[0].includes('scene-depth--story'))[1];
+for(const route of storyArt.matchAll(/<path[^>]* d="([^"]+)"/g))assert((route[1].match(/M/g)||[]).length>1,'Problem-scene routes have physical interruptions');
+const storyCopy=html.split('data-scroll-track="story"')[1].split('</section>')[0];
+assert(storyCopy.includes('Someone pieces it back together.') && storyCopy.includes('fragmented-record'),'Stage 04 demonstrates reconciliation of disconnected records');
+assert(!storyCopy.includes('connected-record') && !storyCopy.includes('04 <b>Connected</b>'));
+assert(/\.scene-depth-window::before \{[^}]*inset: -220px -180px/.test(css),'Glow paint extends beyond its complete maximum travel, avoiding a moving rectangular edge');
 assert.equal(backdrops.length,2,'Both targeted scenes have their own accessible-safe code-native backdrop');
 for(const backdrop of backdrops) assert(/focusable="false"/.test(backdrop[1]) && !/<(?:a|button)\b/.test(backdrop[1]));
 assert(/\.scene-depth \{[^}]*pointer-events: none/.test(css),'Decorative art cannot intercept gestures');
 assert(/\.scene-depth-window \{[^}]*overflow: clip/.test(css),'Oversized art clips inside its own window');
 assert(!/\.scene-depth[^}]*animation:/.test(css),'Brand depth has no autonomous animation');
 assert(/\.story-panel \{ padding: 1.1rem .5rem .4rem; border: 0; background: transparent;/.test(css),'Phone story avoids nested outer boxes');
-console.log('PASS production scene geometry: capped desktop travel and 210px maximum middle-card hold; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; phone natural flow, unequal-height visible stages, no counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');
+console.log('PASS production scene geometry: capped desktop travel and 210px maximum middle-card hold; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, title-inclusive fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');

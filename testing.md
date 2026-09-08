@@ -2,6 +2,18 @@
 
 Updated: 2026-09-05
 
+## Narrative and selective mobile scenes — 8 September 2026
+
+The workflow story now ends with the work of reconciling disconnected records. Its illustrated routes have physical breaks; desktop text sits over broad left-side darkening, while mobile records retain native flow. Connection headings remain with the diagram; supporting context follows in ordinary flow. SiteLog and BudgetFlow now describe the progression from existing cost-control/payment processes to weekly API extraction, managers’ allocation and a weekly export for accounts import. Only extraction is described as automatic. Films and their descriptions are unchanged.
+
+Mobile connection/process staging is measured independently. A complete scene must fit beneath navigation with its title or indicator, cue, safe-area padding and a 32px margin. Otherwise it uses ordinary flow. Mobile process travel is capped at 960px across four cards; mobile connection travel is capped at 600px. Desktop card travel and genuine overflow reading retain their existing limits. Resize and motion preference changes clear old geometry and visual state before measuring again.
+
+- PASS — site and privacy contracts, exact media/master hashes, HTTP crawl, both JavaScript syntax checks, current and cumulative diff checks.
+- PASS — production geometry checks cover title-inclusive connection sizing, per-scene eligibility on both sides of the exact fit boundary, shrinking an active scene, restored staging, reduced motion, bounded travel, forward/reverse progression, all eight accessible panels, interrupted problem routes and native flow without counter-translation.
+- Browser rendering and physical-device acceptance are separate from these controlled geometry tests. Root owns browser QA and the independent reviewer owns the cumulative verdict. Shared CSS/JS revision: `narrative-selective-20260908`.
+
+Simple Gate: PASS. All changes are local; no merge, push, deployment, form submission or external records were made.
+
 ## V2 scroll cues and longer evidence previews — 5 September 2026
 
 The dynamic opening, workflow story, connecting-layer scene and practical-starting-point scene each show one small amber-and-cream down arrow while motion enhancement is active. It is decorative, leaves native scrolling untouched and remains through the final stage. Sticky-stage padding reserves the arrow and safe-area footprint; tall cards retain their top-to-bottom reading phase. Reduced Motion and no-JavaScript flow hide every cue.

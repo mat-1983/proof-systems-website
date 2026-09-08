@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="Selected Systems | Proof Systems">
   <meta name="twitter:description" content="Selected operational systems shown as synthetic demonstrations, not an off-the-shelf catalogue.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/site.css?v=brand-depth-contrast-20260907">
+  <link rel="stylesheet" href="../assets/css/site.css?v=narrative-selective-20260908">
 </head>
 <body class="page-inner page-collection">
 <a class="skip" href="#main">Skip to content</a>
@@ -51,7 +51,7 @@
           <h2>SiteLog</h2>
           <p class="meta-audience">Tradespeople and administrators</p>
 </div><div class="evidence-row-copy">          <p class="card-label">Outcome</p>
-          <p>Reliable weekly site records and payment-ready exports.</p>
+          <p>Weekly site records that first fed existing cost-control and payment processes.</p>
           <p class="card-label">Evidence shown</p>
           <p>A tradesperson records work against a selected project and location for the current week.&nbsp; The entry appears in the weekly summary and a weekly invoice is generated.&nbsp; An administrator then exports the selected week and reviews the project and user-management controls.</p>
           <p class="card-action"><a class="button button-amber" href="sitelog.html">Explore SiteLog</a></p>
@@ -61,7 +61,7 @@
           <h2>BudgetFlow</h2>
           <p class="meta-audience">Site managers, quantity surveyors and accounts</p>
 </div><div class="evidence-row-copy">          <p class="card-label">Outcome</p>
-          <p>Weekly labour allocation, budget and variation control, overspend review and coded payment exports.</p>
+          <p>A later extension connecting SiteLog records, managers’ cost allocation and existing accounting software.</p>
           <p class="card-label">Evidence shown</p>
           <p>A site manager allocates weekly labour costs to project budget locations and checks remaining value.&nbsp; A quantity surveyor creates a controlled variation, builds a client quote and reviews an overspend request.&nbsp; Accounts then generates a payment workbook with detailed records and a Sage-compatible nominal and cost-code export.</p>
           <p class="card-action"><a class="button button-amber" href="budgetflow.html">Explore BudgetFlow</a></p>
@@ -133,9 +133,11 @@
       <p class="disclosure">This connected workflow began as independent bespoke systems, built one at a time with a long-term approach that allowed them to form one fully integrated system.</p>
       <div class="connected-map" data-reveal><p class="proof-label">Synthetic Northstar workflow</p>
       <div class="map-identity"><small>Shared project identity</small><a href="cpr.html">Central Project Register ↗</a><p>The project-identity source connects to SiteLog, LedgerLink and Accounts Software.</p></div>
-      <div class="map-operations"><small>Operational systems</small><div><a href="sitelog.html">SiteLog</a><span>Weekly labour costs →</span><a href="budgetflow.html">BudgetFlow</a><a href="applications-ledger.html">Applications Ledger</a><a href="probables.html">Probables</a></div></div>
+      <div class="map-operations"><small>Operational systems</small><div><a href="sitelog.html">SiteLog</a><span>Weekly automatic transfer →</span><a href="budgetflow.html">BudgetFlow</a><a href="applications-ledger.html">Applications Ledger</a><a href="probables.html">Probables</a></div></div>
       <div class="map-bridge"><small>Connection to all four operational systems</small><a href="ledgerlink.html">LedgerLink ↗</a></div>
       <div class="map-finance"><div><small>Two-way connection with LedgerLink</small><h3>Accounts Software</h3></div><span aria-hidden="true">↓</span><div><small>Accounts data + verified inputs</small><h3>Checked local processing</h3></div><span aria-hidden="true">↓</span><div class="map-outputs"><a href="cashflow.html">Cashflow ↗</a><a href="management-accounts.html">Management Accounts ↗</a></div></div>
+      <ol class="integration-steps"><li><strong>Weekly automatic transfer</strong><span>SiteLog → BudgetFlow</span></li><li><strong>Managers allocate costs</strong><span>Within BudgetFlow</span></li><li><strong>Weekly export → accounts import</strong><span>Into existing accounting software</span></li></ol>
+      <p class="map-controls">SiteLog first fed existing cost-control and payment processes. BudgetFlow later extended the connection: a weekly scheduled API extraction transfers SiteLog records; managers allocate costs; a BudgetFlow export is produced at a set point each week for import into existing accounting software.</p>
       <p class="map-controls">Finance extraction and reporting use deterministic local processing. AI does not process company accounting data. Verified inputs and accounts data feed the checked processing that produces Cashflow and Management Accounts.</p></div>
     </section>
   </div>
@@ -152,6 +154,6 @@
     <p class="footer-legal">Proof Systems is the trading name of Mathew Glendenning, a sole trader. Correspondence address: Unit 171774, Courier Point, 13 Freeland Park, Wareham Road, Poole, BH16 6FH. Email: <a href="mailto:mat@proofsystems.co.uk">mat@proofsystems.co.uk</a></p>
   </div>
 </footer>
-<script src="../assets/js/site.js?v=brand-depth-contrast-20260907" defer></script>
+<script src="../assets/js/site.js?v=narrative-selective-20260908" defer></script>
 </body>
 </html>

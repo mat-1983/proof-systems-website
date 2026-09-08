@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "brand-depth-contrast-20260907"
+SHARED_ASSET_VERSION = "narrative-selective-20260908"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -271,15 +271,30 @@ def check_homepage_v2(failures: list[str]) -> None:
 
     if "data-work-story" not in raw or 'data-story-step="4"' not in raw:
         fail("workflow story must have a complete no-JavaScript default", failures)
-    for detail in ("Customer request", "Source", "Owner", "Next action", "History", "Customer email attached", "Request and approval attached"):
+    for detail in ("Customer request", "Source", "Owner", "Next action", "History", "Someone pieces it back together.", "Original email to find", "Approval in another email"):
         if detail not in text:
-            fail(f"connected-record illustration missing {detail}", failures)
+            fail(f"fragmented-record illustration missing {detail}", failures)
     for stale in ("R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
             fail(f"retired date/static story contract remains: {stale}", failures)
-    for phrase in ("The software layer that connects your business.", "enterprise resource planning", "cost or complexity", "AI-assisted development", "operational data"):
+    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools", "rigid software, costly changes", "AI-assisted development", "operational data"):
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
+    story_markup = raw.split('data-scroll-track="story"', 1)[1].split('</section>', 1)[0]
+    for stale in ("The record stays connected", "connected-record", "04 <b>Connected</b>"):
+        if stale in story_markup:
+            fail(f"problem story must remain fragmented: {stale}", failures)
+    connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-context', 1)[0]
+    if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
+        fail("connection headline and short introduction must stay with its diagram", failures)
+    for page in ("index.html", "work/sitelog.html", "work/budgetflow.html", "work/index.html"):
+        evidence = (ROOT / page).read_text(encoding="utf-8")
+        for phrase in ("existing cost-control and payment processes", "scheduled API extraction", "managers allocate costs", "at a set point each week"):
+            if phrase.lower() not in evidence.lower():
+                fail(f"{page}: confirmed evolving integration missing {phrase}", failures)
+        for claim in ("automatic accounting sync", "real-time integration", "automated export", "automatic import"):
+            if claim in evidence.lower():
+                fail(f"{page}: unconfirmed integration claim: {claim}", failures)
     for title in ("Understand the work", "Try a working demo", "Refine it together", "Prove it in use"):
         if title not in text:
             fail(f"practical starting point missing {title}", failures)
@@ -501,7 +516,7 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS V2 software-fit narrative, native-scroll B opening, connected-record story, "
+        "PASS V2 software-fit narrative, native-scroll B opening, disconnected-record story, "
         "no-JavaScript/reduced-motion finals, routes, links, responsive shell, enquiry form, "
         "seven captioned films, written Management Accounts example, public-copy safety and identity"
     )

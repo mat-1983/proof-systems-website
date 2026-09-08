@@ -106,6 +106,7 @@
       track.style.removeProperty(property);
     });
     track.removeAttribute("data-overflow");
+    track.setAttribute("data-scene-mode", "flow");
     track.querySelectorAll("[data-stage-panel], .connection-board, .connection-layer, .connection-outcome, .story-thread i, .process-light").forEach(function (element) {
       element.style.removeProperty("transform");
       element.style.removeProperty("opacity");
@@ -122,19 +123,30 @@
     var stableHeight = viewportProbe.offsetHeight || window.innerHeight;
     tracks.forEach(function (track) {
       clearTrackLayout(track);
-      if (flowQuery.matches || reducedQuery.matches) {
+      var mobile = flowQuery.matches;
+      var connection = track.dataset.scrollTrack === "connection";
+      if (reducedQuery.matches || (mobile && track.dataset.scrollTrack === "story")) {
         if (track.dataset.scrollTrack === "connection") measureWires(track);
         return;
       }
+      // Measure the complete compact candidate before deciding whether it can stage.
+      track.setAttribute("data-scene-mode", "staged");
       var stage = track.querySelector(".scroll-stage");
       var panels = track.querySelectorAll("[data-stage-panel]");
       var tallest = 0;
       panels.forEach(function (panel) { tallest = Math.max(tallest, panel.offsetHeight); });
       track.style.setProperty("--panels-height", tallest + "px");
-      var inner = stage.querySelector(".wrap");
+      var inner = stage.querySelector(".connection-scene, .wrap");
       var styles = getComputedStyle(stage);
       var naturalHeight = inner.offsetHeight + parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
       var stageHeight = Math.max(160, stableHeight - navHeight);
+      // Flow is safer than a clipped heading or a card that needs a second scroller.
+      // The same rule also covers short desktop connection scenes.
+      if ((mobile || connection) && naturalHeight + 32 > stageHeight) {
+        clearTrackLayout(track);
+        if (connection) measureWires(track);
+        return;
+      }
       var panelOverflow = 0;
       if (panels.length) {
         // Reserve space for the persistent indicator and disclosure. Oversized cards
@@ -147,8 +159,8 @@
       track.style.setProperty("--stage-top", navHeight + "px");
       // Normal cards get a bounded reading journey, regardless of monitor height.
       // Only genuine overflow earns extra travel: at least one scroll pixel per panned pixel.
-      var panelTravel = Math.max(clamp(stableHeight * 0.42, 300, 420), panelOverflow / 0.42 + 140);
-      track.style.setProperty("--scroll-travel", (panels.length ? panelTravel * panels.length : Math.max(600, stableHeight * 1.4, naturalHeight * 1.5)) + "px");
+      var panelTravel = mobile ? clamp(stableHeight * 0.27, 190, 240) : Math.max(clamp(stableHeight * 0.42, 300, 420), panelOverflow / 0.42 + 140);
+      track.style.setProperty("--scroll-travel", (panels.length ? panelTravel * panels.length : clamp(stableHeight * (mobile ? 0.7 : 0.9), 360, mobile ? 600 : 800)) + "px");
       track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
       if (track.dataset.scrollTrack === "connection") measureWires(track);
     });
@@ -185,7 +197,7 @@
   }
 
   function trackProgress(track) {
-    if (flowQuery.matches) {
+    if (track.dataset.sceneMode === "flow") {
       var viewportHeight = viewportProbe.offsetHeight || window.innerHeight;
       var navHeight = nav ? nav.offsetHeight : 0;
       if (track.dataset.scrollTrack === "connection") {
@@ -220,7 +232,7 @@
   function renderDepth(track, progress) {
     if (reducedQuery.matches || track.dataset.scrollTrack === "connection") return;
     var depthProgress = progress;
-    if (flowQuery.matches) {
+    if (track.dataset.sceneMode === "flow") {
       var height = viewportProbe.offsetHeight || window.innerHeight;
       // The backdrop starts responding when the scene enters, before its reading line arrives.
       depthProgress = clamp((height - track.getBoundingClientRect().top) / (track.offsetHeight + height), 0, 1);
@@ -235,9 +247,9 @@
       var progress = reducedQuery.matches ? 1 : trackProgress(track);
       track.setAttribute("data-progress", progress.toFixed(4));
       var panels = track.querySelectorAll("[data-stage-panel]");
-      var ordinaryFlow = flowQuery.matches || reducedQuery.matches;
+      var ordinaryFlow = track.dataset.sceneMode === "flow" || reducedQuery.matches;
       var selected = ordinaryFlow && panels.length ? visibleStage(panels) : Math.min(3, Math.floor(progress * 4));
-      if (flowQuery.matches && !reducedQuery.matches) {
+      if (ordinaryFlow && !reducedQuery.matches) {
         track.style.setProperty("--flow-progress", progress.toFixed(4));
         track.style.setProperty("--flow-depth", ((progress - 0.5) * 32).toFixed(2) + "px");
       }
