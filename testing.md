@@ -4,6 +4,8 @@ Updated: 2026-09-05
 
 ## Phone connection visibility and readable pacing — 8 September 2026
 
+Laptop fit follow-up: screens at least 1025px wide and no more than 820px tall use smaller vertical margins, diagram gaps and tile padding. The heading, body text, cue reserve and 32px fit allowance remain unchanged. Root measured 1366 × 768 staged with a 77.862px heading and 560px content scene; at 1280 × 720 the 72.96px heading and complete outcome remain visible, with the board bottom at 650.52px and the cue clear near 696px. These are browser viewport checks. Site, production geometry and cumulative diff checks pass.
+
 Follow-up from `26bfbec`: the desktop connection heading regains its original scale, explanatory copy occupies one row beside the unchanged AI economics, and mobile puts the one introduction before a diagram-only measured stage. This addresses the reproduced 390 × 664 fallback caused by title-inclusive sizing. Native-flow wires now develop while the diagram crosses the viewport. Process travel increases by 40% independently from the story; actual opening travel increases 35%, from 40svh to 54svh.
 
 PASS — site, privacy, media/master hashes, HTTP crawl, JavaScript syntax, controlled production geometry and cumulative diff gates. New geometry cases cover phone chrome heights (664/667px), one-node heading relocation and restoration, independently paced scenes, and visible reversible wires in short-screen flow. Shared revision `readable-connection-20260908`. Root browser checks and independent review are separate gates; physical phone acceptance is not inferred from simulations.

@@ -3926,3 +3926,16 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
 .home-v2 .evidence-connection > p, .home-v2 .evidence-connection li small { color: #4f5c58; }
 .home-v2 .evidence-connection > p strong, .home-v2 .evidence-connection li strong { color: #1c292c; }
 .home-v2 .evidence-connection li span { color: #76512d; }
+
+/* Laptop-height scenes spend space on the prominent title, then tighten diagram air. */
+@media (min-width: 1025px) and (max-height: 820px) {
+  [data-scroll-track="connection"] .scroll-stage { --scroll-stage-padding: .65rem; --scene-cue-space: 2.3rem; }
+  .connection-intro { padding-bottom: .7rem; }
+  .connection-intro .v2-eyebrow { margin-bottom: .7rem; }
+  .home-v2 .connection-intro h2 { margin-bottom: .5rem; }
+  .connection-board { grid-template-rows: auto 20px auto 16px auto auto; }
+  .connection-source { padding: .6rem 1.3rem; }
+  .connection-layer { padding: .6rem 1.3rem; }
+  .connection-outcome { padding-top: .6rem; }
+  .connection-caption { margin-top: .7rem; }
+}
