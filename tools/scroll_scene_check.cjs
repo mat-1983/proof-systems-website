@@ -285,6 +285,7 @@ assert.equal(backdrops.length,2,'Both targeted scenes have their own accessible-
 for(const backdrop of backdrops) assert(/focusable="false"/.test(backdrop[1]) && !/<(?:a|button)\b/.test(backdrop[1]));
 assert(/\.scene-depth \{[^}]*pointer-events: none/.test(css),'Decorative art cannot intercept gestures');
 assert(/\.scene-depth-window \{[^}]*overflow: clip/.test(css),'Oversized art clips inside its own window');
+assert(/\.motion-ready \[data-scene-mode="staged"\] \.scene-depth-window \{[^}]*position: relative;[^}]*top: 0;[^}]*height: 100%/.test(css),'Staged art resets the mobile sticky top offset and fills its scene');
 assert(!/\.scene-depth[^}]*animation:/.test(css),'Brand depth has no autonomous animation');
 assert(/\.story-panel \{ padding: 1.1rem .5rem .4rem; border: 0; background: transparent;/.test(css),'Phone story avoids nested outer boxes');
 console.log('PASS production scene geometry: capped desktop travel and 210px maximum middle-card hold; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, title-inclusive fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');
