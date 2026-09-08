@@ -20,7 +20,7 @@ function style() {
 function classList() {
   return { toggle(key,value) {this[key]=value;}, remove(key) {delete this[key];} };
 }
-function fixture(kind, viewport, heights, flow=false) {
+function fixture(kind, viewport, heights, flow=false, mapHeight=0) {
   const variables = style();
   let offset = 0;
   const connection = kind === 'connection';
@@ -41,7 +41,7 @@ function fixture(kind, viewport, heights, flow=false) {
   const scene={firstChild:intro,insertBefore(node){node.parentElement=this;}};
   const section={querySelector:()=>intro,insertBefore(node){node.parentElement=this;}};
   intro.parentElement=scene;
-  const inner = {get offsetHeight() {return connection ? board.offsetHeight+(intro.parentElement===scene?150:0) : parent.offsetHeight+90;}};
+  const inner = {get offsetHeight() {return connection ? board.offsetHeight+(intro.parentElement===scene?150:0) : Math.max(parent.offsetHeight,mapHeight)+90;}};
   const stage = {get offsetHeight() {return parseFloat(variables['--stage-height']) || viewport-72;},querySelector:()=>inner};
   const indicators = panels.map(()=>({classList:classList()}));
   const thread = {style:style()};
@@ -52,7 +52,7 @@ function fixture(kind, viewport, heights, flow=false) {
   const caption = {};
   const wires = ['left','right','out'].map(wire=>({style:style(),dataset:{wire}}));
   const nodes = {'.scroll-stage':stage,'.stage-panels':parent,'.story-thread i':thread,'.process-light':kind==='process'?light:null,
-    '.connection-scene':scene,'.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
+    '.story-map':mapHeight?{offsetHeight:mapHeight}:null,'.connection-scene':scene,'.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
   const track = {
     dataset:{scrollTrack:kind},style:variables,attrs:{},parentElement:section,
     setAttribute(key,value){this.attrs[key]=value;if(key==='data-scene-mode')this.dataset.sceneMode=value;}, removeAttribute(key){delete this.attrs[key];},
@@ -171,6 +171,17 @@ for(const kind of ['story','process']) {
     assert(f.panels[index].classList['is-current']);
   }
 }
+// The shared map remains fully readable; short desktops relinquish the whole story pin.
+for(const viewport of [900,768,720,550,320]) {
+  const f=fixture('story',viewport,390,false,350);
+  const fits=350+170+32<=viewport-72;
+  assert.equal(f.track.dataset.sceneMode,fits?'staged':'flow');
+  if(!fits) {
+    assert.equal(f.variables['--scroll-travel'],undefined,'Map overflow earns ordinary flow, never clipping');
+    f.scrollTo(250);for(const panel of f.panels)assert.equal(panel.style.transform,undefined);
+  }
+  f.setMode(true);assert.equal(f.track.dataset.sceneMode,'flow','Mobile map and copy remain native flow');
+}
 // Connection eligibility includes its persistent title/intro, stage padding and safety gap.
 for(const [viewport,boardHeight] of [[844,430],[664,352],[667,370],[480,470],[390,270],[1024,550]]) {
   const f=fixture('connection',viewport,boardHeight);
@@ -286,7 +297,7 @@ assert(/\.scroll-track \[data-stage-panel\]\s*\{[^}]*position: relative;[^}]*hei
 const narrativePanels=[...html.matchAll(/<article[^>]*data-stage-panel="[0-3]"[^]*?<\/article>/g)];
 assert.equal(narrativePanels.length,8);
 for(const panel of narrativePanels) {
-  assert(!/aria-hidden="true"|\bhidden(?:[\s=>])|\binert(?:[\s=>])/.test(panel[0]));
+  assert(!/aria-hidden="true"|\bhidden(?:[\s=>])|\binert(?:[\s=>])/.test(panel[0].split('>')[0]), 'Narrative panel remains accessible');
   assert(!/<(?:a|button|input|select|textarea|summary)\b|\btabindex\s*=/.test(panel[0]),'Desktop invisible panels have no keyboard stops');
 }
 const cues=[...html.matchAll(/<span class="scene-scroll-cue" data-scene-scroll-cue aria-hidden="true">([^]*?)<\/span>/g)];
@@ -299,7 +310,15 @@ const backdrops=[...html.matchAll(/<div class="scene-depth scene-depth--(?:story
 const storyArt=backdrops.find(item=>item[0].includes('scene-depth--story'))[1];
 for(const route of storyArt.matchAll(/<path[^>]* d="([^"]+)"/g))assert((route[1].match(/M/g)||[]).length>1,'Problem-scene routes have physical interruptions');
 const storyCopy=html.split('data-scroll-track="story"')[1].split('</section>')[0];
-assert(storyCopy.includes('Someone pieces it back together.') && storyCopy.includes('fragmented-record'),'Stage 04 demonstrates reconciliation of disconnected records');
+assert(storyCopy.includes('Piece the picture together.') && storyCopy.includes('checking which version is current'),'Stage04 remains manual reconciliation');
+assert.equal((storyCopy.match(/class="story-map"/g)||[]).length,1,'One persistent map is shared by all four stages');
+assert(!storyCopy.includes('Customer request') && !storyCopy.includes('work-record'),'No fictional customer order remains in this story');
+assert.equal((storyCopy.match(/class="story-fragment" aria-hidden="true"/g)||[]).length,4,'Only small mobile fragments repeat; narration is not repeated to assistive technology');
+for(let stage=1;stage<=4;stage++) {
+  assert(css.includes(`[data-active-stage="${stage}"] .story-map li:nth-child(${stage})`) && css.includes(`[data-active-stage="${stage}"] .story-map li:nth-child(${stage+1})`),'Each stage highlights its break and adjacent map nodes');
+}
+assert(/story-map li:not\(:last-child\)::after \{[^}]*transparent 35% 62%/.test(css),'The visible information route has interrupted links');
+
 assert(!storyCopy.includes('connected-record') && !storyCopy.includes('04 <b>Connected</b>'));
 assert(/\.scene-depth-window::before \{[^}]*inset: -220px -180px/.test(css),'Glow paint extends beyond its complete maximum travel, avoiding a moving rectangular edge');
 assert.equal(backdrops.length,2,'Both targeted scenes have their own accessible-safe code-native backdrop');

@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "readable-connection-20260908"
+SHARED_ASSET_VERSION = "clear-offer-route-20260908"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -230,11 +230,11 @@ def check_homepage_v2(failures: list[str]) -> None:
     js = (ROOT / "assets/js/site.js").read_text(encoding="utf-8")
     required_copy = [
         "Systems built around how your business really works.",
-        "When software doesn’t fit, the work finds a way around it.",
-        "Sometimes the process is reshaped to suit the software.",
-        "spreadsheets, email and separate files",
-        "The team keeps the work moving. The information gets left behind",
-        "connected information and accountability",
+        "Bespoke software. Built around your business.",
+        "I build software that fits how you work, connects your existing tools and reduces repetitive admin.",
+        "Capture and updates · Approvals · Reporting",
+        "Start with one useful connection. Extend when it earns its place.",
+        "The software is there. The work between it is manual.",
         "Keep the software that works. Connect the work that falls between it.",
         "I trace how the work moves",
         "build the connections around it",
@@ -271,9 +271,9 @@ def check_homepage_v2(failures: list[str]) -> None:
 
     if "data-work-story" not in raw or 'data-story-step="4"' not in raw:
         fail("workflow story must have a complete no-JavaScript default", failures)
-    for detail in ("Customer request", "Source", "Owner", "Next action", "History", "Someone pieces it back together.", "Original email to find", "Approval in another email"):
+    for detail in ("Email and forms", "Working spreadsheet", "Business software", "Updates and approvals", "Management report", "Enter the same information again.", "The exceptions move elsewhere.", "Progress depends on chasing.", "Piece the picture together."):
         if detail not in text:
-            fail(f"fragmented-record illustration missing {detail}", failures)
+            fail(f"illustrative information route missing {detail}", failures)
     for stale in ("R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
             fail(f"retired date/static story contract remains: {stale}", failures)
@@ -281,9 +281,15 @@ def check_homepage_v2(failures: list[str]) -> None:
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
     story_markup = raw.split('data-scroll-track="story"', 1)[1].split('</section>', 1)[0]
-    for stale in ("The record stays connected", "connected-record", "04 <b>Connected</b>"):
+    for stale in ("Customer request", "Order change", "work-record", "The record stays connected", "connected-record", "04 <b>Connected</b>"):
         if stale in story_markup:
             fail(f"problem story must remain fragmented: {stale}", failures)
+    if story_markup.count('class="story-map"') != 1:
+        fail("story needs one persistent map, not repeated full illustrations", failures)
+    if raw.count('class="offer-diagram"') != 1 or 'class="offer-tools"' not in raw:
+        fail("early offer must show existing tools connected to focused software", failures)
+    if 'Tweak' in raw or 'ps-stage-tabs' in raw or 'ps-preview-tabs' in raw:
+        fail("public offer must not contain prototype controls", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
         fail("connection headline and short introduction must stay with its diagram", failures)
@@ -518,7 +524,7 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS V2 software-fit narrative, native-scroll B opening, disconnected-record story, "
+        "PASS V2 software-fit narrative, native-scroll B opening, illustrative information-route story, "
         "no-JavaScript/reduced-motion finals, routes, links, responsive shell, enquiry form, "
         "seven captioned films, written Management Accounts example, public-copy safety and identity"
     )

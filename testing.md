@@ -2,6 +2,12 @@
 
 Updated: 2026-09-05
 
+## Clearer offer and shared information-route map — 8 September 2026
+
+From `3e6449b`, the early `fit` slot becomes a plain-language bespoke software offer and native labelled diagram. The next story replaces fictional customer-order records with four common manual information gaps. Its five-node map persists beside desktop copy; mobile uses one complete map followed by small decorative fragments and native-flow explanations. Map overflow on short desktop screens falls back to flow. Existing opening/process travel, connection sizing/relocation and every media/form contract remain intact. Navigation now labels the unchanged `fit` destination “What I do”.
+
+PASS — site/copy/route contracts, privacy, exact media/master hashes, HTTP crawl, both JavaScript syntax, production geometry and cumulative diff checks. New checks require exactly one map, four complete problem stages, physical interrupted links and stage-specific adjacent-node highlighting; they reject old fictional records and prototype controls. Geometry exercises full-map fit and native-flow fallback. Root owns browser rendering and the independent reviewer owns the cumulative verdict; physical visitor acceptance is separate. Shared revision: `clear-offer-route-20260908`.
+
 ## Phone connection visibility and readable pacing — 8 September 2026
 
 Laptop fit follow-up: screens at least 1025px wide and no more than 820px tall use smaller vertical margins, diagram gaps and tile padding. The heading, body text, cue reserve and 32px fit allowance remain unchanged. Root measured 1366 × 768 staged with a 77.862px heading and 560px content scene; at 1280 × 720 the 72.96px heading and complete outcome remain visible, with the board bottom at 650.52px and the cue clear near 696px. These are browser viewport checks. Site, production geometry and cumulative diff checks pass.

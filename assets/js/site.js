@@ -157,6 +157,11 @@
         if (connection) measureWires(track);
         return;
       }
+      var storyMap = track.querySelector(".story-map");
+      if (storyMap && !mobile && storyMap.offsetHeight + naturalHeight - Math.max(tallest, storyMap.offsetHeight) + 32 > stageHeight) {
+        clearTrackLayout(track);
+        return;
+      }
       var panelOverflow = 0;
       if (panels.length) {
         // Reserve space for the persistent indicator and disclosure. Oversized cards
