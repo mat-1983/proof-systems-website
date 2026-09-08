@@ -125,3 +125,17 @@ The existing same-Wi-Fi preview was refreshed from the 60-file, 56.1MB allow-lis
 Review on this Mac: `http://127.0.0.1:8989/index.html`. Phone: `http://192.168.0.18:8989/index.html`, on the same Wi-Fi while this Mac remains awake. Canonical main and the existing dated Netlify folder remain unchanged. No merge, push, deployment, form submission, external tracking update or Brain write occurred.
 
 Simple Gate: PASS. Next action: Mat reviews the revised experience on his phone. Physical-device pacing acceptance remains with Mat.
+
+
+## Phone chrome, visual hierarchy and reading pace — 8 September
+
+Mat requested a further bounded refinement from `26bfbec`: restore the prominent desktop Missing Software Layer heading, remove the doubled explanatory rows, make the connections animate on normal phones with browser chrome, and slow process cards and the opening slightly. The root approved relocating the one existing mobile introduction immediately before its diagram track; desktop restores it inside the pinned scene. The opening keeps its mark and words, the workflow story keeps its accepted pacing and native mobile flow, and all evidence/media/form contracts remain intact.
+
+Simple Gate: PASS. Intended user: a business owner reading on a normal phone or desktop. Required outcome: a clear visual hierarchy, visible connection drawing and enough time to read. Smallest useful change: one responsive heading placement, one consolidated explanation row, and independent travel adjustments.
+
+- Desktop heading returns to `clamp(2.6rem, 5.7vw, 6rem)` at a maximum width of 1000px, with balanced lines. Diagram gaps reduce before compromising that hierarchy.
+- The existing left explanation now combines main-system/separate-tools/mixed setups, the remaining gaps and how I trace and connect the work. The original AI economics paragraph remains on its right; mobile stacks that single row.
+- Mobile stages the complete diagram beneath navigation when it fits, with the existing cue and 32px safety allowance. Its single introduction scrolls naturally before it. Tests include 390 × 664 and 375 × 667 viewport-height equivalents. Short screens retain flow, but their wires visibly draw as the diagram crosses the viewport rather than completing on arrival. Reduced Motion and no JavaScript remain complete and static.
+- Process reading travel increases by 40% independently of the story. The opening’s actual animation travel rises from 40svh to 54svh (35%), giving a total track of 154svh. No scroll interception is introduced.
+
+Builder gates: site, privacy, exact media/master hashes, HTTP crawl, both JavaScript syntax, production geometry and current/cumulative diff checks pass. Geometry tests exercise mobile introduction relocation/restoration, diagram-only phone eligibility, active resize and Reduced Motion cleanup, forward/reverse flow wires, the unchanged story/process ratio and the longer opening journey. Shared CSS/JS key: `readable-connection-20260908`. Root browser validation and independent cumulative review follow on the exact committed head; physical phone acceptance remains separate. Local only: no merge, push, deployment, form submission or external record write.

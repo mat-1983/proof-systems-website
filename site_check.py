@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "narrative-selective-20260908"
+SHARED_ASSET_VERSION = "readable-connection-20260908"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -236,8 +236,8 @@ def check_homepage_v2(failures: list[str]) -> None:
         "The team keeps the work moving. The information gets left behind",
         "connected information and accountability",
         "Keep the software that works. Connect the work that falls between it.",
-        "I trace how the work really moves",
-        "smallest shared layer",
+        "I trace how the work moves",
+        "build the connections around it",
         "Start with one workflow. Prove the useful change.",
         "Operational systems first.",
         "Evidence from construction operations",
@@ -277,16 +277,18 @@ def check_homepage_v2(failures: list[str]) -> None:
     for stale in ("R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
             fail(f"retired date/static story contract remains: {stale}", failures)
-    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools", "rigid software, costly changes", "AI-assisted development", "operational data"):
+    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools", "rigid software and costly changes", "AI-assisted development", "operational data"):
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
     story_markup = raw.split('data-scroll-track="story"', 1)[1].split('</section>', 1)[0]
     for stale in ("The record stays connected", "connected-record", "04 <b>Connected</b>"):
         if stale in story_markup:
             fail(f"problem story must remain fragmented: {stale}", failures)
-    connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-context', 1)[0]
+    connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
         fail("connection headline and short introduction must stay with its diagram", failures)
+    if 'class="wrap connection-context"' in raw or raw.count('class="wrap connection-detail"') != 1:
+        fail("connection explanation must use one consolidated row beside the AI economics", failures)
     for page in ("index.html", "work/sitelog.html", "work/budgetflow.html", "work/index.html"):
         evidence = (ROOT / page).read_text(encoding="utf-8")
         for phrase in ("existing cost-control and payment processes", "scheduled API extraction", "managers allocate costs", "at a set point each week"):

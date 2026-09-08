@@ -117,6 +117,15 @@
     });
   }
 
+  function placeConnectionIntro(track, mobile) {
+    var section = track.parentElement;
+    var intro = section.querySelector(".connection-intro");
+    var scene = track.querySelector(".connection-scene");
+    // One heading, in reading order in either mode. Mobile reserves the pin for the diagram.
+    if (mobile && intro.parentElement !== section) section.insertBefore(intro, track);
+    else if (!mobile && intro.parentElement !== scene) scene.insertBefore(intro, scene.firstChild);
+  }
+
   function measureTracks() {
     needsMeasure = false;
     var navHeight = nav ? nav.offsetHeight : 0;
@@ -125,6 +134,7 @@
       clearTrackLayout(track);
       var mobile = flowQuery.matches;
       var connection = track.dataset.scrollTrack === "connection";
+      if (connection) placeConnectionIntro(track, mobile);
       if (reducedQuery.matches || (mobile && track.dataset.scrollTrack === "story")) {
         if (track.dataset.scrollTrack === "connection") measureWires(track);
         return;
@@ -160,6 +170,7 @@
       // Normal cards get a bounded reading journey, regardless of monitor height.
       // Only genuine overflow earns extra travel: at least one scroll pixel per panned pixel.
       var panelTravel = mobile ? clamp(stableHeight * 0.27, 190, 240) : Math.max(clamp(stableHeight * 0.42, 300, 420), panelOverflow / 0.42 + 140);
+      if (track.dataset.scrollTrack === "process") panelTravel *= 1.4;
       track.style.setProperty("--scroll-travel", (panels.length ? panelTravel * panels.length : clamp(stableHeight * (mobile ? 0.7 : 0.9), 360, mobile ? 600 : 800)) + "px");
       track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
       if (track.dataset.scrollTrack === "connection") measureWires(track);
@@ -202,8 +213,11 @@
       var navHeight = nav ? nav.offsetHeight : 0;
       if (track.dataset.scrollTrack === "connection") {
         var board = track.querySelector(".connection-board");
-        // Finish drawing on arrival, before any of the diagram leaves the reading area.
-        return clamp((viewportHeight - board.getBoundingClientRect().top) / Math.min(board.offsetHeight, viewportHeight - navHeight), 0, 1);
+        // Let the visitor see the wires develop during native flow. Tall diagrams finish
+        // as their lower part enters view; a small diagram completes before its top exits.
+        var start = viewportHeight - Math.min(board.offsetHeight * 0.25, 120);
+        var end = navHeight - Math.max(0, board.offsetHeight - (viewportHeight - navHeight)) * 0.7;
+        return clamp((start - board.getBoundingClientRect().top) / Math.max(1, start - end), 0, 1);
       }
       var panels = track.querySelector(".stage-panels");
       var readingLine = navHeight + (viewportHeight - navHeight) * 0.38;
@@ -290,9 +304,9 @@
         var stageStyles = getComputedStyle(stage);
         var boardOverflow = Math.max(0, board.offsetHeight + parseFloat(stageStyles.paddingTop) + parseFloat(stageStyles.paddingBottom) - stage.offsetHeight);
         if (!ordinaryFlow) board.style.transform = "translateY(" + (-boardOverflow * ease(phase(0.16, 0.90, progress))) + "px)";
-        var flow = ease(phase(0, ordinaryFlow ? 0.50 : 0.57, progress));
+        var flow = ease(phase(0, ordinaryFlow ? 0.65 : 0.57, progress));
         track.querySelectorAll(".connection-wire").forEach(function (wire) {
-          var amount = wire.dataset.wire === "out" ? ease(phase(ordinaryFlow ? 0.40 : 0.63, ordinaryFlow ? 0.80 : 0.83, progress)) : flow;
+          var amount = wire.dataset.wire === "out" ? ease(phase(ordinaryFlow ? 0.40 : 0.63, ordinaryFlow ? 0.95 : 0.83, progress)) : flow;
           wire.style.strokeDashoffset = String(1 - amount);
           wire.style.opacity = amount > 0 ? "1" : "0";
         });

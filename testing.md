@@ -2,6 +2,12 @@
 
 Updated: 2026-09-05
 
+## Phone connection visibility and readable pacing — 8 September 2026
+
+Follow-up from `26bfbec`: the desktop connection heading regains its original scale, explanatory copy occupies one row beside the unchanged AI economics, and mobile puts the one introduction before a diagram-only measured stage. This addresses the reproduced 390 × 664 fallback caused by title-inclusive sizing. Native-flow wires now develop while the diagram crosses the viewport. Process travel increases by 40% independently from the story; actual opening travel increases 35%, from 40svh to 54svh.
+
+PASS — site, privacy, media/master hashes, HTTP crawl, JavaScript syntax, controlled production geometry and cumulative diff gates. New geometry cases cover phone chrome heights (664/667px), one-node heading relocation and restoration, independently paced scenes, and visible reversible wires in short-screen flow. Shared revision `readable-connection-20260908`. Root browser checks and independent review are separate gates; physical phone acceptance is not inferred from simulations.
+
 ## Narrative and selective mobile scenes — 8 September 2026
 
 The workflow story now ends with the work of reconciling disconnected records. Its illustrated routes have physical breaks; desktop text sits over broad left-side darkening, while mobile records retain native flow. Connection headings remain with the diagram; supporting context follows in ordinary flow. SiteLog and BudgetFlow now describe the progression from existing cost-control/payment processes to weekly API extraction, managers’ allocation and a weekly export for accounts import. Only extraction is described as automatic. Films and their descriptions are unchanged.

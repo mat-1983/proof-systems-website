@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/js/site.js'), 'utf8');
-const names = ['clamp', 'phase', 'ease', 'progressThrough', 'setPath', 'renderOpening', 'clearTrackLayout', 'measureTracks', 'trackProgress', 'visibleStage', 'renderDepth', 'renderTracks', 'syncMotionMode'];
+const names = ['clamp', 'phase', 'ease', 'progressThrough', 'setPath', 'renderOpening', 'clearTrackLayout', 'placeConnectionIntro', 'measureTracks', 'trackProgress', 'visibleStage', 'renderDepth', 'renderTracks', 'syncMotionMode'];
 const functions = names.map(name => {
   const match = source.match(new RegExp('^  function ' + name + '\\([^]*?(?=^  function |^  if \\(|^  window\\.)', 'm'));
   assert(match, 'Production function missing: ' + name);
@@ -37,7 +37,11 @@ function fixture(kind, viewport, heights, flow=false) {
       return {top,bottom:top+height};
     }
   }));
-  const inner = {get offsetHeight() {return connection ? board.offsetHeight+150 : parent.offsetHeight+90;}};
+  const intro={parentElement:null};
+  const scene={firstChild:intro,insertBefore(node){node.parentElement=this;}};
+  const section={querySelector:()=>intro,insertBefore(node){node.parentElement=this;}};
+  intro.parentElement=scene;
+  const inner = {get offsetHeight() {return connection ? board.offsetHeight+(intro.parentElement===scene?150:0) : parent.offsetHeight+90;}};
   const stage = {get offsetHeight() {return parseFloat(variables['--stage-height']) || viewport-72;},querySelector:()=>inner};
   const indicators = panels.map(()=>({classList:classList()}));
   const thread = {style:style()};
@@ -48,9 +52,9 @@ function fixture(kind, viewport, heights, flow=false) {
   const caption = {};
   const wires = ['left','right','out'].map(wire=>({style:style(),dataset:{wire}}));
   const nodes = {'.scroll-stage':stage,'.stage-panels':parent,'.story-thread i':thread,'.process-light':kind==='process'?light:null,
-    '.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
+    '.connection-scene':scene,'.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
   const track = {
-    dataset:{scrollTrack:kind},style:variables,attrs:{},
+    dataset:{scrollTrack:kind},style:variables,attrs:{},parentElement:section,
     setAttribute(key,value){this.attrs[key]=value;if(key==='data-scene-mode')this.dataset.sceneMode=value;}, removeAttribute(key){delete this.attrs[key];},
     get offsetHeight(){return track.dataset.sceneMode !== 'staged' || context.reducedQuery.matches ? (connection?board.offsetHeight:flowHeight)+40 : stage.offsetHeight+parseFloat(variables['--scroll-travel']);},
     getBoundingClientRect(){return {top:72-offset};},
@@ -68,7 +72,7 @@ function fixture(kind, viewport, heights, flow=false) {
     getComputedStyle(){return {paddingTop:'16',paddingBottom:'64',top:'72'};},
     measureWires(){}, render(){context.measureTracks();context.renderTracks();}};
   vm.createContext(context);vm.runInContext(functions,context);context.syncMotionMode();
-  return {context,panels,variables,track,parent,board,layer,outcome,wires,caption,
+  return {context,panels,variables,track,parent,board,layer,outcome,wires,caption,intro,scene,section,
     setProgress(value){offset=value*(track.offsetHeight-stage.offsetHeight);context.renderTracks();},
     scrollTo(value){offset=value;context.renderTracks();},
     setMode(mobile,reduced=false){context.flowQuery.matches=mobile;context.reducedQuery.matches=reduced;context.syncMotionMode();}
@@ -81,7 +85,7 @@ for(const kind of ['story','process']) {
     assert.equal(parseFloat(f.variables['--panels-height']),Math.min(natural,Math.max(80,height-72-170)),'Cue/indicator space is included in overflow reading');
     const overflow=Math.max(0,natural-f.parent.offsetHeight);
     const perCardTravel=parseFloat(f.variables['--scroll-travel'])/4;
-    if(!overflow) assert(perCardTravel<=420,'Normal desktop travel is capped independently of monitor height');
+    if(!overflow) assert(perCardTravel<=(kind==='process'?588:420),'Normal desktop travel is capped independently of monitor height');
     else assert(perCardTravel*.42>=overflow,'Overflow reading retains at least one scroll pixel per panned pixel');
     const snapshots=[];
     for(let i=0;i<4;i++) {
@@ -103,7 +107,7 @@ for(const kind of ['story','process']) {
       f.setMode(true,reduced);
       if(kind==='process' && !reduced && natural+170+32<=height-72) {
         assert.equal(f.track.dataset.sceneMode,'staged','A complete compact phone process can stage');
-        assert(parseFloat(f.variables['--scroll-travel'])<=960,'Phone process travel is short');
+        assert(parseFloat(f.variables['--scroll-travel'])<=1344,'Phone process gets 40% more reading travel');
         f.setMode(true,true);
       }
       for(const key of ['--stage-height','--stage-top','--scroll-travel','--panels-height']) assert.equal(f.variables[key],undefined,'Ordinary flow has no artificial geometry');
@@ -134,8 +138,8 @@ for(const kind of ['story','process']) {
       pacing.setProgress((1+pixel/step)/4);
       if(pacing.panels[1].style.opacity==='1' && pacing.panels[1].style.transform==='translateY(0px)') stationary++;
     }
-    assert(stationary<=211,'Normal middle-card stationary interval is at most210px plus sampling tolerance');
-    assert(stationary>=180,'Shorter pacing retains a usable reading interval');
+    assert(stationary<=(kind==='process'?295:211),'Process earns 40% longer reading intervals; story holds retain their cap');
+    assert(stationary>=(kind==='process'?252:180),'Pacing retains the intended reading interval');
     let faintHandover=0;
     for(let pixel=0;pixel<=step;pixel++) {
       pacing.setProgress((.5+pixel/step)/4);
@@ -143,7 +147,7 @@ for(const kind of ['story','process']) {
       assert(visible.length<=1,'Desktop handover never superimposes outgoing and incoming copy');
       if(pacing.panels.every(panel=>Number(panel.style.opacity)<.2)) faintHandover++;
     }
-    assert(faintHandover<=32,'Clean handover has no prolonged empty interval');
+    assert(faintHandover<=(kind==='process'?45:32),'Clean handover has no prolonged empty interval');
   }
   const depth=fixture(kind,844,[330,850,330,360],true);
   depth.scrollTo(0);
@@ -168,9 +172,9 @@ for(const kind of ['story','process']) {
   }
 }
 // Connection eligibility includes its persistent title/intro, stage padding and safety gap.
-for(const [viewport,boardHeight] of [[844,430],[480,470],[390,270],[1024,550]]) {
+for(const [viewport,boardHeight] of [[844,430],[664,352],[667,370],[480,470],[390,270],[1024,550]]) {
   const f=fixture('connection',viewport,boardHeight);
-  const fits=boardHeight+150+80+32<=viewport-72;
+  const fits=boardHeight+80+32<=viewport-72;
   f.setMode(true);
   assert.equal(f.track.dataset.sceneMode,fits?'staged':'flow');
   if(fits) {
@@ -182,9 +186,13 @@ for(const [viewport,boardHeight] of [[844,430],[480,470],[390,270],[1024,550]]) 
     f.setProgress(.2);assert.equal(Number(f.wires[0].style.strokeDashoffset),before,'Reverse restores staged wires');
   } else {
     for(const key of ['--stage-height','--stage-top','--scroll-travel','--panels-height'])assert.equal(f.variables[key],undefined,'Short-screen scene has no artificial runway');
-    const arrivalTop=Math.max(72,viewport-boardHeight);
-    f.scrollTo(72-arrivalTop);
-    for(const wire of f.wires)assert.equal(wire.style.strokeDashoffset,'0','Flow connections complete on arrival');
+    const start=viewport-Math.min(boardHeight*.25,120);
+    const end=72-Math.max(0,boardHeight-(viewport-72))*.7;
+    f.scrollTo(72-start);assert.equal(f.wires[0].style.strokeDashoffset,'1');
+    f.scrollTo(72-(start+end)/2);const midway=f.wires[0].style.strokeDashoffset;
+    assert(Number(midway)>0 && Number(midway)<1,'Fallback wires visibly develop as the diagram crosses the screen');
+    f.scrollTo(72-end);for(const wire of f.wires)assert.equal(wire.style.strokeDashoffset,'0','Flow wires complete while the diagram is readable');
+    f.scrollTo(72-(start+end)/2);assert.equal(f.wires[0].style.strokeDashoffset,midway,'Reverse flow restores visible wire drawing');
     assert.equal(f.board.style.transform,undefined,'Flow diagram moves with the document');
   }
   f.setMode(true,true);
@@ -192,6 +200,19 @@ for(const [viewport,boardHeight] of [[844,430],[480,470],[390,270],[1024,550]]) 
   assert.equal(f.layer.style.opacity,undefined);
   assert.equal(f.outcome.style.opacity,undefined);
   assert.equal(f.board.style.transform,undefined);
+}
+for(const viewport of [664,667,844]) {
+  const f=fixture('connection',viewport,352,true);
+  assert.equal(f.track.dataset.sceneMode,'staged','Normal portrait with browser chrome stages the full diagram');
+  assert.equal(f.intro.parentElement,f.section,'Mobile introduction precedes the diagram track');
+  f.setMode(false);assert.equal(f.intro.parentElement,f.scene,'Desktop restores the same original heading inside the scene');
+  f.setMode(true,true);assert.equal(f.intro.parentElement,f.section,'Reduced Motion keeps a single complete mobile heading');
+}
+// Process changes must not slow the unrelated workflow story.
+for(const viewport of [664,900,1146]) {
+  const story=fixture('story',viewport,350);
+  const process=fixture('process',viewport,350);
+  assert(Math.abs(parseFloat(process.variables['--scroll-travel'])/parseFloat(story.variables['--scroll-travel'])-1.4)<1e-10);
 }
 // Resize within the same phone breakpoint can revoke staging after it has begun.
 for(const kind of ['connection','process']) {
@@ -211,13 +232,13 @@ for(const kind of ['connection','process']) {
 }
 // A single pixel around the fit boundary chooses complete flow or complete staging.
 for(const kind of ['connection','process']) {
-  const extra=kind==='connection'?230:170;
+  const extra=kind==='connection'?80:170;
   for(const delta of [-1,0,1]) {
     const f=fixture(kind,844,844-72-extra-32+delta,true);
     assert.equal(f.track.dataset.sceneMode,delta<=0?'staged':'flow');
   }
 }
-// Drive the real opening with a 40svh journey, preserving its five-node logo geometry.
+// Drive the real opening with a 54svh journey, preserving its five-node logo geometry.
 {
   let offset=0;
   const element=()=>({style:style(),attrs:{},setAttribute(key,value){this.attrs[key]=value;}});
@@ -228,7 +249,7 @@ for(const kind of ['connection','process']) {
   const nodes=Array.from({length:5},element),lines=Array.from({length:3},element);
   const selectors={'.v2-opening-sticky':{offsetHeight:844},'.v2-opening-mark-wrap':mark,'.v2-opening-mark':svg,
     '.v2-mark-outline':outline,'.v2-mark-main':main,'.v2-opening-name':name};
-  const opening={...element(),offsetHeight:844*1.4,getBoundingClientRect:()=>({top:-offset}),
+  const opening={...element(),offsetHeight:844*1.54,getBoundingClientRect:()=>({top:-offset}),
     querySelector:selector=>selectors[selector]||null,
     querySelectorAll:selector=>selector==='.v2-mark-branch'?branches:selector==='.v2-mark-node'?nodes:lines};
   const context={opening,reducedQuery:{matches:false},window:{innerHeight:844}};
@@ -253,7 +274,7 @@ for(const kind of ['connection','process']) {
 }
 const css=fs.readFileSync(path.join(__dirname,'../assets/css/site.css'),'utf8');
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
-assert(/\.v2-opening \{\s*min-height: 140svh;/.test(css),'Opening travel is shortened to 40svh');
+assert(/\.v2-opening \{\s*min-height: 154svh;/.test(css),'Opening animation travel is 54svh, 35% more than the preceding40svh');
 const breakpoint=source.match(/var flowQuery = window.matchMedia\("([^"]+)"\)/)[1];
 assert(css.includes('@media '+breakpoint+' {'),'Phone/short-landscape JS and CSS breakpoints are identical');
 const desktopRule=css.match(/\.motion-ready \[data-scene-mode="staged"\] \[data-stage-panel\]\s*\{([^}]+)\}/);
@@ -288,4 +309,4 @@ assert(/\.scene-depth-window \{[^}]*overflow: clip/.test(css),'Oversized art cli
 assert(/\.motion-ready \[data-scene-mode="staged"\] \.scene-depth-window \{[^}]*position: relative;[^}]*top: 0;[^}]*height: 100%/.test(css),'Staged art resets the mobile sticky top offset and fills its scene');
 assert(!/\.scene-depth[^}]*animation:/.test(css),'Brand depth has no autonomous animation');
 assert(/\.story-panel \{ padding: 1.1rem .5rem .4rem; border: 0; background: transparent;/.test(css),'Phone story avoids nested outer boxes');
-console.log('PASS production scene geometry: capped desktop travel and 210px maximum middle-card hold; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, title-inclusive fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, early connection completion, responsive/motion-mode cleanup, accessible complete narration and cue scope');
+console.log('PASS production scene geometry: independent story/process travel and reading holds; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, desktop title/mobile diagram fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, visible connection drawing in short-screen flow, responsive/motion-mode cleanup, accessible complete narration and cue scope');
