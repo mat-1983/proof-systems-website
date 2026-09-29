@@ -389,6 +389,8 @@ def check_homepage_v2(failures: list[str]) -> None:
         for claim in ("automatic accounting sync", "real-time integration", "automated export", "automatic import"):
             if claim in evidence.lower():
                 fail(f"{page}: unconfirmed integration claim: {claim}", failures)
+    if "Using AI to build an early demonstration, so your team can try the workflow before a larger commitment." not in text:
+        fail("stage 02 must use the approved demonstration copy", failures)
     for title in ("Understand the work", "Try a working demo", "Refine it together", "Prove it in use"):
         if title not in text:
             fail(f"practical starting point missing {title}", failures)
