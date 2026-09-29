@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "home-mobile-caption-connectors-20260929"
+SHARED_ASSET_VERSION = "home-mobile-caption-gap-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -374,7 +374,7 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("mobile gold connector lines must cross the image/rail boundary continuously", failures)
     if '.connection-source small { min-height: 0; font-size: clamp(.68rem, 3.3vw, .82rem);' not in css:
         fail("mobile connection eyebrow labels must be balanced and legible", failures)
-    if '.connection-caption { grid-row: 6; text-align: center; color: #becdc9; font-size: .8rem; margin: 2.2rem 0 0; }' not in css or '.connection-caption { margin-top: 1.5rem; }' not in css:
+    if '.connection-caption { grid-row: 6; text-align: center; color: #becdc9; font-size: .8rem; margin: 2.2rem 0 0; }' not in css or '.connection-caption { margin-top: 0; padding-top: 28px; }' not in css:
         fail("connecting-work caption must have distinct vertical separation", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
