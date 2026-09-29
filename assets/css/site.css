@@ -3863,7 +3863,7 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .home-v2 .connection-source h3 { font-size: clamp(1.1rem, 4.7vw, 1.6rem); }
   .connection-source small { min-height: 0; font-size: clamp(.68rem, 3.3vw, .82rem); line-height: 1.3; letter-spacing: .04em; }
   .connection-layer { padding: .7rem .65rem; }
-  .connection-caption { margin-top: 0; padding-top: 28px; }
+  .connection-caption { margin-top: 0; padding-top: 44px; }
   .motion-ready [data-scene-mode="staged"] .scroll-stage { --scroll-stage-padding: 1rem; --scene-cue-space: 2.3rem; }
   .motion-ready [data-scene-mode="staged"] .stage-panels { padding: 0; }
   .motion-ready [data-scene-mode="staged"] .process-card { padding: 1.2rem; }
