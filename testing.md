@@ -1,6 +1,17 @@
 # Proof Systems Website Testing
 
-Updated: 2026-09-08
+Updated: 2026-09-29
+
+## Homepage flow refinement — 29 September 2026
+
+The offer now uses one short sentence beneath its heading and the connected-layer image labels read `Industry Software`; the opaque mobile label plate covers the old raster wording. The practical-starting-point intro sits closer to the first card, and the section now exits from stage four directly into the missing software layer. Desktop process staging has a shorter, bounded reading journey while preserving the full-card reading and reverse-scroll phases. The mobile missing-layer heading uses the process-heading scale. Its two explanatory columns use the shorter approved copy. The desktop hand-off example is unchanged; phones receive an accessible four-step request, owner, next-action and history sequence.
+
+- PASS — `python3 site_check.py`, `node tools/scroll_scene_check.cjs`, `python3 crawl_check.py`, `python3 privacy_notice_check.py`, and `python3 proof_media_check.py`.
+- PASS — both site JavaScript syntax checks, Python AST checks, `python3 tools/prepare_publish.py --out /tmp/proofsystems-home-flow-publish`, and `git diff --check`.
+- PASS — production scroll geometry includes 720px desktop height, bounded normal desktop travel, full-card overflow reading, reversible transitions and existing mobile flow fallbacks.
+- PENDING — rendered browser inspection at 1440×900, 1280×720, 390×844, 375×667 and 320×480, including label masking, narrow hand-off layout, offer-to-process spacing, and stage-four exit. Root owns browser UAT; source and geometry checks do not substitute for rendering.
+
+Simple Gate: PASS — the offer, process and hand-off each explain their purpose and next step with concise copy and one visual flow. No publishing, form submission, deployment or external record update occurred.
 
 ## Clearer offer and shared information-route map — 8 September 2026
 

@@ -78,13 +78,13 @@ function fixture(kind, viewport, heights, flow=false) {
   };
 }
 for(const kind of ['process']) {
-  for(const [height,natural] of [[900,470],[1024,580],[1146,470],[1600,470],[844,420],[600,450],[500,440],[480,490],[390,270]]) {
+  for(const [height,natural] of [[900,470],[1024,580],[1146,470],[1600,470],[844,420],[720,470],[600,450],[500,440],[480,490],[390,270]]) {
     const f=fixture(kind,height,natural);
     assert.equal(parseFloat(f.variables['--stage-height']),height-72,'Desktop stage fits beneath navigation');
     assert.equal(parseFloat(f.variables['--panels-height']),Math.min(natural,Math.max(80,height-72-170)),'Cue/indicator space is included in overflow reading');
     const overflow=Math.max(0,natural-f.parent.offsetHeight);
     const perCardTravel=parseFloat(f.variables['--scroll-travel'])/4;
-    if(!overflow) assert(perCardTravel<=588,'Normal desktop travel is capped independently of monitor height');
+    if(!overflow) assert(perCardTravel<=504,'Shorter desktop process travel is capped independently of monitor height');
     else assert(perCardTravel*.42>=overflow,'Overflow reading retains at least one scroll pixel per panned pixel');
     const snapshots=[];
     for(let i=0;i<4;i++) {

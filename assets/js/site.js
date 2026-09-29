@@ -169,7 +169,7 @@
       // Normal cards get a bounded reading journey, regardless of monitor height.
       // Only genuine overflow earns extra travel: at least one scroll pixel per panned pixel.
       var panelTravel = mobile ? clamp(stableHeight * 0.27, 190, 240) : Math.max(clamp(stableHeight * 0.42, 300, 420), panelOverflow / 0.42 + 140);
-      if (track.dataset.scrollTrack === "process") panelTravel *= 1.4;
+      if (track.dataset.scrollTrack === "process") panelTravel *= mobile ? 1.4 : 1.2;
       track.style.setProperty("--scroll-travel", (panels.length ? panelTravel * panels.length : clamp(stableHeight * (mobile ? 0.7 : 0.9), 360, mobile ? 600 : 800)) + "px");
       track.setAttribute("data-overflow", naturalHeight > stageHeight ? "true" : "false");
       if (track.dataset.scrollTrack === "connection") measureWires(track);
@@ -275,8 +275,10 @@
         }
         var position = progress * 4 - index;
         var overflow = Math.max(0, panel.offsetHeight - panel.parentElement.offsetHeight);
-        var enter = index === 0 ? 1 : ease(phase(-0.02, 0.22, position));
-        var leave = index === panels.length - 1 ? 0 : ease(phase(overflow ? 0.74 : 0.72, 0.98, position));
+        var process = track.dataset.scrollTrack === "process";
+        var enter = index === 0 ? 1 : ease(phase(-0.02, process ? 0.18 : 0.22, position));
+        var leaveStart = process ? 0.74 : (overflow ? 0.74 : 0.72);
+        var leave = index === panels.length - 1 ? 0 : ease(phase(leaveStart, 0.98, position));
         // Complete the outgoing fade before the next copy appears. Moving cards can
         // cross the same space, but their text never forms a double exposure.
         var appear = index === 0 ? 1 : ease(phase(-0.02, 0.10, position));

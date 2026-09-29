@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "offer-visual-scale-responsive-labels-20260929"
+SHARED_ASSET_VERSION = "home-flow-refinement-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -231,10 +231,8 @@ def check_homepage_v2(failures: list[str]) -> None:
     required_copy = [
         "Systems built around how your business really works.",
         "Bespoke software. Built around your business.",
-        "Software built to fit how you work, connecting data across your existing tools and reducing repetitive admin.",
+        "Software that fits your work, connects your tools and cuts repetitive admin.",
         "Keep the software that works. Connect the work that falls between it.",
-        "I trace how the work moves",
-        "build the connections around it",
         "Start with one workflow. Prove the useful change.",
         "Operational systems first.",
         "Evidence from construction operations",
@@ -269,7 +267,7 @@ def check_homepage_v2(failures: list[str]) -> None:
     for stale in ("Where the work loses its flow", "The software is there. The work between it is manual.", "data-work-story", 'data-scroll-track="story"', "R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
             fail(f"retired workflow story remains: {stale}", failures)
-    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools", "rigid software and costly changes", "AI-assisted development", "operational data"):
+    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools"):
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
     if raw.count('class="offer-visual"') != 1 or 'assets/img/home/bespoke-connected-layer.webp' not in raw:
@@ -335,11 +333,36 @@ def check_homepage_v2(failures: list[str]) -> None:
     offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
     if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
         fail("approved connected-layer visual must be present and web-optimised", failures)
-    for label in ("Bespoke Layer", "Accounts Software", "Spreadsheets", "Industry Specific Software/Apps"):
+    for label in ("Bespoke Layer", "Accounts Software", "Spreadsheets", "Industry Software"):
         if label not in text:
             fail(f"approved offer visual is missing its accessible label: {label}", failures)
     if 'Tweak' in raw or 'ps-stage-tabs' in raw or 'ps-preview-tabs' in raw:
         fail("public offer must not contain prototype controls", failures)
+    if "Industry Specific Software/Apps" in text or "Start small. Extend when real use shows what is worth building next." in text or "Discuss where the work breaks" in text:
+        fail("retired homepage offer or process copy remains", failures)
+    if 'alt="A bespoke software layer connected to accounts software, spreadsheets and industry software."' not in raw:
+        fail("connected-layer image description must match the visible software labels", failures)
+    for phrase in (
+        "Connect what you already use.",
+        "Whether you run one main system, separate tools or both, I build around the gaps and keep the work connected.",
+        "Faster to prove.",
+        "AI makes it quicker and cheaper to build a working demonstration, test it with your team and improve it before a larger commitment.",
+    ):
+        if phrase not in text:
+            fail(f"missing approved missing-layer explanation: {phrase}", failures)
+    flow = re.search(r'<ol class="handoff-flow-mobile" aria-label="Connected work hand-off">([\s\S]*?)</ol>', raw)
+    if not flow or any(label not in flow.group(1) for label in ("Request", "Source attached", "Owner", "Operations team", "Next action", "Review request", "History", "Kept with the work")):
+        fail("mobile hand-off sequence must explain request, owner, next action and history", failures)
+    if '.service-example .work-record { display: none; }' not in css or '.service-example .handoff-flow-mobile {' not in css:
+        fail("mobile hand-off must use its concise sequence while preserving the desktop example", failures)
+    if '.v2-process > .scene-intro { padding-top: clamp(3.5rem, 6vw, 6rem); padding-bottom: 1rem; }' not in css or '.home-v2 .v2-process > .scene-intro h2 { margin-bottom: 1rem; }' not in css or '.v2-process .scroll-stage { --scroll-stage-padding: 1rem; }' not in css:
+        fail("practical process intro and first card must have a compact desktop transition", failures)
+    if 'Start small. Extend when real use shows what is worth building next.' in text or 'Discuss where the work breaks' in text:
+        fail("process section must move directly from stage four into the connecting layer", failures)
+    if '.home-v2 .connection-intro h2 { font-size: clamp(2.6rem, 10.5vw, 4rem); }' not in css:
+        fail("mobile missing-layer heading must match the practical-starting-point scale", failures)
+    if '.offer-label--industry { left: 81%; top: 82%;' not in css or '.offer-label--industry { left: 81.4%; top: 82%;' not in css or 'background: #171513;' not in label_rule(css, "industry"):
+        fail("mobile Industry Software plate must mask its baked text and align with the other labels", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
         fail("connection headline and short introduction must stay with its diagram", failures)
