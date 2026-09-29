@@ -176,6 +176,10 @@ for(const [viewport,boardHeight] of [[844,430],[664,352],[667,370],[480,470],[39
   const fits=boardHeight+80+32<=viewport-72;
   f.setMode(true);
   assert.equal(f.track.dataset.sceneMode,fits?'staged':'flow');
+  if(!fits) {
+    assert.equal(f.layer.style.opacity,undefined,'Mobile ordinary flow does not apply desktop reveal opacity');
+    assert.equal(f.outcome.style.opacity,undefined,'Mobile ordinary flow keeps outcome copy complete');
+  }
   if(fits) {
     assert(parseFloat(f.variables['--scroll-travel'])<=600,'Connection has a short responsive drawing journey');
     f.setProgress(.2); const before=Number(f.wires[0].style.strokeDashoffset);
@@ -199,6 +203,38 @@ for(const [viewport,boardHeight] of [[844,430],[664,352],[667,370],[480,470],[39
   assert.equal(f.layer.style.opacity,undefined);
   assert.equal(f.outcome.style.opacity,undefined);
   assert.equal(f.board.style.transform,undefined);
+}
+// Desktop connection scenes reveal the centre layer/outcomes with their wires in
+// both staged and native-flow modes. Begin below the viewport to model entry from
+// the preceding section, then verify forward and reverse progress.
+for(const [viewport,boardHeight,mode] of [[900,430,'staged'],[720,430,'flow']]) {
+  const f=fixture('connection',viewport,boardHeight);
+  f.setMode(false);
+  assert.equal(f.track.dataset.sceneMode,mode,`${viewport}px desktop connection chooses its measured mode`);
+  const start=viewport-Math.min(boardHeight*.25,120);
+  const end=72-Math.max(0,boardHeight-(viewport-72))*.7;
+  const at=progress=>{
+    if(mode==='staged') f.setProgress(progress);
+    else f.scrollTo(72-(start+(end-start)*progress));
+  };
+  if(mode==='flow') f.scrollTo(-viewport);
+  at(0);
+  assert.equal(f.layer.style.opacity,'0','Desktop entry hides the central layer before its connectors arrive');
+  assert.equal(f.outcome.style.opacity,'0','Desktop entry hides the outcome row before its connector arrives');
+  at(.5);
+  assert(Number(f.wires[0].style.strokeDashoffset)<1,'Desktop entry draws the source connectors');
+  assert(Number(f.layer.style.opacity)>0 && Number(f.layer.style.opacity)<1,'Central layer reveals with arriving source connectors');
+  assert.equal(f.outcome.style.opacity,'0','Outcome remains hidden until the final connector arrives');
+  at(1);
+  for(const wire of f.wires) assert.equal(wire.style.strokeDashoffset,'0','Desktop final state completes each connector');
+  assert.equal(f.layer.style.opacity,'1','Desktop final state fully reveals the central layer');
+  assert.equal(f.outcome.style.opacity,'1','Desktop final state fully reveals the outcome row');
+  at(.5);
+  assert(Number(f.layer.style.opacity)>0 && Number(f.layer.style.opacity)<1,'Reverse scroll restores the central layer reveal');
+  assert.equal(f.outcome.style.opacity,'0','Reverse scroll hides outcomes before their connector endpoint');
+  at(0);
+  assert.equal(f.layer.style.opacity,'0','Reverse scroll restores the hidden entry state');
+  assert.equal(f.outcome.style.opacity,'0','Reverse scroll restores the hidden outcome state');
 }
 for(const viewport of [664,667,844]) {
   const f=fixture('connection',viewport,352,true);

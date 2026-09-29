@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "home-responsive-caption-gap-20260929"
+SHARED_ASSET_VERSION = "connection-reveal-texture-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -376,6 +376,12 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("mobile connection eyebrow labels must be balanced and legible", failures)
     if '.connection-caption { grid-row: 6; text-align: center; color: #becdc9; font-size: .8rem; margin: 2.2rem 0 0; }' not in css or '.connection-caption { margin-top: 0; padding-top: 30px; }' not in css or '@media (min-width: 761px) {\n  .connection-caption { margin: 0; padding-top: 32px; }\n}' not in css:
         fail("connecting-work caption must have distinct responsive vertical separation", failures)
+    if '.motion-ready [data-scroll-track="connection"] .connection-layer,' not in css or '.motion-ready [data-scroll-track="connection"] .connection-outcome { opacity: 0; }' not in css:
+        fail("connection reveal must start hidden when motion is active", failures)
+    if '.motion-ready [data-scroll-track="connection"][data-scene-mode="flow"] .connection-layer,' not in css or '.motion-ready [data-scroll-track="connection"][data-scene-mode="flow"] .connection-outcome { opacity: 1; transform: none; }' not in css:
+        fail("mobile ordinary-flow connection copy must remain fully readable", failures)
+    if 'background-image: linear-gradient(180deg, #0b0c0d1c, #0b0c0d70), url("../img/home/bespoke-connected-layer.webp");' not in css or 'background-size: 100% 100%, 140% auto;' not in css or 'border-top: 0;' not in css:
+        fail("mobile offer captions must continue the illustration texture without a hard rail", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
         fail("connection headline and short introduction must stay with its diagram", failures)

@@ -312,7 +312,9 @@
         var finish = ease(phase(0.74, 0.93, progress));
         var layer = track.querySelector(".connection-layer");
         var outcome = track.querySelector(".connection-outcome");
-        if (!ordinaryFlow) {
+        // Desktop fallback flow still reveals the layer and outcomes with the wires.
+        // Phone flow remains complete and readable without a staged reveal.
+        if (!ordinaryFlow || (!flowQuery.matches && !reducedQuery.matches)) {
           layer.style.opacity = String(arrive);
           layer.style.transform = "translateY(" + ((1-arrive)*24) + "px)";
           outcome.style.opacity = String(finish);
