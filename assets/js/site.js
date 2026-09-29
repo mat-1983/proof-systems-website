@@ -6,7 +6,6 @@
   var nav = document.querySelector(".site-nav");
   var hero = document.querySelector("[data-hero]");
   var opening = document.querySelector("[data-v2-opening]");
-  var story = document.querySelector("[data-work-story]");
   var tracks = Array.prototype.slice.call(document.querySelectorAll("[data-scroll-track]"));
   var frame = 0;
   var needsMeasure = true;
@@ -107,7 +106,7 @@
     });
     track.removeAttribute("data-overflow");
     track.setAttribute("data-scene-mode", "flow");
-    track.querySelectorAll("[data-stage-panel], .connection-board, .connection-layer, .connection-outcome, .story-thread i, .process-light").forEach(function (element) {
+    track.querySelectorAll("[data-stage-panel], .connection-board, .connection-layer, .connection-outcome, .process-light").forEach(function (element) {
       element.style.removeProperty("transform");
       element.style.removeProperty("opacity");
     });
@@ -135,7 +134,7 @@
       var mobile = flowQuery.matches;
       var connection = track.dataset.scrollTrack === "connection";
       if (connection) placeConnectionIntro(track, mobile);
-      if (reducedQuery.matches || (mobile && track.dataset.scrollTrack === "story")) {
+      if (reducedQuery.matches) {
         if (track.dataset.scrollTrack === "connection") measureWires(track);
         return;
       }
@@ -155,11 +154,6 @@
       if ((mobile || connection) && naturalHeight + 32 > stageHeight) {
         clearTrackLayout(track);
         if (connection) measureWires(track);
-        return;
-      }
-      var storyMap = track.querySelector(".story-map");
-      if (storyMap && !mobile && storyMap.offsetHeight + naturalHeight - Math.max(tallest, storyMap.offsetHeight) + 32 > stageHeight) {
-        clearTrackLayout(track);
         return;
       }
       var panelOverflow = 0;
@@ -274,7 +268,6 @@
       }
       renderDepth(track, progress);
       track.setAttribute("data-active-stage", String(selected + 1));
-      if (track.dataset.scrollTrack === "story" && story) story.setAttribute("data-story-step", String(selected + 1));
       panels.forEach(function (panel, index) {
         if (ordinaryFlow) {
           panel.classList.toggle("is-current", index === selected);
@@ -299,8 +292,6 @@
       track.querySelectorAll("[data-stage-indicator]").forEach(function (item, index) {
         item.classList.toggle("is-current", index === selected);
       });
-      var thread = track.querySelector(".story-thread i");
-      if (thread && !ordinaryFlow) thread.style.transform = "scaleX(" + progress + ")";
       var light = track.querySelector(".process-light");
       if (light && !ordinaryFlow) light.style.transform = "translate(" + (25 - progress*50) + "%," + (-10 + progress*20) + "%)";
       if (track.dataset.scrollTrack === "connection") {

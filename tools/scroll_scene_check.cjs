@@ -20,7 +20,7 @@ function style() {
 function classList() {
   return { toggle(key,value) {this[key]=value;}, remove(key) {delete this[key];} };
 }
-function fixture(kind, viewport, heights, flow=false, mapHeight=0) {
+function fixture(kind, viewport, heights, flow=false) {
   const variables = style();
   let offset = 0;
   const connection = kind === 'connection';
@@ -41,18 +41,17 @@ function fixture(kind, viewport, heights, flow=false, mapHeight=0) {
   const scene={firstChild:intro,insertBefore(node){node.parentElement=this;}};
   const section={querySelector:()=>intro,insertBefore(node){node.parentElement=this;}};
   intro.parentElement=scene;
-  const inner = {get offsetHeight() {return connection ? board.offsetHeight+(intro.parentElement===scene?150:0) : Math.max(parent.offsetHeight,mapHeight)+90;}};
+  const inner = {get offsetHeight() {return connection ? board.offsetHeight+(intro.parentElement===scene?150:0) : parent.offsetHeight+90;}};
   const stage = {get offsetHeight() {return parseFloat(variables['--stage-height']) || viewport-72;},querySelector:()=>inner};
   const indicators = panels.map(()=>({classList:classList()}));
-  const thread = {style:style()};
   const light = {style:style()};
   const board = {style:style(), offsetHeight:panelHeights[0], getBoundingClientRect() {return {top:72-offset};}};
   const layer = {style:style()};
   const outcome = {style:style()};
   const caption = {};
   const wires = ['left','right','out'].map(wire=>({style:style(),dataset:{wire}}));
-  const nodes = {'.scroll-stage':stage,'.stage-panels':parent,'.story-thread i':thread,'.process-light':kind==='process'?light:null,
-    '.story-map':mapHeight?{offsetHeight:mapHeight}:null,'.connection-scene':scene,'.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
+  const nodes = {'.scroll-stage':stage,'.stage-panels':parent,'.process-light':kind==='process'?light:null,
+    '.connection-scene':scene,'.connection-board':board,'.connection-layer':layer,'.connection-outcome':outcome,'.connection-caption':caption};
   const track = {
     dataset:{scrollTrack:kind},style:variables,attrs:{},parentElement:section,
     setAttribute(key,value){this.attrs[key]=value;if(key==='data-scene-mode')this.dataset.sceneMode=value;}, removeAttribute(key){delete this.attrs[key];},
@@ -63,10 +62,10 @@ function fixture(kind, viewport, heights, flow=false, mapHeight=0) {
       if(selector==='[data-stage-panel]') return panels;
       if(selector==='[data-stage-indicator]') return indicators;
       if(selector==='.connection-wire') return connection?wires:[];
-      return [...panels,thread,light,...(connection?[board,layer,outcome]:[])];
+      return [...panels,light,...(connection?[board,layer,outcome]:[])];
     }
   };
-  const context = {tracks:[track],reducedQuery:{matches:false},flowQuery:{matches:flow},story:{setAttribute(){}},nav:{offsetHeight:72},
+  const context = {tracks:[track],reducedQuery:{matches:false},flowQuery:{matches:flow},nav:{offsetHeight:72},
     viewportProbe:{offsetHeight:viewport},window:{innerHeight:viewport},needsMeasure:true,
     document:{documentElement:{classList:classList()},querySelectorAll:()=>[]},
     getComputedStyle(){return {paddingTop:'16',paddingBottom:'64',top:'72'};},
@@ -78,14 +77,14 @@ function fixture(kind, viewport, heights, flow=false, mapHeight=0) {
     setMode(mobile,reduced=false){context.flowQuery.matches=mobile;context.reducedQuery.matches=reduced;context.syncMotionMode();}
   };
 }
-for(const kind of ['story','process']) {
+for(const kind of ['process']) {
   for(const [height,natural] of [[900,470],[1024,580],[1146,470],[1600,470],[844,420],[600,450],[500,440],[480,490],[390,270]]) {
     const f=fixture(kind,height,natural);
     assert.equal(parseFloat(f.variables['--stage-height']),height-72,'Desktop stage fits beneath navigation');
     assert.equal(parseFloat(f.variables['--panels-height']),Math.min(natural,Math.max(80,height-72-170)),'Cue/indicator space is included in overflow reading');
     const overflow=Math.max(0,natural-f.parent.offsetHeight);
     const perCardTravel=parseFloat(f.variables['--scroll-travel'])/4;
-    if(!overflow) assert(perCardTravel<=(kind==='process'?588:420),'Normal desktop travel is capped independently of monitor height');
+    if(!overflow) assert(perCardTravel<=588,'Normal desktop travel is capped independently of monitor height');
     else assert(perCardTravel*.42>=overflow,'Overflow reading retains at least one scroll pixel per panned pixel');
     const snapshots=[];
     for(let i=0;i<4;i++) {
@@ -105,7 +104,7 @@ for(const kind of ['story','process']) {
     assert.equal(f.variables['--scroll-travel'],travel,'Toolbar changes do not alter desktop travel');
     for(const reduced of [false,true]) {
       f.setMode(true,reduced);
-      if(kind==='process' && !reduced && natural+170+32<=height-72) {
+      if(!reduced && natural+170+32<=height-72) {
         assert.equal(f.track.dataset.sceneMode,'staged','A complete compact phone process can stage');
         assert(parseFloat(f.variables['--scroll-travel'])<=1344,'Phone process gets 40% more reading travel');
         f.setMode(true,true);
@@ -138,8 +137,8 @@ for(const kind of ['story','process']) {
       pacing.setProgress((1+pixel/step)/4);
       if(pacing.panels[1].style.opacity==='1' && pacing.panels[1].style.transform==='translateY(0px)') stationary++;
     }
-    assert(stationary<=(kind==='process'?295:211),'Process earns 40% longer reading intervals; story holds retain their cap');
-    assert(stationary>=(kind==='process'?252:180),'Pacing retains the intended reading interval');
+    assert(stationary<=295,'Process reading interval remains bounded');
+    assert(stationary>=252,'Pacing retains the intended reading interval');
     let faintHandover=0;
     for(let pixel=0;pixel<=step;pixel++) {
       pacing.setProgress((.5+pixel/step)/4);
@@ -147,7 +146,7 @@ for(const kind of ['story','process']) {
       assert(visible.length<=1,'Desktop handover never superimposes outgoing and incoming copy');
       if(pacing.panels.every(panel=>Number(panel.style.opacity)<.2)) faintHandover++;
     }
-    assert(faintHandover<=(kind==='process'?45:32),'Clean handover has no prolonged empty interval');
+    assert(faintHandover<=45,'Clean handover has no prolonged empty interval');
   }
   const depth=fixture(kind,844,[330,850,330,360],true);
   depth.scrollTo(0);
@@ -170,17 +169,6 @@ for(const kind of ['story','process']) {
     assert.equal(f.track.attrs['data-active-stage'],String(index+1),'Active stage follows the real card at the reading line');
     assert(f.panels[index].classList['is-current']);
   }
-}
-// The shared map remains fully readable; short desktops relinquish the whole story pin.
-for(const viewport of [900,768,720,550,320]) {
-  const f=fixture('story',viewport,390,false,350);
-  const fits=350+170+32<=viewport-72;
-  assert.equal(f.track.dataset.sceneMode,fits?'staged':'flow');
-  if(!fits) {
-    assert.equal(f.variables['--scroll-travel'],undefined,'Map overflow earns ordinary flow, never clipping');
-    f.scrollTo(250);for(const panel of f.panels)assert.equal(panel.style.transform,undefined);
-  }
-  f.setMode(true);assert.equal(f.track.dataset.sceneMode,'flow','Mobile map and copy remain native flow');
 }
 // Connection eligibility includes its persistent title/intro, stage padding and safety gap.
 for(const [viewport,boardHeight] of [[844,430],[664,352],[667,370],[480,470],[390,270],[1024,550]]) {
@@ -218,12 +206,6 @@ for(const viewport of [664,667,844]) {
   assert.equal(f.intro.parentElement,f.section,'Mobile introduction precedes the diagram track');
   f.setMode(false);assert.equal(f.intro.parentElement,f.scene,'Desktop restores the same original heading inside the scene');
   f.setMode(true,true);assert.equal(f.intro.parentElement,f.section,'Reduced Motion keeps a single complete mobile heading');
-}
-// Process changes must not slow the unrelated workflow story.
-for(const viewport of [664,900,1146]) {
-  const story=fixture('story',viewport,350);
-  const process=fixture('process',viewport,350);
-  assert(Math.abs(parseFloat(process.variables['--scroll-travel'])/parseFloat(story.variables['--scroll-travel'])-1.4)<1e-10);
 }
 // Resize within the same phone breakpoint can revoke staging after it has begun.
 for(const kind of ['connection','process']) {
@@ -295,37 +277,25 @@ assert(!/\.motion-ready\s+(?:\.scroll-track|\.scroll-stage|\.stage-panels|\[data
 assert(/\.scroll-track \.stage-panels\s*\{[^}]*height: auto;[^}]*overflow: visible/.test(css),'Flow has natural height and no clipping');
 assert(/\.scroll-track \[data-stage-panel\]\s*\{[^}]*position: relative;[^}]*height: auto;[^}]*opacity: 1/.test(css),'All phone cards participate in ordinary layout');
 const narrativePanels=[...html.matchAll(/<article[^>]*data-stage-panel="[0-3]"[^]*?<\/article>/g)];
-assert.equal(narrativePanels.length,8);
+assert.equal(narrativePanels.length,4);
 for(const panel of narrativePanels) {
   assert(!/aria-hidden="true"|\bhidden(?:[\s=>])|\binert(?:[\s=>])/.test(panel[0].split('>')[0]), 'Narrative panel remains accessible');
   assert(!/<(?:a|button|input|select|textarea|summary)\b|\btabindex\s*=/.test(panel[0]),'Desktop invisible panels have no keyboard stops');
 }
 const cues=[...html.matchAll(/<span class="scene-scroll-cue" data-scene-scroll-cue aria-hidden="true">([^]*?)<\/span>/g)];
-assert.equal(cues.length,4);
+assert.equal(cues.length,3);
 for(const cue of cues) assert(/<svg\b/.test(cue[1]) && !/<(?:a|button)\b/.test(cue[0]));
-assert(/\.scroll-track \.stage-indicator, \.scroll-track \.scene-scroll-cue, \.scroll-track \.story-thread \{ display: none;/.test(css),'Former sticky cues are absent from phone flow');
+assert(/\.scroll-track \.stage-indicator, \.scroll-track \.scene-scroll-cue \{ display: none;/.test(css),'Sticky cues are absent from phone flow');
 assert(/@media \(prefers-reduced-motion: reduce\)[^]*?\.scene-scroll-cue\s*\{\s*display:\s*none !important/.test(css));
 assert(/\.scene-scroll-cue\s*\{[^}]*display:\s*none/.test(css),'No-JS shows no stray scroll cue');
-const backdrops=[...html.matchAll(/<div class="scene-depth scene-depth--(?:story|process)" aria-hidden="true">([^]*?)<\/svg>/g)];
-const storyArt=backdrops.find(item=>item[0].includes('scene-depth--story'))[1];
-for(const route of storyArt.matchAll(/<path[^>]* d="([^"]+)"/g))assert((route[1].match(/M/g)||[]).length>1,'Problem-scene routes have physical interruptions');
-const storyCopy=html.split('data-scroll-track="story"')[1].split('</section>')[0];
-assert(storyCopy.includes('Piece the picture together.') && storyCopy.includes('checking which version is current'),'Stage04 remains manual reconciliation');
-assert.equal((storyCopy.match(/class="story-map"/g)||[]).length,1,'One persistent map is shared by all four stages');
-assert(!storyCopy.includes('Customer request') && !storyCopy.includes('work-record'),'No fictional customer order remains in this story');
-assert.equal((storyCopy.match(/class="story-fragment" aria-hidden="true"/g)||[]).length,4,'Only small mobile fragments repeat; narration is not repeated to assistive technology');
-for(let stage=1;stage<=4;stage++) {
-  assert(css.includes(`[data-active-stage="${stage}"] .story-map li:nth-child(${stage})`) && css.includes(`[data-active-stage="${stage}"] .story-map li:nth-child(${stage+1})`),'Each stage highlights its break and adjacent map nodes');
-}
-assert(/story-map li:not\(:last-child\)::after \{[^}]*transparent 35% 62%/.test(css),'The visible information route has interrupted links');
-
-assert(!storyCopy.includes('connected-record') && !storyCopy.includes('04 <b>Connected</b>'));
+assert(!html.includes('data-scroll-track="story"') && !html.includes('Where the work loses its flow'),'Retired workflow story and its scroll runway are absent');
+assert(!source.includes('data-work-story') && !css.includes('data-scroll-track="story"'),'Retired workflow scene code and styles are absent');
+const backdrops=[...html.matchAll(/<div class="scene-depth scene-depth--process" aria-hidden="true">([^]*?)<\/svg>/g)];
 assert(/\.scene-depth-window::before \{[^}]*inset: -220px -180px/.test(css),'Glow paint extends beyond its complete maximum travel, avoiding a moving rectangular edge');
-assert.equal(backdrops.length,2,'Both targeted scenes have their own accessible-safe code-native backdrop');
+assert.equal(backdrops.length,1,'The remaining staged process has one accessible-safe code-native backdrop');
 for(const backdrop of backdrops) assert(/focusable="false"/.test(backdrop[1]) && !/<(?:a|button)\b/.test(backdrop[1]));
 assert(/\.scene-depth \{[^}]*pointer-events: none/.test(css),'Decorative art cannot intercept gestures');
 assert(/\.scene-depth-window \{[^}]*overflow: clip/.test(css),'Oversized art clips inside its own window');
 assert(/\.motion-ready \[data-scene-mode="staged"\] \.scene-depth-window \{[^}]*position: relative;[^}]*top: 0;[^}]*height: 100%/.test(css),'Staged art resets the mobile sticky top offset and fills its scene');
 assert(!/\.scene-depth[^}]*animation:/.test(css),'Brand depth has no autonomous animation');
-assert(/\.story-panel \{ padding: 1.1rem .5rem .4rem; border: 0; background: transparent;/.test(css),'Phone story avoids nested outer boxes');
-console.log('PASS production scene geometry: independent story/process travel and reading holds; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, desktop title/mobile diagram fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, visible connection drawing in short-screen flow, responsive/motion-mode cleanup, accessible complete narration and cue scope');
+console.log('PASS production scene geometry: process travel and reading holds; visible reversible SVG depth; desktop heading/bottom holds and reverse progression; selective mobile staging, desktop title/mobile diagram fit boundaries, short-screen flow, unequal-height visible stages, no flow counter-translation, visible connection drawing in short-screen flow, responsive/motion-mode cleanup and accessible cue scope');

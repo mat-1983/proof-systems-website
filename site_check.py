@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "clear-offer-route-20260908"
+SHARED_ASSET_VERSION = "offer-journey-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -231,10 +231,7 @@ def check_homepage_v2(failures: list[str]) -> None:
     required_copy = [
         "Systems built around how your business really works.",
         "Bespoke software. Built around your business.",
-        "I build software that fits how you work, connects your existing tools and reduces repetitive admin.",
-        "Capture and updates · Approvals · Reporting",
-        "Start with one useful connection. Extend when it earns its place.",
-        "The software is there. The work between it is manual.",
+        "Software built to fit how you work, connecting data across your existing tools and reducing repetitive admin.",
         "Keep the software that works. Connect the work that falls between it.",
         "I trace how the work moves",
         "build the connections around it",
@@ -269,25 +266,20 @@ def check_homepage_v2(failures: list[str]) -> None:
     if "scroll-snap" in css:
         fail("V2 must not use scroll snapping", failures)
 
-    if "data-work-story" not in raw or 'data-story-step="4"' not in raw:
-        fail("workflow story must have a complete no-JavaScript default", failures)
-    for detail in ("Email and forms", "Working spreadsheet", "Business software", "Updates and approvals", "Management report", "Enter the same information again.", "The exceptions move elsewhere.", "Progress depends on chasing.", "Piece the picture together."):
-        if detail not in text:
-            fail(f"illustrative information route missing {detail}", failures)
-    for stale in ("R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
+    for stale in ("Where the work loses its flow", "The software is there. The work between it is manual.", "data-work-story", 'data-scroll-track="story"', "R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
-            fail(f"retired date/static story contract remains: {stale}", failures)
+            fail(f"retired workflow story remains: {stale}", failures)
     for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools", "rigid software and costly changes", "AI-assisted development", "operational data"):
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
-    story_markup = raw.split('data-scroll-track="story"', 1)[1].split('</section>', 1)[0]
-    for stale in ("Customer request", "Order change", "work-record", "The record stays connected", "connected-record", "04 <b>Connected</b>"):
-        if stale in story_markup:
-            fail(f"problem story must remain fragmented: {stale}", failures)
-    if story_markup.count('class="story-map"') != 1:
-        fail("story needs one persistent map, not repeated full illustrations", failures)
-    if raw.count('class="offer-diagram"') != 1 or 'class="offer-tools"' not in raw:
-        fail("early offer must show existing tools connected to focused software", failures)
+    if raw.count('class="offer-visual"') != 1 or 'assets/img/home/bespoke-connected-layer.webp' not in raw:
+        fail("early offer must use the approved connected-layer visual", failures)
+    offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
+    if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
+        fail("approved connected-layer visual must be present and web-optimised", failures)
+    for label in ("Bespoke Layer", "Accounts Software", "Spreadsheets", "Industry Specific Software/Apps"):
+        if label not in text:
+            fail(f"approved offer visual is missing its accessible label: {label}", failures)
     if 'Tweak' in raw or 'ps-stage-tabs' in raw or 'ps-preview-tabs' in raw:
         fail("public offer must not contain prototype controls", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
@@ -306,11 +298,20 @@ def check_homepage_v2(failures: list[str]) -> None:
     for title in ("Understand the work", "Try a working demo", "Refine it together", "Prove it in use"):
         if title not in text:
             fail(f"practical starting point missing {title}", failures)
-    for kind in ("story", "connection", "process"):
+    for kind in ("process", "connection"):
         if f'data-scroll-track="{kind}"' not in raw:
             fail(f"missing native scroll track: {kind}", failures)
-    if len(re.findall(r'data-stage-panel="[0-3]"', raw)) != 8:
-        fail("workflow and process need all four readable narrative panels", failures)
+    if len(re.findall(r'data-stage-panel="[0-3]"', raw)) != 4:
+        fail("process needs all four readable narrative panels", failures)
+    order = [text.find(phrase) for phrase in ("Bespoke software. Built around your business.", "A practical starting point", "The missing software layer", "What I help with", "Evidence from construction operations")]
+    if -1 in order or order != sorted(order):
+        fail("homepage sections must follow the approved offer, process, software layer, services and evidence order", failures)
+    if '<section class="v2-process" id="how"' not in raw:
+        fail("#how must land on A practical starting point", failures)
+    if ".v2-process { position: relative; scroll-margin-top: var(--nav-h);" not in css:
+        fail("#how must clear the fixed navigation when it lands on the process", failures)
+    if ".v2-process { position: relative;" not in css or ".v2-connection { position: relative;" not in css:
+        fail("legacy anchors need positioned process and connection section containers", failures)
     if text.find("Evidence from construction operations") < text.find("Keep the software that works"):
         fail("construction evidence must follow the general software-fit narrative", failures)
     for contract in ("html:not(.motion-ready) .scroll-track", "html:not(.motion-ready) [data-stage-panel]", "@media (prefers-reduced-motion: reduce)"):
@@ -524,7 +525,7 @@ def check() -> int:
             print(f" - {item}")
         return 1
     print(
-        "PASS V2 software-fit narrative, native-scroll B opening, illustrative information-route story, "
+        "PASS V2 software-fit narrative, approved connected-layer visual, native-scroll B opening and practical process, "
         "no-JavaScript/reduced-motion finals, routes, links, responsive shell, enquiry form, "
         "seven captioned films, written Management Accounts example, public-copy safety and identity"
     )
