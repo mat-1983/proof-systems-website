@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "offer-journey-20260929"
+SHARED_ASSET_VERSION = "offer-visual-scale-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -274,6 +274,13 @@ def check_homepage_v2(failures: list[str]) -> None:
             fail(f"software layer proposition missing {phrase}", failures)
     if raw.count('class="offer-visual"') != 1 or 'assets/img/home/bespoke-connected-layer.webp' not in raw:
         fail("early offer must use the approved connected-layer visual", failures)
+    if '.offer-visual figcaption { position: absolute; inset: 0;' not in css:
+        fail("offer labels must remain overlaid on the connected-layer image", failures)
+    desktop_layer_label = re.search(r'@media \(min-width: 761px\)\s*\{\s*\.offer-label--layer\s*\{([^}]*)\}', css)
+    if not desktop_layer_label or "width: clamp(12rem, 24vw, 20rem)" not in desktop_layer_label.group(1) or "background: #171513" not in desktop_layer_label.group(1):
+        fail("desktop bespoke-layer label must fully mask the baked artwork label", failures)
+    if "@media (max-width: 760px)" not in css or ".offer-label--layer { min-width: 7.8rem;" not in css:
+        fail("mobile bespoke-layer label sizing must remain tuned for narrow screens", failures)
     offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
     if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
         fail("approved connected-layer visual must be present and web-optimised", failures)
