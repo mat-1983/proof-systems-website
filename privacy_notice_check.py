@@ -254,7 +254,7 @@ def check() -> int:
         fail("missing overflow-x:hidden", failures)
     if ".doc-main" not in css:
         fail("missing privacy readable column class", failures)
-    if 'href="assets/css/site.css?v=offer-visual-scale-20260929"' not in raw:
+    if 'href="assets/css/site.css?v=offer-visual-scale-narrow-phone-20260929"' not in raw:
         fail("privacy.html must use shared CSS", failures)
     if 'href="favicon.svg"' not in raw:
         fail("missing favicon link", failures)

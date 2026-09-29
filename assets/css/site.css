@@ -3917,3 +3917,9 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .offer-label--accounts { left: 21.8%; }
   .offer-label--industry { left: 78%; max-width: 7.2rem; }
 }
+@media (max-width: 340px) {
+  .offer-label { padding: .28em .28em .32em; font-size: .62rem; }
+  .offer-label--accounts { left: 19%; max-width: 5.2rem; white-space: normal; }
+  .offer-label--sheets { left: 47.5%; max-width: 5.8rem; }
+  .offer-label--industry { left: 78%; max-width: 5.5rem; }
+}

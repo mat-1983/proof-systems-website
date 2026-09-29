@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "offer-visual-scale-20260929"
+SHARED_ASSET_VERSION = "offer-visual-scale-narrow-phone-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -281,6 +281,33 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("desktop bespoke-layer label must fully mask the baked artwork label", failures)
     if "@media (max-width: 760px)" not in css or ".offer-label--layer { min-width: 7.8rem;" not in css:
         fail("mobile bespoke-layer label sizing must remain tuned for narrow screens", failures)
+    narrow_start = css.rfind("@media (max-width: 340px)")
+    next_media = css.find("@media", narrow_start + 1) if narrow_start >= 0 else -1
+    narrow_block = css[narrow_start:next_media if next_media >= 0 else len(css)] if narrow_start >= 0 else ""
+    if not narrow_block or "font-size: .62rem" not in narrow_block:
+        fail("small-phone offer labels must wrap at a readable compact size", failures)
+    else:
+        measured: list[tuple[str, float, float]] = []
+        for name in ("accounts", "sheets", "industry"):
+            rule = re.search(rf'\.offer-label--{name}\s*\{{([^}}]*)\}}', narrow_block)
+            if not rule:
+                fail(f"small-phone offer is missing the {name} label layout", failures)
+                continue
+            if name == "accounts" and "white-space: normal" not in rule.group(1):
+                fail("small-phone Accounts Software label must wrap to fit its plate", failures)
+            left = re.search(r'left:\s*([\d.]+)%', rule.group(1))
+            width = re.search(r'max-width:\s*([\d.]+)rem', rule.group(1))
+            if not left or not width:
+                fail(f"small-phone {name} label needs bounded position and width", failures)
+                continue
+            center = 320 * float(left.group(1)) / 100
+            half_width = 16 * float(width.group(1)) / 2
+            measured.append((name, center - half_width, center + half_width))
+        previous_right = 0.0
+        for name, left, right in measured:
+            if left < previous_right or left < 0 or right > 320:
+                fail("small-phone offer labels collide or extend beyond the 320px image", failures)
+            previous_right = right
     offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
     if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
         fail("approved connected-layer visual must be present and web-optimised", failures)
