@@ -3904,6 +3904,10 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .connection-caption { margin-top: 1.1rem; }
 }
 
+@media (min-width: 761px) {
+  .connection-caption { margin: 0; padding-top: 32px; }
+}
+
 /* The offer opens with a concise introduction, then gives the connected layer room to read. */
 .v2-problem .v2-problem-grid { display: grid; grid-template-columns: 1fr; gap: clamp(3.5rem, 6vw, 5.5rem); align-items: start; }
 .v2-problem .offer-intro { display: block; }
