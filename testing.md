@@ -2,12 +2,12 @@
 
 Updated: 2026-09-29
 
-## Mobile offer caption rail and connection clarity — 29 September 2026
+## Mobile offer caption connectors and connection spacing — 29 September 2026
 
-On mobile, the connected-layer image now crops at the lower node bases. Three live, accessible captions sit in a black rail directly beneath the blocks, each centred to its node with a thin warm-gold guide; small opaque masks remove the image’s baked captions. The central Bespoke Layer plate and the approved desktop overlays remain in place. The missing-layer cards now say “Accounts software and ERP” and “Everyday systems”; mobile eyebrows are larger while remaining secondary. “The software follows the work.” has a clearer gap beneath the Source/Ownership/History row. Shared asset revision: `home-mobile-caption-rail-20260929`.
+On mobile, the connected-layer image crops at the lower node bases. Three live, accessible captions sit in a black rail directly beneath the blocks, each centred to its node. Thin gold connectors run from the image blocks across the rail boundary to just above each caption; small opaque masks remove the image’s baked captions. The central Bespoke Layer plate and approved desktop overlays remain unchanged. The missing-layer cards now say “Accounts software and ERP” and “Everyday systems”; mobile eyebrows are larger while remaining secondary. “The software follows the work.” has a clear gap beneath the Source/Ownership/History row. Shared asset revision: `home-mobile-caption-connectors-20260929`.
 
 - PASS — source and responsive geometry contracts check caption centres, bounds and gaps at 320, 341, 375, 390, 420, 500, 520 and 760px, plus desktop overlay separation at 761, 1280 and 1440px.
-- PENDING — rendered visual inspection at 320×480, 375×667, 390×844 and desktop widths. Geometry/source checks do not establish how the masks blend into the raster or how captions look in a rendered browser.
+- PENDING — rendered visual inspection at 320×480, 375×667, 390×844 and desktop widths. Geometry/source checks do not establish how the masks blend into the raster or how caption connectors appear in a rendered browser.
 
 ## Homepage flow refinement — 29 September 2026
 

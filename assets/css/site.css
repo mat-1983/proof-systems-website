@@ -3966,7 +3966,7 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .offer-label--industry { left: 78%; max-width: 5.5rem; }
 }
 @media (max-width: 760px) {
-  .offer-image { width: 100%; aspect-ratio: 1672 / 810; overflow: hidden; }
+  .offer-image { width: 100%; aspect-ratio: 1672 / 800; overflow: hidden; }
   .offer-image img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .offer-label--layer { top: 36.7%; z-index: 3; }
   .offer-raster-mask {
@@ -3978,16 +3978,15 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
     border-radius: 1px;
     box-shadow: 0 0 5px #000;
   }
-  .offer-raster-mask--accounts { left: 21.6%; top: 93.5%; width: 15%; height: 3%; }
-  .offer-raster-mask--sheets { left: 50%; top: 93.5%; width: 15%; height: 3%; }
-  .offer-raster-mask--industry { left: 78.2%; top: 94%; width: 21%; height: 4.5%; }
+  .offer-raster-mask--accounts { left: 21.6%; top: 94.7%; width: 15%; height: 3%; }
+  .offer-raster-mask--sheets { left: 50%; top: 94.7%; width: 15%; height: 3%; }
+  .offer-raster-mask--industry { left: 78.2%; top: 94.9%; width: 21%; height: 4.5%; }
   .offer-visual figcaption {
     position: relative;
     inset: auto;
     display: block;
     height: 88px;
     box-sizing: border-box;
-    overflow: hidden;
     border-top: 1px solid #b18c5d66;
     background: #0b0c0d;
   }
@@ -4014,9 +4013,9 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
     content: "";
     position: absolute;
     left: 50%;
-    top: -20px;
+    top: -40px;
     width: 1px;
-    height: 14px;
+    height: 36px;
     transform: translateX(-50%);
     background: #d7ad78;
   }

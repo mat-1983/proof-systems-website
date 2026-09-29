@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "home-mobile-caption-rail-20260929"
+SHARED_ASSET_VERSION = "home-mobile-caption-connectors-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -301,7 +301,7 @@ def check_homepage_v2(failures: list[str]) -> None:
     if not mobile_labels or not desktop_labels:
         fail("offer labels need explicit phone and desktop breakpoint layouts", failures)
     base_rules = {name: label_rule(css, name) for name in ("accounts", "sheets", "industry")}
-    if not mobile_labels or "aspect-ratio: 1672 / 810" not in mobile_labels or "width: 25%" not in mobile_labels:
+    if not mobile_labels or "aspect-ratio: 1672 / 800" not in mobile_labels or "width: 25%" not in mobile_labels:
         fail("mobile offer image must crop to its lower node bases and use a bounded caption rail", failures)
     if "width: 22.5%" not in narrow_labels or "font-size: .6rem" not in narrow_labels or "letter-spacing: .01em" not in narrow_labels:
         fail("narrow-phone captions must add a clear gap while keeping Spreadsheets readable", failures)
@@ -369,8 +369,9 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("process section must move directly from stage four into the connecting layer", failures)
     if '.home-v2 .connection-intro h2 { font-size: clamp(2.6rem, 10.5vw, 4rem); }' not in css:
         fail("mobile missing-layer heading must match the practical-starting-point scale", failures)
-    if '.offer-visual figcaption .offer-label::before' not in mobile_labels or 'height: 14px' not in mobile_labels or '#d7ad78' not in mobile_labels:
-        fail("mobile caption rail needs thin warm-gold guide lines above each label", failures)
+    caption_guide = re.search(r'\.offer-visual figcaption \.offer-label::before\s*\{([^}]*)\}', mobile_labels)
+    if not caption_guide or any(rule not in caption_guide.group(1) for rule in ("top: -40px", "height: 36px", "#d7ad78")) or "overflow: hidden" in mobile_labels.split(".offer-visual figcaption {", 1)[-1].split("}", 1)[0]:
+        fail("mobile gold connector lines must cross the image/rail boundary continuously", failures)
     if '.connection-source small { min-height: 0; font-size: clamp(.68rem, 3.3vw, .82rem);' not in css:
         fail("mobile connection eyebrow labels must be balanced and legible", failures)
     if '.connection-caption { grid-row: 6; text-align: center; color: #becdc9; font-size: .8rem; margin: 2.2rem 0 0; }' not in css or '.connection-caption { margin-top: 1.5rem; }' not in css:
