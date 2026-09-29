@@ -303,12 +303,14 @@ def check_homepage_v2(failures: list[str]) -> None:
     base_rules = {name: label_rule(css, name) for name in ("accounts", "sheets", "industry")}
     if not mobile_labels or "aspect-ratio: 1672 / 810" not in mobile_labels or "width: 25%" not in mobile_labels:
         fail("mobile offer image must crop to its lower node bases and use a bounded caption rail", failures)
+    if "width: 22.5%" not in narrow_labels or "font-size: .6rem" not in narrow_labels or "letter-spacing: .01em" not in narrow_labels:
+        fail("narrow-phone captions must add a clear gap while keeping Spreadsheets readable", failures)
     if ".offer-label--layer { top: 36.7%; z-index: 3; }" not in mobile_labels or any(f".offer-raster-mask--{name}" not in mobile_labels for name in ("accounts", "sheets", "industry")):
         fail("mobile crop must retain the central label and mask all baked lower captions", failures)
     if not re.search(r"\.offer-visual figcaption \.offer-label--accounts\s*\{\s*left: 21\.6%", mobile_labels) or not re.search(r"\.offer-visual figcaption \.offer-label--sheets\s*\{\s*left: 50%", mobile_labels) or not re.search(r"\.offer-visual figcaption \.offer-label--industry\s*\{\s*left: 76\.6%", mobile_labels):
         fail("mobile caption text must centre below its corresponding lower node", failures)
     for viewport_width in (320, 341, 375, 390, 420, 500, 520, 521, 760):
-        width = min(viewport_width * .25, 120)
+        width = min(viewport_width * (.225 if viewport_width <= 340 else .25), 120)
         centres = [viewport_width * value for value in (.216, .5, .766)]
         edges = [(centre - width / 2, centre + width / 2) for centre in centres]
         if any(left < 0 or right > viewport_width for left, right in edges) or any(edges[i + 1][0] - edges[i][1] < 1 for i in range(2)):

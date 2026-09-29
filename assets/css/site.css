@@ -4024,3 +4024,7 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .offer-visual figcaption .offer-label--sheets { left: 50%; }
   .offer-visual figcaption .offer-label--industry { left: 76.6%; }
 }
+@media (max-width: 340px) {
+  .offer-visual figcaption .offer-label { width: 22.5%; }
+  .offer-visual figcaption .offer-label--sheets { font-size: .6rem; letter-spacing: .01em; }
+}
