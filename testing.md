@@ -2,6 +2,13 @@
 
 Updated: 2026-09-29
 
+## Mobile offer caption rail and connection clarity — 29 September 2026
+
+On mobile, the connected-layer image now crops at the lower node bases. Three live, accessible captions sit in a black rail directly beneath the blocks, each centred to its node with a thin warm-gold guide; small opaque masks remove the image’s baked captions. The central Bespoke Layer plate and the approved desktop overlays remain in place. The missing-layer cards now say “Accounts software and ERP” and “Everyday systems”; mobile eyebrows are larger while remaining secondary. “The software follows the work.” has a clearer gap beneath the Source/Ownership/History row. Shared asset revision: `home-mobile-caption-rail-20260929`.
+
+- PASS — source and responsive geometry contracts check caption centres, bounds and gaps at 320, 341, 375, 390, 420, 500, 520 and 760px, plus desktop overlay separation at 761, 1280 and 1440px.
+- PENDING — rendered visual inspection at 320×480, 375×667, 390×844 and desktop widths. Geometry/source checks do not establish how the masks blend into the raster or how captions look in a rendered browser.
+
 ## Homepage flow refinement — 29 September 2026
 
 The offer now uses one short sentence beneath its heading and the connected-layer image labels read `Industry Software`; the opaque mobile label plate covers the old raster wording. The practical-starting-point intro sits closer to the first card, and the section now exits from stage four directly into the missing software layer. Desktop process staging has a shorter, bounded reading journey while preserving the full-card reading and reverse-scroll phases. The mobile missing-layer heading uses the process-heading scale. Its two explanatory columns use the shorter approved copy. The desktop hand-off example is unchanged; phones receive an accessible four-step request, owner, next-action and history sequence.

@@ -20,7 +20,7 @@ STORY_SLUGS = [
 FILM_STORY_SLUGS = [slug for slug in STORY_SLUGS if slug != "management-accounts"]
 TEASERS = ["sitelog", "budgetflow", "ledgerlink"]
 TEASER_VERSION = "20260905"
-SHARED_ASSET_VERSION = "home-flow-refinement-20260929"
+SHARED_ASSET_VERSION = "home-mobile-caption-rail-20260929"
 WITHDRAWN_MEDIA_NAMES = (
     "management-accounts-demo.mp4",
     "management-accounts-poster.jpg",
@@ -267,9 +267,11 @@ def check_homepage_v2(failures: list[str]) -> None:
     for stale in ("Where the work loses its flow", "The software is there. The work between it is manual.", "data-work-story", 'data-scroll-track="story"', "R-2041", "16 September", "18 September", "storyStaticQuery", "story-static"):
         if stale in raw + js + css:
             fail(f"retired workflow story remains: {stale}", failures)
-    for phrase in ("The software layer that connects your business.", "One main business system", "Several everyday tools"):
+    for phrase in ("The software layer that connects your business.", "Accounts software and ERP", "Everyday systems", "A central platform", "Apps and spreadsheets"):
         if phrase not in text:
             fail(f"software layer proposition missing {phrase}", failures)
+    if "One main business system" in text or "Several everyday tools" in text:
+        fail("replaced software-layer card headings must not remain", failures)
     if raw.count('class="offer-visual"') != 1 or 'assets/img/home/bespoke-connected-layer.webp' not in raw:
         fail("early offer must use the approved connected-layer visual", failures)
     if '.offer-visual figcaption { position: absolute; inset: 0;' not in css:
@@ -299,40 +301,41 @@ def check_homepage_v2(failures: list[str]) -> None:
     if not mobile_labels or not desktop_labels:
         fail("offer labels need explicit phone and desktop breakpoint layouts", failures)
     base_rules = {name: label_rule(css, name) for name in ("accounts", "sheets", "industry")}
-    measured: list[tuple[str, float, float]] = []
-    for viewport_width in (320, 341, 375, 390, 420, 500, 520, 521, 760, 761, 1280, 1440):
-        if viewport_width <= 340:
-            block = narrow_labels
-        elif viewport_width <= 520:
-            block = compact_labels
-        elif viewport_width <= 760:
-            block = mobile_labels
-        else:
-            block = desktop_labels
-        image_width = viewport_width if viewport_width <= 760 else min(1180, viewport_width - 48)
-        edges: list[tuple[str, float, float]] = []
+    if not mobile_labels or "aspect-ratio: 1672 / 810" not in mobile_labels or "width: 25%" not in mobile_labels:
+        fail("mobile offer image must crop to its lower node bases and use a bounded caption rail", failures)
+    if ".offer-label--layer { top: 36.7%; z-index: 3; }" not in mobile_labels or any(f".offer-raster-mask--{name}" not in mobile_labels for name in ("accounts", "sheets", "industry")):
+        fail("mobile crop must retain the central label and mask all baked lower captions", failures)
+    if not re.search(r"\.offer-visual figcaption \.offer-label--accounts\s*\{\s*left: 21\.6%", mobile_labels) or not re.search(r"\.offer-visual figcaption \.offer-label--sheets\s*\{\s*left: 50%", mobile_labels) or not re.search(r"\.offer-visual figcaption \.offer-label--industry\s*\{\s*left: 76\.6%", mobile_labels):
+        fail("mobile caption text must centre below its corresponding lower node", failures)
+    for viewport_width in (320, 341, 375, 390, 420, 500, 520, 521, 760):
+        width = min(viewport_width * .25, 120)
+        centres = [viewport_width * value for value in (.216, .5, .766)]
+        edges = [(centre - width / 2, centre + width / 2) for centre in centres]
+        if any(left < 0 or right > viewport_width for left, right in edges) or any(edges[i + 1][0] - edges[i][1] < 1 for i in range(2)):
+            fail(f"{viewport_width}px mobile caption labels must remain separated and within the rail", failures)
+    desktop_viewports = (761, 1280, 1440)
+    for viewport_width in desktop_viewports:
+        image_width = min(1180, viewport_width - 48)
+        edges = []
         for name in ("accounts", "sheets", "industry"):
-            override = label_rule(block, name)
-            base = base_rules[name]
-            declarations = base + override
+            declarations = base_rules[name] + label_rule(desktop_labels, name)
             left = re.findall(r'left:\s*([\d.]+)%', declarations)
             width = re.findall(r'max-width:\s*([\d.]+)rem', declarations)
             if not left or not width:
-                fail(f"{viewport_width}px offer {name} label needs bounded position and width", failures)
+                fail(f"{viewport_width}px desktop {name} overlay needs bounded position and width", failures)
                 continue
-            center = image_width * float(left[-1]) / 100
-            half_width = 16 * float(width[-1]) / 2
-            edges.append((name, center - half_width, center + half_width))
-        previous_right = 0.0
-        for name, left, right in edges:
-            if left < previous_right + 1 or left < 0 or right > image_width:
-                fail(f"{viewport_width}px offer {name} label collides or extends beyond the image", failures)
-            previous_right = right
-    if "white-space: normal" not in label_rule(narrow_labels, "accounts"):
-        fail("small-phone Accounts Software label must wrap to fit its plate", failures)
+            centre = image_width * float(left[-1]) / 100
+            half = 16 * float(width[-1]) / 2
+            edges.append((centre - half, centre + half))
+        if any(edges[i + 1][0] - edges[i][1] < 1 for i in range(2)):
+            fail(f"{viewport_width}px desktop overlay labels must remain separated", failures)
     desktop_industry_mask = re.search(r'\.offer-label--industry::after\s*\{([^}]*)\}', desktop_labels)
     if not desktop_industry_mask or any(rule not in desktop_industry_mask.group(1) for rule in ("top: calc(100% - 1px)", "height: 1.5em", "background: #171513")):
         fail("desktop Industry Software mask must cover the baked second line without moving the label", failures)
+    if '<figcaption><span class="offer-label offer-label--accounts">Accounts Software</span>' not in raw or '<span class="offer-raster-mask offer-raster-mask--industry" aria-hidden="true"></span>' not in raw or '<span class="offer-label offer-label--layer">Bespoke Layer</span>' not in raw:
+        fail("mobile labels must remain live accessible captions with the central plate and baked-text masks", failures)
+    if 'aria-hidden="true"><span class="offer-label' in raw or '<div class="offer-image"><img' not in raw:
+        fail("offer captions must remain available to assistive technology", failures)
     offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
     if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
         fail("approved connected-layer visual must be present and web-optimised", failures)
@@ -364,8 +367,12 @@ def check_homepage_v2(failures: list[str]) -> None:
         fail("process section must move directly from stage four into the connecting layer", failures)
     if '.home-v2 .connection-intro h2 { font-size: clamp(2.6rem, 10.5vw, 4rem); }' not in css:
         fail("mobile missing-layer heading must match the practical-starting-point scale", failures)
-    if '.offer-label--industry { left: 81%; top: 82%;' not in css or '.offer-label--industry { left: 81.4%; top: 82%;' not in css or 'background: #171513;' not in label_rule(css, "industry"):
-        fail("mobile Industry Software plate must mask its baked text and align with the other labels", failures)
+    if '.offer-visual figcaption .offer-label::before' not in mobile_labels or 'height: 14px' not in mobile_labels or '#d7ad78' not in mobile_labels:
+        fail("mobile caption rail needs thin warm-gold guide lines above each label", failures)
+    if '.connection-source small { min-height: 0; font-size: clamp(.68rem, 3.3vw, .82rem);' not in css:
+        fail("mobile connection eyebrow labels must be balanced and legible", failures)
+    if '.connection-caption { grid-row: 6; text-align: center; color: #becdc9; font-size: .8rem; margin: 2.2rem 0 0; }' not in css or '.connection-caption { margin-top: 1.5rem; }' not in css:
+        fail("connecting-work caption must have distinct vertical separation", failures)
     connection_markup = raw.split('data-scroll-track="connection"', 1)[1].split('connection-detail', 1)[0]
     if 'connection-intro' not in connection_markup or 'Keep the software that works.' not in connection_markup:
         fail("connection headline and short introduction must stay with its diagram", failures)
