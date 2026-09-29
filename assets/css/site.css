@@ -3902,6 +3902,8 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
 .offer-label--industry { left: 78.2%; top: 79.6%; max-width: 13rem; white-space: normal; }
 @media (min-width: 761px) {
   .offer-label--layer { top: 32.3%; width: clamp(12rem, 24vw, 20rem); min-width: 0; background: #171513; }
+  .offer-label--accounts { max-width: 13rem; }
+  .offer-label--sheets { max-width: 12rem; }
 }
 @media (max-width: 760px), (max-width: 1024px) and (max-height: 550px) {
   .v2-problem .v2-problem-grid { gap: 2.3rem; }
@@ -3914,11 +3916,17 @@ html:not(.motion-ready) .scene-depth-window::before { transform: none; }
   .offer-visual { width: calc(100% + 28px); margin-left: -14px; margin-right: -14px; }
   .offer-label { padding: .32em .5em .36em; font-size: clamp(.65rem, 2.75vw, .74rem); letter-spacing: .025em; }
   .offer-label--layer { min-width: 7.8rem; font-size: clamp(.7rem, 3vw, .82rem); }
-  .offer-label--accounts { left: 21.8%; }
-  .offer-label--industry { left: 78%; max-width: 7.2rem; }
+  .offer-label--accounts { left: 19%; max-width: 9.5rem; white-space: normal; }
+  .offer-label--sheets { left: 50%; max-width: 7.2rem; }
+  .offer-label--industry { left: 81%; max-width: 7.2rem; }
+}
+@media (max-width: 520px) {
+  .offer-label { padding: .28em .28em .32em; font-size: .64rem; letter-spacing: .025em; }
+  .offer-label--accounts { left: 20%; max-width: 8rem; white-space: normal; }
+  .offer-label--sheets { left: 53.3%; max-width: 6rem; }
+  .offer-label--industry { left: 81.4%; max-width: 5.8rem; }
 }
 @media (max-width: 340px) {
-  .offer-label { padding: .28em .28em .32em; font-size: .62rem; }
   .offer-label--accounts { left: 19%; max-width: 5.2rem; white-space: normal; }
   .offer-label--sheets { left: 47.5%; max-width: 5.8rem; }
   .offer-label--industry { left: 78%; max-width: 5.5rem; }
