@@ -330,6 +330,9 @@ def check_homepage_v2(failures: list[str]) -> None:
             previous_right = right
     if "white-space: normal" not in label_rule(narrow_labels, "accounts"):
         fail("small-phone Accounts Software label must wrap to fit its plate", failures)
+    desktop_industry_mask = re.search(r'\.offer-label--industry::after\s*\{([^}]*)\}', desktop_labels)
+    if not desktop_industry_mask or any(rule not in desktop_industry_mask.group(1) for rule in ("top: calc(100% - 1px)", "height: 1.5em", "background: #171513")):
+        fail("desktop Industry Software mask must cover the baked second line without moving the label", failures)
     offer_asset = ROOT / "assets/img/home/bespoke-connected-layer.webp"
     if not offer_asset.is_file() or offer_asset.stat().st_size > 300_000:
         fail("approved connected-layer visual must be present and web-optimised", failures)
